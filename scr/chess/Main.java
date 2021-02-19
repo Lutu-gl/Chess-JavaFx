@@ -1,4 +1,35 @@
-package chess;
+package Chess;
 
-public class Main {
+import Pieces.Queen;
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        primaryStage.setTitle("Chess");
+        Chessboard board = new Chessboard();
+        Scene sc = new Scene(board, 700, 700);
+        primaryStage.setScene(sc);
+        primaryStage.show();
+        board.getLabels().get(0).setFigure(new Queen(new ImageView(new Image("Imgs\\B_Queen.png")), board.getLabels().get(0), Color.BLACK, "Black Queen"));
+
+    }
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
