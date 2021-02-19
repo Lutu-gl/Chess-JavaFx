@@ -13,9 +13,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+/**
+ * Main Method which contains the Main Method
+ * @author Stefan Hasler
+ * @version "%I",1.0
+ *
+ */
 public class Main extends Application {
-
+    /**
+     * Sets up the Chessboard
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));

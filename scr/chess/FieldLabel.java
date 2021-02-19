@@ -3,6 +3,12 @@ package Chess;
 import Pieces.Piece;
 import javafx.scene.control.Label;
 
+/**
+ * Describes a field on the Chessboard(a1, b4, h5 ect...)
+ * @author Stefan Hasler
+ * @version 1.0
+ *
+ */
 public class FieldLabel extends Label {
     private int x, y;
     private Chess.Color color;
