@@ -1,16 +1,17 @@
 package Chess;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 
+/**
+ * The actual Board containing a list of FieldLables, the Constructor initializes it with 64 labels
+ * @author Stefan Hasler
+ * @version 1.0
+ */
 public class Chessboard extends GridPane {
-    private ArrayList<FieldLabel> labels = new ArrayList<>();
+    private final ArrayList<FieldLabel> labels = new ArrayList<>();
 
     public Chessboard(){
         for (int i = 0; i < 8; i++)

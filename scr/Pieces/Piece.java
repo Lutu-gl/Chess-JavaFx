@@ -4,12 +4,25 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import Chess.Color;
 
+/**
+ * Topclass for each Piece
+ * @author Stefan Hasler
+ * @version 1.0
+ */
 public abstract class Piece {
 
+    /*** the Image of the Piece(B_Rook, B_Queen, ect...)*/
     ImageView img;
+
+    /*** The label its ontop of, ect...)*/
     Label l;
+
+    /*** Whether its alive or dead)*/
     boolean isAlive = true;
+
+    /*** The Pieces color(Black or white)*/
     Color color;
+    /*** The Name of the Piece("Black Queen", "White Knight"))*/
     String name;
 
     public Piece(ImageView img, Label l, Color color, String name){
