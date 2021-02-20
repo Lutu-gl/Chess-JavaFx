@@ -1,13 +1,16 @@
 package Pieces;
 
+import Chess.Chessboard;
 import Chess.FieldLabel;
 import javafx.scene.image.ImageView;
 import Chess.Color;
 
+import java.util.ArrayList;
+
 /**
  * Topclass for each Piece
  * @author Stefan Hasler
- * @version 1.2
+ * @version 1.3
  */
 public abstract class Piece extends ImageView{
 
@@ -22,8 +25,12 @@ public abstract class Piece extends ImageView{
 
     /*** The Pieces color(Black or white)*/
     Color color;
+
     /*** The Name of the Piece("Black Queen", "White Knight"))*/
     String name;
+
+    /*** List of all allowed moves for the Piece*/
+    ArrayList<FieldLabel> validMoves = new ArrayList<>();
 
     public Piece(ImageView img, FieldLabel l, Color color, String name){
         img.setFitHeight(70);
@@ -74,13 +81,15 @@ public abstract class Piece extends ImageView{
         this.color = color;
     }
 
-
     @Override
     public String toString() {
-        return "Piece{" +
-                ", l=" + fieldLabel +
-                ", name='" + name + '\'' +
-                '}';
+        return  name;
     }
 
+    /**
+     *  Returns a Arraylist for every Possible move for that Piece, does not account for putting own king in Check
+     * @param board The chessboard that is used for that game
+     * @return list of every possible move as an Arraylist
+     */
+    public abstract ArrayList<FieldLabel> calculateValidMoves(Chessboard board);
 }

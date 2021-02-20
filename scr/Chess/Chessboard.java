@@ -1,5 +1,6 @@
 package Chess;
 
+import Pieces.Piece;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 
@@ -7,11 +8,13 @@ import java.util.ArrayList;
 
 /**
  * The actual Board containing a list of FieldLables, the Constructor initializes it with 64 labels
+ * aswell as a list of all pieces
  * @author Stefan Hasler
- * @version 1.0
+ * @version 1.4
  */
 public class Chessboard extends GridPane {
-    private final ArrayList<FieldLabel> labels = new ArrayList<>();
+    private FieldLabel[][] labels = new FieldLabel[8][8];
+    private ArrayList<Piece> pieces = new ArrayList<>();
 
     public Chessboard(){
         for (int i = 0; i < 8; i++)
@@ -21,13 +24,21 @@ public class Chessboard extends GridPane {
                 label.setId(""+ (char)(97 + i) + (j+1));
                 label.setText(""+ (char)(97 + i) + (j+1));
                 label.setTextAlignment(TextAlignment.CENTER);
-                labels.add(label);
+                label.setBoard(this);
+                labels[i][j]=label;
                 this.add(label, i, j);
             }
 
     }
 
-    public ArrayList<FieldLabel> getLabels() {
+    public void addPiece(Piece p){
+        pieces.add(p);
+    }
+    public void removePiece(Piece p){
+        pieces.remove(p);
+    }
+
+    public FieldLabel[][] getLabels() {
         return labels;
     }
 
@@ -38,5 +49,9 @@ public class Chessboard extends GridPane {
     }
     public String getBoardByFen(){
         return "";
+    }
+
+    public FieldLabel getLabelByCoordinates(int x, int y) {
+        return labels[x][y];
     }
 }
