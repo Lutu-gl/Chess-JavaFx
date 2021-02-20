@@ -7,7 +7,7 @@ import Chess.Color;
 /**
  * Topclass for each Piece
  * @author Stefan Hasler
- * @version 1.0
+ * @version 1.2
  */
 public abstract class Piece extends ImageView{
 
