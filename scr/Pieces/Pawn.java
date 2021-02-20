@@ -25,23 +25,42 @@ public class Pawn extends Piece{
         FieldLabel field1 = null;
         FieldLabel field3 = null;
         FieldLabel field4 = null;
-        try {  field1 = board.getLabelByCoordinates(x,y+1); }
-        catch (IndexOutOfBoundsException ignored){ }
 
-        try {  field3 = board.getLabelByCoordinates(x+1,y+1); }
-        catch (IndexOutOfBoundsException ignored){ }
-
-        try {  field4 = board.getLabelByCoordinates(x-1,y+1); }
-        catch (IndexOutOfBoundsException ignored){ }
 
 //||
        if(color == Color.BLACK)
        {
+           try {  field1 = board.getLabelByCoordinates(x,y+1); }
+           catch (IndexOutOfBoundsException ignored){ }
+
+           try {  field3 = board.getLabelByCoordinates(x+1,y+1); }
+           catch (IndexOutOfBoundsException ignored){ }
+
+           try {  field4 = board.getLabelByCoordinates(x-1,y+1); }
+           catch (IndexOutOfBoundsException ignored){ }
+
            if(field1 != null && !field1.hasPiece())
                validMoves.add(field1);
            if(field3 != null && field3.hasPiece() && field3.getPiece().getColor() == Color.WHITE)
                validMoves.add(field3);
            if(field4 != null && field4.hasPiece() && field4.getPiece().getColor() == Color.WHITE)
+               validMoves.add(field4);
+       }
+       else {
+           try {  field1 = board.getLabelByCoordinates(x,y-1); }
+           catch (IndexOutOfBoundsException ignored){ }
+
+           try {  field3 = board.getLabelByCoordinates(x-1,y-1); }
+           catch (IndexOutOfBoundsException ignored){ }
+
+           try {  field4 = board.getLabelByCoordinates(x+1,y-1); }
+           catch (IndexOutOfBoundsException ignored){ }
+
+           if(field1 != null && !field1.hasPiece())
+               validMoves.add(field1);
+           if(field3 != null && field3.hasPiece() && field3.getPiece().getColor() == Color.BLACK)
+               validMoves.add(field3);
+           if(field4 != null && field4.hasPiece() && field4.getPiece().getColor() == Color.BLACK)
                validMoves.add(field4);
        }
 
