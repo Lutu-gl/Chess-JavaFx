@@ -29,15 +29,68 @@ public class Test extends Application {
         target.setScaleX(2.0);
         target.setScaleY(2.0);
 
+        source.setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("setOnDragDetected");
+            }
+        });
+
+
+        source.setOnDragEntered(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                System.out.println("setOnDragEntered");
+
+
+            }
+        });
+
+        source.setOnDragDropped(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                System.out.println("setOnDragDropped");
+
+
+            }
+        });
+
+        source.setOnDragDone(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                System.out.println("setOnDragDone");
+
+            }
+        });
+
+        source.setOnDragExited(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                System.out.println("setOnDragExited");
+
+            }
+        });
+
+        target.setOnDragDropped(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                System.out.println("setOnDragDropped");
+            }
+        });
+                /*
         source.setOnDragDetected(new EventHandler <MouseEvent>() {
             public void handle(MouseEvent event) {
-                /* drag was detected, start drag-and-drop gesture*/
+
+                if(event.isPrimaryButtonDown()){
+                    System.out.println("yes");
+                }
+                // drag was detected, start drag-and-drop gesture
                 System.out.println("onDragDetected");
 
-                /* allow any transfer mode */
+                // allow any transfer mode
                 Dragboard db = source.startDragAndDrop(TransferMode.ANY);
 
-                /* put a string on dragboard */
+                // put a string on dragboard
                 ClipboardContent content = new ClipboardContent();
                 content.putString(source.getText());
                 db.setContent(content);
@@ -46,16 +99,17 @@ public class Test extends Application {
             }
         });
 
+
         target.setOnDragOver(new EventHandler <DragEvent>() {
             public void handle(DragEvent event) {
-                /* data is dragged over the target */
+                // data is dragged over the target
                 System.out.println("onDragOver");
 
-                /* accept it only if it is  not dragged from the same node
-                 * and if it has a string data */
+                // accept it only if it is  not dragged from the same node
+               // and if it has a string data /
                 if (event.getGestureSource() != target &&
                         event.getDragboard().hasString()) {
-                    /* allow for both copying and moving, whatever user chooses */
+                    /& allow for both copying and moving, whatever user chooses
                     event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
 
@@ -65,9 +119,9 @@ public class Test extends Application {
 
         target.setOnDragEntered(new EventHandler <DragEvent>() {
             public void handle(DragEvent event) {
-                /* the drag-and-drop gesture entered the target */
+                /* the drag-and-drop gesture entered the target
                 System.out.println("onDragEntered");
-                /* show to the user that it is an actual gesture target */
+                /* show to the user that it is an actual gesture target
                 if (event.getGestureSource() != target &&
                         event.getDragboard().hasString()) {
                     target.setFill(Color.GREEN);
@@ -79,7 +133,7 @@ public class Test extends Application {
 
         target.setOnDragExited(new EventHandler <DragEvent>() {
             public void handle(DragEvent event) {
-                /* mouse moved away, remove the graphical cues */
+                /* mouse moved away, remove the graphical cues
                 target.setFill(Color.BLACK);
 
                 event.consume();
@@ -88,9 +142,9 @@ public class Test extends Application {
 
         target.setOnDragDropped(new EventHandler <DragEvent>() {
             public void handle(DragEvent event) {
-                /* data dropped */
+                /* data dropped
                 System.out.println("onDragDropped");
-                /* if there is a string data on dragboard, read it and use it */
+                /* if there is a string data on dragboard, read it and use it
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (db.hasString()) {
@@ -98,7 +152,7 @@ public class Test extends Application {
                     success = true;
                 }
                 /* let the source know whether the string was successfully
-                 * transferred and used */
+                 * transferred and used
                 event.setDropCompleted(success);
 
                 event.consume();
@@ -107,9 +161,9 @@ public class Test extends Application {
 
         source.setOnDragDone(new EventHandler <DragEvent>() {
             public void handle(DragEvent event) {
-                /* the drag-and-drop gesture ended */
+                /* the drag-and-drop gesture ended
                 System.out.println("onDragDone");
-                /* if the data was successfully moved, clear it */
+                /* if the data was successfully moved, clear it
                 if (event.getTransferMode() == TransferMode.MOVE) {
                     source.setText("");
                 }
@@ -117,6 +171,7 @@ public class Test extends Application {
                 event.consume();
             }
         });
+        */
 
         root.getChildren().add(source);
         root.getChildren().add(target);

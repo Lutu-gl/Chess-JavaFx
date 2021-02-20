@@ -1,7 +1,6 @@
 package Pieces;
 
 import Chess.FieldLabel;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import Chess.Color;
 
