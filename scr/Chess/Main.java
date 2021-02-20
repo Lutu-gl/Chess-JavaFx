@@ -61,8 +61,8 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.getIcons().add(new Image("file:scr/Chess/Download.jpg"));
 
-        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-
+        //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        board.setBoardByFen("rnbqkbnr/pp1p1ppp/8/2pPp3/8/8/PPP1PPPP/RNBQKBNR w KQkq e6 0 3");
     }
 
 

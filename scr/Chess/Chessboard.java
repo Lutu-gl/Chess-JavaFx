@@ -57,17 +57,19 @@ public class Chessboard extends GridPane {
      */
     //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     public void setBoardByFen(String fen){
-        fen = fen.replace("/","");
+        String fenBoard = fen.substring(0, fen.indexOf(' ')).replace("/","");
+        String fenInfo = fen.substring(fen.indexOf(' ')+1).replace("/","").replace(" ","");
 
-        System.out.println(fen);
+        System.out.println(fenBoard);
+        System.out.println(fenInfo);
 
         int posString=0;
         char c;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if(posString >= fen.length()) break;
-                c = fen.charAt(posString++);
+                if(posString >= fenBoard.length()) break;
+                c = fenBoard.charAt(posString++);
 
                 switch(c){
                     //Black pieces
@@ -89,16 +91,28 @@ public class Chessboard extends GridPane {
                 }
                 //blank space
                 if((c > 49) && (c<=57)){
-                    System.out.println(j);
-                    j+=(int) (c-49);
-                    System.out.println("nach hinzurechnen: " + j);
+                    j+=(c-49);
                 }
+            }
+        }
 
+        for (int j = 0; j < fenInfo.length(); j++) {
+            c = fenInfo.charAt(j);
 
-                //System.out.println(labels[j][i].getX() + " " + labels[j][i].getY());
-
+            switch(c){
+                case 'w': System.out.println("Whites Turn"); break;//Weiß am zug
+                case 'b': System.out.println("Blacks Turn"); break; //Schwarz am Zug
+                case 'K': System.out.println("Whites Kingside"); break; //Weiß kann Kingside castlen
+                case 'Q': System.out.println("Whites Queenside"); break; //Weiß kann Queenside castlen
+                case 'k': System.out.println("Black Kingside"); break; //Schwarz kann Kingside castlen
+                case 'q': System.out.println("Black Queenside"); break; //Schwarz kann Queenside castlen
 
             }
+            //en Passant
+            if((c > 97) && (c<=105)){
+                System.out.println("En Passant bei: " + c + fenInfo.charAt(j+1) ); //enPassant ist möglich bei dem feld
+            }
+
         }
 
     }
