@@ -1,6 +1,6 @@
 package Pieces;
 
-import javafx.scene.control.Label;
+import Chess.FieldLabel;
 import javafx.scene.image.ImageView;
 import Chess.Color;
 
@@ -9,13 +9,13 @@ import Chess.Color;
  * @author Stefan Hasler
  * @version 1.0
  */
-public abstract class Piece {
+public abstract class Piece extends ImageView{
 
     /*** the Image of the Piece(B_Rook, B_Queen, ect...)*/
     ImageView img;
 
     /*** The label its ontop of, ect...)*/
-    Label l;
+    FieldLabel fieldLabel;
 
     /*** Whether its alive or dead)*/
     boolean isAlive = true;
@@ -25,11 +25,11 @@ public abstract class Piece {
     /*** The Name of the Piece("Black Queen", "White Knight"))*/
     String name;
 
-    public Piece(ImageView img, Label l, Color color, String name){
-        img.setFitHeight(80);
+    public Piece(ImageView img, FieldLabel l, Color color, String name){
+        img.setFitHeight(70);
         img.setPreserveRatio(true);
         this.img = img;
-        this.l = l;
+        this.fieldLabel = l;
         this.color = color;
         this.name = name;
     }
@@ -50,12 +50,12 @@ public abstract class Piece {
         this.img = img;
     }
 
-    public Label getL() {
-        return l;
+    public FieldLabel getFieldLabel() {
+        return fieldLabel;
     }
 
-    public void setL(Label l) {
-        this.l = l;
+    public void setFieldLabel(FieldLabel l) {
+        this.fieldLabel = l;
     }
 
     public boolean isAlive() {
@@ -78,10 +78,7 @@ public abstract class Piece {
     @Override
     public String toString() {
         return "Piece{" +
-                "img=" + img.getImage().getUrl() +
-                ", l=" + l +
-                ", isAlive=" + isAlive +
-                ", color=" + color +
+                ", l=" + fieldLabel +
                 ", name='" + name + '\'' +
                 '}';
     }

@@ -10,17 +10,26 @@ import javafx.scene.control.Label;
  *
  */
 public class FieldLabel extends Label {
+    /***Coordinates of field on board*/
     private int x, y;
-    private Chess.Color color;
-    private Piece figure = null;
 
-    public Piece getFigure() {
-        return figure;
+    /***Color of field*/
+    private Chess.Color color;
+
+    /***the Piece that may stand on top of the Field*/
+    private Piece piece;
+
+    public Piece getPiece() {
+        return piece;
     }
 
-    public void setFigure(Piece figure) {
-        this.figure = figure;
-        this.setGraphic(figure.getImg());
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+        this.setGraphic(piece.getImg());
+    }
+    public void removePiece(){
+        piece = null;
+        this.setGraphic(null);
     }
 
     public FieldLabel(int x, int y, Chess.Color color){
@@ -29,6 +38,7 @@ public class FieldLabel extends Label {
         this.color = color;
         this.setPrefHeight(116.0);
         this.setPrefWidth(98.0);
+        this.setOnMouseClicked(new LabelEvent());
     }
 
     public int getX() {
@@ -42,5 +52,6 @@ public class FieldLabel extends Label {
     public Color getColor() {
         return color;
     }
+
 
 }
