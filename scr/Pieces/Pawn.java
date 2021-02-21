@@ -8,9 +8,10 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 
 /**
+ * Describes a Pawn and its valid moves
  * @author Stefan Hasler
  * @version 2.0
- * Describes a Pawn
+ *
  */
 
 public class Pawn extends Piece{

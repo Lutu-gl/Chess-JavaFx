@@ -6,6 +6,12 @@ import javafx.scene.image.ImageView;
 import Chess.Color;
 
 import java.util.ArrayList;
+/**
+ * Descripes a Bishop and its valid moves
+ * @author Stefan Hasler
+ * version 1.0
+ */
+
 
 public class Bishop extends Piece{
 
@@ -15,6 +21,24 @@ public class Bishop extends Piece{
 
     @Override
     public ArrayList<FieldLabel> calculateValidMoves(Chessboard board) {
-        return null;
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
+        validMoves.removeAll(validMoves);
+        int x = this.fieldLabel.getX();
+        int y = this.fieldLabel.getY();
+
+
+        for (int i = x, i2 = y; i != 8 && i2 != -1; i++, i2--)
+            validMoves.add(labels[i][i2]);
+
+        for (int i = x, i2 = y; i != 8 && i2 != 8; i++, i2++)
+            validMoves.add(labels[i][i2]);
+
+        for (int i = x,i2 = y; i != -1 && i2 != 8; i--, i2++)
+            validMoves.add(labels[i][i2]);
+
+        for (int i = x, i2 = y; i != -1 && i2 != -1; i--, i2--)
+            validMoves.add(labels[i][i2]);
+        
+        return validMoves;
     }
 }

@@ -7,6 +7,12 @@ import Chess.Color;
 
 import java.util.ArrayList;
 
+/**
+ * Describes a Rook and a movement
+ * @author Stefan Hasler
+ * version 1.0
+ */
+
 public class Rook extends Piece {
     public Rook(ImageView img, FieldLabel l, Color color, String name) {
         super(img, l, color, name);

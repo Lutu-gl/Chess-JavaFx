@@ -60,8 +60,10 @@ public class Main extends Application {
         primaryStage.setScene(sc);
         primaryStage.show();
         primaryStage.getIcons().add(new Image("file:scr/Chess/Download.jpg"));
-
-        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        board.getLabels()[4][4].setPiece(new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), board.getLabels()[4][4], Color.BLACK, "Black Bishop"));
+        board.getLabels()[1][7].setPiece(new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), board.getLabels()[1][7], Color.BLACK, "Black Bishop"));
+        board.getLabels()[0][6].setPiece(new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), board.getLabels()[0][6], Color.BLACK, "Black Bishop"));
+        //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
     }
 
