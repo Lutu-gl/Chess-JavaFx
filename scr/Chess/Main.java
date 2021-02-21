@@ -61,8 +61,19 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.getIcons().add(new Image("file:scr/Chess/Download.jpg"));
 
-        //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        board.setBoardByFen("rnbqkbnr/pppp1ppp/4p3/8/1P6/P7/2PPPPPP/RNBQKBNR b KQkq - 0 2");
+        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+       //board.setBoardByFen("rnbqkbnr/pppp1ppp/4p3/8/1P6/P7/2PPPPPP/RNBQKBNR b KQkq - 0 2");
+/*
+        board.getLabels()[4][4].setPiece(new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), board.getLabels()[4][4], Color.BLACK, "Black Rook"));
+        board.getLabels()[0][0].setPiece(new Bishop(new ImageView(new Image("Imgs\\W_Bishop.png")), board.getLabels()[0][0], Color.WHITE, "Black Rook"));
+        board.getLabels()[1][1].setPiece(new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), board.getLabels()[1][1], Color.BLACK, "Black Rook"));
+
+        board.getLabels()[0][2].setPiece(new Rook(new ImageView(new Image("Imgs\\B_Rook.png")), board.getLabels()[0][2], Color.BLACK, "Black Rook"));
+        board.getLabels()[0][5].setPiece(new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), board.getLabels()[0][5], Color.WHITE, "Black Rook"));
+
+
+         */
+
     }
 
 
