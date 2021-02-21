@@ -28,6 +28,12 @@ public class Queen extends Piece{
             if(!labels[x][i].hasPiece() || labels[x][i].getPiece().getColor() != this.color){
                 validMoves.add(labels[x][i]);
             }
+            if(labels[x][i].hasPiece() && labels[x][i].getPiece().getColor() == this.color){
+                break;
+            }
+            if(labels[i][y].hasPiece() && labels[i][y].getPiece().getColor() == this.color){
+                break;
+            }
         }
         for(int i = x; i != -1;i--){
             if(!labels[i][y].hasPiece() || labels[i][y].getPiece().getColor() != this.color){

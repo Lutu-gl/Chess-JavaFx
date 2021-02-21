@@ -27,18 +27,38 @@ public class Bishop extends Piece{
         int y = this.fieldLabel.getY();
 
 
-        for (int i = x, i2 = y; i != 8 && i2 != -1; i++, i2--)
+        for (int i = x, i2 = y; i != 8 && i2 != -1; i++, i2--) {
+            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
+                if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
+                break;
+            }
+
             validMoves.add(labels[i][i2]);
 
-        for (int i = x, i2 = y; i != 8 && i2 != 8; i++, i2++)
+        }
+        for (int i = x, i2 = y; i != 8 && i2 != 8; i++, i2++) {
+            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
+                if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
+                break;
+            }
             validMoves.add(labels[i][i2]);
 
-        for (int i = x,i2 = y; i != -1 && i2 != 8; i--, i2++)
+        }
+        for (int i = x,i2 = y; i != -1 && i2 != 8; i--, i2++){
+            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
+                if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
+                break;
+            }
             validMoves.add(labels[i][i2]);
+        }
+        for (int i = x, i2 = y; i != -1 && i2 != -1; i--, i2--){
+            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
+                if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
+                break;
+            }
+            validMoves.add(labels[i][i2]);
+        }
 
-        for (int i = x, i2 = y; i != -1 && i2 != -1; i--, i2--)
-            validMoves.add(labels[i][i2]);
-        
         return validMoves;
     }
 }
