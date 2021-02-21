@@ -24,9 +24,9 @@ public class Chessboard extends GridPane {
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++){
                 FieldLabel label = new FieldLabel(i,j,(i % 2 == j % 2) ? Color.BLACK : Color.WHITE);
-                label.setStyle((i % 2 == j % 2) ? "-fx-background-color: saddlebrown" : "-fx-background-color: lightsalmon");
-                label.setId(""+ (char)(97 + i) + (j+1));
-                label.setText(""+ (char)(97 + i) + (j+1));
+                label.setStyle((i % 2 == j % 2) ? "-fx-background-color: lightsalmon" : "-fx-background-color: saddlebrown");
+                label.setId(""+ (char)(97 + i) + (8-j));
+                label.setText(""+ (char)(97 + i) + (8-j));
                 label.setTextAlignment(TextAlignment.CENTER);
                 label.setBoard(this);
                 labels[i][j]=label;
