@@ -1,8 +1,8 @@
-package Chess;
+package chess;
 
-import Pieces.Pawn;
-import Pieces.*;
-import Pieces.Piece;
+import pieces.Pawn;
+import pieces.*;
+import pieces.Piece;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;

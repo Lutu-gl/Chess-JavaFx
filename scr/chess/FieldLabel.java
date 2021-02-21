@@ -1,6 +1,6 @@
-package Chess;
+package chess;
 
-import Pieces.Piece;
+import pieces.Piece;
 import javafx.scene.control.Label;
 
 /**
@@ -17,7 +17,7 @@ public class FieldLabel extends Label {
     private Chessboard board;
 
     /***Color of field*/
-    private final Chess.Color color;
+    private final chess.Color color;
 
     /***the Piece that may stand on top of the Field*/
     private Piece piece;
@@ -35,7 +35,7 @@ public class FieldLabel extends Label {
         this.setGraphic(null);
     }
 
-    public FieldLabel(int x, int y, Chess.Color color){
+    public FieldLabel(int x, int y, chess.Color color){
         this.x = x;
         this.y = y;
         this.color = color;

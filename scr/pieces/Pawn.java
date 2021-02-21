@@ -1,8 +1,8 @@
-package Pieces;
+package pieces;
 
-import Chess.Chessboard;
-import Chess.FieldLabel;
-import Chess.Color;
+import chess.Chessboard;
+import chess.FieldLabel;
+import chess.Color;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;

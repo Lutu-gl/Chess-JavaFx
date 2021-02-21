@@ -1,17 +1,22 @@
-package Pieces;
+package pieces;
 
-import Chess.Chessboard;
-import Chess.FieldLabel;
+import chess.Chessboard;
+import chess.FieldLabel;
 import javafx.scene.image.ImageView;
-import Chess.Color;
+import chess.Color;
 
 import java.util.ArrayList;
 
-public class Queen extends Piece{
-    public Queen(ImageView img, FieldLabel l, Color color, String name) {
+/**
+ * Describes a Rook and a movement
+ * @author Stefan Hasler
+ * version 1.0
+ */
+
+public class Rook extends Piece {
+    public Rook(ImageView img, FieldLabel l, Color color, String name) {
         super(img, l, color, name);
     }
-
     @Override
     public ArrayList<FieldLabel> calculateValidMoves(Chessboard board) {
         FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
@@ -19,8 +24,6 @@ public class Queen extends Piece{
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
 
-
-        //Rook moves
         for(int i = x; i != 8;i++){
             if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
                 if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(labels[i][y]);
@@ -64,49 +67,16 @@ public class Queen extends Piece{
 
         }
 
-        //Bishop moves
-        for (int i = x, i2 = y; i != 8 && i2 != -1; i++, i2--) {
-            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
-                if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
-                break;
-            }
-
-            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() == this.hashCode()) continue;
-
-            validMoves.add(labels[i][i2]);
-
-        }
-        for (int i = x, i2 = y; i != 8 && i2 != 8; i++, i2++) {
-            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
-                if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
-                break;
-            }
-            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() == this.hashCode()) continue;
-
-            validMoves.add(labels[i][i2]);
-
-        }
-        for (int i = x,i2 = y; i != -1 && i2 != 8; i--, i2++){
-            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
-                if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
-                break;
-            }
-            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() == this.hashCode()) continue;
-
-            validMoves.add(labels[i][i2]);
-        }
-        for (int i = x, i2 = y; i != -1 && i2 != -1; i--, i2--){
-            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
-                if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
-                break;
-            }
-            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() == this.hashCode()) continue;
-
-            validMoves.add(labels[i][i2]);
-        }
-
-
-
         return validMoves;
     }
 }
+/*
+        for (int i = y; i != 8; i++)
+        {
+            if(!labels[x][i].hasPiece()){
+                validMoves.add(labels[x][i]);
+                System.out.println(labels[i][y].toString());
+            }
+        }
+
+ */

@@ -1,4 +1,4 @@
-package Chess;
+package chess;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;

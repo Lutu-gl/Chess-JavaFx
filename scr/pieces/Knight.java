@@ -1,12 +1,11 @@
-package Pieces;
+package pieces;
 
-import Chess.Chessboard;
-import Chess.FieldLabel;
+import chess.Chessboard;
+import chess.FieldLabel;
 import javafx.scene.image.ImageView;
-import Chess.Color;
+import chess.Color;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Describes a Knight and its movements
@@ -30,7 +29,6 @@ public class Knight extends Piece {
         FieldLabel fieldLabel1;
         try
         {
-
             fieldLabel1 = labels[x+1][y-2];
             if(canMove(fieldLabel1))
                 validMoves.add(fieldLabel1);

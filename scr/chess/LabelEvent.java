@@ -1,6 +1,6 @@
-package Chess;
+package chess;
 
-import Pieces.Piece;
+import pieces.Piece;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
