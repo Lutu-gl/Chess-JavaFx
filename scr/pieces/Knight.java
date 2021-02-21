@@ -83,9 +83,9 @@ public class Knight extends Piece {
     }
 
     /**
-     * A Method called after creating the Fieldlabel to determine if the Field can be accesed by the Knight
-     * @param fieldLabel1 the Fieldlabel the Knight could theoretically move to
-     * @return True if he can false if not
+     * A Method called after getting the Fieldlabel to determine if the Field can be accessed by the Knight
+     * @param fieldLabel1 the Label the Knight could theoretically move to
+     * @return True if it can, false if not
      */
     private boolean canMove(FieldLabel fieldLabel1){
         return (fieldLabel1.hasPiece() && fieldLabel1.getPiece().getColor() != this.color) || !fieldLabel1.hasPiece();

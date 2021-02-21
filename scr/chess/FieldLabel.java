@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 /**
  * Describes a field on the Chessboard(a1, b4, h5 ect...)
  * @author Stefan Hasler
- * @version 1.3
+ * @version 1.31
  *
  */
 public class FieldLabel extends Label {
@@ -41,7 +41,7 @@ public class FieldLabel extends Label {
         this.color = color;
         this.setPrefHeight(116.0);
         this.setPrefWidth(98.0);
-        this.setOnMouseClicked(new LabelEvent());
+        this.setOnMouseClicked(new Turn());
     }
 
     public int getX() {

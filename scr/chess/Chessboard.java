@@ -11,14 +11,16 @@ import javafx.scene.text.TextAlignment;
 import java.util.ArrayList;
 
 /**
- * The actual Board containing a list of FieldLables, the Constructor initializes it with 64 labels
+ * The actual Board containing a list of FieldLabels, the Constructor initializes it with 64 labels
  * aswell as a list of all pieces
  * @author Stefan Hasler
- * @version 1.4
+ * @version 1.41
  */
 public class Chessboard extends GridPane {
     private FieldLabel[][] labels = new FieldLabel[8][8];
     private ArrayList<Piece> pieces = new ArrayList<>();
+
+    private int turn=0;
 
     public Chessboard(){
         for (int i = 0; i < 8; i++)
@@ -34,10 +36,21 @@ public class Chessboard extends GridPane {
             }
 
     }
+    public void turn(){
+
+    }
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
 
     public void addPiece(Piece p){
         pieces.add(p);
     }
+
     public void removePiece(Piece p){
         pieces.remove(p);
     }

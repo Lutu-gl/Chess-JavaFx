@@ -6,14 +6,13 @@ import javafx.scene.input.MouseEvent;
 
 /**
  * @author Stefan Hasler
- * @version 1.3
+ * @version 1.31
  * A Eventhandler to move pieces
  */
 
-public class LabelEvent implements EventHandler<MouseEvent> {
+public class Turn implements EventHandler<MouseEvent> {
     /**Piece to be moved*/
     static Piece currentPiece = null;
-
     /**Source Field of the Piece*/
     static FieldLabel eventSource = null;
 
@@ -53,6 +52,10 @@ public class LabelEvent implements EventHandler<MouseEvent> {
                 eventSource = null;
             }
         }
+    }
+    public void handleTurn(){
+        System.out.println("white to move");
+
     }
     public boolean isValidMove(FieldLabel source, FieldLabel target, Piece currentPiece){
         return currentPiece.calculateValidMoves(source.getBoard()).contains(target);

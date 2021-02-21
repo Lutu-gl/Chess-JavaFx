@@ -23,47 +23,19 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage){
-        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Floppa Chess");
         Chessboard board = new Chessboard();
         Scene sc = new Scene(board, 700, 700);
-
-
-        MouseListener ml = new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        };
 
         primaryStage.setScene(sc);
         primaryStage.show();
         primaryStage.getIcons().add(new Image("file:scr/Chess/Download.jpg"));
 
-        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        //Hier Kommen Menüaufrufe her
+
        //board.setBoardByFen("rnbqkbnr/pppp1ppp/4p3/8/1P6/P7/2PPPPPP/RNBQKBNR b KQkq - 0 2");
         //board.getLabels()[4][4].setPiece(new King(new ImageView(new Image("Imgs\\B_King.png")), board.getLabels()[4][4], Color.BLACK, "Black King"));
-
+        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
 
