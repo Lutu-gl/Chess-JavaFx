@@ -1,2 +1,2 @@
-# Schach
-Test eines Java/Java jx Programmes für Schach
+# Chess
+A JavaFX Chess engine in the Making
