@@ -22,26 +22,46 @@ public class Queen extends Piece{
 
         //Rook moves
         for(int i = x; i != 8;i++){
-            if(!labels[i][y].hasPiece() || labels[i][y].getPiece().getColor() != this.color){
-                validMoves.add(labels[i][y]);
-            }
-            if(!labels[x][i].hasPiece() || labels[x][i].getPiece().getColor() != this.color){
-                validMoves.add(labels[x][i]);
-            }
-            if(labels[x][i].hasPiece() && labels[x][i].getPiece().getColor() == this.color){
+            if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
+                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(labels[i][y]);
                 break;
             }
-            if(labels[i][y].hasPiece() && labels[i][y].getPiece().getColor() == this.color){
-                break;
-            }
+
+            if(labels[i][y].hasPiece() && labels[i][y].getPiece().hashCode() == this.hashCode()) continue;
+
+            validMoves.add(labels[i][y]);
         }
+        for(int i = y; i != 8;i++){
+
+            if(labels[x][i].hasPiece()  && labels[x][i].getPiece().hashCode() != this.hashCode()){
+                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(labels[x][i]);
+                break;
+            }
+
+            if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()) continue;
+            validMoves.add(labels[x][i]);
+        }
+
+
         for(int i = x; i != -1;i--){
-            if(!labels[i][y].hasPiece() || labels[i][y].getPiece().getColor() != this.color){
-                validMoves.add(labels[i][y]);
+            if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
+                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(labels[i][y]);
+                break;
             }
-            if(!labels[x][i].hasPiece() || labels[x][i].getPiece().getColor() != this.color){
-                validMoves.add(labels[x][i]);
+            if(labels[i][y].hasPiece() && labels[i][y].getPiece().hashCode() == this.hashCode()) continue;
+
+            validMoves.add(labels[i][y]);
+        }
+        for(int i = y; i != -1;i--){
+
+            if(labels[x][i].hasPiece()  && labels[x][i].getPiece().hashCode() != this.hashCode()){
+                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(labels[x][i]);
+                break;
             }
+
+            if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()) continue;
+            validMoves.add(labels[x][i]);
+
         }
 
         //Bishop moves
@@ -51,6 +71,8 @@ public class Queen extends Piece{
                 break;
             }
 
+            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() == this.hashCode()) continue;
+
             validMoves.add(labels[i][i2]);
 
         }
@@ -59,6 +81,8 @@ public class Queen extends Piece{
                 if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
                 break;
             }
+            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() == this.hashCode()) continue;
+
             validMoves.add(labels[i][i2]);
 
         }
@@ -67,6 +91,8 @@ public class Queen extends Piece{
                 if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
                 break;
             }
+            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() == this.hashCode()) continue;
+
             validMoves.add(labels[i][i2]);
         }
         for (int i = x, i2 = y; i != -1 && i2 != -1; i--, i2--){
@@ -74,6 +100,8 @@ public class Queen extends Piece{
                 if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(labels[i][i2]);
                 break;
             }
+            if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() == this.hashCode()) continue;
+
             validMoves.add(labels[i][i2]);
         }
 

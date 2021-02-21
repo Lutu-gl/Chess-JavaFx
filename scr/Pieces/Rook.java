@@ -25,38 +25,46 @@ public class Rook extends Piece {
         int y = this.fieldLabel.getY();
 
         for(int i = x; i != 8;i++){
-            if(!labels[i][y].hasPiece() || labels[i][y].getPiece().getColor() != this.color){
-                validMoves.add(labels[i][y]);
-            }
-            if(labels[i][y].hasPiece() && labels[i][y].getPiece().getColor() == this.color){
+            if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
+                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(labels[i][y]);
                 break;
             }
+
+            if(labels[i][y].hasPiece() && labels[i][y].getPiece().hashCode() == this.hashCode()) continue;
+
+            validMoves.add(labels[i][y]);
         }
-        for(int i = x; i != 8;i++){
-            if(!labels[x][i].hasPiece() || labels[x][i].getPiece().getColor() != this.color){
-                validMoves.add(labels[x][i]);
-            }
-            if(labels[x][i].hasPiece() && labels[x][i].getPiece().getColor() == this.color){
+        for(int i = y; i != 8;i++){
+
+            if(labels[x][i].hasPiece()  && labels[x][i].getPiece().hashCode() != this.hashCode()){
+                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(labels[x][i]);
                 break;
             }
+
+            if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()) continue;
+            validMoves.add(labels[x][i]);
         }
 
 
         for(int i = x; i != -1;i--){
-            if(!labels[i][y].hasPiece() || labels[i][y].getPiece().getColor() != this.color){
-                validMoves.add(labels[i][y]);
-            }
-            if(labels[i][y].hasPiece() && labels[i][y].getPiece().getColor() == this.color){
+            if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
+                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(labels[i][y]);
                 break;
             }
+            if(labels[i][y].hasPiece() && labels[i][y].getPiece().hashCode() == this.hashCode()) continue;
+
+            validMoves.add(labels[i][y]);
         }
-        for(int i = x; i != -1;i--){
-            if(!labels[x][i].hasPiece() || labels[x][i].getPiece().getColor() != this.color){
-                validMoves.add(labels[x][i]);
-            }
-            if(labels[x][i].hasPiece() && labels[x][i].getPiece().getColor() == this.color){
+        for(int i = y; i != -1;i--){
+
+            if(labels[x][i].hasPiece()  && labels[x][i].getPiece().hashCode() != this.hashCode()){
+                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(labels[x][i]);
                 break;
             }
+
+            if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()) continue;
+            validMoves.add(labels[x][i]);
+
         }
 
         return validMoves;
