@@ -14,7 +14,6 @@ import java.awt.event.MouseListener;
  * Main Class which contains the Main Method
  * @author Stefan Hasler
  * @version 1.3
- *
  */
 public class Main extends Application {
     /**
@@ -25,7 +24,11 @@ public class Main extends Application {
     public void start(Stage primaryStage){
         primaryStage.setTitle("Floppa Chess");
         Chessboard board = new Chessboard();
+        board.doShowTextLabels(false);
+        board.doShowTextLabels(true);
+
         Scene sc = new Scene(board, 700, 700);
+
 
         primaryStage.setScene(sc);
         primaryStage.show();

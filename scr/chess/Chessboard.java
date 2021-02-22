@@ -36,6 +36,24 @@ public class Chessboard extends GridPane {
             }
 
     }
+
+    public void doShowTextLabels(boolean show){
+        if(show) {
+            FieldLabel label;
+            for (int i = 0; i < 8; i++)
+                for (int j = 0; j < 8; j++){
+                    label = labels[i][j];
+                    label.setText(""+ (char)(97 + i) + (8-j));
+                }
+        }else{
+            for (FieldLabel[] fieldLabel : labels) {
+                for (FieldLabel fieldLabel1 : fieldLabel) {
+                    fieldLabel1.setText("");
+                }
+            }
+        }
+    }
+
     public void endTurn(){
         turn++;
         System.out.println("Turn: " + turn);
