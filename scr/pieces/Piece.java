@@ -38,13 +38,12 @@ public abstract class Piece extends ImageView{
     ArrayList<FieldLabel> validMoves = new ArrayList<>();
 
     public Piece(ImageView img, FieldLabel l, Color color, String name, int startX, int startY){
-        img.setFitHeight(70);
+        img.setFitHeight(75);
         img.setPreserveRatio(true);
         this.img = img;
         this.fieldLabel = l;
         this.color = color;
         this.name = name;
-        System.out.println("StartY in constructor: " + startY);
         this.startX = startX;
         this.startY = startY;
     }
@@ -95,9 +94,9 @@ public abstract class Piece extends ImageView{
     }
 
     /**
-     *  Returns a Arraylist for every Possible move for that Piece, does not account for putting own king in Check
+     *  Returns a Arraylist of every Possible move for that Piece, does not account for putting own king in Check
      * @param board The chessboard that is used for that game
-     * @return list of every possible move as an Arraylist
+     * @return list of Fieldlabels that are every possible move as an Arraylist
      */
     public abstract ArrayList<FieldLabel> calculateValidMoves(Chessboard board);
 }

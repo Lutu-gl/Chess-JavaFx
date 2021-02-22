@@ -26,12 +26,10 @@ public class Pawn extends Piece{
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
 
-        System.out.println(startY +" Y "+y);
-        System.out.println(startX +" X "+x);
 
         try
         {
-            if(!labels[x][y+moveDirection*2].hasPiece() && (y == 6 || y == 1))
+            if((y == 6 || y == 1)&&!labels[x][y+moveDirection*2].hasPiece()) //Allows pawn to move two fields when Pawn is in his first turn
                 validMoves.add(labels[x][y+moveDirection*2]);
         }catch (ArrayIndexOutOfBoundsException ignored){}
 

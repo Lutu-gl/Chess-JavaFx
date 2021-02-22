@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
  */
 
 public class Turn implements EventHandler<MouseEvent> {
-    /**Piece to be moved*/
+    /**Selected Piece*/
     static Piece currentPiece = null;
     /**Source Field of the Piece*/
     static FieldLabel eventSource = null;
@@ -25,7 +25,7 @@ public class Turn implements EventHandler<MouseEvent> {
         if(eventSource == null)
         {
             eventSource = (FieldLabel) event.getSource();
-            if(eventSource.getPiece() != null && eventSource.getPiece().getColor() == colorToMove) //Checks if theres a Piece on the Field and if its the piece to move
+            if(eventSource.getPiece() != null && eventSource.getPiece().getColor() == colorToMove) //Checks if theres a Piece on the Field and if its has the right color to move
             {
                 currentPiece = eventSource.getPiece();
                 System.out.println("im here:\n" + currentPiece.getFieldLabel());
@@ -36,7 +36,7 @@ public class Turn implements EventHandler<MouseEvent> {
                 eventSource = null;
             }
         }
-        else{
+        else{ //A valid piece has been selected and now the
             eventTarget = (FieldLabel) event.getSource();
 
             //Checks if Target and Source are the same
@@ -55,6 +55,10 @@ public class Turn implements EventHandler<MouseEvent> {
                 eventSource = null;
             }
         }
+    }
+
+    public void highlightPiece(){
+
     }
 
     public boolean isValidMove(FieldLabel source, FieldLabel target, Piece currentPiece){
