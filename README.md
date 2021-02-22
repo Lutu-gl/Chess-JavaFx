@@ -1,3 +1,2 @@
 # Chess
-A JavaFX Chess engine in the Making
-Gets Updated Daily
+A JavaFX Chess engine in the Making, gets updated daily
