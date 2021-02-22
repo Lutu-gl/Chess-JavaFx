@@ -14,8 +14,8 @@ import java.util.ArrayList;
  */
 
 public class King extends Piece{
-    public King(ImageView img, FieldLabel l, Color color, String name) {
-        super(img, l, color, name);
+    public King(ImageView img, FieldLabel l, Color color, String name, int startX, int startY) {
+        super(img, l, color, name, startX, startY);
     }
 
     boolean canCastleKing = true;

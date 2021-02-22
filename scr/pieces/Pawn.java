@@ -10,61 +10,55 @@ import java.util.ArrayList;
 /**
  * Describes a Pawn and its valid moves
  * @author Stefan Hasler
- * @version 2.0
+ * @version 3.0
  *
  */
 
 public class Pawn extends Piece{
-    public Pawn(ImageView img, FieldLabel l, Color color, String name) {
-        super(img, l, color, name);
+    public Pawn(ImageView img, FieldLabel l, Color color, String name, int startX, int startY) {
+        super(img, l, color, name,startX, startY );
     }
-
+    int moveDirection = this.color == Color.WHITE ? -1 : 1;
     @Override
     public ArrayList<FieldLabel> calculateValidMoves(Chessboard board) {
-        int x = this.fieldLabel.getX(), y = this.fieldLabel.getY();
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         validMoves.removeAll(validMoves);
-        FieldLabel field1 = null;
-        FieldLabel field3 = null;
-        FieldLabel field4 = null;
+        int x = this.fieldLabel.getX();
+        int y = this.fieldLabel.getY();
 
+        System.out.println(startY +" Y "+y);
+        System.out.println(startX +" X "+x);
+
+        try
+        {
+            if(!labels[x][y+moveDirection*2].hasPiece() && (y == 6 || y == 1))
+                validMoves.add(labels[x][y+moveDirection*2]);
+        }catch (ArrayIndexOutOfBoundsException ignored){}
+
+        try
+        {
+            if(!labels[x][y+moveDirection].hasPiece())
+                validMoves.add(labels[x][y+moveDirection]);
+        }catch (ArrayIndexOutOfBoundsException ignored){}
+        try
+        {
+            if(labels[x-1][y+moveDirection].hasPiece())
+                if(labels[x-1][y+moveDirection].getPiece().getColor() != this.color)
+                    validMoves.add(labels[x-1][y+moveDirection]);
+        }catch (ArrayIndexOutOfBoundsException ignored){}
+        try
+        {
+            if(labels[x+1][y+moveDirection].hasPiece())
+                if(labels[x+1][y+moveDirection].getPiece().getColor() != this.color)
+                    validMoves.add(labels[x+1][y+moveDirection]);
+        }
+        catch (ArrayIndexOutOfBoundsException ignored){}
 
 //||
-       if(color == Color.BLACK)
-       {
-           try {  field1 = board.getLabelByCoordinates(x,y+1); }
-           catch (IndexOutOfBoundsException ignored){ }
-
-           try {  field3 = board.getLabelByCoordinates(x+1,y+1); }
-           catch (IndexOutOfBoundsException ignored){ }
-
-           try {  field4 = board.getLabelByCoordinates(x-1,y+1); }
-           catch (IndexOutOfBoundsException ignored){ }
-
-           if(field1 != null && !field1.hasPiece())
-               validMoves.add(field1);
-           if(field3 != null && field3.hasPiece() && field3.getPiece().getColor() == Color.WHITE)
-               validMoves.add(field3);
-           if(field4 != null && field4.hasPiece() && field4.getPiece().getColor() == Color.WHITE)
-               validMoves.add(field4);
-       }
-       else {
-           try {  field1 = board.getLabelByCoordinates(x,y-1); }
-           catch (IndexOutOfBoundsException ignored){ }
-
-           try {  field3 = board.getLabelByCoordinates(x-1,y-1); }
-           catch (IndexOutOfBoundsException ignored){ }
-
-           try {  field4 = board.getLabelByCoordinates(x+1,y-1); }
-           catch (IndexOutOfBoundsException ignored){ }
-
-           if(field1 != null && !field1.hasPiece())
-               validMoves.add(field1);
-           if(field3 != null && field3.hasPiece() && field3.getPiece().getColor() == Color.BLACK)
-               validMoves.add(field3);
-           if(field4 != null && field4.hasPiece() && field4.getPiece().getColor() == Color.BLACK)
-               validMoves.add(field4);
-       }
-
        return validMoves;
+    }
+
+    public boolean canMove(FieldLabel fieldLabel1){
+        return (fieldLabel1.hasPiece() && fieldLabel1.getPiece().getColor() != this.color) || !fieldLabel1.hasPiece();
     }
 }

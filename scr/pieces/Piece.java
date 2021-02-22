@@ -29,16 +29,24 @@ public abstract class Piece extends ImageView{
     /*** The Name of the Piece("Black Queen", "White Knight"))*/
     String name;
 
+    /*** Starting X-Position of Piece*/
+    int startX;
+
+    /*** Starting Y-Position of Piece*/
+    int startY;
     /*** List of all allowed moves for the Piece*/
     ArrayList<FieldLabel> validMoves = new ArrayList<>();
 
-    public Piece(ImageView img, FieldLabel l, Color color, String name){
+    public Piece(ImageView img, FieldLabel l, Color color, String name, int startX, int startY){
         img.setFitHeight(70);
         img.setPreserveRatio(true);
         this.img = img;
         this.fieldLabel = l;
         this.color = color;
         this.name = name;
+        System.out.println("StartY in constructor: " + startY);
+        this.startX = startX;
+        this.startY = startY;
     }
 
     public String getName() {

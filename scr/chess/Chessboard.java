@@ -36,8 +36,9 @@ public class Chessboard extends GridPane {
             }
 
     }
-    public void turn(){
-
+    public void endTurn(){
+        turn++;
+        System.out.println("Turn: " + turn);
     }
     public int getTurn() {
         return turn;
@@ -86,19 +87,19 @@ public class Chessboard extends GridPane {
 
                 switch(c){
                     //Black pieces
-                    case 'p': getLabels()[j][i].setPiece(new Pawn(new ImageView(new Image("Imgs\\B_Pawn.png")), labels[j][i], Color.BLACK, "Black Pawn")); break;
-                    case 'n': getLabels()[j][i].setPiece(new Knight(new ImageView(new Image("Imgs\\B_Knight.png")), labels[j][i], Color.BLACK, "Black Knight"));break;
-                    case 'b': getLabels()[j][i].setPiece(new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), labels[j][i], Color.BLACK, "Black Bishop"));break;
-                    case 'r': getLabels()[j][i].setPiece(new Rook(new ImageView(new Image("Imgs\\B_Rook.png")), labels[j][i], Color.BLACK, "Black Rook"));break;
-                    case 'q': getLabels()[j][i].setPiece(new Queen(new ImageView(new Image("Imgs\\B_Queen.png")), labels[j][i], Color.BLACK, "Black Queen"));break;
-                    case 'k': getLabels()[j][i].setPiece(new King(new ImageView(new Image("Imgs\\B_King.png")), labels[j][i], Color.BLACK, "Black King"));break;
+                    case 'p': getLabels()[j][i].setPiece(new Pawn(new ImageView(new Image("Imgs\\B_Pawn.png")), labels[j][i], Color.BLACK, "Black Pawn",j, i)); break;
+                    case 'n': getLabels()[j][i].setPiece(new Knight(new ImageView(new Image("Imgs\\B_Knight.png")), labels[j][i], Color.BLACK, "Black Knight",j, i));break;
+                    case 'b': getLabels()[j][i].setPiece(new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), labels[j][i], Color.BLACK, "Black Bishop",j, i));break;
+                    case 'r': getLabels()[j][i].setPiece(new Rook(new ImageView(new Image("Imgs\\B_Rook.png")), labels[j][i], Color.BLACK, "Black Rook",j, i));break;
+                    case 'q': getLabels()[j][i].setPiece(new Queen(new ImageView(new Image("Imgs\\B_Queen.png")), labels[j][i], Color.BLACK, "Black Queen",j, i));break;
+                    case 'k': getLabels()[j][i].setPiece(new King(new ImageView(new Image("Imgs\\B_King.png")), labels[j][i], Color.BLACK, "Black King",j, i));break;
                     //White pieces
-                    case 'P': getLabels()[j][i].setPiece(new Pawn(new ImageView(new Image("Imgs\\W_Pawn.png")), labels[j][i], Color.WHITE, "White Pawn"));break;
-                    case 'N': getLabels()[j][i].setPiece(new Knight(new ImageView(new Image("Imgs\\W_Knight.png")), labels[j][i], Color.WHITE, "White Knight"));break;
-                    case 'B': getLabels()[j][i].setPiece(new Bishop(new ImageView(new Image("Imgs\\W_Bishop.png")), labels[j][i], Color.WHITE, "White Bishop"));break;
-                    case 'R': getLabels()[j][i].setPiece(new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), labels[j][i], Color.WHITE, "White Rook"));break;
-                    case 'Q': getLabels()[j][i].setPiece(new Queen(new ImageView(new Image("Imgs\\W_Queen.png")), labels[j][i], Color.WHITE, "White Queen"));break;
-                    case 'K': getLabels()[j][i].setPiece(new King(new ImageView(new Image("Imgs\\W_King.png")), labels[j][i], Color.WHITE, "White King"));break;
+                    case 'P': getLabels()[j][i].setPiece(new Pawn(new ImageView(new Image("Imgs\\W_Pawn.png")), labels[j][i], Color.WHITE, "White Pawn",j, i));break;
+                    case 'N': getLabels()[j][i].setPiece(new Knight(new ImageView(new Image("Imgs\\W_Knight.png")), labels[j][i], Color.WHITE, "White Knight",j, i));break;
+                    case 'B': getLabels()[j][i].setPiece(new Bishop(new ImageView(new Image("Imgs\\W_Bishop.png")), labels[j][i], Color.WHITE, "White Bishop",j, i));break;
+                    case 'R': getLabels()[j][i].setPiece(new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), labels[j][i], Color.WHITE, "White Rook",j, i));break;
+                    case 'Q': getLabels()[j][i].setPiece(new Queen(new ImageView(new Image("Imgs\\W_Queen.png")), labels[j][i], Color.WHITE, "White Queen",j, i));break;
+                    case 'K': getLabels()[j][i].setPiece(new King(new ImageView(new Image("Imgs\\W_King.png")), labels[j][i], Color.WHITE, "White King",j, i));break;
                     //nl
                     case '/': continue;
                 }

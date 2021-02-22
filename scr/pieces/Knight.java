@@ -14,8 +14,8 @@ import java.util.ArrayList;
  */
 
 public class Knight extends Piece {
-    public Knight(ImageView img, FieldLabel l, Color color, String name) {
-        super(img, l, color, name);
+    public Knight(ImageView img, FieldLabel l, Color color, String name, int startX, int startY) {
+        super(img, l, color, name, startX, startY);
     }
 
     @Override
