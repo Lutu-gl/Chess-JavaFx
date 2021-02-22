@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * The actual Board containing a list of FieldLabels, the Constructor initializes it with 64 labels
  * aswell as a list of all pieces
  * @author Stefan Hasler
- * @version 1.41
+ * @version 1.44
  */
 public class Chessboard extends GridPane {
     private FieldLabel[][] labels = new FieldLabel[8][8];
@@ -26,7 +26,7 @@ public class Chessboard extends GridPane {
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++){
                 FieldLabel label = new FieldLabel(i,j,(i % 2 == j % 2) ? Color.BLACK : Color.WHITE);
-                label.setStyle((i % 2 == j % 2) ? "-fx-background-color: lightsalmon" : "-fx-background-color: saddlebrown");
+                label.setStyle((i % 2 == j % 2) ? "-fx-background-color: #F0D9B5;" : "-fx-background-color: #B58863;");
                 label.setId(""+ (char)(97 + i) + (8-j));
                 label.setText(""+ (char)(97 + i) + (8-j));
                 label.setTextAlignment(TextAlignment.CENTER);

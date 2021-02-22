@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Topclass for each Piece
  * @author Stefan Hasler
- * @version 1.3
+ * @version 1.31
  */
 public abstract class Piece extends ImageView{
 
