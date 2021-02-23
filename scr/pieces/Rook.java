@@ -10,12 +10,12 @@ import java.util.ArrayList;
 /**
  * Describes a Rook and a movement
  * @author Stefan Hasler
- * version 1.0
+ * version 1.1
  */
 
 public class Rook extends Piece {
-    public Rook(ImageView img, FieldLabel l, Color color, String name, int startX, int startY) {
-        super(img, l, color, name, startX, startY);
+    public Rook(ImageView img, FieldLabel l, Color color, String name) {
+        super(img, l, color, name);
     }
     @Override
     public ArrayList<FieldLabel> calculateValidMoves(Chessboard board) {

@@ -7,9 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 /**
  * Main Class which contains the Main Method
  * @author Stefan Hasler
@@ -36,6 +33,10 @@ public class Main extends Application {
        //board.setBoardByFen("rnbqkbnr/pppp1ppp/4p3/8/1P6/P7/2PPPPPP/RNBQKBNR b KQkq - 0 2");
         //board.getLabels()[4][4].setPiece(new King(new ImageView(new Image("Imgs\\B_King.png")), board.getLabels()[4][4], Color.BLACK, "Black King"));
         board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        Pawn p = new Pawn(new ImageView(new Image("Imgs\\W_Pawn.png")), board.getLabels()[0][0], Color.WHITE, "White Pawn");
+        PromotionDialog p1 = new PromotionDialog(p);
+        p1.show();
+        System.out.println(p.getColor().name());
     }
 
 

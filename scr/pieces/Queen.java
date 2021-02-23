@@ -7,9 +7,14 @@ import chess.Color;
 
 import java.util.ArrayList;
 
+/**
+ * Describes a Queen and its moves
+ * @author Lutu
+ * @version 1.1
+ */
 public class Queen extends Piece{
-    public Queen(ImageView img, FieldLabel l, Color color, String name, int startX, int startY) {
-        super(img, l, color, name, startX, startY);
+    public Queen(ImageView img, FieldLabel l, Color color, String name) {
+        super(img, l, color, name);
     }
 
     @Override

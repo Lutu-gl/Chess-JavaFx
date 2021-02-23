@@ -10,12 +10,12 @@ import java.util.ArrayList;
 /**
  * Describes a King and his Movements
  * @author Stefan Hasler
- * @version 1.0
+ * @version 1.1
  */
 
 public class King extends Piece{
-    public King(ImageView img, FieldLabel l, Color color, String name, int startX, int startY) {
-        super(img, l, color, name, startX, startY);
+    public King(ImageView img, FieldLabel l, Color color, String name) {
+        super(img, l, color, name);
     }
 
     boolean canCastleKing = true;

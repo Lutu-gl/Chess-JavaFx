@@ -10,9 +10,9 @@ import java.util.ArrayList;
 /**
  * Topclass for each Piece
  * @author Stefan Hasler
- * @version 1.31
+ * @version 1.35
  */
-public abstract class Piece extends ImageView{
+public abstract class Piece{
 
     /*** the Image of the Piece(B_Rook, B_Queen, ect...)*/
     ImageView img;
@@ -29,23 +29,16 @@ public abstract class Piece extends ImageView{
     /*** The Name of the Piece("Black Queen", "White Knight"))*/
     String name;
 
-    /*** Starting X-Position of Piece*/
-    int startX;
-
-    /*** Starting Y-Position of Piece*/
-    int startY;
     /*** List of all allowed moves for the Piece*/
     ArrayList<FieldLabel> validMoves = new ArrayList<>();
 
-    public Piece(ImageView img, FieldLabel l, Color color, String name, int startX, int startY){
+    public Piece(ImageView img, FieldLabel l, Color color, String name){
         img.setFitHeight(75);
         img.setPreserveRatio(true);
         this.img = img;
         this.fieldLabel = l;
         this.color = color;
         this.name = name;
-        this.startX = startX;
-        this.startY = startY;
     }
 
     public String getName() {

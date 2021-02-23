@@ -10,13 +10,13 @@ import java.util.ArrayList;
 /**
  * Describes a Pawn and its valid moves
  * @author Stefan Hasler
- * @version 3.0
+ * @version 3.1
  *
  */
 
 public class Pawn extends Piece{
-    public Pawn(ImageView img, FieldLabel l, Color color, String name, int startX, int startY) {
-        super(img, l, color, name,startX, startY );
+    public Pawn(ImageView img, FieldLabel l, Color color, String name) {
+        super(img, l, color, name);
     }
     int moveDirection = this.color == Color.WHITE ? -1 : 1;
     @Override

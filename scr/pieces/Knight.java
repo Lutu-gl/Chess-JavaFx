@@ -10,12 +10,12 @@ import java.util.ArrayList;
 /**
  * Describes a Knight and its movements
  * @author Stefan Hasler
- * @version 1.0
+ * @version 1.1
  */
 
 public class Knight extends Piece {
-    public Knight(ImageView img, FieldLabel l, Color color, String name, int startX, int startY) {
-        super(img, l, color, name, startX, startY);
+    public Knight(ImageView img, FieldLabel l, Color color, String name) {
+        super(img, l, color, name);
     }
 
     @Override
