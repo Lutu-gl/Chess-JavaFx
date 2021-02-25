@@ -2,6 +2,7 @@ package pieces;
 
 import chess.Chessboard;
 import chess.FieldLabel;
+import chess.Move;
 import javafx.scene.image.ImageView;
 import chess.Color;
 
@@ -18,7 +19,7 @@ public class Rook extends Piece {
         super(img, l, color, name);
     }
     @Override
-    public ArrayList<FieldLabel> calculateValidMoves(Chessboard board) {
+    public ArrayList<Move> calculateValidMoves(Chessboard board) {
         FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         validMoves.removeAll(validMoves);
         int x = this.fieldLabel.getX();
@@ -26,44 +27,44 @@ public class Rook extends Piece {
 
         for(int i = x; i != 8;i++){
             if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
-                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(labels[i][y]);
+                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(new Move(this.fieldLabel, labels[x][i]));;
                 break;
             }
 
             if(labels[i][y].hasPiece() && labels[i][y].getPiece().hashCode() == this.hashCode()) continue;
 
-            validMoves.add(labels[i][y]);
+            validMoves.add(new Move(this.fieldLabel, labels[i][y]));
         }
         for(int i = y; i != 8;i++){
 
             if(labels[x][i].hasPiece()  && labels[x][i].getPiece().hashCode() != this.hashCode()){
-                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(labels[x][i]);
+                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(new Move(this.fieldLabel, labels[x][i]));;
                 break;
             }
 
             if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()) continue;
-            validMoves.add(labels[x][i]);
+            validMoves.add(new Move(this.fieldLabel, labels[i][x]));
         }
 
 
         for(int i = x; i != -1;i--){
             if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
-                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(labels[i][y]);
+                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(new Move(this.fieldLabel, labels[i][y]));;
                 break;
             }
             if(labels[i][y].hasPiece() && labels[i][y].getPiece().hashCode() == this.hashCode()) continue;
 
-            validMoves.add(labels[i][y]);
+            validMoves.add(new Move(this.fieldLabel, labels[i][y]));
         }
         for(int i = y; i != -1;i--){
 
             if(labels[x][i].hasPiece()  && labels[x][i].getPiece().hashCode() != this.hashCode()){
-                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(labels[x][i]);
+                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(new Move(this.fieldLabel, labels[x][i]));;
                 break;
             }
 
             if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()) continue;
-            validMoves.add(labels[x][i]);
+            validMoves.add(new Move(this.fieldLabel, labels[x][i]));
 
         }
 

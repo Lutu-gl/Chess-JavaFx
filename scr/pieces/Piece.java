@@ -1,9 +1,8 @@
 package pieces;
 
-import chess.Chessboard;
-import chess.FieldLabel;
+import chess.*;
 import javafx.scene.image.ImageView;
-import chess.Color;
+
 
 import java.util.ArrayList;
 
@@ -30,7 +29,7 @@ public abstract class Piece{
     String name;
 
     /*** List of all allowed moves for the Piece*/
-    ArrayList<FieldLabel> validMoves = new ArrayList<>();
+    ArrayList<Move> validMoves = new ArrayList<>();
 
     public Piece(ImageView img, FieldLabel l, Color color, String name){
         img.setFitHeight(75);
@@ -91,5 +90,9 @@ public abstract class Piece{
      * @param board The chessboard that is used for that game
      * @return list of Fieldlabels that are every possible move as an Arraylist
      */
-    public abstract ArrayList<FieldLabel> calculateValidMoves(Chessboard board);
+    public abstract ArrayList<Move> calculateValidMoves(Chessboard board);
+
+    public void postTurn(){
+
+    }
 }

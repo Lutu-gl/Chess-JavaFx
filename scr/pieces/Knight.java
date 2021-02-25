@@ -2,6 +2,7 @@ package pieces;
 
 import chess.Chessboard;
 import chess.FieldLabel;
+import chess.Move;
 import javafx.scene.image.ImageView;
 import chess.Color;
 
@@ -19,7 +20,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public ArrayList<FieldLabel> calculateValidMoves(Chessboard board) {
+    public ArrayList<Move> calculateValidMoves(Chessboard board) {
 
         FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         validMoves.removeAll(validMoves);
@@ -30,53 +31,45 @@ public class Knight extends Piece {
         try
         {
             fieldLabel1 = labels[x+1][y-2];
-            if(canMove(fieldLabel1))
-                validMoves.add(fieldLabel1);
+            addIfValid(fieldLabel1);
         } catch (ArrayIndexOutOfBoundsException ignored){}
         try
         {
             fieldLabel1 = labels[x+2][y-1];
-            if(canMove(fieldLabel1))
-                validMoves.add(fieldLabel1);
+            addIfValid(fieldLabel1);
         } catch (ArrayIndexOutOfBoundsException ignored){}
 
         try
         {
             fieldLabel1 = labels[x+2][y+1];
-            if(canMove(fieldLabel1))
-                validMoves.add(fieldLabel1);
+            addIfValid(fieldLabel1);
         }catch (ArrayIndexOutOfBoundsException ignored){}
         try
         {
             fieldLabel1 = labels[x+1][y+2];
-            if(canMove(fieldLabel1))
-                validMoves.add(fieldLabel1);
+            addIfValid(fieldLabel1);
         }catch (ArrayIndexOutOfBoundsException ignored){}
 
         try
         {
             fieldLabel1 = labels[x-1][y+2];
-            if(canMove(fieldLabel1))
-                validMoves.add(fieldLabel1);
+            addIfValid(fieldLabel1);
         }catch (ArrayIndexOutOfBoundsException ignored){}
         try
         {
             fieldLabel1 = labels[x-2][y+1];
-            if(canMove(fieldLabel1))
-                validMoves.add(fieldLabel1);
+            addIfValid(fieldLabel1);
         }catch (ArrayIndexOutOfBoundsException ignored){}
 
         try
         {
             fieldLabel1 = labels[x-2][y-1];
-            if(canMove(fieldLabel1))
-                validMoves.add(fieldLabel1);
+            addIfValid(fieldLabel1);
         }catch (ArrayIndexOutOfBoundsException ignored){}
         try
         {
             fieldLabel1 = labels[x-1][y-2];
-            if(canMove(fieldLabel1))
-                validMoves.add(fieldLabel1);
+            addIfValid(fieldLabel1);
         }catch (ArrayIndexOutOfBoundsException ignored){}
 
         return validMoves;
@@ -85,10 +78,10 @@ public class Knight extends Piece {
     /**
      * A Method called after getting the Fieldlabel to determine if the Field can be accessed by the Knight
      * @param fieldLabel1 the Label the Knight could theoretically move to
-     * @return True if it can, false if not
      */
-    private boolean canMove(FieldLabel fieldLabel1){
-        return (fieldLabel1.hasPiece() && fieldLabel1.getPiece().getColor() != this.color) || !fieldLabel1.hasPiece();
+    private void addIfValid(FieldLabel fieldLabel1){
+        if((fieldLabel1.hasPiece() && fieldLabel1.getPiece().getColor() != this.color)|| !fieldLabel1.hasPiece())
+            validMoves.add(new Move(this.fieldLabel, fieldLabel1));
     }
 }
 //<>

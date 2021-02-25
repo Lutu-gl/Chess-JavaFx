@@ -33,7 +33,7 @@ public class Chessboard extends GridPane {
                 labels[i][j]=label;
                 this.add(label, i, j);
             }
-
+        Move.board = this;
     }
 
     public void doShowTextLabels(boolean show){
