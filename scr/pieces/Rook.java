@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Describes a Rook and a movement
  * @author Stefan Hasler
- * version 1.1
+ * version 1.3
  */
 
 public class Rook extends Piece {
@@ -25,16 +25,7 @@ public class Rook extends Piece {
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
 
-        for(int i = x; i != 8;i++){
-            if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
-                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(new Move(this.fieldLabel, labels[x][i]));;
-                break;
-            }
 
-            if(labels[i][y].hasPiece() && labels[i][y].getPiece().hashCode() == this.hashCode()) continue;
-
-            validMoves.add(new Move(this.fieldLabel, labels[i][y]));
-        }
         for(int i = y; i != 8;i++){
 
             if(labels[x][i].hasPiece()  && labels[x][i].getPiece().hashCode() != this.hashCode()){
@@ -43,7 +34,17 @@ public class Rook extends Piece {
             }
 
             if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()) continue;
-            validMoves.add(new Move(this.fieldLabel, labels[i][x]));
+            validMoves.add(new Move(this.fieldLabel, labels[x][i]));
+        }
+        for(int i = x; i != 8;i++){
+            if(labels[i][y].hasPiece()  && labels[i][y].getPiece().hashCode() != this.hashCode()){
+                if(labels[i][y].getPiece().getColor() != this.color) validMoves.add(new Move(this.fieldLabel, labels[i][y]));;
+                break;
+            }
+
+            if(labels[i][y].hasPiece() && labels[i][y].getPiece().hashCode() == this.hashCode()) continue;
+
+            validMoves.add(new Move(this.fieldLabel, labels[i][y]));
         }
 
 
@@ -68,16 +69,11 @@ public class Rook extends Piece {
 
         }
 
+
+
         return validMoves;
     }
 }
 /*
-        for (int i = y; i != 8; i++)
-        {
-            if(!labels[x][i].hasPiece()){
-                validMoves.add(labels[x][i]);
-                System.out.println(labels[i][y].toString());
-            }
-        }
 
  */

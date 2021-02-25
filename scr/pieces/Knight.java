@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Describes a Knight and its movements
  * @author Stefan Hasler
- * @version 1.1
+ * @version 1.2
  */
 
 public class Knight extends Piece {

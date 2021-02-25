@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Describes a Pawn and its valid moves
  * @author Stefan Hasler
- * @version 3.1
+ * @version 3.2
  *
  */
 
@@ -58,11 +58,13 @@ public class Pawn extends Piece{
         //en passant
         if(canEnPassant(x-1, y, labels)){
             Move m = new Move(this.fieldLabel, labels[x-1][y+moveDirection]);
-            m.setEatenPiece(labels[x-1][y-moveDirection].getPiece());
+            m.setEatenPiece(labels[x-1][y].getPiece());
+            System.out.println(m);
             validMoves.add(m);
+            System.out.println("HIER");
         }else if( canEnPassant(x+1,y,labels)){
-            Move m = new Move(this.fieldLabel, labels[x-1][y+moveDirection]);
-            m.setEatenPiece(labels[x-1][y-moveDirection].getPiece());
+            Move m = new Move(this.fieldLabel, labels[x+1][y]);
+            m.setEatenPiece(labels[x+1][y-moveDirection].getPiece());
             validMoves.add(m);
         }
 
@@ -80,7 +82,6 @@ public class Pawn extends Piece{
 
     @Override
     public void postTurn() {
-        System.out.println(this.getName() + " " + doubleMove);
         validMoves.removeAll(validMoves);
 
     }
@@ -88,7 +89,7 @@ public class Pawn extends Piece{
         try
         {
             if(labels[x][y].getPiece().getName().contains("Pawn") && ((Pawn)labels[x][y].getPiece()).isDoubleMove()){
-                System.out.println("EN PASSANT");
+                System.out.println("EN PASSANT bei: " + labels[x][y]);
                 ((Pawn) labels[x][y].getPiece()).setDoubleMove(false);
                 return true;
             }

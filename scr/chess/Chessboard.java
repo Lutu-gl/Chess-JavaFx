@@ -55,7 +55,6 @@ public class Chessboard extends GridPane {
 
     public void endTurn(){
         turn++;
-        System.out.println("Turn: " + turn);
     }
     public int getTurn() {
         return turn;
