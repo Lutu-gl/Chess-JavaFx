@@ -19,6 +19,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage){
+        long startTime = System.currentTimeMillis();
         primaryStage.setTitle("Floppa Chess");
         Chessboard board = new Chessboard();
         board.doShowTextLabels(false);
@@ -30,7 +31,10 @@ public class Main extends Application {
         primaryStage.setScene(sc);
         primaryStage.show();
         primaryStage.getIcons().add(new Image("file:scr/Chess/Download.jpg"));
+        board.doShowTextLabels(false);
+        long endTime = System.currentTimeMillis();
 
+        System.out.println((endTime-startTime));
         //Hier Kommen Menüaufrufe her
 
        //board.setBoardByFen("rnbqkbnr/pppp1ppp/4p3/8/1P6/P7/2PPPPPP/RNBQKBNR b KQkq - 0 2");

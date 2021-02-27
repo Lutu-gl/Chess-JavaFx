@@ -59,7 +59,7 @@ public class Turn implements EventHandler<MouseEvent>{
 
                 //Ending Turn
                 unhighlightPiece(move.getSource());
-                move.getMovingPiece().postTurn();
+                move.getMovingPiece().postTurn(move);
                 Move.board.endTurn();
                 move = null;
                 colorToMove = colorToMove == Color.WHITE ? Color.BLACK : Color.WHITE;

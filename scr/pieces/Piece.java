@@ -30,6 +30,8 @@ public abstract class Piece{
 
     /*** List of all allowed moves for the Piece*/
     ArrayList<Move> validMoves = new ArrayList<>();
+    ArrayList<FieldLabel> attackingSquares = new ArrayList<>();
+
 
     public Piece(ImageView img, FieldLabel l, Color color, String name){
         img.setFitHeight(75);
@@ -91,8 +93,9 @@ public abstract class Piece{
      * @return list of Fieldlabels that are every possible move as an Arraylist
      */
     public abstract ArrayList<Move> calculateValidMoves(Chessboard board);
+    //public abstract ArrayList<FieldLabel> calculateAttackingSquares();
 
-    public void postTurn(){
+    public void postTurn(Move m){
 
     }
 }

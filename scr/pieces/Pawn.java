@@ -25,15 +25,14 @@ public class Pawn extends Piece{
     int moveDirection = this.color == Color.WHITE ? -1 : 1;
     @Override
     public ArrayList<Move> calculateValidMoves(Chessboard board) {
+        //doubleMove = false;
         FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
-
         try
         {
             if((y == 6 || y == 1)&&!labels[x][y+moveDirection*2].hasPiece()){ //Allows pawn to move two fields when Pawn is in his first turn
                 validMoves.add(new Move(this.fieldLabel, labels[x][y+moveDirection*2]));
-                doubleMove = true;
             }
         }catch (ArrayIndexOutOfBoundsException ignored){}
         try
@@ -63,14 +62,16 @@ public class Pawn extends Piece{
             validMoves.add(m);
             System.out.println("HIER");
         }else if( canEnPassant(x+1,y,labels)){
-            Move m = new Move(this.fieldLabel, labels[x+1][y]);
-            m.setEatenPiece(labels[x+1][y-moveDirection].getPiece());
+            System.out.println("hier");
+            Move m = new Move(this.fieldLabel, labels[x+1][y+moveDirection]);
+            m.setEatenPiece(labels[x+1][y].getPiece());
             validMoves.add(m);
         }
 
 //||
        return validMoves;
     }
+
 
     public boolean canMove(FieldLabel fieldLabel1){
         return (fieldLabel1.hasPiece() && fieldLabel1.getPiece().getColor() != this.color) || !fieldLabel1.hasPiece();
@@ -81,14 +82,15 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public void postTurn() {
+    public void postTurn(Move m) {
         validMoves.removeAll(validMoves);
-
+        doubleMove = m.getTarget().getY() - moveDirection * 2 == m.getSource().getY();
     }
     private boolean canEnPassant(int x, int y, FieldLabel[][] labels){
         try
         {
-            if(labels[x][y].getPiece().getName().contains("Pawn") && ((Pawn)labels[x][y].getPiece()).isDoubleMove()){
+            if(labels[x][y].getPiece().getName().contains("Pawn") && ((Pawn)labels[x][y].getPiece()).isDoubleMove() && labels[x][y].getPiece().getColor() != this.getColor()){
+                System.out.println(((Pawn)labels[x][y].getPiece()));
                 System.out.println("EN PASSANT bei: " + labels[x][y]);
                 ((Pawn) labels[x][y].getPiece()).setDoubleMove(false);
                 return true;
