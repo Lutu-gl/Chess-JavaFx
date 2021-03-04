@@ -21,12 +21,10 @@ public class Knight extends Piece {
 
     @Override
     public ArrayList<Move> calculateValidMoves(Chessboard board) {
-
         FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
-        validMoves.removeAll(validMoves);
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
-
+        validMoves.removeAll(validMoves);
         FieldLabel fieldLabel1;
         try
         {
@@ -73,6 +71,23 @@ public class Knight extends Piece {
         }catch (ArrayIndexOutOfBoundsException ignored){}
 
         return validMoves;
+    }
+
+    @Override
+    public ArrayList<FieldLabel> calculateAttackingSquares() {
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
+        int x = this.fieldLabel.getX();
+        int y = this.fieldLabel.getY();
+        try { attackingSquares.add(labels[x+1][y-2]); } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { attackingSquares.add(labels[x+2][y-1]); } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { attackingSquares.add(labels[x+2][y+1]); } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { attackingSquares.add(labels[x+1][y+2]); } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { attackingSquares.add(labels[x-1][y+2]); } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { attackingSquares.add(labels[x-2][y+1]); } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { attackingSquares.add(labels[x-2][y-1]); } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { attackingSquares.add(labels[x-1][y-2]); } catch (ArrayIndexOutOfBoundsException ignored){}
+
+        return attackingSquares;
     }
 
     /**

@@ -1,10 +1,7 @@
 package pieces;
 
-import chess.Chessboard;
-import chess.FieldLabel;
-import chess.Move;
+import chess.*;
 import javafx.scene.image.ImageView;
-import chess.Color;
 
 import java.util.ArrayList;
 
@@ -69,9 +66,29 @@ public class Rook extends Piece {
 
         }
 
-
-
         return validMoves;
+    }
+    public ArrayList<FieldLabel> calculateAttackingSquares(){
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
+        int x = this.fieldLabel.getX();
+        int y = this.fieldLabel.getY();
+        for(int i = y; i != 8;i++)
+            attackingSquares.add(labels[x][i]);
+
+        for(int i = x; i != 8;i++)
+            attackingSquares.add(labels[i][y]);
+
+        for(int i = x; i != -1;i--)
+            attackingSquares.add(labels[i][y]);
+
+        for(int i = y; i != -1;i--)
+            attackingSquares.add(labels[x][i]);
+
+        return attackingSquares;
+    }
+
+    @Override
+    public void postTurn(Move m) {
     }
 }
 /*

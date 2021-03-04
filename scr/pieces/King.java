@@ -23,8 +23,8 @@ public class King extends Piece{
     boolean canCastleQueen = true;
     @Override
     public ArrayList<Move> calculateValidMoves(Chessboard board) {
-        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         validMoves.removeAll(validMoves);
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
 
@@ -37,9 +37,39 @@ public class King extends Piece{
 
         return validMoves;
     }
+
+    @Override
+    public ArrayList<FieldLabel> calculateAttackingSquares() {
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
+        int x = this.fieldLabel.getX();
+        int y = this.fieldLabel.getY();
+        for(int i = x-1; i != x+2;i++){
+            try { attackingSquares.add(labels[i][y-1]); }catch (ArrayIndexOutOfBoundsException ignored){}
+            try { attackingSquares.add(labels[i][y+1]); }catch (ArrayIndexOutOfBoundsException ignored){}
+        }
+        try { attackingSquares.add(labels[x-1][y]); } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { attackingSquares.add(labels[x+1][y]); } catch (ArrayIndexOutOfBoundsException ignored){}
+
+        return attackingSquares;
+    }
+
     private void addIfValid(FieldLabel l){
         if((l.hasPiece() && l.getPiece().getColor() != this.color) || !l.hasPiece())
             validMoves.add(new Move(this.fieldLabel, l));
+    }
+    public boolean isInCheck(){
+
+        for (Piece e:Move.board.getPieces())
+        {
+            System.out.println("piece to check " + e);
+            for (Move f:e.calculateValidMoves(Move.board)){
+                if(this.fieldLabel == f.getTarget() && f.getSource().getPiece().getColor() != this.color){
+                    System.out.println("ich bin im schach von" + f.getSource().getPiece());
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 //<>
 }

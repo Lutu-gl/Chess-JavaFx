@@ -1,7 +1,5 @@
 package chess;
 
-import javafx.scene.image.ImageView;
-import pieces.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -34,14 +32,13 @@ public class Main extends Application {
         board.doShowTextLabels(false);
         long endTime = System.currentTimeMillis();
 
-        System.out.println((endTime-startTime));
+        //System.out.println((endTime-startTime));
         //Hier Kommen Menüaufrufe her
+        board.setBoardByFen("3qk3/8/8/3N4/8/8/3Q4/3K4 w - - 0 1");
 
-       //board.setBoardByFen("rnbqkbnr/pppp1ppp/4p3/8/1P6/P7/2PPPPPP/RNBQKBNR b KQkq - 0 2");
-        //board.getLabels()[4][4].setPiece(new King(new ImageView(new Image("Imgs\\B_King.png")), board.getLabels()[4][4], Color.BLACK, "Black King"));
-        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-
-        //Rook p = new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), board.getLabels()[0][0], Color.WHITE, "Rook");
+        /*Default fen*/
+        //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        System.out.println(board.getBoardAsFen());
 
         /*
         PromotionDialog p1 = new PromotionDialog(p);
@@ -49,6 +46,7 @@ public class Main extends Application {
         System.out.println(p.getColor().name());
 
         */
+
     }
 
 

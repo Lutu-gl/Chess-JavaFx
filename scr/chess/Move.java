@@ -22,6 +22,13 @@ public class Move {
         }
         catch (NullPointerException ignored){}
     }
+    public Move(Move move) {
+        this.source = move.getSource();
+        this.target = move.getTarget();
+        this.movingPiece = move.getMovingPiece();
+        this.eatenPiece = move.getEatenPiece();
+    }
+
 
     public FieldLabel getSource() {
         return source;

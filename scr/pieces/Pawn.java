@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Describes a Pawn and its valid moves
  * @author Stefan Hasler
- * @version 3.2
+ * @version 3.3
  *
  */
 
@@ -20,36 +20,37 @@ public class Pawn extends Piece{
     public Pawn(ImageView img, FieldLabel l, Color color, String name) {
         super(img, l, color, name);
     }
+    FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
 
     boolean doubleMove = false;
     int moveDirection = this.color == Color.WHITE ? -1 : 1;
+
     @Override
     public ArrayList<Move> calculateValidMoves(Chessboard board) {
-        //doubleMove = false;
-        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
+        //doubleMove = false;
+        //Allows pawn to move two fields when Pawn is in his first turn
+        if((y == 6 || y == 1) && !labels[x][y+moveDirection*2].hasPiece() && !labels[x][y+moveDirection].hasPiece()){
+            validMoves.add(new Move(this.fieldLabel, labels[x][y+moveDirection*2]));
+        }
+
         try
         {
-            if((y == 6 || y == 1)&&!labels[x][y+moveDirection*2].hasPiece()){ //Allows pawn to move two fields when Pawn is in his first turn
-                validMoves.add(new Move(this.fieldLabel, labels[x][y+moveDirection*2]));
-            }
-        }catch (ArrayIndexOutOfBoundsException ignored){}
-        try
-        {
+            //Calculates if the Piece can move forward one Square
             if(!labels[x][y+moveDirection].hasPiece())
                 validMoves.add(new Move(this.fieldLabel, labels[x][y+moveDirection]));
         }catch (ArrayIndexOutOfBoundsException ignored){}
+
+        //checks if theres a Piece at its diagonals
         try
         {
-            if(labels[x-1][y+moveDirection].hasPiece())
-                if(labels[x-1][y+moveDirection].getPiece().getColor() != this.color)
+                if(labels[x-1][y+moveDirection].hasPiece()&&labels[x-1][y+moveDirection].getPiece().getColor() != this.color)
                     validMoves.add(new Move(this.fieldLabel, labels[x-1][y+moveDirection]));
         }catch (ArrayIndexOutOfBoundsException ignored){}
         try
         {
-            if(labels[x+1][y+moveDirection].hasPiece())
-                if(labels[x+1][y+moveDirection].getPiece().getColor() != this.color)
+                if(labels[x+1][y+moveDirection].hasPiece()&&labels[x+1][y+moveDirection].getPiece().getColor() != this.color)
                     validMoves.add(new Move(this.fieldLabel, labels[x+1][y+moveDirection]));
         }
         catch (ArrayIndexOutOfBoundsException ignored){}
@@ -70,6 +71,16 @@ public class Pawn extends Piece{
 
 //||
        return validMoves;
+    }
+
+    @Override
+    public ArrayList<FieldLabel> calculateAttackingSquares() {
+        int x = this.fieldLabel.getX();
+        int y = this.fieldLabel.getY();
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
+        try{attackingSquares.add(labels[x-1][y+moveDirection]);}catch (ArrayIndexOutOfBoundsException ignored){}
+        try{attackingSquares.add(labels[x+1][y+moveDirection]);}catch (ArrayIndexOutOfBoundsException ignored){}
+        return attackingSquares;
     }
 
 
@@ -103,43 +114,7 @@ public class Pawn extends Piece{
     public void setDoubleMove(boolean doubleMove) {
         this.doubleMove = doubleMove;
     }
-
 }
 /*
-        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
-        int x = this.fieldLabel.getX();
-        int y = this.fieldLabel.getY();
 
-
-        try
-        {
-            if((y == 6 || y == 1)&&!labels[x][y+moveDirection*2].hasPiece()){ //Allows pawn to move two fields when Pawn is in his first turn
-                validMoves.add(labels[x][y+moveDirection*2]);
-                doubleMove = true;
-            }
-        }catch (ArrayIndexOutOfBoundsException ignored){}
-        try
-        {
-            if(!labels[x][y+moveDirection].hasPiece())
-                validMoves.add(labels[x][y+moveDirection]);
-        }catch (ArrayIndexOutOfBoundsException ignored){}
-        try
-        {
-            if(labels[x-1][y+moveDirection].hasPiece())
-                if(labels[x-1][y+moveDirection].getPiece().getColor() != this.color)
-                    validMoves.add(labels[x-1][y+moveDirection]);
-        }catch (ArrayIndexOutOfBoundsException ignored){}
-        try
-        {
-            if(labels[x+1][y+moveDirection].hasPiece())
-                if(labels[x+1][y+moveDirection].getPiece().getColor() != this.color)
-                    validMoves.add(labels[x+1][y+moveDirection]);
-        }
-        catch (ArrayIndexOutOfBoundsException ignored){}
-
-        //en passant
-        if(canEnPassant(x-1, y, labels))
-                validMoves.add(labels[x-1][y+moveDirection]);
-        else if( canEnPassant(x+1,y,labels))
-            validMoves.add(labels[x+1][y+moveDirection]);
  */

@@ -13,23 +13,22 @@ import java.util.ArrayList;
  */
 public abstract class Piece{
 
-    /*** the Image of the Piece(B_Rook, B_Queen, ect...)*/
+    /*** Imageview of the Piece(B_Rook, B_Queen, ect...)*/
     ImageView img;
 
-    /*** The label its ontop of, ect...)*/
+    /*** Fieldlabel this Piece is on top of*/
     FieldLabel fieldLabel;
 
-    /*** Whether its alive or dead)*/
-    boolean isAlive = true;
-
-    /*** The Pieces color(Black or white)*/
+    /*** Enum Color Pieces color(Black or white)*/
     Color color;
 
-    /*** The Name of the Piece("Black Queen", "White Knight"))*/
+    /*** String Name of the Piece("Black Queen", "White Knight"))*/
     String name;
 
-    /*** List of all allowed moves for the Piece*/
+    /*** ArrayList<Move> of all allowed moves for the Piece*/
     ArrayList<Move> validMoves = new ArrayList<>();
+
+
     ArrayList<FieldLabel> attackingSquares = new ArrayList<>();
 
 
@@ -66,14 +65,6 @@ public abstract class Piece{
         this.fieldLabel = l;
     }
 
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    public void setAlive(boolean alive) {
-        isAlive = alive;
-    }
-
     public Color getColor() {
         return color;
     }
@@ -93,7 +84,7 @@ public abstract class Piece{
      * @return list of Fieldlabels that are every possible move as an Arraylist
      */
     public abstract ArrayList<Move> calculateValidMoves(Chessboard board);
-    //public abstract ArrayList<FieldLabel> calculateAttackingSquares();
+    public abstract ArrayList<FieldLabel> calculateAttackingSquares();
 
     public void postTurn(Move m){
 

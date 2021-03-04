@@ -1,5 +1,6 @@
 package chess;
 
+import javafx.scene.control.CheckBox;
 import pieces.Pawn;
 import pieces.*;
 import pieces.Piece;
@@ -20,6 +21,10 @@ public class Chessboard extends GridPane {
     private FieldLabel[][] labels = new FieldLabel[8][8];
     private ArrayList<Piece> pieces = new ArrayList<>();
     private int turn=0;
+
+    private King b_King;
+    private King w_King;
+
 
     public Chessboard(){
         for (int i = 0; i < 8; i++)
@@ -76,6 +81,10 @@ public class Chessboard extends GridPane {
         return labels;
     }
 
+    public ArrayList<Piece> getPieces() {
+        return pieces;
+    }
+
     public void resetBoard(){
     }
 
@@ -88,8 +97,8 @@ public class Chessboard extends GridPane {
         String fenBoard = fen.substring(0, fen.indexOf(' ')).replace("/","");
         String fenInfo = fen.substring(fen.indexOf(' ')+1).replace("/","").replace(" ","");
 
-        System.out.println(fenBoard);
-        System.out.println(fenInfo);
+        //System.out.println(fenBoard);
+        //System.out.println(fenInfo);
 
         int posString=0;
         char c;
@@ -98,22 +107,72 @@ public class Chessboard extends GridPane {
             for (int j = 0; j < 8; j++) {
                 if(posString >= fenBoard.length()) break;
                 c = fenBoard.charAt(posString++);
-
+                Piece piece;
                 switch(c){
                     //Black pieces
-                    case 'p': getLabels()[j][i].setPiece(new Pawn(new ImageView(new Image("Imgs\\B_Pawn.png")), labels[j][i], Color.BLACK, "Black Pawn")); break;
-                    case 'n': getLabels()[j][i].setPiece(new Knight(new ImageView(new Image("Imgs\\B_Knight.png")), labels[j][i], Color.BLACK, "Black Knight"));break;
-                    case 'b': getLabels()[j][i].setPiece(new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), labels[j][i], Color.BLACK, "Black Bishop"));break;
-                    case 'r': getLabels()[j][i].setPiece(new Rook(new ImageView(new Image("Imgs\\B_Rook.png")), labels[j][i], Color.BLACK, "Black Rook"));break;
-                    case 'q': getLabels()[j][i].setPiece(new Queen(new ImageView(new Image("Imgs\\B_Queen.png")), labels[j][i], Color.BLACK, "Black Queen"));break;
-                    case 'k': getLabels()[j][i].setPiece(new King(new ImageView(new Image("Imgs\\B_King.png")), labels[j][i], Color.BLACK, "Black King"));break;
+                    case 'p':
+                        piece =  new Pawn(new ImageView(new Image("Imgs\\B_Pawn.png")), labels[j][i], Color.BLACK, "Black Pawn");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'n':
+                        piece = new Knight(new ImageView(new Image("Imgs\\B_Knight.png")), labels[j][i], Color.BLACK, "Black Knight");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'b':
+                        piece = new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), labels[j][i], Color.BLACK, "Black Bishop");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'r':
+                        piece =new Rook(new ImageView(new Image("Imgs\\B_Rook.png")), labels[j][i], Color.BLACK, "Black Rook");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'q':
+                        piece = new Queen(new ImageView(new Image("Imgs\\B_Queen.png")), labels[j][i], Color.BLACK, "Black Queen");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'k':
+                        piece = new King(new ImageView(new Image("Imgs\\B_King.png")), labels[j][i], Color.BLACK, "Black King");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        b_King = (King)piece;
+                        break;
                     //White pieces
-                    case 'P': getLabels()[j][i].setPiece(new Pawn(new ImageView(new Image("Imgs\\W_Pawn.png")), labels[j][i], Color.WHITE, "White Pawn"));break;
-                    case 'N': getLabels()[j][i].setPiece(new Knight(new ImageView(new Image("Imgs\\W_Knight.png")), labels[j][i], Color.WHITE, "White Knight"));break;
-                    case 'B': getLabels()[j][i].setPiece(new Bishop(new ImageView(new Image("Imgs\\W_Bishop.png")), labels[j][i], Color.WHITE, "White Bishop"));break;
-                    case 'R': getLabels()[j][i].setPiece(new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), labels[j][i], Color.WHITE, "White Rook"));break;
-                    case 'Q': getLabels()[j][i].setPiece(new Queen(new ImageView(new Image("Imgs\\W_Queen.png")), labels[j][i], Color.WHITE, "White Queen"));break;
-                    case 'K': getLabels()[j][i].setPiece(new King(new ImageView(new Image("Imgs\\W_King.png")), labels[j][i], Color.WHITE, "White King"));break;
+                    case 'P':
+                        piece = new Pawn(new ImageView(new Image("Imgs\\W_Pawn.png")), labels[j][i], Color.WHITE, "White Pawn");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'N':
+                        piece = new Knight(new ImageView(new Image("Imgs\\W_Knight.png")), labels[j][i], Color.WHITE, "White Knight");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'B':
+                        piece = new Bishop(new ImageView(new Image("Imgs\\W_Bishop.png")), labels[j][i], Color.WHITE, "White Bishop");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'R':
+                        piece = new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), labels[j][i], Color.WHITE, "White Rook");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'Q':
+                        piece = new Queen(new ImageView(new Image("Imgs\\W_Queen.png")), labels[j][i], Color.WHITE, "White Queen");
+                        getLabels()[j][i].setPiece(piece);
+                        this.addPiece(piece);
+                        break;
+                    case 'K':
+                        piece = new King(new ImageView(new Image("Imgs\\W_King.png")), labels[j][i], Color.WHITE, "White King");
+                        getLabels()[j][i].setPiece(piece);
+                        w_King = (King)piece;
+                        this.addPiece(piece);
+                        break;
                     //nl
                     case '/': continue;
                 }
@@ -128,12 +187,12 @@ public class Chessboard extends GridPane {
             c = fenInfo.charAt(j);
 
             switch(c){
-                case 'w': System.out.println("Whites Turn"); break;//Weiß am zug
-                case 'b': System.out.println("Blacks Turn"); break; //Schwarz am Zug
-                case 'K': System.out.println("Whites Kingside"); break; //Weiß kann Kingside castlen
-                case 'Q': System.out.println("Whites Queenside"); break; //Weiß kann Queenside castlen
-                case 'k': System.out.println("Black Kingside"); break; //Schwarz kann Kingside castlen
-                case 'q': System.out.println("Black Queenside"); break; //Schwarz kann Queenside castlen
+                case 'w': //System.out.println("Whites Turn"); break;//Weiß am zug
+                case 'b': //System.out.println("Blacks Turn"); break; //Schwarz am Zug
+                case 'K': //System.out.println("Whites Kingside"); break; //Weiß kann Kingside castlen
+                case 'Q': //System.out.println("Whites Queenside"); break; //Weiß kann Queenside castlen
+                case 'k': //System.out.println("Black Kingside"); break; //Schwarz kann Kingside castlen
+                case 'q': //System.out.println("Black Queenside"); break; //Schwarz kann Queenside castlen
 
             }
             //en Passant
@@ -144,11 +203,61 @@ public class Chessboard extends GridPane {
         }
 
     }
-    public String getBoardByFen(){
-        return "";
+    public King getKing(Color c){
+        for (Piece e: getPieces())
+        {
+            if(e.getName().contains("King")&&e.getColor()==c)
+                return (King)e;
+        }
+        return null;
     }
 
+    //To be implemented
+    public String getBoardAsFen(){
+        StringBuilder fen = new StringBuilder();
+        for (int i = 0; i < 8; i++)
+        {
+            int emptyLabels = 0;
+            for (int j = 0; j < 8; j++)
+            {
+                FieldLabel current = getLabelByCoordinates(j,i);
+
+                if(current.getPiece()!=null){
+                    if(emptyLabels != 0){
+                        fen.append(emptyLabels);
+                        emptyLabels = 0;
+                    }
+                    String name = current.getPiece().getClass().getSimpleName();
+                    if(name.equals("Knight"))
+                        fen.append((current.getPiece().getColor() == Color.WHITE ? "N":"n"));
+                    else
+                        fen.append((current.getPiece().getColor() == Color.WHITE ? name.charAt(0):Character.toLowerCase(name.charAt(0))));
+                }else
+                    emptyLabels++;
+
+            }
+            if(emptyLabels != 0)
+                fen.append(emptyLabels);
+            if(i != 7)
+                fen.append('/');
+        }
+        fen.append(" w - 0 1");
+        return fen.toString();
+    }
     public FieldLabel getLabelByCoordinates(int x, int y) {
         return labels[x][y];
     }
+
+    public Chessboard getClone(){
+        try { return (Chessboard)this.clone(); } catch (CloneNotSupportedException ignored) { } return null;
+
+    }
+    public King getB_King() {
+        return b_King;
+    }
+
+    public King getW_King() {
+        return w_King;
+    }
+
 }

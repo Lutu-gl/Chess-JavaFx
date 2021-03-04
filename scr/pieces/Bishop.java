@@ -22,12 +22,11 @@ public class Bishop extends Piece{
 
     @Override
     public ArrayList<Move> calculateValidMoves(Chessboard board) {
-        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         validMoves.removeAll(validMoves);
+
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
-
-
         for (int i = x, i2 = y; i != 8 && i2 != -1; i++, i2--) {
             if(labels[i][i2].hasPiece() && labels[i][i2].getPiece().hashCode() != this.hashCode()) {
                 if(labels[i][i2].getPiece().getColor()!=this.color) validMoves.add(new Move(this.fieldLabel,labels[i][i2]));
@@ -69,5 +68,22 @@ public class Bishop extends Piece{
         }
 
         return validMoves;
+    }
+
+    @Override
+    public ArrayList<FieldLabel> calculateAttackingSquares() {
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
+        int x = this.fieldLabel.getX();
+        int y = this.fieldLabel.getY();
+        for (int i = x, i2 = y; i != 8 && i2 != -1; i++, i2--)
+            attackingSquares.add(labels[i][i2]);
+        for (int i = x, i2 = y; i != 8 && i2 != 8; i++, i2++)
+            attackingSquares.add(labels[i][i2]);
+        for (int i = x,i2 = y; i != -1 && i2 != 8; i--, i2++)
+            attackingSquares.add(labels[i][i2]);
+        for (int i = x, i2 = y; i != -1 && i2 != -1; i--, i2--)
+            attackingSquares.add(labels[i][i2]);
+
+        return attackingSquares;
     }
 }

@@ -28,6 +28,7 @@ public class FieldLabel extends Label {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+        piece.setFieldLabel(this);
         this.setGraphic(piece.getImg());
     }
     public void removePiece(){
