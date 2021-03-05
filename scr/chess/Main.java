@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 /**
  * Main Class which contains the Main Method
  * @author Stefan Hasler
- * @version 1.3
+ * @version 1.5
  */
 public class Main extends Application {
     /**
@@ -34,10 +34,10 @@ public class Main extends Application {
 
         //System.out.println((endTime-startTime));
         //Hier Kommen Menüaufrufe her
-        board.setBoardByFen("3qk3/8/8/3N4/8/8/3Q4/3K4 w - - 0 1");
+        //board.setBoardByFen("3qk3/8/8/3N4/8/8/3Q4/3K4 w - - 0 1");
 
         /*Default fen*/
-        //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         System.out.println(board.getBoardAsFen());
 
         /*

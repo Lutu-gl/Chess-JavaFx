@@ -15,17 +15,29 @@ import java.util.ArrayList;
  * The actual Board containing a list of FieldLabels, the Constructor initializes it with 64 labels
  * aswell as a list of all pieces
  * @author Stefan Hasler
- * @version 1.45
+ * @version 2.0
  */
 public class Chessboard extends GridPane {
+
+    /*** A two Dimensional Array containing all Squares(FieldLabels)*/
     private FieldLabel[][] labels = new FieldLabel[8][8];
+
+    /*** A Arraylist containing all Pieces*/
     private ArrayList<Piece> pieces = new ArrayList<>();
+
+    /*** Halfmove counter*/
     private int turn=0;
 
+    /*** A reference to Blacks King*/
     private King b_King;
+
+    /*** A reference to Whites King*/
     private King w_King;
 
 
+    /**
+     * Constructor initializing the Board with 64 Fieldlabels
+     */
     public Chessboard(){
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++){
@@ -41,6 +53,10 @@ public class Chessboard extends GridPane {
         Move.board = this;
     }
 
+    /**
+     * Method to toggle the Coordinates of the FieldLabels
+     * @param show boolean true or false
+     */
     public void doShowTextLabels(boolean show){
         if(show) {
             FieldLabel label;
@@ -58,39 +74,65 @@ public class Chessboard extends GridPane {
         }
     }
 
+    /**
+     * Gets called after every Halfmove
+     * More functionality will be added
+     */
     public void endTurn(){
         turn++;
     }
+
+    /**
+     * Getter for Turn
+     * @return returns int number of halfmoves since start of game
+     */
     public int getTurn() {
         return turn;
     }
 
+    /**
+     * Setter for Turn
+     * @param turn int number of halfmoves since start of game
+     */
     public void setTurn(int turn) {
         this.turn = turn;
     }
 
+    /**
+     * Add Method for ArrayList<Piece> pieces
+     * @param p Piece that has been added to the Board
+     */
     public void addPiece(Piece p){
         pieces.add(p);
     }
 
+    /**
+     * Remove Method for ArrayList<Piece> pieces
+     * @param p Piece that needs to be removed
+     */
     public void removePiece(Piece p){
         pieces.remove(p);
     }
 
+    /**
+     * Getter for Two Dimensional Array of all FieldLabels
+     * @return FieldLabels[8][8]
+     */
     public FieldLabel[][] getLabels() {
         return labels;
     }
 
+    /**
+     * Getter for ArrayList<Piece> pieces
+     * @return ArrayList<Piece>
+     */
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
 
-    public void resetBoard(){
-    }
-
     /**
-     * Sets Board to a Position
-     * @param fen fen to set Board by
+     * Sets Board to a Position by a Fen String
+     * @param fen Fend String to set the Board by
      */
     //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     public void setBoardByFen(String fen){
@@ -203,6 +245,12 @@ public class Chessboard extends GridPane {
         }
 
     }
+
+    /**
+     * Returns the King of either Black or White
+     * @param c Enum Color of King
+     * @return King Object
+     */
     public King getKing(Color c){
         for (Piece e: getPieces())
         {
@@ -212,7 +260,11 @@ public class Chessboard extends GridPane {
         return null;
     }
 
-    //To be implemented
+    /**
+     * Returns the Fen String for the Board in its current state
+     * @return String Fen
+     * !!!Not finished!!!
+     */
     public String getBoardAsFen(){
         StringBuilder fen = new StringBuilder();
         for (int i = 0; i < 8; i++)
@@ -244,18 +296,31 @@ public class Chessboard extends GridPane {
         fen.append(" w - 0 1");
         return fen.toString();
     }
+
+    /**
+     * Turns Coordinates into the Fieldlabel
+     * can Return Null if x or y are invalid
+     * @param x x-coordinate of FieldLabel
+     * @param y y-Coordinate of FieldLabel
+     * @return FieldLabel object or Null
+     */
     public FieldLabel getLabelByCoordinates(int x, int y) {
-        return labels[x][y];
+        try { return labels[x][y]; } catch (ArrayIndexOutOfBoundsException ignored){}
+        return null;
     }
 
-    public Chessboard getClone(){
-        try { return (Chessboard)this.clone(); } catch (CloneNotSupportedException ignored) { } return null;
-
-    }
+    /**
+     * Getter for Black King
+     * @return King Object of Black
+     */
     public King getB_King() {
         return b_King;
     }
 
+    /**
+     * Getter for White King
+     * @return King Object of white
+     */
     public King getW_King() {
         return w_King;
     }

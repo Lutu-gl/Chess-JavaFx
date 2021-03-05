@@ -4,9 +4,9 @@ import pieces.Piece;
 import javafx.scene.control.Label;
 
 /**
- * Describes a field on the Chessboard(a1, b4, h5 ect...)
+ * Describes a square on the Chessboard(a1, b4, h5 ect...) extends javafx.scene.control.Label
  * @author Stefan Hasler
- * @version 1.31
+ * @version 1.5
  *
  */
 public class FieldLabel extends Label {
@@ -22,20 +22,40 @@ public class FieldLabel extends Label {
     /***the Piece that may stand on top of the Field*/
     private Piece piece;
 
+    /**
+     * Getter for Piece can return null
+     * @return Piece Object or null
+     */
     public Piece getPiece() {
         return piece;
     }
 
+    /**
+     * Setter for Piece
+     * Displays the Piece and overwrites the FieldLabel of piece
+     * @param piece Piece Object that is moved on top of this Label
+     */
     public void setPiece(Piece piece) {
         this.piece = piece;
         piece.setFieldLabel(this);
         this.setGraphic(piece.getImg());
     }
+
+    /**
+     * Remove/Kill Piece of this FieldLabel
+     */
     public void removePiece(){
         piece = null;
         this.setGraphic(null);
     }
 
+    /**
+     * Constructor for FieldLabel
+     * Initializes x, y and color, sets itself to the correct size and adds a onMouseClicked Listener
+     * @param x x of FieldLabel
+     * @param y y of FielLabel
+     * @param color enum Color of FieldLabel
+     */
     public FieldLabel(int x, int y, chess.Color color){
         this.x = x;
         this.y = y;
@@ -45,26 +65,50 @@ public class FieldLabel extends Label {
         this.setOnMouseClicked(new Turn());
     }
 
+    /**
+     * Getter for x Coordinate
+     * @return int x
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Getter for y Coordinate
+     * @return int y
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Getter for Chessboard of current game
+     * @return Chessboard object
+     */
     public Chessboard getBoard() {
         return board;
     }
 
+    /**
+     * Setter for board
+     * @param board Chessboard object of current game
+     */
     public void setBoard(Chessboard board) {
         this.board = board;
     }
 
+    /**
+     * Getter for enum Color
+     * @return enum Color
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Checks if piece != null
+     * @return boolean true or false
+     */
     public boolean hasPiece(){
         return piece != null;
     }
