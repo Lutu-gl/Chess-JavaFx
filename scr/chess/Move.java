@@ -25,7 +25,7 @@ public class Move {
             this.movingPiece = source.getPiece();
             this.eatenPiece = target.getPiece();
         }
-        catch (NullPointerException ignored){}
+        catch (NullPointerException ignored){eatenPiece=null;}
     }
     public Move(Move move) {
         this.source = move.getSource();

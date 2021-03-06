@@ -22,32 +22,6 @@ public class FieldLabel extends Label {
     /***the Piece that may stand on top of the Field*/
     private Piece piece;
 
-    /**
-     * Getter for Piece can return null
-     * @return Piece Object or null
-     */
-    public Piece getPiece() {
-        return piece;
-    }
-
-    /**
-     * Setter for Piece
-     * Displays the Piece and overwrites the FieldLabel of piece
-     * @param piece Piece Object that is moved on top of this Label
-     */
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-        piece.setFieldLabel(this);
-        this.setGraphic(piece.getImg());
-    }
-
-    /**
-     * Remove/Kill Piece of this FieldLabel
-     */
-    public void removePiece(){
-        piece = null;
-        this.setGraphic(null);
-    }
 
     /**
      * Constructor for FieldLabel
@@ -63,6 +37,34 @@ public class FieldLabel extends Label {
         this.setPrefHeight(116.0);
         this.setPrefWidth(98.0);
         this.setOnMouseClicked(new Turn());
+    }
+
+    /**
+     * Getter for Piece can return null
+     * @return Piece Object or null
+     */
+    public Piece getPiece() {
+        return piece;
+    }
+
+    /**
+     * Setter for Piece
+     * Displays the Piece and overwrites the FieldLabel of piece
+     * @param piece Piece Object that is moved on top of this Label
+     */
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+        //piece.setFieldLabel(this);
+        this.setGraphic(piece.getImg());
+    }
+
+    /**
+     * Remove/Kill Piece of this FieldLabel
+     */
+    public void removePiece(){
+
+        piece = null;
+        this.setGraphic(null);
     }
 
     /**

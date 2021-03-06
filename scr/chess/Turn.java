@@ -62,9 +62,9 @@ public class Turn implements EventHandler<MouseEvent>{
             if(isValidMove()!=null){
                 move=isValidMove();
                 move_save = new Move(move);
-
                 if(testMove(move)){
-                    System.out.println("legaler move");
+
+                    //System.out.println("legaler move");
                     //moving the piece
                     makeMove(move);
                     //System.out.println(move.getMovingPiece().getFieldLabel());;
@@ -78,17 +78,30 @@ public class Turn implements EventHandler<MouseEvent>{
                     move.getMovingPiece().postTurn(move);
                     Move.board.endTurn();
                     move = null;
+                    /*
+                    for (int i = 0; i < 8; i++)
+                    {
+                        for (int j = 0; j < 8; j++)
+                        {
+                            System.out.println(Move.board.getLabels()[j][i]);
+
+                        }
+                        System.out.println("--------------------------------");
+                    }
+                    System.out.println("#########################################################");
+
+                     */
                     colorToMove = colorToMove == Color.WHITE ? Color.BLACK : Color.WHITE;
                 }
                 else{
-                    System.out.println("illegaler move");
+                    //System.out.println("illegaler move");
                     //undoMove();
                     unhighlightPiece(move.getSource());
                     move = null;
                 }
             }
             else{
-                System.out.println("den move gibs nicht");
+                //System.out.println("den move gibs nicht");
                 unhighlightPiece(move.getSource());
                 move = null;
             }
@@ -97,7 +110,8 @@ public class Turn implements EventHandler<MouseEvent>{
 
     private void makeMove(Move m){
         //Make sure Pieces are removed
-
+        //System.out.println(move);
+        //try{System.out.println(move.getEatenPiece().getFieldLabel());}catch(NullPointerException ignored){}
         try{move.getEatenPiece().getFieldLabel().removePiece();}catch(NullPointerException ignored){};
         move.getSource().removePiece();
 
@@ -145,7 +159,7 @@ public class Turn implements EventHandler<MouseEvent>{
     private boolean testMove(Move m){
 
         King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
-        String fen = Move.board.getBoardAsFen();
+        //String fen = Move.board.getBoardAsFen();
         makeMove(m);
 
         if(k.isInCheck()){

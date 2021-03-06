@@ -34,27 +34,35 @@ public class PromotionDialog extends Dialog<Boolean> {
         Button k = new Button("Knight");
         Button b = new Button("Bishop");
         b.setOnMouseClicked((mouseEvent)->{
-            Bishop bp = new Bishop(new ImageView(new Image("imgs\\"+pawn.getColor().toString().charAt(0)+ "_Bishop.png")), pawn.getFieldLabel().getBoard().getLabels()[pawn.getFieldLabel().getX()][pawn.getFieldLabel().getY()], pawn.getColor(), "Bishop");
+            Bishop bp = new Bishop(new ImageView(new Image("imgs\\"+pawn.getColor().toString().charAt(0)+ "_Bishop.png")), pawn.getFieldLabel().getBoard().getLabels()[pawn.getFieldLabel().getX()][pawn.getFieldLabel().getY()], pawn.getColor(), Color.getCapitalizedName(pawn.getColor()) +"Bishop");
             bp.setFieldLabel(pawn.getFieldLabel());
             pawn.getFieldLabel().setPiece(bp);
+            Move.board.addPiece(bp);
+            Move.board.removePiece(pawn);
             this.setResult(true);
         });
         k.setOnMouseClicked((mouseEvent)->{
-            Knight bp = new Knight(new ImageView(new Image("imgs\\"+pawn.getColor().toString().charAt(0)+ "_Knight.png")), pawn.getFieldLabel().getBoard().getLabels()[pawn.getFieldLabel().getX()][pawn.getFieldLabel().getY()], pawn.getColor(), "Knight");
+            Knight bp = new Knight(new ImageView(new Image("imgs\\"+pawn.getColor().toString().charAt(0)+ "_Knight.png")), pawn.getFieldLabel().getBoard().getLabels()[pawn.getFieldLabel().getX()][pawn.getFieldLabel().getY()], pawn.getColor(), Color.getCapitalizedName(pawn.getColor()) +"Knight");
             bp.setFieldLabel(pawn.getFieldLabel());
             pawn.getFieldLabel().setPiece(bp);
+            Move.board.addPiece(bp);
+            Move.board.removePiece(pawn);
             this.setResult(true);
         });
         r.setOnMouseClicked((mouseEvent)->{
-            Rook bp = new Rook(new ImageView(new Image("imgs\\"+pawn.getColor().toString().charAt(0)+ "_Rook.png")), pawn.getFieldLabel().getBoard().getLabels()[pawn.getFieldLabel().getX()][pawn.getFieldLabel().getY()], pawn.getColor(), "Rook");
+            Rook bp = new Rook(new ImageView(new Image("imgs\\"+pawn.getColor().toString().charAt(0)+ "_Rook.png")), pawn.getFieldLabel().getBoard().getLabels()[pawn.getFieldLabel().getX()][pawn.getFieldLabel().getY()], pawn.getColor(), Color.getCapitalizedName(pawn.getColor()) +" Rook");
             bp.setFieldLabel(pawn.getFieldLabel());
             pawn.getFieldLabel().setPiece(bp);
+            Move.board.addPiece(bp);
+            Move.board.removePiece(pawn);
             this.setResult(true);
         });
         q.setOnMouseClicked((mouseEvent)->{
-            Queen bp = new Queen(new ImageView(new Image("imgs\\"+pawn.getColor().toString().charAt(0)+ "_Queen.png")), pawn.getFieldLabel().getBoard().getLabels()[pawn.getFieldLabel().getX()][pawn.getFieldLabel().getY()], pawn.getColor(), "Queen");
+            Queen bp = new Queen(new ImageView(new Image("imgs\\"+pawn.getColor().toString().charAt(0)+ "_Queen.png")), pawn.getFieldLabel().getBoard().getLabels()[pawn.getFieldLabel().getX()][pawn.getFieldLabel().getY()], pawn.getColor(), Color.getCapitalizedName(pawn.getColor()) + " Queen");
             bp.setFieldLabel(pawn.getFieldLabel());
             pawn.getFieldLabel().setPiece(bp);
+            Move.board.removePiece(pawn);
+            Move.board.addPiece(bp);
             this.setResult(true);
         });
         hbox.getChildren().add(q);

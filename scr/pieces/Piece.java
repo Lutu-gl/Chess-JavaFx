@@ -25,6 +25,9 @@ public abstract class Piece{
     /*** String Name of the Piece("Black Queen", "White Knight"))*/
     String name;
 
+    /***The unique id of every Piece*/
+    int id;
+
     /*** ArrayList<Move> of all allowed moves for the Piece*/
     ArrayList<Move> validMoves = new ArrayList<>();
 

@@ -34,11 +34,11 @@ public class Main extends Application {
 
         //System.out.println((endTime-startTime));
         //Hier Kommen Menüaufrufe her
-        //board.setBoardByFen("3qk3/8/8/3N4/8/8/3Q4/3K4 w - - 0 1");
+        board.setBoardByFen("1nbqk3/2pppp2/8/8/8/8/3PPP2/3QK3 w - - 0 1");
 
         /*Default fen*/
-        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        System.out.println(board.getBoardAsFen());
+        //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        //System.out.println(board.getBoardAsFen());
 
         /*
         PromotionDialog p1 = new PromotionDialog(p);

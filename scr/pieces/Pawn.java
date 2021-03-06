@@ -30,7 +30,7 @@ public class Pawn extends Piece{
         FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
-
+        validMoves.removeAll(validMoves);
         //Allows pawn to move two fields when Pawn is in his first turn
         try{
             if((y == 6 || y == 1) && !labels[x][y+moveDirection*2].hasPiece() && !labels[x][y+moveDirection].hasPiece()){
@@ -61,16 +61,20 @@ public class Pawn extends Piece{
         catch (ArrayIndexOutOfBoundsException ignored){}
 
         //en passant
-        if(canEnPassant(labels[x-1][y])){ //checks for en passant left to the piece
-            Move m = new Move(this.fieldLabel, labels[x-1][y+moveDirection]);
-            m.setEatenPiece(labels[x-1][y].getPiece());
-            System.out.println(m);
-            validMoves.add(m);
-        }else if(canEnPassant(labels[x+1][y])){ //checks for en passant right to the piece
-            Move m = new Move(this.fieldLabel, labels[x+1][y+moveDirection]);
-            m.setEatenPiece(labels[x+1][y].getPiece());
-            validMoves.add(m);
-        }
+        try
+        {
+            if(canEnPassant(labels[x-1][y])){ //checks for en passant left to the piece
+                Move m = new Move(this.fieldLabel, labels[x-1][y+moveDirection]);
+                m.setEatenPiece(labels[x-1][y].getPiece());
+                System.out.println("AAAAAAAAAAAAH");
+                validMoves.add(m);
+            }else if(canEnPassant(labels[x+1][y])){ //checks for en passant right to the piece
+                Move m = new Move(this.fieldLabel, labels[x+1][y+moveDirection]);
+                m.setEatenPiece(labels[x+1][y].getPiece());
+                System.out.println("AAAAAAAAAAAAH");
+                validMoves.add(m);
+            }
+        } catch (ArrayIndexOutOfBoundsException ignored){}
 
 //||
        return validMoves;
@@ -81,8 +85,8 @@ public class Pawn extends Piece{
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
         FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
-        try{attackingSquares.add(labels[x-1][y+moveDirection]);}catch (ArrayIndexOutOfBoundsException ignored){}
-        try{attackingSquares.add(labels[x+1][y+moveDirection]);}catch (ArrayIndexOutOfBoundsException ignored){}
+        attackingSquares.add(labels[x-1][y+moveDirection]);
+        attackingSquares.add(labels[x+1][y+moveDirection]);
         return attackingSquares;
     }
 
@@ -100,7 +104,7 @@ public class Pawn extends Piece{
      */
     @Override
     public void postTurn(Move m) {
-        validMoves.removeAll(validMoves); //can potentially be deleted
+
         //Looks if the Pawn just moved two squares by taking its last position and its current position and subtracting 2 from it
         doubleMove = m.getTarget().getY() - moveDirection * 2 == m.getSource().getY();
     }
