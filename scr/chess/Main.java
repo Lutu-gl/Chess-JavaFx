@@ -30,12 +30,12 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.getIcons().add(new Image("file:scr/Chess/Download.jpg"));
         board.doShowTextLabels(false);
-        long endTime = System.currentTimeMillis();
 
         //System.out.println((endTime-startTime));
         //Hier Kommen Menüaufrufe her -> ok!
-        //board.setBoardByFen("1nbqk3/2pppp2/8/8/8/8/3PPP2/3QK3 w - - 0 1");
-        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R w KQkq - 0 1");
+        board.setBoardByFen("3k4/8/8/8/8/4RR2/4K3/8 w - - 0 1");
+        //board.setBoardByFen("8/8/8/8/8/8/8/8 w - - 0 1");
+        //System.out.println(board.getBoardAsFen());
 
         /*Default fen*/
         //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

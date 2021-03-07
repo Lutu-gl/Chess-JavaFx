@@ -1,6 +1,5 @@
 package chess;
 
-import javafx.scene.control.CheckBox;
 import pieces.Pawn;
 import pieces.*;
 import pieces.Piece;
@@ -23,7 +22,8 @@ public class Chessboard extends GridPane {
     private FieldLabel[][] labels = new FieldLabel[8][8];
 
     /*** A Arraylist containing all Pieces*/
-    private ArrayList<Piece> pieces = new ArrayList<>();
+    private ArrayList<Piece> b_pieces = new ArrayList<>();
+    private ArrayList<Piece> w_pieces = new ArrayList<>();
 
     /*** Halfmove counter*/
     private int turn=0;
@@ -103,7 +103,10 @@ public class Chessboard extends GridPane {
      * @param p Piece that has been added to the Board
      */
     public void addPiece(Piece p){
-        pieces.add(p);
+        if(p.getColor() == Color.BLACK)
+            b_pieces.add(p);
+        else
+            w_pieces.add(p);
     }
 
     /**
@@ -111,7 +114,10 @@ public class Chessboard extends GridPane {
      * @param p Piece that needs to be removed
      */
     public void removePiece(Piece p){
-        pieces.remove(p);
+        if(p.getColor() == Color.BLACK)
+            b_pieces.remove(p);
+        else
+            w_pieces.remove(p);
     }
 
     /**
@@ -126,8 +132,11 @@ public class Chessboard extends GridPane {
      * Getter for ArrayList<Piece> pieces
      * @return ArrayList<Piece>
      */
-    public ArrayList<Piece> getPieces() {
-        return pieces;
+    public ArrayList<Piece> getB_pieces() {
+        return b_pieces;
+    }
+    public ArrayList<Piece> getW_pieces() {
+        return w_pieces;
     }
 
     /**
@@ -246,13 +255,29 @@ public class Chessboard extends GridPane {
 
     }
 
+    public void clearAll(){
+        for (FieldLabel[] e : labels) {
+            for (FieldLabel h : e) {
+                if(h.hasPiece())
+                    h.removePiece();
+            }
+        }
+        b_pieces.removeAll(b_pieces);
+        w_pieces.removeAll(w_pieces);
+    }
+
+
+    public ArrayList<Piece> getPiecesByColor(Color c){
+        return c == Color.BLACK ? b_pieces : w_pieces;
+    }
+
     /**
      * Returns the King of either Black or White
      * @param c Enum Color of King
      * @return King Object
      */
     public King getKing(Color c){
-        for (Piece e: getPieces())
+        for (Piece e: getPiecesByColor(c))
         {
             if(e.getName().contains("King")&&e.getColor()==c)
                 return (King)e;

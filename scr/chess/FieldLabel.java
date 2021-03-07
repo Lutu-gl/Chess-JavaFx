@@ -3,6 +3,8 @@ package chess;
 import pieces.Piece;
 import javafx.scene.control.Label;
 
+import java.lang.reflect.Field;
+
 /**
  * Describes a square on the Chessboard(a1, b4, h5 ect...) extends javafx.scene.control.Label
  * @author Stefan Hasler
@@ -53,8 +55,10 @@ public class FieldLabel extends Label {
      * @param piece Piece Object that is moved on top of this Label
      */
     public void setPiece(Piece piece) {
+        //board.removePiece(this.piece);
         this.piece = piece;
-        //piece.setFieldLabel(this);
+        //to ensure that the piece has the correct FieldLabel
+        piece.setFieldLabel(this);
         this.setGraphic(piece.getImg());
     }
 
@@ -122,5 +126,11 @@ public class FieldLabel extends Label {
                 ", y=" + y +
                 ", piece=" + piece +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        FieldLabel l = (FieldLabel) obj;
+        return this.x == l.getX() && this.y == l.getY();
     }
 }

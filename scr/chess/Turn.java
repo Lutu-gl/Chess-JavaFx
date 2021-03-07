@@ -1,15 +1,11 @@
 package chess;
 
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.MoveTo;
 import pieces.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * @author Stefan Hasler
@@ -20,15 +16,15 @@ import java.util.Scanner;
 public class Turn implements EventHandler<MouseEvent>{
 
     /**The Move that the user wishes to perform*/
-    static Move move = null;
-    /**The Color which has to move*/
-    static Color colorToMove = Color.WHITE;
+    private static Move move = null;
 
-    /**Save of move incase of rollback*/
-    private Move move_save = null;
+    /**The Color which has to move*/
+    private static Color colorToMove = Color.WHITE;
 
     @Override
     public void handle(MouseEvent event) {
+        //King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
+
 
         FieldLabel evenSource = (FieldLabel) event.getSource();
         if(move == null)
@@ -38,13 +34,7 @@ public class Turn implements EventHandler<MouseEvent>{
             if(move.getSource().getPiece() != null && move.getSource().getPiece().getColor() == colorToMove) //Checks if theres a Piece on the Field and if its has the right color to move
             {
                 move.setMovingPiece(move.getSource().getPiece());
-                /*
-                System.out.println("my moves: ");
-                for (Move e :move.getMovingPiece().calculateValidMoves(Move.board))
-                {
-                    System.out.println(e);
-                }
-                 */
+
                 highlightPiece(move.getSource());
             }
             else{
@@ -56,15 +46,13 @@ public class Turn implements EventHandler<MouseEvent>{
             King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
 
             //Checks if Target and Source are the same and if the move is legal
-            if(isValidMove()!=null){
-                move=isValidMove();
-                move_save = new Move(move);
-                if(testMove(move)){
+            if(isValidMove(move)!=null){
+                move=isValidMove(move);
+                String s = Move.board.getBoardAsFen();
+                if(tryMove(move)){
 
-                    //System.out.println("legaler move");
                     //moving the piece
                     makeMove(move);
-                    //System.out.println(move.getMovingPiece().getFieldLabel());;
                     //undoMove();
 
                     //Checking for Promotion
@@ -77,30 +65,17 @@ public class Turn implements EventHandler<MouseEvent>{
                     move.getMovingPiece().postTurn(move);
                     Move.board.endTurn();
                     move = null;
-                    /*
-                    for (int i = 0; i < 8; i++)
-                    {
-                        for (int j = 0; j < 8; j++)
-                        {
-                            System.out.println(Move.board.getLabels()[j][i]);
 
-                        }
-                        System.out.println("--------------------------------");
-                    }
-                    System.out.println("#########################################################");
 
-                     */
                     colorToMove = colorToMove == Color.WHITE ? Color.BLACK : Color.WHITE;
                 }
                 else{
-                    //System.out.println("illegaler move");
-                    //undoMove();
+                    undoMove(s);
                     unhighlightPiece(move.getSource());
                     move = null;
                 }
             }
             else{
-                //System.out.println("den move gibs nicht");
                 unhighlightPiece(move.getSource());
                 move = null;
             }
@@ -109,25 +84,23 @@ public class Turn implements EventHandler<MouseEvent>{
 
     private void makeMove(Move m){
         //Make sure Pieces are removed
-        //System.out.println(move);
-        //try{System.out.println(move.getEatenPiece().getFieldLabel());}catch(NullPointerException ignored){}
-        try{move.getEatenPiece().getFieldLabel().removePiece();}catch(NullPointerException ignored){};
-        move.getSource().removePiece();
+        //try{move.getEatenPiece().getFieldLabel().removePiece(); Move.board.removePiece(move.getEatenPiece());}catch(NullPointerException ignored){};
+        m.getSource().removePiece();
 
         //Moving the Piece to the Targetfieldlabel
-        move.getMovingPiece().setFieldLabel(move.getTarget());
-        move.getTarget().setPiece(move.getMovingPiece());
+        m.getMovingPiece().setFieldLabel(m.getTarget());
+        m.getTarget().setPiece(m.getMovingPiece());
     }
 
-    private void undoMove(){
-        Chessboard b = Move.board;
-        move_save.getMovingPiece().setFieldLabel(move_save.getSource());
-        move_save.getSource().setPiece(move_save.getMovingPiece());
-        try{
-            move_save.getTarget().removePiece();
-            move_save.getTarget().setPiece(move.getEatenPiece());
+    public static Color getColorToMove() {
+        return colorToMove;
+    }
 
-        }catch (NullPointerException ignored){}
+    private void undoMove(String fen){
+        Move.board.clearAll();
+        //Move.board.setBoardByFen("8/8/8/8/8/8/8/8 w - - 0 1");
+        Move.board.setBoardByFen(fen);
+
     }
 
     public static void highlightPiece(FieldLabel label){
@@ -138,17 +111,25 @@ public class Turn implements EventHandler<MouseEvent>{
         label.setStyle((label.getStyle().contains("-fx-background-color: #829769;") ?  "-fx-background-color: #F0D9B5;" : "-fx-background-color: #B58863;"));
     }
 
-    private Move isValidMove(){
-        for (Move e : move.getMovingPiece().calculateValidMoves(Move.board))
+    private Move isValidMove(Move m){
+        for (Move e : m.getMovingPiece().calculateValidMoves(Move.board))
         {
             //System.out.println(e.getTarget() + "----" + move.getTarget());
-            if(e.getTarget().equals(move.getTarget())){
+            if(e.getTarget().equals(m.getTarget())){
                 return e;
             }
         }
         return null;
     }
+/*
+        m_undo.getMovingPiece().setFieldLabel(m_undo.getSource());
+        m_undo.getSource().setPiece(m_undo.getMovingPiece());
+        try{
+            m_undo.getTarget().removePiece();
+            m_undo.getTarget().setPiece(m_done.getEatenPiece());
 
+        }catch (NullPointerException ignored){}
+ */
     private void checkPawnPromotion(Piece p){
 
         if(p.getName().contains("Pawn") && (p.getFieldLabel().getY() == 0 || p.getFieldLabel().getY() == 7))
@@ -182,17 +163,22 @@ public class Turn implements EventHandler<MouseEvent>{
         }
     }
 
-    private boolean testMove(Move m){
+
+    protected boolean tryMove(Move m){
 
         King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
-        //String fen = Move.board.getBoardAsFen();
+        String s = Move.board.getBoardAsFen();
         makeMove(m);
 
         if(k.isInCheck()){
-            undoMove();
+            System.out.println("der move geht nicht");
+            System.out.println("\t" + m);
+
+            undoMove(s);
             return false;
         }
-        undoMove();
+        //System.out.println(m + "#" + k.isInCheck() + "#" + k.toString());
+        undoMove(s);
         return true;
     }
 }
