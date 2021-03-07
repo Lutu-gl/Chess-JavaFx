@@ -39,16 +39,17 @@ public class King extends Piece{
         //Kingside
         //System.out.println("moin " + labels[7][7].getPiece().getName());
 
-        /*
         if(canCastleKing){
-            validMoves.add(new Move(this.fieldLabel, (this.color == Color.WHITE) ? labels[6][7] : labels[6][1]));
+            if( ((this.color == Color.WHITE) && !labels[5][7].hasPiece() && !labels[6][7].hasPiece()) || ((this.color == Color.BLACK) && !labels[5][0].hasPiece() && !labels[6][0].hasPiece())){
+                validMoves.add(new Move(this.fieldLabel, (this.color == Color.WHITE) ? labels[6][7] : labels[6][0]));
+            }
         }
+
         if(canCastleQueen){
-            validMoves.add(new Move(this.fieldLabel, (this.color == Color.WHITE) ? labels[2][7] : labels[2][1]));
+            if( ((this.color == Color.WHITE) && !labels[1][7].hasPiece() && !labels[2][7].hasPiece() && !labels[3][7].hasPiece()) || ((this.color == Color.BLACK) && !labels[1][0].hasPiece() && !labels[2][0].hasPiece() && !labels[3][0].hasPiece())){
+                validMoves.add(new Move(this.fieldLabel, (this.color == Color.WHITE) ? labels[2][7] : labels[2][0]));
+            }
         }
-
-         */
-
 
 
         return validMoves;
@@ -76,11 +77,11 @@ public class King extends Piece{
         if((l.hasPiece() && l.getPiece().getColor() != this.color) || !l.hasPiece())
             validMoves.add(new Move(this.fieldLabel, l));
     }
-
     public boolean isInCheck(){
 
-        for (Piece e:Move.board.getPiecesByColor(this.color == Color.BLACK ?  Color.WHITE : Color.BLACK))
+        for (Piece e:Move.board.getPiecesByColor(this.color))
         {
+            //System.out.println("piece to check " + e);
             for (Move f:e.calculateValidMoves(Move.board)){
                 if(this.fieldLabel == f.getTarget() && f.getSource().getPiece().getColor() != this.color){
                     System.out.println("ich bin im schach von " + f.getSource().getPiece());
@@ -89,9 +90,9 @@ public class King extends Piece{
             }
         }
         return false;
-
     }
 //<>
+
     public boolean isCanCastleKing() {
         return canCastleKing;
     }
