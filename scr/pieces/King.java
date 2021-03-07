@@ -19,8 +19,8 @@ public class King extends Piece{
         super(img, l, color, name);
     }
 
-    boolean canCastleKing = true;
-    boolean canCastleQueen = true;
+    private boolean canCastleKing = true;
+    private boolean canCastleQueen = true;
     @Override
     public ArrayList<Move> calculateValidMoves(Chessboard board) {
         validMoves.removeAll(validMoves);
@@ -35,8 +35,22 @@ public class King extends Piece{
         try { addIfValid(labels[x-1][y]); } catch (ArrayIndexOutOfBoundsException ignored){}
         try { addIfValid(labels[x+1][y]); } catch (ArrayIndexOutOfBoundsException ignored){}
 
+        //Das Castlen funktioniert nur mit der default chess position. Also wenn der Rook in der ecke ist etc.
+        //Kingside
+        //System.out.println("moin " + labels[7][7].getPiece().getName());
+        if(canCastleKing){
+            validMoves.add(new Move(this.fieldLabel, (this.color == Color.WHITE) ? labels[6][7] : labels[6][1]));
+        }
+        if(canCastleQueen){
+            validMoves.add(new Move(this.fieldLabel, (this.color == Color.WHITE) ? labels[2][7] : labels[2][1]));
+        }
+
+
         return validMoves;
     }
+
+
+
 
     @Override
     public ArrayList<FieldLabel> calculateAttackingSquares() {
@@ -72,4 +86,20 @@ public class King extends Piece{
         return false;
     }
 //<>
+
+    public boolean isCanCastleKing() {
+        return canCastleKing;
+    }
+
+    public void setCanCastleKing(boolean canCastleKing) {
+        this.canCastleKing = canCastleKing;
+    }
+
+    public boolean isCanCastleQueen() {
+        return canCastleQueen;
+    }
+
+    public void setCanCastleQueen(boolean canCastleQueen) {
+        this.canCastleQueen = canCastleQueen;
+    }
 }

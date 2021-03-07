@@ -4,12 +4,9 @@ package chess;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.MoveTo;
-import pieces.King;
-import pieces.Pawn;
-import pieces.Piece;
+import pieces.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import pieces.Queen;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -72,6 +69,8 @@ public class Turn implements EventHandler<MouseEvent>{
 
                     //Checking for Promotion
                     checkPawnPromotion(move.getMovingPiece());
+                    //Checking if castling rights were broken or not
+                    checkCastleRights(move.getMovingPiece());
 
                     //Ending Turn
                     unhighlightPiece(move.getSource());
@@ -154,6 +153,33 @@ public class Turn implements EventHandler<MouseEvent>{
 
         if(p.getName().contains("Pawn") && (p.getFieldLabel().getY() == 0 || p.getFieldLabel().getY() == 7))
             new PromotionDialog((Pawn)p).show();
+    }
+
+    private void checkCastleRights(Piece p){
+
+        if(!(p instanceof Rook || p instanceof King)) return;
+
+        FieldLabel[][] labels  = p.getFieldLabel().getBoard().getLabels();
+
+        if(!labels[4][1].hasPiece() && !labels[4][7].hasPiece() && !(labels[4][1].getPiece() instanceof King) && !(labels[4][7].getPiece() instanceof King)){
+            return;
+        }
+
+
+        if(p instanceof King){
+            ((King) p).setCanCastleKing(false);
+            ((King) p).setCanCastleQueen(false);
+            return;
+        }
+
+        if(p.getColor() == Color.WHITE){
+            if(p.getFieldLabel().getX() > 4) ((King)labels[4][7].getPiece()).setCanCastleKing(false);
+            if(p.getFieldLabel().getX() < 4) ((King)labels[4][7].getPiece()).setCanCastleQueen(false);
+        }
+        if(p.getColor() == Color.BLACK){
+            if(p.getFieldLabel().getX() > 4) ((King)labels[4][1].getPiece()).setCanCastleKing(false);
+            if(p.getFieldLabel().getX() < 4) ((King)labels[4][1].getPiece()).setCanCastleQueen(false);
+        }
     }
 
     private boolean testMove(Move m){

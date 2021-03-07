@@ -33,8 +33,9 @@ public class Main extends Application {
         long endTime = System.currentTimeMillis();
 
         //System.out.println((endTime-startTime));
-        //Hier Kommen Menüaufrufe her
-        board.setBoardByFen("1nbqk3/2pppp2/8/8/8/8/3PPP2/3QK3 w - - 0 1");
+        //Hier Kommen Menüaufrufe her -> ok!
+        //board.setBoardByFen("1nbqk3/2pppp2/8/8/8/8/3PPP2/3QK3 w - - 0 1");
+        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R w KQkq - 0 1");
 
         /*Default fen*/
         //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
