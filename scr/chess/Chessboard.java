@@ -264,6 +264,7 @@ public class Chessboard extends GridPane {
         }
         b_pieces.removeAll(b_pieces);
         w_pieces.removeAll(w_pieces);
+
     }
 
 

@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import chess.Color;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Describes a King and his Movements
@@ -78,17 +79,36 @@ public class King extends Piece{
             validMoves.add(new Move(this.fieldLabel, l));
     }
     public boolean isInCheck(){
-
-        for (Piece e:Move.board.getPiecesByColor(this.color))
+        System.out.println(Move.board.getBoardAsFen());
+        /*
+        for (Piece e : Move.board.getPiecesByColor(this.color == Color.WHITE ? Color.BLACK : Color.WHITE))
         {
             //System.out.println("piece to check " + e);
-            for (Move f:e.calculateValidMoves(Move.board)){
-                if(this.fieldLabel == f.getTarget() && f.getSource().getPiece().getColor() != this.color){
+            for (Move f : e.calculateValidMoves(Move.board)){
+                if(this.fieldLabel == f.getTarget()){
                     System.out.println("ich bin im schach von " + f.getSource().getPiece());
                     return true;
                 }
             }
         }
+
+         */
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if(labels[j][i].hasPiece()){
+                    if(labels[j][i].getPiece().getColor() != this.color){
+                        for (Move f : labels[j][i].getPiece().calculateValidMoves(fieldLabel.getBoard())){
+                            if(this.fieldLabel == f.getTarget()){
+                                System.out.println("ich bin im schach von " + f.getSource().getPiece());
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return false;
     }
 //<>

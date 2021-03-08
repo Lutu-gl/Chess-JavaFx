@@ -66,9 +66,9 @@ public class Turn implements EventHandler<MouseEvent>{
                     //Checking for Promotion
                     checkPawnPromotion(move.getMovingPiece());
                     //Checking if castling rights were broken or not
-                    checkCastleRights(move.getMovingPiece());
+                   // checkCastleRights(move.getMovingPiece());
                     //Checking for Castle move
-                    checkCastle(move);
+                   // checkCastle(move);
 
 
                     //Ending Turn
@@ -111,6 +111,7 @@ public class Turn implements EventHandler<MouseEvent>{
         Move.board.clearAll();
         //Move.board.setBoardByFen("8/8/8/8/8/8/8/8 w - - 0 1");
         Move.board.setBoardByFen(fen);
+
 
     }
 
@@ -198,26 +199,30 @@ public class Turn implements EventHandler<MouseEvent>{
 
     protected boolean tryMove(Move m){
         //For castling
+/*
         if(m.getMovingPiece() instanceof King){
             String s = Move.board.getBoardAsFen();
             FieldLabel[][] labels = m.getTarget().getBoard().getLabels();
-
+            King k = (King) m.getMovingPiece();
             if(m.getSource().getX() + 1 < m.getTarget().getX()) { //Kingside
                 if(m.getMovingPiece().getColor() == Color.WHITE){ //White
                     System.out.println("kingside castle white trymove");
-                    if(((King) m.getMovingPiece()).isInCheck()) return false;
+                    if(k.isInCheck()) return false;
+
                     makeMove(new Move(labels[4][7],labels[5][7]));
-                    if(((King) m.getMovingPiece()).isInCheck()){
+                    System.out.println(k.getFieldLabel().getX());
+                    if( k.isInCheck()){
                         System.out.println("if 1");
                         undoMove(s);
                         return false;
                     }
                     makeMove(new Move(labels[5][7],labels[6][7]));
-                    if(((King) m.getMovingPiece()).isInCheck()){
+                    if(k.isInCheck()){
                         System.out.println("if 2");
                         undoMove(s);
                         return false;
                     }
+                    System.out.println("test");
                 }else if(m.getMovingPiece().getColor() == Color.BLACK){//Black
                     if(((King) m.getMovingPiece()).isInCheck()) return false;
                     makeMove(new Move(labels[4][0],labels[5][0]));
@@ -260,12 +265,16 @@ public class Turn implements EventHandler<MouseEvent>{
                     }
                 }
             }
+            undoMove(s);
         }
+*/
 
 
         King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
         String s = Move.board.getBoardAsFen();
+        System.out.println(Move.board.getBoardAsFen());
         makeMove(m);
+
 
         if(k.isInCheck()){
             System.out.println("der move geht nicht");
