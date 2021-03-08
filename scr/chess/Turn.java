@@ -197,6 +197,71 @@ public class Turn implements EventHandler<MouseEvent>{
 
 
     protected boolean tryMove(Move m){
+        //For castling
+        if(m.getMovingPiece() instanceof King){
+            String s = Move.board.getBoardAsFen();
+            FieldLabel[][] labels = m.getTarget().getBoard().getLabels();
+
+            if(m.getSource().getX() + 1 < m.getTarget().getX()) { //Kingside
+                if(m.getMovingPiece().getColor() == Color.WHITE){ //White
+                    System.out.println("kingside castle white trymove");
+                    if(((King) m.getMovingPiece()).isInCheck()) return false;
+                    makeMove(new Move(labels[4][7],labels[5][7]));
+                    if(((King) m.getMovingPiece()).isInCheck()){
+                        System.out.println("if 1");
+                        undoMove(s);
+                        return false;
+                    }
+                    makeMove(new Move(labels[5][7],labels[6][7]));
+                    if(((King) m.getMovingPiece()).isInCheck()){
+                        System.out.println("if 2");
+                        undoMove(s);
+                        return false;
+                    }
+                }else if(m.getMovingPiece().getColor() == Color.BLACK){//Black
+                    if(((King) m.getMovingPiece()).isInCheck()) return false;
+                    makeMove(new Move(labels[4][0],labels[5][0]));
+                    if(((King) m.getMovingPiece()).isInCheck()){
+                        undoMove(s);
+                        return false;
+                    }
+                    makeMove(new Move(labels[5][0],labels[6][0]));
+                    if(((King) m.getMovingPiece()).isInCheck()){
+                        undoMove(s);
+                        return false;
+                    }
+                }
+            }
+
+            if(m.getSource().getX() -1 > m.getTarget().getX()){ //Queenside
+                if(m.getMovingPiece().getColor() == Color.WHITE){ //White
+                    if(((King) m.getMovingPiece()).isInCheck()) return false;
+                    makeMove(new Move(labels[4][7],labels[3][7]));
+                    if(((King) m.getMovingPiece()).isInCheck()){
+                        undoMove(s);
+                        return false;
+                    }
+                    makeMove(new Move(labels[3][7],labels[2][7]));
+                    if(((King) m.getMovingPiece()).isInCheck()){
+                        undoMove(s);
+                        return false;
+                    }
+                }else if(m.getMovingPiece().getColor() == Color.BLACK){//Black
+                    if(((King) m.getMovingPiece()).isInCheck()) return false;
+                    makeMove(new Move(labels[4][0],labels[3][0]));
+                    if(((King) m.getMovingPiece()).isInCheck()){
+                        undoMove(s);
+                        return false;
+                    }
+                    makeMove(new Move(labels[3][0],labels[2][0]));
+                    if(((King) m.getMovingPiece()).isInCheck()){
+                        undoMove(s);
+                        return false;
+                    }
+                }
+            }
+        }
+
 
         King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
         String s = Move.board.getBoardAsFen();
