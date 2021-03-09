@@ -50,6 +50,7 @@ public class Turn implements EventHandler<MouseEvent>{
             }
         }
         else{ //A valid piece has been selected
+
             move.setTarget((FieldLabel) event.getSource());
             King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
 
@@ -71,6 +72,8 @@ public class Turn implements EventHandler<MouseEvent>{
                     checkCastle(move);
 
 
+                    colorToMove = colorToMove == Color.WHITE ? Color.BLACK : Color.WHITE;
+
                     //Ending Turn
                     unhighlightPiece(move.getSource());
                     move.getMovingPiece().postTurn(move);
@@ -78,7 +81,7 @@ public class Turn implements EventHandler<MouseEvent>{
                     move = null;
 
 
-                    colorToMove = colorToMove == Color.WHITE ? Color.BLACK : Color.WHITE;
+
                 }
                 else{
                     undoMove(s, move);
@@ -96,10 +99,6 @@ public class Turn implements EventHandler<MouseEvent>{
     private void makeMove(Move m) {
         //Make sure Pieces are removed
         //try{move.getEatenPiece().getFieldLabel().removePiece(); Move.board.removePiece(move.getEatenPiece());}catch(NullPointerException ignored){};
-        System.out.println(Move.board.getW_King().getFieldLabel());
-        System.out.println(m.getMovingPiece().getFieldLabel());
-        System.out.println(m.getMovingPiece() == Move.board.getW_King());
-
 
         m.getSource().removePiece();
 
@@ -107,13 +106,14 @@ public class Turn implements EventHandler<MouseEvent>{
         m.getMovingPiece().setFieldLabel(m.getTarget());
         m.getTarget().setPiece(m.getMovingPiece());
 
-        System.out.println(Move.board.getW_King().getFieldLabel());
-        System.out.println(m.getMovingPiece().getFieldLabel());
-        System.out.println(m.getMovingPiece() == Move.board.getW_King());
     }
 
     public static Color getColorToMove() {
         return colorToMove;
+    }
+
+    public static void setColorToMove(Color colorToMove) {
+        Turn.colorToMove = colorToMove;
     }
 
     private void undoMove(String fen, Move m){
@@ -157,7 +157,6 @@ public class Turn implements EventHandler<MouseEvent>{
             FieldLabel[][] labels = m.getTarget().getBoard().getLabels();
 
             if(m.getSource().getX() + 1 < m.getTarget().getX()) { //Kingside
-                System.out.println("Es wurde gecastlelt");
                 if(m.getMovingPiece().getColor() == Color.WHITE){ //White
                     labels[7][7].removePiece();
                     labels[5][7].setPiece(new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), labels[5][7], Color.WHITE, "White Rook"));
@@ -168,7 +167,6 @@ public class Turn implements EventHandler<MouseEvent>{
             }
 
             if(m.getSource().getX() -1 > m.getTarget().getX()){ //Queenside
-                System.out.println("Es wurde gecastlelt");
                 if(m.getMovingPiece().getColor() == Color.WHITE){ //White
                     labels[0][7].removePiece();
                     labels[3][7].setPiece(new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), labels[3][7], Color.WHITE, "White Rook"));
@@ -188,14 +186,13 @@ public class Turn implements EventHandler<MouseEvent>{
 
         FieldLabel[][] labels  = p.getFieldLabel().getBoard().getLabels();
 
-        if(!labels[4][1].hasPiece() && !labels[4][7].hasPiece() && !(labels[4][1].getPiece() instanceof King) && !(labels[4][7].getPiece() instanceof King)){
-            return;
-        }
-
-
         if(p instanceof King){
             ((King) p).setCanCastleKing(false);
             ((King) p).setCanCastleQueen(false);
+            return;
+        }
+
+        if(!labels[4][1].hasPiece() && !labels[4][7].hasPiece() && !(labels[4][1].getPiece() instanceof King) && !(labels[4][7].getPiece() instanceof King)){
             return;
         }
 
@@ -217,25 +214,21 @@ public class Turn implements EventHandler<MouseEvent>{
             FieldLabel[][] labels = m.getTarget().getBoard().getLabels();
             King k = (King) m.getMovingPiece();
             if(m.getSource().getX() + 1 < m.getTarget().getX()) { //Kingside
-                System.out.println("kingside");
                 if(m.getMovingPiece().getColor() == Color.WHITE){ //White
-                    System.out.println("kingside castle white trymove");
                     if(k.isInCheck()) return false;
 
                     makeMove(new Move(labels[4][7],labels[5][7]));
-                    System.out.println(k.getFieldLabel().getX());
+
                     if( k.isInCheck()){
-                        System.out.println("if 1");
+
                         undoMove(s, m);
                         return false;
                     }
                     makeMove(new Move(labels[5][7],labels[6][7]));
                     if(k.isInCheck()){
-                        System.out.println("if 2");
                         undoMove(s, m);
                         return false;
                     }
-                    System.out.println("test");
                 }else if(m.getMovingPiece().getColor() == Color.BLACK){//Black
                     if(((King) m.getMovingPiece()).isInCheck()) return false;
                     makeMove(new Move(labels[4][0],labels[5][0]));
@@ -252,7 +245,6 @@ public class Turn implements EventHandler<MouseEvent>{
             }
 
             if(m.getSource().getX() -1 > m.getTarget().getX()){ //Queenside
-                System.out.println("Queenside!");
                 if(m.getMovingPiece().getColor() == Color.WHITE){ //White
                     if(((King) m.getMovingPiece()).isInCheck()) return false;
                     makeMove(new Move(labels[4][7],labels[3][7]));
@@ -286,20 +278,16 @@ public class Turn implements EventHandler<MouseEvent>{
     protected boolean tryMove(Move m){
         //For castling
         String s = Move.board.getBoardAsFen();
-        System.out.println("Fen vor undo mvoe: " + Move.board.getBoardAsFen());
 
         boolean trycastle = true;
 
         trycastle = tryCastle(m);
-        System.out.println("trycastle: " + trycastle);
 
         undoMove(s, m);
 
-        System.out.println("Fen nach undo mvoe: " + Move.board.getBoardAsFen());
 
 
         King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
-
 
         //System.out.println("Fen nach castle mvoe: " + Move.board.getBoardAsFen());
 

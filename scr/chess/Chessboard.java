@@ -27,6 +27,11 @@ public class Chessboard extends GridPane {
 
     /*** Halfmove counter*/
     private int turn=0;
+    /*** Fullmove counter*/
+    private int fullturn=0;
+
+    /*** 50 Rule move counter */
+    private int ruleCounter=0;
 
     /*** A reference to Blacks King*/
     private King b_King;
@@ -80,6 +85,9 @@ public class Chessboard extends GridPane {
      */
     public void endTurn(){
         turn++;
+        fullturn = turn/2 + 1;
+        System.out.println("turn: " + turn + " fullturn: " +fullturn);
+        System.out.println(getBoardAsFen());
     }
 
     /**
@@ -88,6 +96,36 @@ public class Chessboard extends GridPane {
      */
     public int getTurn() {
         return turn;
+    }
+
+    /**
+     * Getter for fullturn
+     * @return returns int number of full moves since start of game
+     */
+    public int getFullturn() {
+        return fullturn;
+    }
+
+    /**
+     * Setter for fullturn
+     * @param fullturn int number of full moves since start of game
+     */
+    public void setFullturn(int fullturn) {
+        this.fullturn = fullturn;
+    }
+    /**
+     * Getter for 50 move rule
+     * @return returns int number of moves before the 50 move rule applys (half moves)
+     */
+    public int getRuleCounter() {
+        return ruleCounter;
+    }
+    /**
+     * Setter for rule counter
+     * @param ruleCounter int number of moves before the 50 move rule applys (half moves)
+     */
+    public void setRuleCounter(int ruleCounter) {
+        this.ruleCounter = ruleCounter;
     }
 
     /**
@@ -146,13 +184,15 @@ public class Chessboard extends GridPane {
     //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     public void setBoardByFen(String fen){
         String fenBoard = fen.substring(0, fen.indexOf(' ')).replace("/","");
-        String fenInfo = fen.substring(fen.indexOf(' ')+1).replace("/","").replace(" ","");
+        String fenInfo = fen.substring(fen.indexOf(' ')+1).replace("/","");//.replace(" ","");
 
         //System.out.println(fenBoard);
         //System.out.println(fenInfo);
 
+
         int posString=0;
         char c;
+        int turnIndex=0;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -231,6 +271,8 @@ public class Chessboard extends GridPane {
                 if((c > 49) && (c<=57)){
                     j+=(c-49);
                 }
+
+
             }
         }
 
@@ -238,21 +280,38 @@ public class Chessboard extends GridPane {
             c = fenInfo.charAt(j);
 
             switch(c){
-                case 'w': //System.out.println("Whites Turn"); break;//Weiß am zug
-                case 'b': //System.out.println("Blacks Turn"); break; //Schwarz am Zug
-                case 'K': //System.out.println("Whites Kingside"); break; //Weiß kann Kingside castlen
-                case 'Q': //System.out.println("Whites Queenside"); break; //Weiß kann Queenside castlen
-                case 'k': //System.out.println("Black Kingside"); break; //Schwarz kann Kingside castlen
-                case 'q': //System.out.println("Black Queenside"); break; //Schwarz kann Queenside castlen
+                case 'w':  Turn.setColorToMove(Color.WHITE); break;//System.out.println("Whites Turn"); break;//Weiß am zug
+                case 'b': Turn.setColorToMove(Color.BLACK); break;//System.out.println("Blacks Turn"); break; //Schwarz am Zug
+                case 'K': getW_King().setCanCastleKing(true); break; //System.out.println("w king");
+                case 'Q':  getW_King().setCanCastleQueen(true); break; //System.out.println("w queen");
+                case 'k':  getB_King().setCanCastleKing(true); break; //System.out.println("b king");
+                case 'q': getB_King().setCanCastleQueen(true); break; // System.out.println("b queen");
 
-            }
+            } //1 = 49   -> 9 = 57   -=45
             //en Passant
-            if((c > 97) && (c<=105)){
+            if((c > 97) && (c<=105) && fenInfo.charAt(j+1) != ' '){
                 System.out.println("En Passant bei: " + c + fenInfo.charAt(j+1) ); //enPassant ist möglich bei dem feld
+                turnIndex = j+3;
             }
-
+            if(c == 45){    //-
+                turnIndex = j+2;
+            }
         }
+        String number="";
+        for (int i = turnIndex; i < fenInfo.length(); i++) {
+            if(fenInfo.charAt(i) == ' '){
+                ruleCounter = Integer.parseInt(number);
+                number = "";
+                i++;
+            }
+            number = number + fenInfo.charAt(i);
+        }
+        fullturn = Integer.parseInt(number);
 
+        turn = (fullturn-1)*2  + (Turn.getColorToMove() == Color.WHITE ? 0 : 1);
+
+
+        //System.out.println("turn: " + turn + " fullturn " + fullturn + " rule " + ruleCounter);
     }
 
     public void clearAll(){
@@ -320,7 +379,15 @@ public class Chessboard extends GridPane {
             if(i != 7)
                 fen.append('/');
         }
-        fen.append(" w - 0 1");
+        fen.append(Turn.getColorToMove() == Color.WHITE ? " w " : " b ");
+        if(getW_King().isCanCastleKing()) fen.append("K");
+        if(getW_King().isCanCastleQueen()) fen.append("Q");
+        if(getB_King().isCanCastleKing()) fen.append("k");
+        if(getB_King().isCanCastleQueen()) fen.append("q");
+
+        fen.append(" - ");      //Hier ACHTUNG!! da wäre en passant
+
+        fen.append(ruleCounter + " " + fullturn);
         return fen.toString();
     }
 

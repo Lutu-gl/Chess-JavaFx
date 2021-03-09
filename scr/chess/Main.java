@@ -35,7 +35,9 @@ public class Main extends Application {
         //Hier Kommen Menüaufrufe her -> ok!
         //board.setBoardByFen("1nbqk3/2pppp2/8/8/8/8/3PPP2/3QK3 w - - 0 1");
         //board.setBoardByFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
-        board.setBoardByFen("r3k2r/ppqppqpp/8/1B6/1N6/1P6/PP1PP1PP/R3K2R w KQkq - 0 1");    //Castle fen:)
+        //board.setBoardByFen("r3k2r/ppqppqpp/8/1B6/1N6/1P6/PP1PP1PP/R3K2R w KQkq - 0 1");    //Castle fen:)
+        //board.setBoardByFen("r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R b KQkq - 0 4");
+        board.setBoardByFen("r1b2bkr/ppp3pp/2n5/3Qp3/8/8/PPPP1PPP/RNB1K2R b KQ - 0 9");
 
         /*Default fen*/
         //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

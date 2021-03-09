@@ -1,10 +1,12 @@
 package pieces;
 
-import chess.*;
+import chess.Chessboard;
+import chess.Color;
+import chess.FieldLabel;
+import chess.Move;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Describes a King and his Movements
@@ -17,8 +19,8 @@ public class King extends Piece{
         super(img, l, color, name);
     }
 
-    private boolean canCastleKing = true;
-    private boolean canCastleQueen = true;
+    private boolean canCastleKing = false;
+    private boolean canCastleQueen = false;
     @Override
     public ArrayList<Move> calculateValidMoves(Chessboard board) {
         validMoves.removeAll(validMoves);
