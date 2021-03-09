@@ -22,7 +22,7 @@ public class Move {
         this.source = source;
         this.target = target;
         try{
-            this.movingPiece = source.getPiece();
+            this.movingPiece = source.getPiece();         //Move.board.getLabelByCoordinates(source.getX(), source.getY()).getPiece();
             this.eatenPiece = target.getPiece();
         }
         catch (NullPointerException ignored){eatenPiece=null;}

@@ -1,10 +1,7 @@
 package pieces;
 
-import chess.Chessboard;
-import chess.FieldLabel;
-import chess.Move;
+import chess.*;
 import javafx.scene.image.ImageView;
-import chess.Color;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,8 +76,8 @@ public class King extends Piece{
             validMoves.add(new Move(this.fieldLabel, l));
     }
     public boolean isInCheck(){
-        System.out.println(Move.board.getBoardAsFen());
-        /*
+
+
         for (Piece e : Move.board.getPiecesByColor(this.color == Color.WHITE ? Color.BLACK : Color.WHITE))
         {
             //System.out.println("piece to check " + e);
@@ -92,22 +89,6 @@ public class King extends Piece{
             }
         }
 
-         */
-        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if(labels[j][i].hasPiece()){
-                    if(labels[j][i].getPiece().getColor() != this.color){
-                        for (Move f : labels[j][i].getPiece().calculateValidMoves(fieldLabel.getBoard())){
-                            if(this.fieldLabel == f.getTarget()){
-                                System.out.println("ich bin im schach von " + f.getSource().getPiece());
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         return false;
     }

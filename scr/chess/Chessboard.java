@@ -259,6 +259,7 @@ public class Chessboard extends GridPane {
         for (FieldLabel[] e : labels) {
             for (FieldLabel h : e) {
                 if(h.hasPiece())
+
                     h.removePiece();
             }
         }
