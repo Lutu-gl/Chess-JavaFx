@@ -1,4 +1,4 @@
-package chess;
+package gameLogic;
 
 /**
  * @author Stefan Hasler

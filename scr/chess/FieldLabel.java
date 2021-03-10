@@ -1,11 +1,9 @@
 package chess;
 
-import javafx.geometry.Pos;
+import gameLogic.Color;
+import gameLogic.Turn;
 import pieces.Piece;
 import javafx.scene.control.Label;
-
-import javax.swing.*;
-import java.lang.reflect.Field;
 
 /**
  * Describes a square on the Chessboard(a1, b4, h5 ect...) extends javafx.scene.control.Label
@@ -21,7 +19,7 @@ public class FieldLabel extends Label {
     private Chessboard board;
 
     /***Color of field*/
-    private final chess.Color color;
+    private final Color color;
 
     /***the Piece that may stand on top of the Field*/
     private Piece piece;
@@ -34,7 +32,7 @@ public class FieldLabel extends Label {
      * @param y y of FielLabel
      * @param color enum Color of FieldLabel
      */
-    public FieldLabel(int x, int y, chess.Color color){
+    public FieldLabel(int x, int y, Color color){
         this.x = x;
         this.y = y;
         this.color = color;
@@ -60,7 +58,7 @@ public class FieldLabel extends Label {
         //board.removePiece(this.piece);
         this.piece = piece;
         //to ensure that the piece has the correct FieldLabel
-        piece.setFieldLabel(this);
+        //piece.setFieldLabel(this);
         //piece.getImg().setFitHeight(this.getHeight());
         //piece.getImg().setFitWidth(this.getWidth());
         this.setGraphic(piece.getImg());

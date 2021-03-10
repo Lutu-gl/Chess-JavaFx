@@ -2,8 +2,8 @@ package pieces;
 
 import chess.Chessboard;
 import chess.FieldLabel;
-import chess.Color;
-import chess.Move;
+import gameLogic.Color;
+import gameLogic.Move;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;

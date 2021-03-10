@@ -1,5 +1,8 @@
 package chess;
 
+import gameLogic.Color;
+import gameLogic.Move;
+import gameLogic.Turn;
 import javafx.geometry.Pos;
 import pieces.Pawn;
 import pieces.*;
@@ -9,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -89,8 +91,8 @@ public class Chessboard extends GridPane {
     public void endTurn(){
         turn++;
         fullturn = turn/2 + 1;
-        System.out.println("turn: " + turn + " fullturn: " +fullturn);
-        System.out.println(getBoardAsFen());
+        //System.out.println("turn: " + turn + " fullturn: " +fullturn);
+        //System.out.println(getBoardAsFen());
     }
 
     /**
@@ -154,17 +156,14 @@ public class Chessboard extends GridPane {
      * Remove Method for ArrayList<Piece> pieces
      * @param p Piece that needs to be removed
      */
-    public void removePiece(Piece p){
+    public boolean removePiece(Piece p){
 
 
-        if(p == null) return;
-        System.out.println("ich remove jetzt: " + p);
+        if(p == null) return false;
         if(p.getColor() == Color.BLACK)
-            if(!b_pieces.remove(p)){
-                System.out.println("hat nicht geklappt!");
-            }
+            return b_pieces.remove(p);
         else
-            w_pieces.remove(p);
+            return w_pieces.remove(p);
     }
 
     /**

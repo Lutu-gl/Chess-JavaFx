@@ -1,6 +1,7 @@
-package chess;
+package gameLogic;
 
 
+import chess.FieldLabel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pieces.*;
@@ -26,7 +27,7 @@ public class Turn implements EventHandler<MouseEvent>{
     @Override
     public void handle(MouseEvent event) {
         //King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
-
+        //Move.board.getPiecesByColor(Color.BLACK).forEach(p->{ System.out.println(p.getFieldLabel()); });
 
         FieldLabel evenSource = (FieldLabel) event.getSource();
         if(move == null)
@@ -73,6 +74,14 @@ public class Turn implements EventHandler<MouseEvent>{
 
 
                     colorToMove = colorToMove == Color.WHITE ? Color.BLACK : Color.WHITE;
+                    long tStart = System.currentTimeMillis();
+                    if(isGameOver()){
+
+                        System.out.println(colorToMove+" lost");
+                    }
+                    long tStop = System.currentTimeMillis();
+                    System.out.println("isGameOver()=" + (tStop-tStart));
+
 
                     //Ending Turn
                     unhighlightPiece(move.getSource());
@@ -102,9 +111,11 @@ public class Turn implements EventHandler<MouseEvent>{
 
         m.getSource().removePiece();
         Move.board.removePiece(m.getEatenPiece());
+
         //Moving the Piece to the Targetfieldlabel
         m.getMovingPiece().setFieldLabel(m.getTarget());
         m.getTarget().setPiece(m.getMovingPiece());
+
     }
 
     public static Color getColorToMove() {
@@ -293,7 +304,7 @@ public class Turn implements EventHandler<MouseEvent>{
         //System.out.println("Fen nach castle mvoe: " + Move.board.getBoardAsFen());
 
         makeMove(m);
-        System.out.println("Fen nach Try mvoe: " + Move.board.getBoardAsFen());
+        //System.out.println("Fen nach Try mvoe: " + Move.board.getBoardAsFen());
 
         if(k.isInCheck()){
             System.out.println("der move geht nicht");
@@ -305,6 +316,18 @@ public class Turn implements EventHandler<MouseEvent>{
         //System.out.println(m + "#" + k.isInCheck() + "#" + k.toString());
         undoMove(s, m);
         return trycastle;
+    }
+    private boolean isGameOver(){
+        ArrayList<Piece> pieces = new ArrayList<>(Move.board.getPiecesByColor(colorToMove));
+        for (Piece p : pieces)
+        {
+            for (Move m : p.calculateValidMoves(Move.board))
+            {
+                if(tryMove(m))
+                    return false;
+            }
+        }
+        return true;
     }
 }
 

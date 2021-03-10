@@ -1,6 +1,8 @@
 package pieces;
 
 import chess.*;
+import gameLogic.Color;
+import gameLogic.Move;
 import javafx.scene.image.ImageView;
 
 

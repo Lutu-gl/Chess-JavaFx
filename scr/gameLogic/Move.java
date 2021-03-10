@@ -1,9 +1,8 @@
-package chess;
+package gameLogic;
 
-import javafx.scene.control.CheckBox;
+import chess.Chessboard;
+import chess.FieldLabel;
 import pieces.Piece;
-
-import java.lang.reflect.Field;
 
 /**
  * Describes a Move in Chess

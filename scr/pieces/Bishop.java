@@ -2,9 +2,9 @@ package pieces;
 
 import chess.Chessboard;
 import chess.FieldLabel;
-import chess.Move;
+import gameLogic.Move;
 import javafx.scene.image.ImageView;
-import chess.Color;
+import gameLogic.Color;
 
 import java.util.ArrayList;
 /**
