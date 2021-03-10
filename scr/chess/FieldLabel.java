@@ -92,6 +92,7 @@ public class FieldLabel extends Label {
     /**
      * Getter for Chessboard of current game
      * @return Chessboard object
+     * @deprecated
      */
     public Chessboard getBoard() {
         return board;

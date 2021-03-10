@@ -76,7 +76,6 @@ public class Turn implements EventHandler<MouseEvent>{
                     colorToMove = colorToMove == Color.WHITE ? Color.BLACK : Color.WHITE;
                     long tStart = System.currentTimeMillis();
                     if(isGameOver()){
-
                         System.out.println(colorToMove+" lost");
                     }
                     long tStop = System.currentTimeMillis();
