@@ -78,19 +78,37 @@ public class King extends Piece{
             validMoves.add(new Move(this.fieldLabel, l));
     }
     public boolean isInCheck(){
-
-
+        //System.out.println(this.color);
         for (Piece e : Move.board.getPiecesByColor(this.color == Color.WHITE ? Color.BLACK : Color.WHITE))
         {
             //System.out.println("piece to check " + e);
             for (Move f : e.calculateValidMoves(Move.board)){
                 if(this.fieldLabel == f.getTarget()){
-                    System.out.println("ich bin im schach von " + f.getSource().getPiece());
+                    //System.out.println("ich bin im schach von " + f.getSource().getPiece() + " " + e);
                     return true;
                 }
             }
         }
 
+        /*
+        FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if(labels[j][i].hasPiece()){
+                    if(labels[j][i].getPiece().getColor() != this.color){
+                        for (Move f : labels[j][i].getPiece().calculateValidMoves(fieldLabel.getBoard())){
+                            if(this.fieldLabel == f.getTarget()){
+                                System.out.println("ich bin im schach von " + f.getSource().getPiece());
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+         */
 
         return false;
     }

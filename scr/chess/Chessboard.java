@@ -1,5 +1,6 @@
 package chess;
 
+import javafx.geometry.Pos;
 import pieces.Pawn;
 import pieces.*;
 import pieces.Piece;
@@ -8,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -51,6 +53,7 @@ public class Chessboard extends GridPane {
                 label.setId(""+ (char)(97 + i) + (8-j));
                 label.setText(""+ (char)(97 + i) + (8-j));
                 label.setTextAlignment(TextAlignment.CENTER);
+                label.setAlignment(Pos.CENTER);
                 label.setBoard(this);
                 labels[i][j]=label;
                 this.add(label, i, j);
@@ -152,8 +155,14 @@ public class Chessboard extends GridPane {
      * @param p Piece that needs to be removed
      */
     public void removePiece(Piece p){
+
+
+        if(p == null) return;
+        System.out.println("ich remove jetzt: " + p);
         if(p.getColor() == Color.BLACK)
-            b_pieces.remove(p);
+            if(!b_pieces.remove(p)){
+                System.out.println("hat nicht geklappt!");
+            }
         else
             w_pieces.remove(p);
     }
@@ -280,8 +289,8 @@ public class Chessboard extends GridPane {
             c = fenInfo.charAt(j);
 
             switch(c){
-                case 'w':  Turn.setColorToMove(Color.WHITE); break;//System.out.println("Whites Turn"); break;//Weiß am zug
-                case 'b': Turn.setColorToMove(Color.BLACK); break;//System.out.println("Blacks Turn"); break; //Schwarz am Zug
+                case 'w': Turn.setColorToMove(Color.WHITE); break; //System.out.println("Whites Turn"); break;//Weiß am zug
+                case 'b': Turn.setColorToMove(Color.BLACK); break;  //System.out.println("Blacks Turn"); break; //Schwarz am Zug
                 case 'K': getW_King().setCanCastleKing(true); break; //System.out.println("w king");
                 case 'Q':  getW_King().setCanCastleQueen(true); break; //System.out.println("w queen");
                 case 'k':  getB_King().setCanCastleKing(true); break; //System.out.println("b king");

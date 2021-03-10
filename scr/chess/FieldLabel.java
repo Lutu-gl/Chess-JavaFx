@@ -1,8 +1,10 @@
 package chess;
 
+import javafx.geometry.Pos;
 import pieces.Piece;
 import javafx.scene.control.Label;
 
+import javax.swing.*;
 import java.lang.reflect.Field;
 
 /**
@@ -59,6 +61,8 @@ public class FieldLabel extends Label {
         this.piece = piece;
         //to ensure that the piece has the correct FieldLabel
         piece.setFieldLabel(this);
+        //piece.getImg().setFitHeight(this.getHeight());
+        //piece.getImg().setFitWidth(this.getWidth());
         this.setGraphic(piece.getImg());
     }
 

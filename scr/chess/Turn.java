@@ -101,11 +101,10 @@ public class Turn implements EventHandler<MouseEvent>{
         //try{move.getEatenPiece().getFieldLabel().removePiece(); Move.board.removePiece(move.getEatenPiece());}catch(NullPointerException ignored){};
 
         m.getSource().removePiece();
-
+        Move.board.removePiece(m.getEatenPiece());
         //Moving the Piece to the Targetfieldlabel
         m.getMovingPiece().setFieldLabel(m.getTarget());
         m.getTarget().setPiece(m.getMovingPiece());
-
     }
 
     public static Color getColorToMove() {
@@ -122,7 +121,9 @@ public class Turn implements EventHandler<MouseEvent>{
         //Move.board.setBoardByFen("8/8/8/8/8/8/8/8 w - - 0 1");
         Move.board.setBoardByFen(fen);
 
+        //Can potentially be deleted, if we change getter of moving/eaten piece that it gets the piece from the label
         m.setMovingPiece(Move.board.getLabelByCoordinates(m.getSource().getX(), m.getSource().getY()).getPiece());
+        m.setEatenPiece(Move.board.getLabelByCoordinates(m.getTarget().getX(),m.getTarget().getY()).getPiece());
 
     }
 
@@ -292,7 +293,7 @@ public class Turn implements EventHandler<MouseEvent>{
         //System.out.println("Fen nach castle mvoe: " + Move.board.getBoardAsFen());
 
         makeMove(m);
-        //System.out.println("Fen nach Try mvoe: " + Move.board.getBoardAsFen());
+        System.out.println("Fen nach Try mvoe: " + Move.board.getBoardAsFen());
 
         if(k.isInCheck()){
             System.out.println("der move geht nicht");
