@@ -34,14 +34,14 @@ public class Main extends Application {
         //board.setBoardByFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
         //board.setBoardByFen("r3k2r/ppqppqpp/8/1B6/1N6/1P6/PP1PP1PP/R3K2R w KQkq - 0 1");    //Castle fen:)
         //board.setBoardByFen("r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R b KQkq - 0 4");
-        //board.setBoardByFen("r1b2bkr/ppp3pp/2n5/3Qp3/8/8/PPPP1PPP/RNB1K2R b KQ - 0 9");
+        //board.setBoardByFen("r1bq1bkr/ppp3pp/2n5/3np3/2B5/5Q2/PPPP1PPP/RNB1K2R w KQ - 2 8");
 
         /*!!!!!!*/
-        //board.setBoardByFen("rkb4r/p2p4/1pQ2Bpb/p1pp2Pp/1PBR2PN/P1PN1P1n/3RK3/1q5R b kq - 0 1"); //NullpointerException Fen
+        board.setBoardByFen("rkb4r/p2p4/1pQ2Bpb/p1pp2Pp/1PBR2PN/P1PN1P1n/3RK3/1q5R b - 0 1"); //NullpointerException Fen
         //board.setBoardByFen("rkb4r/p2p4/1pQ3pb/p1pp2Pp/1PBR1PPN/P1PN1P1n/3RK2B/1q5R b kq - 0 1"); //same
 
         /*Default fen*/
-        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         //System.out.println(board.getBoardAsFen());
 
         /*

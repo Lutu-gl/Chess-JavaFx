@@ -37,13 +37,14 @@ public class Queen extends Piece{
             validMoves.add(new Move(this.fieldLabel, labels[i][y]));;
         }
         for(int i = y; i != 8;i++){
-
             if(labels[x][i].hasPiece()  && labels[x][i].getPiece().hashCode() != this.hashCode()){
-                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(new Move(this.fieldLabel, labels[x][i]));;
+                if(labels[x][i].getPiece().getColor() != this.color) validMoves.add(new Move(this.fieldLabel, labels[x][i]));
                 break;
             }
 
-            if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()) continue;
+            if(labels[x][i].hasPiece() && labels[x][i].getPiece().hashCode() == this.hashCode()){
+                continue;
+            }
             validMoves.add(new Move(this.fieldLabel, labels[x][i]));
         }
 
@@ -109,6 +110,8 @@ public class Queen extends Piece{
 
             validMoves.add(new Move(this.fieldLabel, labels[i][i2]));;
         }
+
+
 
         return validMoves;
     }

@@ -94,6 +94,7 @@ public class FieldLabel extends Label {
      * @return Chessboard object
      * @deprecated
      */
+    @Deprecated
     public Chessboard getBoard() {
         return board;
     }

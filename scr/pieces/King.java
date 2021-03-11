@@ -81,10 +81,10 @@ public class King extends Piece{
         //System.out.println(this.fieldLabel);
         for (Piece e : Move.board.getPiecesByColor(this.color == Color.WHITE ? Color.BLACK : Color.WHITE))
         {
-            System.out.println(e);
+            //System.out.println(e);
             for (Move f : e.calculateValidMoves(Move.board)){
                 if(this.fieldLabel == f.getTarget()){
-                    System.out.println("ich bin im schach von " + f);
+                    //System.out.println("ich bin im schach von " + f);
                     return true;
                 }
             }
