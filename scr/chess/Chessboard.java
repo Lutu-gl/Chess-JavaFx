@@ -1,6 +1,7 @@
 package chess;
 
 import gameLogic.Color;
+import gameLogic.Gamestate;
 import gameLogic.Move;
 import gameLogic.Turn;
 import javafx.geometry.Pos;
@@ -25,11 +26,12 @@ public class Chessboard extends GridPane {
 
     /*** A two Dimensional Array containing all Squares(FieldLabels)*/
     private FieldLabel[][] labels = new FieldLabel[8][8];
-
     /*** A Arraylist containing all Pieces*/
     private ArrayList<Piece> b_pieces = new ArrayList<>();
     private ArrayList<Piece> w_pieces = new ArrayList<>();
 
+    /*** Variable for the gamestate. For example if White/Black Wins or Stalemate etc.*/
+    Gamestate gamestate = Gamestate.PLAYING;
     /*** Halfmove counter*/
     private int turn=0;
     /*** Fullmove counter*/
@@ -108,6 +110,7 @@ public class Chessboard extends GridPane {
         }
         if(threefoldCounter >= 3){
             System.out.println("Treefold applies. Anyone can claim a DRAW!");
+            gamestate = Gamestate.PLAYERCANCLAIMDRAW;
         }else{
             threefoldCounter=0;
         }
@@ -119,6 +122,7 @@ public class Chessboard extends GridPane {
 
         if(ruleCounter >= 100){
             System.out.println("50 move rule -> DRAW");
+            gamestate = Gamestate.DRAW;
         }
 
         //System.out.println("turn: " + turn + " fullturn: " +fullturn);
@@ -461,5 +465,19 @@ public class Chessboard extends GridPane {
     public King getW_King() {
         return w_King;
     }
+    /**
+     * Getter for gamestate
+     * @return the gamestate
+     */
+    public Gamestate getGamestate() {
+        return gamestate;
+    }
 
+    /**
+     * Setter for gamestate
+     * @param gamestate the current gamestate
+     */
+    public void setGamestate(Gamestate gamestate) {
+        this.gamestate = gamestate;
+    }
 }
