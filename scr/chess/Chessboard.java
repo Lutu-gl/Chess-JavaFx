@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -33,13 +34,14 @@ public class Chessboard extends GridPane {
     private int turn=0;
     /*** Fullmove counter*/
     private int fullturn=0;
-
     /*** 50 Rule move counter */
     private int ruleCounter=0;
-
+    /*** previous fen for the threefold repetition for White*/
+    private ArrayList<String> playedFens = new ArrayList<>();
+    /*** counter for threefold repetition */
+    private int threefoldCounter=0;
     /*** A reference to Blacks King*/
     private King b_King;
-
     /*** A reference to Whites King*/
     private King w_King;
 
@@ -84,15 +86,43 @@ public class Chessboard extends GridPane {
         }
     }
 
+
     /**
      * Gets called after every Halfmove
      * More functionality will be added
      */
-    public void endTurn(){
+    public void endTurn(Move move){
+        fullturn = (turn / 2) + (Turn.getColorToMove() == Color.BLACK ? 1 : 1);
         turn++;
-        fullturn = turn/2 + 1;
+        ruleCounter++;
+
+        //Three fold repetition.
+        String fen = getBoardAsFen();
+        fen = fen.substring(0, fen.length()-3);
+        playedFens.add(fen);
+        //Maybe this can be done somehow faster
+        for(String f : playedFens){
+            if(fen.equals(f)){
+                threefoldCounter++;
+            }
+        }
+        if(threefoldCounter >= 3){
+            System.out.println("Treefold applies. Anyone can claim a DRAW!");
+        }else{
+            threefoldCounter=0;
+        }
+
+
+        //50 move rule
+        if(move.getMovingPiece() instanceof Pawn) ruleCounter = 0;
+        if(move.getEatenPiece() != null) ruleCounter = 0;
+
+        if(ruleCounter >= 100){
+            System.out.println("50 move rule -> DRAW");
+        }
+
         //System.out.println("turn: " + turn + " fullturn: " +fullturn);
-        //System.out.println(getBoardAsFen());
+        System.out.println(getBoardAsFen());
     }
 
     /**
@@ -139,6 +169,12 @@ public class Chessboard extends GridPane {
      */
     public void setTurn(int turn) {
         this.turn = turn;
+    }
+    /**
+     * @param fen Add a fen to the Arraylist playedFens to check threefold repetition
+     */
+    public void addFen(String fen){
+        playedFens.add(fen.substring(0,fen.length()-3));
     }
 
     /**
@@ -316,8 +352,7 @@ public class Chessboard extends GridPane {
         }
         fullturn = Integer.parseInt(number);
 
-        turn = (fullturn-1)*2  + (Turn.getColorToMove() == Color.WHITE ? 0 : 1);
-
+        turn = fullturn*2  + (Turn.getColorToMove() == Color.BLACK ? -1 : 0);
 
         //System.out.println("turn: " + turn + " fullturn " + fullturn + " rule " + ruleCounter);
     }

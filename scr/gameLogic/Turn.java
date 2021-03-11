@@ -86,7 +86,7 @@ public class Turn implements EventHandler<MouseEvent> {
                     //Ending Turn
                     unhighlightPiece(move.getSource());
                     move.getMovingPiece().postTurn(move);
-                    Move.board.endTurn();
+                    Move.board.endTurn(move);
                     move = null;
 
 

@@ -29,6 +29,8 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image("file:scr/Chess/Download.jpg"));
         board.doShowTextLabels(false);
 
+        String fen = "";        //Bitte ab jetzt in die Variable String den fen hineinschreiben. Ist wichtig für die threefoldrepetition
+
         //Hier Kommen Menüaufrufe her -> ok!
         //board.setBoardByFen("1nbqk3/2pppp2/8/8/8/8/3PPP2/3QK3 w - - 0 1");
         //board.setBoardByFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
@@ -37,12 +39,15 @@ public class Main extends Application {
         //board.setBoardByFen("r1bq1bkr/ppp3pp/2n5/3np3/2B5/5Q2/PPPP1PPP/RNB1K2R w KQ - 2 8");
 
         /*!!!!!!*/
-        board.setBoardByFen("rkb4r/p2p4/1pQ2Bpb/p1pp2Pp/1PBR2PN/P1PN1P1n/3RK3/1q5R b - 0 1"); //NullpointerException Fen
+        //board.setBoardByFen("rkb4r/p2p4/1pQ2Bpb/p1pp2Pp/1PBR2PN/P1PN1P1n/3RK3/1q5R b - 0 1"); //NullpointerException Fen
         //board.setBoardByFen("rkb4r/p2p4/1pQ3pb/p1pp2Pp/1PBR1PPN/P1PN1P1n/3RK2B/1q5R b kq - 0 1"); //same
 
         /*Default fen*/
-        //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         //System.out.println(board.getBoardAsFen());
+
+        board.addFen(fen);
+        board.setBoardByFen(fen);
 
         /*
         PromotionDialog p1 = new PromotionDialog(p);
