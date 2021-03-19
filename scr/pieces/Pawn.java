@@ -23,10 +23,10 @@ public class Pawn extends Piece{
 
     private boolean doubleMove = false;
     private final int moveDirection = this.color == Color.WHITE ? -1 : 1;
+    private FieldLabel enpassantLabel;
 
     @Override
     public ArrayList<Move> calculateValidMoves(Chessboard board) {
-
         FieldLabel[][] labels = this.fieldLabel.getBoard().getLabels();
         int x = this.fieldLabel.getX();
         int y = this.fieldLabel.getY();
@@ -61,6 +61,14 @@ public class Pawn extends Piece{
         catch (ArrayIndexOutOfBoundsException ignored){}
 
         //en passant
+        if(enpassantLabel != null){
+            System.out.println("ya");
+            Move m = new Move(this.fieldLabel, enpassantLabel);
+            m.setEatenPiece(Move.board.getLabelByCoordinates(enpassantLabel.getX(),enpassantLabel.getY()-moveDirection).getPiece());
+            System.out.println("fesopfeshp: " + m);
+            validMoves.add(m);
+        }
+        /*
         try
         {
             if(canEnPassant(labels[x-1][y])){ //checks for en passant left to the piece
@@ -75,6 +83,7 @@ public class Pawn extends Piece{
                 validMoves.add(m);
             }
         } catch (ArrayIndexOutOfBoundsException ignored){}
+         */
 
 //||
        return validMoves;
@@ -106,7 +115,10 @@ public class Pawn extends Piece{
     public void postTurn(Move m) {
 
         //Looks if the Pawn just moved two squares by taking its last position and its current position and subtracting 2 from it
-        doubleMove = m.getTarget().getY() - moveDirection * 2 == m.getSource().getY();
+        //doubleMove = m.getTarget().getY() - moveDirection * 2 == m.getSource().getY();
+        if(m.getTarget().getY() - moveDirection * 2 == m.getSource().getY()){
+            Move.board.setEnPassantable(this);
+        }
     }
 
     /**
@@ -133,6 +145,14 @@ public class Pawn extends Piece{
      */
     public void setDoubleMove(boolean doubleMove) {
         this.doubleMove = doubleMove;
+    }
+
+    public FieldLabel getEnpassantLabel() {
+        return enpassantLabel;
+    }
+
+    public void setEnpassantLabel(FieldLabel enpassantLabel) {
+        this.enpassantLabel = enpassantLabel;
     }
 }
 /*

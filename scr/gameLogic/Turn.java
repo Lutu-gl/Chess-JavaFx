@@ -8,8 +8,6 @@ import pieces.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import java.util.ArrayList;
-
 /**
  * @author Stefan Hasler
  * @version 3.2
@@ -57,11 +55,14 @@ public class Turn implements EventHandler<MouseEvent> {
             King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
 
             //Checks if Target and Source are the same and if the move is legal
+            addEnpassantMoves(Move.board.getBoardAsFen());
+
             if (isValidMove(move) != null) {
                 move = isValidMove(move);
+                System.out.println("Hier der move ist: " + move);
                 String s = Move.board.getBoardAsFen();
                 if (tryMove(move)) {
-
+                    System.out.println("Hier der move2 ist: " + move);
                     //moving the piece
                     makeMove(move);
                     //undoMove();
@@ -72,14 +73,15 @@ public class Turn implements EventHandler<MouseEvent> {
                     checkCastleRights(move.getMovingPiece());
                     //Checking for Castle move
                     checkCastle(move);
-
+                    //Check enpassant
+                    checkEnPassant(move);
 
                     colorToMove = colorToMove == Color.WHITE ? Color.BLACK : Color.WHITE;
                     long tStart = System.currentTimeMillis();
-                    if (isGameOver()) {
-                        System.out.println(colorToMove + " lost");
-                        Move.board.setGamestate(colorToMove == Color.WHITE ? Gamestate.BLACKWINS : Gamestate.WHITEWINS);
-                    }
+
+                    Move.board.setGamestate(updateGamestate());
+
+
                     long tStop = System.currentTimeMillis();
                     System.out.println("isGameOver()=" + (tStop - tStart));
 
@@ -89,8 +91,6 @@ public class Turn implements EventHandler<MouseEvent> {
                     move.getMovingPiece().postTurn(move);
                     Move.board.endTurn(move);
                     move = null;
-
-
                 } else {
                     undoMove(s, move);
                     unhighlightPiece(move.getSource());
@@ -108,7 +108,9 @@ public class Turn implements EventHandler<MouseEvent> {
         //try{move.getEatenPiece().getFieldLabel().removePiece(); Move.board.removePiece(move.getEatenPiece());}catch(NullPointerException ignored){};
 
         m.getSource().removePiece();
+        System.out.println("Hier jetzt!" + m.getEatenPiece());
         Move.board.removePiece(m.getEatenPiece());
+
 
         //Moving the Piece to the Targetfieldlabel
         m.getMovingPiece().setFieldLabel(m.getTarget());
@@ -133,7 +135,7 @@ public class Turn implements EventHandler<MouseEvent> {
         //Can potentially be deleted, if we change getter of moving/eaten piece that it gets the piece from the label
         m.setMovingPiece(Move.board.getLabelByCoordinates(m.getSource().getX(), m.getSource().getY()).getPiece());
         m.setEatenPiece(Move.board.getLabelByCoordinates(m.getTarget().getX(), m.getTarget().getY()).getPiece());
-
+        //m.setEatenPiece(m.getEatenPiece());
     }
 
     public static void highlightPiece(FieldLabel label) {
@@ -158,6 +160,13 @@ public class Turn implements EventHandler<MouseEvent> {
 
         if (p.getName().contains("Pawn") && (p.getFieldLabel().getY() == 0 || p.getFieldLabel().getY() == 7))
             new PromotionDialog((Pawn) p).show();
+    }
+    private void checkEnPassant(Move m){
+        if(m.getMovingPiece() instanceof Pawn){
+            if(m.getEatenPiece() == null){
+                Move.board.getLabelByCoordinates(m.getTarget().getX(), m.getTarget().getY() + ((m.getMovingPiece().getColor() == Color.WHITE) ? +1 : -1)).removePiece();
+            }
+        }
     }
 
     private void checkCastle(Move m) {
@@ -313,7 +322,38 @@ public class Turn implements EventHandler<MouseEvent> {
         return trycastle;
     }
 
-    private boolean isGameOver() {
+    private void addEnpassantMoves(String fen){
+        String fenInfo = fen.substring(fen.indexOf(' ')+1).replace("/","");//.replace(" ","");,,
+        char c;
+        for (int j = 0; j < fenInfo.length(); j++) {
+            c = fenInfo.charAt(j);
+            //en Passant
+            if((c >= 97) && (c<=105) && fenInfo.charAt(j+1) != ' ') {
+                int x = c - 97;
+                int y = (Turn.getColorToMove() != Color.WHITE ? 5 : 2);
+                int moveDirect = (Turn.getColorToMove() != Color.WHITE ? -1 : +1);
+
+                System.out.println("En Passant bei: " + c + fenInfo.charAt(j + 1)); //enPassant ist möglich bei dem feld
+                FieldLabel label = Move.board.getLabelByCoordinates(x, y);
+
+                System.out.println("label das enpassant .." + label);
+
+                FieldLabel label2 = Move.board.getLabelByCoordinates(x + 1, y + moveDirect);
+                System.out.println(label2);
+
+                if (label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()) {
+                    ((Pawn) label2.getPiece()).setEnpassantLabel(label);
+                }
+                label2 = Move.board.getLabelByCoordinates(x - 1, y + moveDirect);
+                System.out.println(label2);
+                if (label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()) {
+                    ((Pawn) label2.getPiece()).setEnpassantLabel(label);
+                }
+            }
+        }
+    }
+
+    private Gamestate updateGamestate() {
         /* ATTENZIONE: NON FUNZIONA NEANCHE UN POCCETINO
         ArrayList<Piece> pieces = new ArrayList<>(Move.board.getPiecesByColor(colorToMove));
         for (Piece p : pieces)
@@ -326,21 +366,25 @@ public class Turn implements EventHandler<MouseEvent> {
         }
          */
         FieldLabel[][] labels = Move.board.getLabels();
+        boolean isStalemate = false;
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (labels[j][i].hasPiece()) {
                     if (labels[j][i].getPiece().getColor() == colorToMove) {
                         for (Move f : labels[j][i].getPiece().calculateValidMoves(Move.board)) {
                             if (tryMove(f)) {
-                                return false;
+                                return Gamestate.PLAYING;
                             }
                         }
                     }
                 }
             }
         }
-
-        return true;
+        if(Move.board.getKing(colorToMove).isInCheck()){
+            return colorToMove == Color.WHITE ? Gamestate.BLACKWINS : Gamestate.WHITEWINS;
+        }
+        return Gamestate.STALEMATE;
     }
 }
 

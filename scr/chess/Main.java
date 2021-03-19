@@ -41,6 +41,7 @@ public class Main extends Application {
         /*!!!!!!*/
         //board.setBoardByFen("rkb4r/p2p4/1pQ2Bpb/p1pp2Pp/1PBR2PN/P1PN1P1n/3RK3/1q5R b - 0 1"); //NullpointerException Fen
         //board.setBoardByFen("rkb4r/p2p4/1pQ3pb/p1pp2Pp/1PBR1PPN/P1PN1P1n/3RK2B/1q5R b kq - 0 1"); //same
+        //fen = "rnbqkbnr/pppppppp/8/4P3/1pp5/8/PPPP1PPP/RNBQKBNR b KQkq b3 0 1";
 
         /*Default fen*/
         fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";

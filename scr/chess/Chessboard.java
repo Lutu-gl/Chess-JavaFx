@@ -46,6 +46,8 @@ public class Chessboard extends GridPane {
     private King b_King;
     /*** A reference to Whites King*/
     private King w_King;
+    /*** Pawn that can be enPassant*/
+    private Pawn enPassantable;
 
 
     /**
@@ -127,6 +129,8 @@ public class Chessboard extends GridPane {
 
         //System.out.println("turn: " + turn + " fullturn: " +fullturn);
         System.out.println(getBoardAsFen());
+        //setBoardByFen(getBoardAsFen());
+        System.out.println(gamestate);
     }
 
     /**
@@ -337,8 +341,30 @@ public class Chessboard extends GridPane {
 
             } //1 = 49   -> 9 = 57   -=45
             //en Passant
-            if((c > 97) && (c<=105) && fenInfo.charAt(j+1) != ' '){
+            if((c >= 97) && (c<=105) && fenInfo.charAt(j+1) != ' '){
+                int x=c-97;
+                int y = (Turn.getColorToMove() != Color.WHITE ? 5 : 2 );
+                int moveDirect = (Turn.getColorToMove() != Color.WHITE ? -1 : +1);
+
                 System.out.println("En Passant bei: " + c + fenInfo.charAt(j+1) ); //enPassant ist möglich bei dem feld
+                FieldLabel label = getLabelByCoordinates(x,y);
+
+                System.out.println("label das enpassant .." + label);
+
+                FieldLabel label2 = getLabelByCoordinates(x+1,y+moveDirect);
+                System.out.println(label2);
+
+                if(label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()){
+                    ((Pawn) label2.getPiece()).setEnpassantLabel(label);
+                }
+                label2 = getLabelByCoordinates(x-1,y+moveDirect);
+                System.out.println(label2);
+                if(label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()){
+                    ((Pawn) label2.getPiece()).setEnpassantLabel(label);
+                }
+
+                //Enpassant remove
+                enPassantable = null;
                 turnIndex = j+3;
             }
             if(c == 45){    //-
@@ -432,11 +458,27 @@ public class Chessboard extends GridPane {
         if(getB_King().isCanCastleKing()) fen.append("k");
         if(getB_King().isCanCastleQueen()) fen.append("q");
 
-        fen.append(" - ");      //Hier ACHTUNG!! da wäre en passant
+
+        if(enPassantable == null){
+            fen.append(" - ");      //Hier ACHTUNG!! da wäre en passant
+        }else{
+            fen.append(" " + ((char) (enPassantable.getFieldLabel().getX()+97)) + (Turn.getColorToMove() == Color.WHITE ? "6 " : "3 "));
+        }
+
+
 
         fen.append(ruleCounter + " " + fullturn);
+
+
+
         return fen.toString();
     }
+
+
+    public void getEnpassantLabel(){
+
+    }
+
 
     /**
      * Turns Coordinates into the Fieldlabel
@@ -446,7 +488,9 @@ public class Chessboard extends GridPane {
      * @return FieldLabel object or Null
      */
     public FieldLabel getLabelByCoordinates(int x, int y) {
-        try { return labels[x][y]; } catch (ArrayIndexOutOfBoundsException ignored){}
+        try { return labels[x][y]; } catch (ArrayIndexOutOfBoundsException ignored){
+            System.out.println(x + " " +y);
+        }
         return null;
     }
 
@@ -479,5 +523,13 @@ public class Chessboard extends GridPane {
      */
     public void setGamestate(Gamestate gamestate) {
         this.gamestate = gamestate;
+    }
+
+    public Pawn getEnPassantable() {
+        return enPassantable;
+    }
+
+    public void setEnPassantable(Pawn enPassantable) {
+        this.enPassantable = enPassantable;
     }
 }
