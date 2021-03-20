@@ -54,8 +54,7 @@ public class Main extends Application {
         PromotionDialog p1 = new PromotionDialog(p);
         p1.show();
         System.out.println(p.getColor().name());
-
-        */
+                */
 
     }
 

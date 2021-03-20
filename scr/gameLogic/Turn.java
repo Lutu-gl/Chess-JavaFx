@@ -59,10 +59,8 @@ public class Turn implements EventHandler<MouseEvent> {
 
             if (isValidMove(move) != null) {
                 move = isValidMove(move);
-                System.out.println("Hier der move ist: " + move);
                 String s = Move.board.getBoardAsFen();
                 if (tryMove(move)) {
-                    System.out.println("Hier der move2 ist: " + move);
                     //moving the piece
                     makeMove(move);
                     //undoMove();
@@ -108,7 +106,7 @@ public class Turn implements EventHandler<MouseEvent> {
         //try{move.getEatenPiece().getFieldLabel().removePiece(); Move.board.removePiece(move.getEatenPiece());}catch(NullPointerException ignored){};
 
         m.getSource().removePiece();
-        System.out.println("Hier jetzt!" + m.getEatenPiece());
+        //System.out.println("Hier jetzt!" + m.getEatenPiece());
         Move.board.removePiece(m.getEatenPiece());
 
 
@@ -161,11 +159,10 @@ public class Turn implements EventHandler<MouseEvent> {
         if (p.getName().contains("Pawn") && (p.getFieldLabel().getY() == 0 || p.getFieldLabel().getY() == 7))
             new PromotionDialog((Pawn) p).show();
     }
+
     private void checkEnPassant(Move m){
-        if(m.getMovingPiece() instanceof Pawn){
-            if(m.getEatenPiece() == null){
-                Move.board.getLabelByCoordinates(m.getTarget().getX(), m.getTarget().getY() + ((m.getMovingPiece().getColor() == Color.WHITE) ? +1 : -1)).removePiece();
-            }
+        if(m.getMovingPiece() instanceof Pawn && m.getEatenPiece() == null && m.getSource().getX() != m.getTarget().getX()){
+            Move.board.getLabelByCoordinates(m.getTarget().getX(), m.getTarget().getY() + ((m.getMovingPiece().getColor() == Color.WHITE) ? +1 : -1)).removePiece();
         }
     }
 
@@ -333,19 +330,19 @@ public class Turn implements EventHandler<MouseEvent> {
                 int y = (Turn.getColorToMove() != Color.WHITE ? 5 : 2);
                 int moveDirect = (Turn.getColorToMove() != Color.WHITE ? -1 : +1);
 
-                System.out.println("En Passant bei: " + c + fenInfo.charAt(j + 1)); //enPassant ist möglich bei dem feld
+                //System.out.println("En Passant bei: " + c + fenInfo.charAt(j + 1)); //enPassant ist möglich bei dem feld
                 FieldLabel label = Move.board.getLabelByCoordinates(x, y);
 
-                System.out.println("label das enpassant .." + label);
+                //System.out.println("label das enpassant .." + label);
 
                 FieldLabel label2 = Move.board.getLabelByCoordinates(x + 1, y + moveDirect);
-                System.out.println(label2);
+                //System.out.println(label2);
 
                 if (label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()) {
                     ((Pawn) label2.getPiece()).setEnpassantLabel(label);
                 }
                 label2 = Move.board.getLabelByCoordinates(x - 1, y + moveDirect);
-                System.out.println(label2);
+                //System.out.println(label2);
                 if (label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()) {
                     ((Pawn) label2.getPiece()).setEnpassantLabel(label);
                 }
@@ -387,7 +384,3 @@ public class Turn implements EventHandler<MouseEvent> {
         return Gamestate.STALEMATE;
     }
 }
-
-/*
-
- */

@@ -4,6 +4,8 @@ import gameLogic.Color;
 import gameLogic.Gamestate;
 import gameLogic.Move;
 import gameLogic.Turn;
+import gameLogic.GamestateObserver;
+import gameLogic.Observer;
 import javafx.geometry.Pos;
 import pieces.Pawn;
 import pieces.*;
@@ -48,12 +50,15 @@ public class Chessboard extends GridPane {
     private King w_King;
     /*** Pawn that can be enPassant*/
     private Pawn enPassantable;
-
+    /*** observers*/
+    ArrayList<Observer> observers = new ArrayList<>();
 
     /**
      * Constructor initializing the Board with 64 Fieldlabels
      */
     public Chessboard(){
+        register(new GamestateObserver(this));
+
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++){
                 FieldLabel label = new FieldLabel(i,j,(i % 2 == j % 2) ? Color.BLACK : Color.WHITE);
@@ -102,7 +107,18 @@ public class Chessboard extends GridPane {
 
         //Three fold repetition.
         String fen = getBoardAsFen();
-        fen = fen.substring(0, fen.length()-3);
+
+        int spaceCounter=0;
+        for (int i = fen.length()-1; i >= 0; i--) {
+            if(fen.charAt(i) == ' '){
+                spaceCounter++;
+            }
+            if(spaceCounter >= 2){
+                fen = fen.substring(0, i);
+                break;
+            }
+        }
+
         playedFens.add(fen);
         //Maybe this can be done somehow faster
         for(String f : playedFens){
@@ -111,7 +127,7 @@ public class Chessboard extends GridPane {
             }
         }
         if(threefoldCounter >= 3){
-            System.out.println("Treefold applies. Anyone can claim a DRAW!");
+            //System.out.println("Treefold applies. Anyone can claim a DRAW!");
             gamestate = Gamestate.PLAYERCANCLAIMDRAW;
         }else{
             threefoldCounter=0;
@@ -123,14 +139,14 @@ public class Chessboard extends GridPane {
         if(move.getEatenPiece() != null) ruleCounter = 0;
 
         if(ruleCounter >= 100){
-            System.out.println("50 move rule -> DRAW");
+            //System.out.println("50 move rule -> DRAW");
             gamestate = Gamestate.DRAW;
         }
 
         //System.out.println("turn: " + turn + " fullturn: " +fullturn);
-        System.out.println(getBoardAsFen());
+        //System.out.println(getBoardAsFen());
         //setBoardByFen(getBoardAsFen());
-        System.out.println(gamestate);
+        notifyObserver();
     }
 
     /**
@@ -346,19 +362,19 @@ public class Chessboard extends GridPane {
                 int y = (Turn.getColorToMove() != Color.WHITE ? 5 : 2 );
                 int moveDirect = (Turn.getColorToMove() != Color.WHITE ? -1 : +1);
 
-                System.out.println("En Passant bei: " + c + fenInfo.charAt(j+1) ); //enPassant ist möglich bei dem feld
+                //System.out.println("En Passant bei: " + c + fenInfo.charAt(j+1) ); //enPassant ist möglich bei dem feld
                 FieldLabel label = getLabelByCoordinates(x,y);
 
-                System.out.println("label das enpassant .." + label);
+                //System.out.println("label das enpassant .." + label);
 
                 FieldLabel label2 = getLabelByCoordinates(x+1,y+moveDirect);
-                System.out.println(label2);
+                //System.out.println(label2);
 
                 if(label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()){
                     ((Pawn) label2.getPiece()).setEnpassantLabel(label);
                 }
                 label2 = getLabelByCoordinates(x-1,y+moveDirect);
-                System.out.println(label2);
+                //System.out.println(label2);
                 if(label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()){
                     ((Pawn) label2.getPiece()).setEnpassantLabel(label);
                 }
@@ -460,15 +476,22 @@ public class Chessboard extends GridPane {
 
 
         if(enPassantable == null){
-            fen.append(" - ");      //Hier ACHTUNG!! da wäre en passant
+            fen.append(" -");      //Hier ACHTUNG!! da wäre en passant
         }else{
-            fen.append(" " + ((char) (enPassantable.getFieldLabel().getX()+97)) + (Turn.getColorToMove() == Color.WHITE ? "6 " : "3 "));
+            FieldLabel left = getLabelByCoordinates(enPassantable.getFieldLabel().getX()-1, enPassantable.getFieldLabel().getY());
+            FieldLabel right = getLabelByCoordinates(enPassantable.getFieldLabel().getX()+1, enPassantable.getFieldLabel().getY());
+
+            if((left != null && left.hasPiece() && left.getPiece() instanceof Pawn && left.getPiece().getColor() != enPassantable.getColor())
+                    || right != null && right.hasPiece() && right.getPiece() instanceof Pawn && right.getPiece().getColor() != enPassantable.getColor()) {
+                fen.append(" " + ((char) (enPassantable.getFieldLabel().getX() + 97)) + (Turn.getColorToMove() == Color.WHITE ? "6" : "3"));
+            }else{
+                fen.append(" -");
+            }
         }
 
 
 
-        fen.append(ruleCounter + " " + fullturn);
-
+        fen.append(" " + ruleCounter + " " + fullturn);
 
 
         return fen.toString();
@@ -480,6 +503,20 @@ public class Chessboard extends GridPane {
     }
 
 
+
+    public void register(Observer o) {
+        observers.add(o);
+    }
+
+    public void unregister(Observer o) {
+        observers.remove(o);
+    }
+
+    public void notifyObserver(){
+        for(Observer o : observers){
+            o.update();
+        }
+    }
     /**
      * Turns Coordinates into the Fieldlabel
      * can Return Null if x or y are invalid
@@ -489,7 +526,7 @@ public class Chessboard extends GridPane {
      */
     public FieldLabel getLabelByCoordinates(int x, int y) {
         try { return labels[x][y]; } catch (ArrayIndexOutOfBoundsException ignored){
-            System.out.println(x + " " +y);
+            //System.out.println(x + " " +y);
         }
         return null;
     }

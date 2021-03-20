@@ -62,10 +62,9 @@ public class Pawn extends Piece{
 
         //en passant
         if(enpassantLabel != null){
-            System.out.println("ya");
             Move m = new Move(this.fieldLabel, enpassantLabel);
             m.setEatenPiece(Move.board.getLabelByCoordinates(enpassantLabel.getX(),enpassantLabel.getY()-moveDirection).getPiece());
-            System.out.println("fesopfeshp: " + m);
+            //System.out.println("fesopfeshp: " + m);
             validMoves.add(m);
         }
         /*
