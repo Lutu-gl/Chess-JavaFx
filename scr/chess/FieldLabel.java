@@ -2,6 +2,7 @@ package chess;
 
 import gameLogic.Color;
 import gameLogic.Turn;
+import javafx.application.Platform;
 import pieces.Piece;
 import javafx.scene.control.Label;
 
@@ -61,6 +62,8 @@ public class FieldLabel extends Label {
         //piece.setFieldLabel(this);
         //piece.getImg().setFitHeight(this.getHeight());
         //piece.getImg().setFitWidth(this.getWidth());
+
+        //Platform.runLater(() -> this.setGraphic(piece.getImg())); //Maybe needed for multithreading
         this.setGraphic(piece.getImg());
     }
 
@@ -68,8 +71,8 @@ public class FieldLabel extends Label {
      * Remove/Kill Piece of this FieldLabel
      */
     public void removePiece(){
-
         piece = null;
+        //Platform.runLater(() -> this.setGraphic(null)); //Maybe needed for multithreading
         this.setGraphic(null);
     }
 

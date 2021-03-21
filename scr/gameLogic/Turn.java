@@ -2,16 +2,23 @@ package gameLogic;
 
 
 import chess.FieldLabel;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pieces.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.*;
+
 /**
  * @author Stefan Hasler
  * @version 3.2
- * A Eventhandler to move pieces
+ * A EventHandler to move pieces
  */
 
 public class Turn implements EventHandler<MouseEvent> {
@@ -28,8 +35,6 @@ public class Turn implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-        //King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
-        //Move.board.getPiecesByColor(Color.BLACK).forEach(p->{ System.out.println(p.getFieldLabel()); });
 
         FieldLabel evenSource = (FieldLabel) event.getSource();
         if (move == null) {
@@ -54,7 +59,6 @@ public class Turn implements EventHandler<MouseEvent> {
             move.setTarget((FieldLabel) event.getSource());
             King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
 
-            //Checks if Target and Source are the same and if the move is legal
             addEnpassantMoves(Move.board.getBoardAsFen());
 
             if (isValidMove(move) != null) {
@@ -79,7 +83,6 @@ public class Turn implements EventHandler<MouseEvent> {
 
                     Move.board.setGamestate(updateGamestate());
 
-
                     long tStop = System.currentTimeMillis();
                     System.out.println("isGameOver()=" + (tStop - tStart));
 
@@ -89,7 +92,7 @@ public class Turn implements EventHandler<MouseEvent> {
                     move.getMovingPiece().postTurn(move);
                     Move.board.endTurn(move);
                     move = null;
-                } else {
+                }else {
                     undoMove(s, move);
                     unhighlightPiece(move.getSource());
                     move = null;
@@ -351,36 +354,45 @@ public class Turn implements EventHandler<MouseEvent> {
     }
 
     private Gamestate updateGamestate() {
-        /* ATTENZIONE: NON FUNZIONA NEANCHE UN POCCETINO
-        ArrayList<Piece> pieces = new ArrayList<>(Move.board.getPiecesByColor(colorToMove));
-        for (Piece p : pieces)
+        /* ATTENZIONE: NON FUNZIONA NEANCHE UN POCCETINO */
+
+        for (int i = 0; i < Move.board.getPiecesByColor(colorToMove).size(); i++)
         {
+            Piece p = Move.board.getPiecesByColor(colorToMove).get(i);
             for (Move m : p.calculateValidMoves(Move.board))
             {
-                if(tryMove(m))
-                    return false;
-            }
-        }
-         */
-        FieldLabel[][] labels = Move.board.getLabels();
-        boolean isStalemate = false;
-
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (labels[j][i].hasPiece()) {
-                    if (labels[j][i].getPiece().getColor() == colorToMove) {
-                        for (Move f : labels[j][i].getPiece().calculateValidMoves(Move.board)) {
-                            if (tryMove(f)) {
-                                return Gamestate.PLAYING;
-                            }
-                        }
-                    }
+                if(tryMove(m)){
+                    return Gamestate.PLAYING;
                 }
             }
         }
+
+
         if(Move.board.getKing(colorToMove).isInCheck()){
             return colorToMove == Color.WHITE ? Gamestate.BLACKWINS : Gamestate.WHITEWINS;
         }
         return Gamestate.STALEMATE;
     }
 }
+/*
+  /*
+
+         */
+
+
+        /*
+        FieldLabel[][] labels = Move.board.getLabels();
+        boolean isStalemate = false;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (labels[j][i].hasPiece() && labels[j][i].getPiece().getColor() == colorToMove) {
+                    for (Move f : labels[j][i].getPiece().calculateValidMoves(Move.board)) {
+                        if (tryMove(f)) {
+                            return Gamestate.PLAYING;
+                        }
+                    }
+                }
+            }
+        }
+
+         */

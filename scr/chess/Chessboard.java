@@ -560,6 +560,7 @@ public class Chessboard extends GridPane {
      */
     public void setGamestate(Gamestate gamestate) {
         this.gamestate = gamestate;
+        System.out.println("Current state: " + gamestate);
     }
 
     public Pawn getEnPassantable() {
