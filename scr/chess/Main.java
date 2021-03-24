@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 
 /**
  * Main Class which contains the Main Method
- * @author Stefan Hasler
- * @version 1.5
  */
 public class Main extends Application {
     /**
@@ -29,7 +27,7 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image("file:scr/Chess/Download.jpg"));
         board.doShowTextLabels(false);
 
-        String fen = "r1b1kbn1/pppppppp/R6P/2BBP3/1Nn1QPN1/2P3P1/1Pr4P/qP2K2R w Kq - 0 1";        //Bitte ab jetzt in die Variable String den fen hineinschreiben. Ist wichtig für die threefoldrepetition
+        //String fen = "r3k2r/ppqppqpp/8/1B6/1N6/1P6/PP1PP1PP/R3K2R w KQkq - 0 1";        //Bitte ab jetzt in die Variable String den fen hineinschreiben. Ist wichtig für die threefoldrepetition
 
         //Hier Kommen Menüaufrufe her -> ok!
         //board.setBoardByFen("1nbqk3/2pppp2/8/8/8/8/3PPP2/3QK3 w - - 0 1");
@@ -44,12 +42,11 @@ public class Main extends Application {
         //fen = "rnbqkbnr/pppppppp/8/4P3/1pp5/8/PPPP1PPP/RNBQKBNR b KQkq b3 0 1";
 
         /*Default fen*/
-        //String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         //System.out.println(board.getBoardAsFen());
 
         board.addFen(fen);
         board.setBoardByFen(fen);
-
         /*
         PromotionDialog p1 = new PromotionDialog(p);
         p1.show();

@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 /**
  * Describes a Queen and its moves
- * @author Lutu
- * @version 1.2
  */
 public class Queen extends Piece{
     public Queen(ImageView img, FieldLabel l, Color color, String name) {

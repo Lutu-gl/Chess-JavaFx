@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.concurrent.*;
 
 /**
- * @author Stefan Hasler
- * @version 3.2
  * A EventHandler to move pieces
  */
 
@@ -84,7 +82,7 @@ public class Turn implements EventHandler<MouseEvent> {
                     Move.board.setGamestate(updateGamestate());
 
                     long tStop = System.currentTimeMillis();
-                    System.out.println("isGameOver()=" + (tStop - tStart));
+                   // System.out.println("isGameOver()=" + (tStop - tStart));
 
 
                     //Ending Turn
@@ -93,7 +91,7 @@ public class Turn implements EventHandler<MouseEvent> {
                     Move.board.endTurn(move);
                     move = null;
                 }else {
-                    undoMove(s, move);
+                    //undoMove(s, move);
                     unhighlightPiece(move.getSource());
                     move = null;
                 }
@@ -116,7 +114,7 @@ public class Turn implements EventHandler<MouseEvent> {
         //Moving the Piece to the Targetfieldlabel
         m.getMovingPiece().setFieldLabel(m.getTarget());
         m.getTarget().setPiece(m.getMovingPiece());
-
+        //System.out.println(m);
     }
 
     public static Color getColorToMove() {
@@ -127,7 +125,15 @@ public class Turn implements EventHandler<MouseEvent> {
         Turn.colorToMove = colorToMove;
     }
 
-    private void undoMove(String fen, Move m) {
+    private void undoMove(String fen, Move m, Move msave) {
+      //  System.out.println("Jetzt undo move");
+        //makeMove(m);
+        //System.out.println(msave);
+
+
+        //m.getSource().setPiece(m.getMovingPiece());
+        //m.getTarget().setPiece(m.getEatenPiece());
+
 
         Move.board.clearAll();
         //Move.board.setBoardByFen("8/8/8/8/8/8/8/8 w - - 0 1");
@@ -137,6 +143,7 @@ public class Turn implements EventHandler<MouseEvent> {
         m.setMovingPiece(Move.board.getLabelByCoordinates(m.getSource().getX(), m.getSource().getY()).getPiece());
         m.setEatenPiece(Move.board.getLabelByCoordinates(m.getTarget().getX(), m.getTarget().getY()).getPiece());
         //m.setEatenPiece(m.getEatenPiece());
+
     }
 
     public static void highlightPiece(FieldLabel label) {
@@ -226,7 +233,6 @@ public class Turn implements EventHandler<MouseEvent> {
 
     private boolean tryCastle(Move m) {
         if (m.getMovingPiece() instanceof King) {
-
             String s = Move.board.getBoardAsFen();
             FieldLabel[][] labels = m.getTarget().getBoard().getLabels();
             King k = (King) m.getMovingPiece();
@@ -238,24 +244,24 @@ public class Turn implements EventHandler<MouseEvent> {
 
                     if (k.isInCheck()) {
 
-                        undoMove(s, m);
+                       // undoMove(s, m);
                         return false;
                     }
                     makeMove(new Move(labels[5][7], labels[6][7]));
                     if (k.isInCheck()) {
-                        undoMove(s, m);
+                      //  undoMove(s, m);
                         return false;
                     }
                 } else if (m.getMovingPiece().getColor() == Color.BLACK) {//Black
                     if (((King) m.getMovingPiece()).isInCheck()) return false;
                     makeMove(new Move(labels[4][0], labels[5][0]));
                     if (((King) m.getMovingPiece()).isInCheck()) {
-                        undoMove(s, m);
+                        //undoMove(s, m);
                         return false;
                     }
                     makeMove(new Move(labels[5][0], labels[6][0]));
                     if (((King) m.getMovingPiece()).isInCheck()) {
-                        undoMove(s, m);
+                      //  undoMove(s, m);
                         return false;
                     }
                 }
@@ -266,24 +272,24 @@ public class Turn implements EventHandler<MouseEvent> {
                     if (((King) m.getMovingPiece()).isInCheck()) return false;
                     makeMove(new Move(labels[4][7], labels[3][7]));
                     if (((King) m.getMovingPiece()).isInCheck()) {
-                        undoMove(s, m);
+                       // undoMove(s, m);
                         return false;
                     }
                     makeMove(new Move(labels[3][7], labels[2][7]));
                     if (((King) m.getMovingPiece()).isInCheck()) {
-                        undoMove(s, m);
+                       // undoMove(s, m);
                         return false;
                     }
                 } else if (m.getMovingPiece().getColor() == Color.BLACK) {//Black
                     if (((King) m.getMovingPiece()).isInCheck()) return false;
                     makeMove(new Move(labels[4][0], labels[3][0]));
                     if (((King) m.getMovingPiece()).isInCheck()) {
-                        undoMove(s, m);
+                       // undoMove(s, m);
                         return false;
                     }
                     makeMove(new Move(labels[3][0], labels[2][0]));
                     if (((King) m.getMovingPiece()).isInCheck()) {
-                        undoMove(s, m);
+                       // undoMove(s, m);
                         return false;
                     }
                 }
@@ -294,14 +300,13 @@ public class Turn implements EventHandler<MouseEvent> {
 
     protected boolean tryMove(Move m) {
         //For castling
+        Move msave = new Move(m);
         String s = Move.board.getBoardAsFen();
 
         boolean trycastle = true;
-
         trycastle = tryCastle(m);
 
-        undoMove(s, m);
-
+        undoMove(s, m, msave);
 
         King k = colorToMove == Color.WHITE ? Move.board.getW_King() : Move.board.getB_King();
 
@@ -314,11 +319,13 @@ public class Turn implements EventHandler<MouseEvent> {
             //System.out.println("der move geht nicht");
             //System.out.println("\t" + m);
 
-            undoMove(s, m);
+            undoMove(s, m, msave);
             return false;
         }
         //System.out.println(m + "#" + k.isInCheck() + "#" + k.toString());
-        undoMove(s, m);
+
+        undoMove(s, m, msave);
+
         return trycastle;
     }
 
@@ -355,7 +362,7 @@ public class Turn implements EventHandler<MouseEvent> {
 
     private Gamestate updateGamestate() {
         /* ATTENZIONE: NON FUNZIONA NEANCHE UN POCCETINO */
-
+/*
         for (int i = 0; i < Move.board.getPiecesByColor(colorToMove).size(); i++)
         {
             Piece p = Move.board.getPiecesByColor(colorToMove).get(i);
@@ -368,6 +375,29 @@ public class Turn implements EventHandler<MouseEvent> {
         }
 
 
+        if(Move.board.getKing(colorToMove).isInCheck()){
+            return colorToMove == Color.WHITE ? Gamestate.BLACKWINS : Gamestate.WHITEWINS;
+        }
+        return Gamestate.STALEMATE;
+    }
+ */
+
+        FieldLabel[][] labels = Move.board.getLabels();
+        boolean isStalemate = false;
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (labels[j][i].hasPiece()) {
+                    if (labels[j][i].getPiece().getColor() == colorToMove) {
+                        for (Move f : labels[j][i].getPiece().calculateValidMoves(Move.board)) {
+                            if (tryMove(f)) {
+                                return Gamestate.PLAYING;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         if(Move.board.getKing(colorToMove).isInCheck()){
             return colorToMove == Color.WHITE ? Gamestate.BLACKWINS : Gamestate.WHITEWINS;
         }

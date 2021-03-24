@@ -8,8 +8,6 @@ import pieces.*;
 
 /**
  * Simple Dialog which opens when a pawn reaches y=7 or y=0 and promotes him
- * @author Stefan Hasler
- * @version 1.0
  */
 
 public class PromotionDialog extends Dialog<Boolean> {

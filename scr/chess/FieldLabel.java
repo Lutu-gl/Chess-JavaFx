@@ -8,8 +8,6 @@ import javafx.scene.control.Label;
 
 /**
  * Describes a square on the Chessboard(a1, b4, h5 ect...) extends javafx.scene.control.Label
- * @author Stefan Hasler
- * @version 1.5
  *
  */
 public class FieldLabel extends Label {

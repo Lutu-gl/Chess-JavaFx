@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 /**
  * Describes a Pawn and its valid moves
- * @author Stefan Hasler
- * @version 3.5
  *
  */
 

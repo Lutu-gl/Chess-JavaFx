@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 /**
  * Topclass for each Piece
- * @author Stefan Hasler
- * @version 1.5
  */
 public abstract class Piece{
 

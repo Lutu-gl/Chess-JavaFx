@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 /**
  * Describes a King and his Movements
- * @author Stefan Hasler
- * @version 1.2
  */
 
 public class King extends Piece{

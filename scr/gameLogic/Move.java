@@ -6,8 +6,7 @@ import pieces.Piece;
 
 /**
  * Describes a Move in Chess
- * @author Stefan Hasler
- * @version 1.3
+
  */
 public class Move {
     private FieldLabel source;

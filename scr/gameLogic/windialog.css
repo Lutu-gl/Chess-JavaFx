@@ -1,0 +1,32 @@
+.button{
+    -fx-focus-color: transparent;
+    -fx-background-insets: -1,0,1,1;
+
+    -fx-font-weight: bold;
+    -fx-font-size: 10;
+    -fx-text-fill: black;
+    -fx-background-color: whitesmoke;
+    -fx-border-color: black;
+
+
+    -fx-pref-height:30px;
+    -fx-pref-width:150px;
+}
+
+.label{
+
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-font-size: 15;
+
+    -fx-pref-height:30px;
+    -fx-pref-width:150px;
+}
+
+#windialog{
+    -fx-pref-height:80px;
+    -fx-pref-width:400px;
+
+
+
+}

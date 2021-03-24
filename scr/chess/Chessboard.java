@@ -15,14 +15,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * The actual Board containing a list of FieldLabels, the Constructor initializes it with 64 labels
  * aswell as a list of all pieces
- * @author Stefan Hasler
- * @version 2.0
  */
 public class Chessboard extends GridPane {
 
@@ -198,7 +195,18 @@ public class Chessboard extends GridPane {
      * @param fen Add a fen to the Arraylist playedFens to check threefold repetition
      */
     public void addFen(String fen){
-        playedFens.add(fen.substring(0,fen.length()-3));
+        int spaceCounter=0;
+        for (int i = fen.length()-1; i >= 0; i--) {
+            if(fen.charAt(i) == ' '){
+                spaceCounter++;
+            }
+            if(spaceCounter >= 2){
+                fen = fen.substring(0, i);
+                break;
+            }
+        }
+
+        playedFens.add(fen);
     }
 
     /**
@@ -251,6 +259,301 @@ public class Chessboard extends GridPane {
      */
     //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     public void setBoardByFen(String fen){
+        /*
+        String fenBoard = fen.substring(0, fen.indexOf(' ')).replace("/","");
+        String fenInfo = fen.substring(fen.indexOf(' ')+1).replace("/","");//.replace(" ","");
+
+        //System.out.println(fenBoard);
+        //System.out.println(fenInfo);
+        ArrayList<String> rows = new ArrayList<>();
+        ArrayList<String> currentRows = new ArrayList<>();
+        char c;
+        String currentFen = getBoardAsFen();
+
+        if(currentFen != null) {
+            //System.out.println(fen);
+            //System.out.println(currentFen);
+            //System.out.println(getBoardAsFen()); Also die Idee: Die ganzen / / bei getBoardAsFen durchgehen. Schauen wo dort was andersch isch. Wenn was andersch isch des ändern
+            if (currentFen.equals(fen)) {
+                return;
+            }
+            String string = "";
+
+            for (int i = 0; i < fen.length(); i++) {
+                c = fen.charAt(i);
+                if (c == '/') {
+                    rows.add(string);
+                    string = "";
+                } else {
+                    string = string + c;
+                }
+                if (c == ' '){
+                    rows.add(string);
+                    break;
+                }
+            }
+            string = "";
+
+            for (int i = 0; i < currentFen.length(); i++) {
+                c = currentFen.charAt(i);
+                if (c == ' '){
+                    currentRows.add(string);
+                    break;
+                }
+                if (c == '/') {
+                    currentRows.add(string);
+                    string = "";
+                } else {
+                    string = string + c;
+                }
+
+            }
+           // System.out.println(rows);
+            //System.out.println(currentRows);
+
+            for (int i = 0; i < rows.size(); i++) {
+                String row = rows.get(i);
+                String currentrow = currentRows.get(i);
+
+                if(!row.equals(currentrow)){
+                    //System.out.println("Bei row: " + i + " fen: " + row + " currentfen " + currentrow);
+                    //In this row make everything new :)
+                    int x=0;
+                    int y=i;
+
+                    for (int j = 0; j < row.length(); j++, x++) {
+                        c = row.charAt(j);
+
+                        Piece piece;
+                        switch(c){
+                            //Black pieces
+                            case 'p':
+                                piece =  new Pawn(new ImageView(new Image("Imgs\\B_Pawn.png")), labels[x][y], Color.BLACK, "Black Pawn");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'n':
+                                piece = new Knight(new ImageView(new Image("Imgs\\B_Knight.png")), labels[x][y], Color.BLACK, "Black Knight");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'b':
+                                piece = new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), labels[x][y], Color.BLACK, "Black Bishop");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'r':
+                                piece =new Rook(new ImageView(new Image("Imgs\\B_Rook.png")), labels[x][y], Color.BLACK, "Black Rook");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'q':
+                                piece = new Queen(new ImageView(new Image("Imgs\\B_Queen.png")), labels[x][y], Color.BLACK, "Black Queen");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'k':
+                                piece = new King(new ImageView(new Image("Imgs\\B_King.png")), labels[x][y], Color.BLACK, "Black King");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                b_King = (King)piece;
+                                break;
+                            //White pieces
+                            case 'P':
+                                piece = new Pawn(new ImageView(new Image("Imgs\\W_Pawn.png")), labels[x][y], Color.WHITE, "White Pawn");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'N':
+                                piece = new Knight(new ImageView(new Image("Imgs\\W_Knight.png")), labels[x][y], Color.WHITE, "White Knight");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'B':
+                                piece = new Bishop(new ImageView(new Image("Imgs\\W_Bishop.png")), labels[x][y], Color.WHITE, "White Bishop");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'R':
+                                piece = new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), labels[x][y], Color.WHITE, "White Rook");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'Q':
+                                piece = new Queen(new ImageView(new Image("Imgs\\W_Queen.png")), labels[x][y], Color.WHITE, "White Queen");
+                                getLabels()[x][y].setPiece(piece);
+                                this.addPiece(piece);
+                                break;
+                            case 'K':
+                                piece = new King(new ImageView(new Image("Imgs\\W_King.png")), labels[x][y], Color.WHITE, "White King");
+                                getLabels()[x][y].setPiece(piece);
+                                w_King = (King)piece;
+                                this.addPiece(piece);
+                                break;
+                            //nl
+                            case '/': continue;
+                        }
+                        //1=49  &&  8=56
+                        if(c >= 49 && c <= 56){
+                            //System.out.println("x="+x);
+                            int number = Integer.parseInt(c+"");
+
+                            for (int k = 0; k < number; k++) {
+                                labels[x+k][y].removePiece();
+                            }
+                            x += (number-1);
+                        }
+                    }
+                }
+            }
+        } else {
+            int posString = 0;
+
+
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (posString >= fenBoard.length()) break;
+                    c = fenBoard.charAt(posString++);
+                    Piece piece;
+                    switch (c) {
+                        //Black pieces
+                        case 'p':
+                            piece = new Pawn(new ImageView(new Image("Imgs\\B_Pawn.png")), labels[j][i], Color.BLACK, "Black Pawn");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'n':
+                            piece = new Knight(new ImageView(new Image("Imgs\\B_Knight.png")), labels[j][i], Color.BLACK, "Black Knight");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'b':
+                            piece = new Bishop(new ImageView(new Image("Imgs\\B_Bishop.png")), labels[j][i], Color.BLACK, "Black Bishop");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'r':
+                            piece = new Rook(new ImageView(new Image("Imgs\\B_Rook.png")), labels[j][i], Color.BLACK, "Black Rook");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'q':
+                            piece = new Queen(new ImageView(new Image("Imgs\\B_Queen.png")), labels[j][i], Color.BLACK, "Black Queen");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'k':
+                            piece = new King(new ImageView(new Image("Imgs\\B_King.png")), labels[j][i], Color.BLACK, "Black King");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            b_King = (King) piece;
+                            break;
+                        //White pieces
+                        case 'P':
+                            piece = new Pawn(new ImageView(new Image("Imgs\\W_Pawn.png")), labels[j][i], Color.WHITE, "White Pawn");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'N':
+                            piece = new Knight(new ImageView(new Image("Imgs\\W_Knight.png")), labels[j][i], Color.WHITE, "White Knight");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'B':
+                            piece = new Bishop(new ImageView(new Image("Imgs\\W_Bishop.png")), labels[j][i], Color.WHITE, "White Bishop");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'R':
+                            piece = new Rook(new ImageView(new Image("Imgs\\W_Rook.png")), labels[j][i], Color.WHITE, "White Rook");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'Q':
+                            piece = new Queen(new ImageView(new Image("Imgs\\W_Queen.png")), labels[j][i], Color.WHITE, "White Queen");
+                            getLabels()[j][i].setPiece(piece);
+                            this.addPiece(piece);
+                            break;
+                        case 'K':
+                            piece = new King(new ImageView(new Image("Imgs\\W_King.png")), labels[j][i], Color.WHITE, "White King");
+                            getLabels()[j][i].setPiece(piece);
+                            w_King = (King) piece;
+                            this.addPiece(piece);
+                            break;
+                        //nl
+                        case '/':
+                            continue;
+                    }
+                    //blank space
+                    if ((c > 49) && (c <= 57)) {
+                        j += (c - 49);
+                    }
+                }
+            }
+        }
+        int turnIndex = 0;
+
+        for (int j = 0; j < fenInfo.length(); j++) {
+            c = fenInfo.charAt(j);
+
+            switch(c){
+                case 'w': Turn.setColorToMove(Color.WHITE); break; //System.out.println("Whites Turn"); break;//Weiß am zug
+                case 'b': Turn.setColorToMove(Color.BLACK); break;  //System.out.println("Blacks Turn"); break; //Schwarz am Zug
+                case 'K': getW_King().setCanCastleKing(true); break; //System.out.println("w king");
+                case 'Q':  getW_King().setCanCastleQueen(true); break; //System.out.println("w queen");
+                case 'k':  getB_King().setCanCastleKing(true); break; //System.out.println("b king");
+                case 'q': getB_King().setCanCastleQueen(true); break; // System.out.println("b queen");
+
+            } //1 = 49   -> 9 = 57   -=45
+            //en Passant
+            if((c >= 97) && (c<=105) && fenInfo.charAt(j+1) != ' '){
+                int x=c-97;
+                int y = (Turn.getColorToMove() != Color.WHITE ? 5 : 2 );
+                int moveDirect = (Turn.getColorToMove() != Color.WHITE ? -1 : +1);
+
+                //System.out.println("En Passant bei: " + c + fenInfo.charAt(j+1) ); //enPassant ist möglich bei dem feld
+                FieldLabel label = getLabelByCoordinates(x,y);
+
+                //System.out.println("label das enpassant .." + label);
+
+                FieldLabel label2 = getLabelByCoordinates(x+1,y+moveDirect);
+                //System.out.println(label2);
+
+                if(label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()){
+                    ((Pawn) label2.getPiece()).setEnpassantLabel(label);
+                }
+                label2 = getLabelByCoordinates(x-1,y+moveDirect);
+                //System.out.println(label2);
+                if(label2 != null && label2.hasPiece() && label2.getPiece() instanceof Pawn && label2.getPiece().getColor() == Turn.getColorToMove()){
+                    ((Pawn) label2.getPiece()).setEnpassantLabel(label);
+                }
+
+                //Enpassant remove
+                enPassantable = null;
+                turnIndex = j+3;
+            }
+            if(c == 45){    //-
+                turnIndex = j+2;
+            }
+        }
+        String number="";
+        for (int i = turnIndex; i < fenInfo.length(); i++) {
+            if(fenInfo.charAt(i) == ' '){
+                ruleCounter = Integer.parseInt(number);
+                number = "";
+                i++;
+            }
+            number = number + fenInfo.charAt(i);
+        }
+        fullturn = Integer.parseInt(number);
+
+        turn = fullturn*2  + (Turn.getColorToMove() == Color.BLACK ? -1 : 0);
+
+        //System.out.println("turn: " + turn + " fullturn " + fullturn + " rule " + ruleCounter);
+       // System.out.println("Jetzt der Fen nach undo move " + getBoardAsFen());
+
+         */
+
         String fenBoard = fen.substring(0, fen.indexOf(' ')).replace("/","");
         String fenInfo = fen.substring(fen.indexOf(' ')+1).replace("/","");//.replace(" ","");
 
@@ -401,6 +704,7 @@ public class Chessboard extends GridPane {
         turn = fullturn*2  + (Turn.getColorToMove() == Color.BLACK ? -1 : 0);
 
         //System.out.println("turn: " + turn + " fullturn " + fullturn + " rule " + ruleCounter);
+
     }
 
     public void clearAll(){
@@ -441,6 +745,10 @@ public class Chessboard extends GridPane {
      * !!!Not finished!!!
      */
     public String getBoardAsFen(){
+        if(getW_King() == null || getB_King() == null){
+            return null;
+        }
+
         StringBuilder fen = new StringBuilder();
         for (int i = 0; i < 8; i++)
         {
@@ -560,7 +868,7 @@ public class Chessboard extends GridPane {
      */
     public void setGamestate(Gamestate gamestate) {
         this.gamestate = gamestate;
-        System.out.println("Current state: " + gamestate);
+        //System.out.println("Current state: " + gamestate);
     }
 
     public Pawn getEnPassantable() {

@@ -9,8 +9,6 @@ import gameLogic.Color;
 import java.util.ArrayList;
 /**
  * Descripes a Bishop and its valid moves
- * @author Stefan Hasler
- * version 1.3
  */
 
 
