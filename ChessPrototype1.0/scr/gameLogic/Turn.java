@@ -2,18 +2,11 @@ package gameLogic;
 
 
 import chess.FieldLabel;
-import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pieces.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.*;
 
 /**
  * A EventHandler to move pieces

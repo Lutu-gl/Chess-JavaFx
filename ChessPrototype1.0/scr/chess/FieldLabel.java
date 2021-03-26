@@ -61,8 +61,8 @@ public class FieldLabel extends Label {
         //piece.getImg().setFitHeight(this.getHeight());
         //piece.getImg().setFitWidth(this.getWidth());
 
-        //Platform.runLater(() -> this.setGraphic(piece.getImg())); //Maybe needed for multithreading
-        this.setGraphic(piece.getImg());
+        Platform.runLater(() -> this.setGraphic(piece.getImg())); //Maybe needed for multithreadin
+        // this.setGraphic(piece.getImg());
     }
 
     /**
@@ -70,8 +70,8 @@ public class FieldLabel extends Label {
      */
     public void removePiece(){
         piece = null;
-        //Platform.runLater(() -> this.setGraphic(null)); //Maybe needed for multithreading
-        this.setGraphic(null);
+        Platform.runLater(() -> this.setGraphic(null)); //Maybe needed for multithreading
+        //this.setGraphic(null);
     }
 
     /**
