@@ -9,7 +9,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Chess!");
         primaryStage.setScene(ChessboardView.init(8, 8));
-        ChessboardView.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        ChessboardView.setFEN("8/8/8/2k5/4K3/8/8/8");
         primaryStage.getScene().getStylesheets().add(getClass().getResource("stylesheet.css").toString());
         primaryStage.show();
     }

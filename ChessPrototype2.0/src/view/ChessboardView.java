@@ -2,8 +2,11 @@ package view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ChessboardView {
@@ -15,7 +18,7 @@ public class ChessboardView {
             ArrayList<Label> buffer = new ArrayList<>();
             for (int x = 0; x < w; x++) {
                 Label lbl = new Label();
-                lbl.getStyleClass().add((i+x)%2!=0 ? "whiteField" : "blackField");
+                lbl.getStyleClass().add((i+x)%2==0 ? "whiteField" : "blackField");
                 buffer.add(lbl);
                 gridPane.add(lbl, x, i);
             }
@@ -29,12 +32,21 @@ public class ChessboardView {
             int position = 0;
             for (int x = 0; x < lines[i].length(); x++) {
                 int ascii = lines[i].charAt(x);
-                if (ascii >= 48 && ascii <= 57)
+                if (ascii >= 48 && ascii <= 57) {
                     position += ascii-48;
-                else if (ascii >= 65 && ascii <= 90)
-                    board.get(i).get(position).setText("weiß "+lines[i].charAt(x));
-                else
-                    board.get(i).get(position).setText("schwarz "+lines[i].charAt(x));
+                    continue;
+                }
+                ImageView image = null;
+                if (ascii >= 65 && ascii <= 90) {
+                    image = new ImageView(new Image("W_"+lines[i].charAt(x)+".png"));
+                }
+                else {
+                    image = new ImageView(new Image("B_"+lines[i].charAt(x)+".png"));
+                }
+                image.setFitHeight(100);
+                image.setFitWidth(100);
+                //board.get(i).get(position).setGraphic(new ImageView(new Image("B_"+lines[i].charAt(x)+".png")));
+                board.get(i).get(position).setGraphic(image);
                 position++;
             }
         }

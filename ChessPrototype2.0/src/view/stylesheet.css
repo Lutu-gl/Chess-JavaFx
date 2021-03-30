@@ -2,10 +2,12 @@
     -fx-background-color: white;
     -fx-min-height: 100px;
     -fx-min-width: 100px;
+    -fx-alignment: center;
 }
 
-.whiteField {
+.blackField {
     -fx-background-color: #b58863;
     -fx-min-height: 100px;
     -fx-min-width: 100px;
+    -fx-alignment: center;
 }
