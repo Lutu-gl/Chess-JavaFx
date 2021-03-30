@@ -26,14 +26,19 @@ public class PlaySound {
         clip.start();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         PlaySound.play(Sound.MOVE);
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(1000);
+        PlaySound.play(Sound.CAPTURE);
+        Thread.sleep(1000);
+        PlaySound.play(Sound.CASTLE);
+        Thread.sleep(1000);
+        PlaySound.play(Sound.CHECK);
+        Thread.sleep(1000);
+        PlaySound.play(Sound.MATE);
+        Thread.sleep(1000);
+        PlaySound.play(Sound.STALEMATE);
+        Thread.sleep(1000);
     }
 }
