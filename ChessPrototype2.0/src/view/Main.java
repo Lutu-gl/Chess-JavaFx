@@ -1,6 +1,7 @@
 package view;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -9,8 +10,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Chess!");
         primaryStage.setScene(ChessboardView.init(8, 8));
-        ChessboardView.setFEN("8/8/8/2k5/4K3/8/8/8");
+        ChessboardView.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
         primaryStage.getScene().getStylesheets().add(getClass().getResource("stylesheet.css").toString());
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon.png")));
         primaryStage.show();
     }
 

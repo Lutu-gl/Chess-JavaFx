@@ -1,5 +1,5 @@
 .whiteField {
-    -fx-background-color: white;
+    -fx-background-color: #f0d9b5;
     -fx-min-height: 100px;
     -fx-min-width: 100px;
     -fx-alignment: center;
@@ -10,4 +10,18 @@
     -fx-min-height: 100px;
     -fx-min-width: 100px;
     -fx-alignment: center;
+}
+
+.index {
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-min-height: 100px;
+}
+
+.letter {
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-min-width: 100px;
 }
