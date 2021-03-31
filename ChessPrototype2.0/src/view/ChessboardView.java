@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import model.Chessboard;
 
 import java.util.ArrayList;
 
@@ -64,6 +65,10 @@ public class ChessboardView {
                 position++;
             }
         }
+    }
+
+    public static void display() {
+        setFEN(Chessboard.getInstance().getBoardAsFen());
     }
 
     public static ArrayList<ArrayList<Label>> getBoard() {
