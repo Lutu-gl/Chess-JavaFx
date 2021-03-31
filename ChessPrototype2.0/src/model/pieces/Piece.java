@@ -11,6 +11,7 @@ public abstract class Piece {
     private int value;
     private String name;
     private Field field;
+    private char shortName;
 
     public Piece(Color color, String name, Field field, int value) {
         this.color = color;
@@ -51,6 +52,14 @@ public abstract class Piece {
 
     public void setField(Field field) {
         this.field = field;
+    }
+
+    public char getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(char shortName) {
+        this.shortName = shortName;
     }
 
 }

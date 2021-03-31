@@ -11,7 +11,7 @@ public class Chessboard {
     private ArrayList<Turn> turns = new ArrayList<>();
     private int turn, ply;
     private int ruleCounter;
-    private ArrayList<String> fens;
+    private ArrayList<String> fens = new ArrayList<>();
     private ArrayList<Piece> whitePieces = new ArrayList<>();
     private ArrayList<Piece> blackPieces = new ArrayList<>();
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
@@ -34,6 +34,41 @@ public class Chessboard {
         instance = new Chessboard();
     }
 
+    public void createBoard(int size){
+        fields = new Field[size][size];
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                fields[j][i] = new Field(j, i);
+            }
+        }
+    }
+
+
+    public void printBoard(){
+        if(fields == null){
+            System.out.println("No board has been created yet");
+            return;
+        }
+        for (int i = 0; i < fields.length; i++)
+        {
+            for (int j = 0; j < fields.length; j++)
+            {
+                if(fields[j][i].hasPiece())
+                    System.out.println(fields[j][i].getPiece().getShortName());
+                else
+                    System.out.print("\\");
+                if(j+1 == fields.length){
+                    System.out.println();
+                }
+                else
+                    System.out.print("-");
+            }
+            System.out.println("-------------------");
+        }
+    }
+
     public void addPiece(Piece p){
         if(p.getColor() == Color.BLACK)
             blackPieces.add(p);
@@ -41,8 +76,9 @@ public class Chessboard {
             whitePieces.add(p);
     }
 
+    //muas man no is ende fun string entfernen
     public void addFen(String fen){
-        fens.add(fen);
+        fens.add(fen.substring(0, fen.indexOf(" ")));
     }
 
     public boolean removePiece(Piece p){

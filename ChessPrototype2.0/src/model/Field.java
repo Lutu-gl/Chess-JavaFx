@@ -43,4 +43,12 @@ public class Field {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return "Field{" +
+                "piece=" + piece +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
