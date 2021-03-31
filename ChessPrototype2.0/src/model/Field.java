@@ -7,8 +7,7 @@ public class Field {
     private int x, y;
 
     public Field(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this(x, y, null);
     }
     public Field(int x, int y, Piece piece) {
         this.x = x;

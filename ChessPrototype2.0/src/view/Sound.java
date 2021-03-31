@@ -13,7 +13,6 @@ public enum Sound {
 
     private File file;
     Sound(String file){
-        System.out.println(file);
         try {
             this.file = new File(this.getClass().getResource(file).toURI());
         } catch (URISyntaxException e) {

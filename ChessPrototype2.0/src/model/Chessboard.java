@@ -1,5 +1,7 @@
 package model;
 
+import model.pieces.Knight;
+import model.pieces.Pawn;
 import model.pieces.Piece;
 
 import java.util.ArrayList;
@@ -14,6 +16,23 @@ public class Chessboard {
     private ArrayList<Piece> blackPieces = new ArrayList<>();
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
     private Gamestate state;
+    private boolean whiteCastlePermission, blackCastlePermission;
+
+    // Singleton pattern
+    private static Chessboard instance = null;
+
+    private Chessboard() {}
+
+    public static Chessboard getInstance() {
+        if (instance == null)
+            instance = new Chessboard();
+        return instance;
+    }
+
+    public static void init(String fen) {
+        if (instance != null) return;
+        instance = new Chessboard();
+    }
 
     public void addPiece(Piece p){
         if(p.getColor() == Color.BLACK)
@@ -57,6 +76,39 @@ public class Chessboard {
 
     }
     public void setBoardByFen(String fen){
+        /*
+            0 => positions
+            1 => turn
+            2 => castle
+            3 => en passant
+            4 => half turns
+            5 => turns
+         */
+        /*String[] groups = fen.split(" ");
+        String[] positions = groups[0].split("/");
+        for (int i = 0; i < positions.length; i++) {
+            int position = 0;
+            for (int x = 0; x < positions[i].length(); i++) {
+                int ascii = positions[i].charAt(x);
+                if (ascii >= 48 && ascii <= 57) {
+                    int empty = ascii-48;
+                    for (int j = 0; j < position+empty; j++)
+                        fields[i][j] = new Field(i, j);
+                    position += empty;
+                    continue;
+                }
+                if (ascii >= 65 && ascii <= 90) {
+                    Piece p = null;
+                    Field field = new Field(i, position);
+                    switch (ascii) {
+                        case 'P' -> p = new Pawn(Color.WHITE, "White Pawn", field, 1);
+                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field, 1);
+                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field, 1);
+                    }
+                }
+            }
+        } */
+
 
     }
     public String getBoardAsFen(){
