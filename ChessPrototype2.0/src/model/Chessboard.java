@@ -137,7 +137,7 @@ public class Chessboard {
                 // If fen is a number aka an empty space
                 if (ascii >= 48 && ascii <= 57) {
                     int empty = ascii-48;
-                    for (int j = 0; j < position+empty; j++)
+                    for (int j = position; j < position+empty; j++)
                         fields[i][j] = new Field(i, j);
                     position += empty;
                     continue;
@@ -231,9 +231,21 @@ public class Chessboard {
             groups[0] += '/';
         }
         groups[0] = groups[0].substring(0, groups[0].length()-1);
-        System.out.println(groups[0]);
 
-        return "";
+
+        //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+
+        groups[1] = currentTurn == 0 ? "w" : "b";
+
+        groups[2] = (whiteCastlePermissionShort ? "K" : "") + (whiteCastlePermissionLong ? "Q" : "") + (blackCastlePermissionShort ? "k" : "") + (blackCastlePermissionLong ? "q" : "");
+
+        groups[3] = "-";
+
+        groups[4] = ruleCounter +"";
+
+        groups[5] = turn+"";
+
+        return String.join(" ", groups);
 
     }
 
