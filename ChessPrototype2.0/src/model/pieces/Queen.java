@@ -7,8 +7,8 @@ import model.Turn;
 import java.util.ArrayList;
 
 public class Queen extends Piece{
-    public Queen(Color color, String name, Field field, int value) {
-        super(color, name, field, value);
+    public Queen(Color color, String name, Field field, int value, char shortName) {
+        super(color, name, field, value, shortName);
     }
 
     @Override

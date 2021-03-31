@@ -8,17 +8,17 @@ import java.util.ArrayList;
 
 public abstract class Piece {
     private Color color;
-    private int value;
+    private double value;
     private String name;
     private Field field;
     private char shortName;
 
-    public Piece(Color color, String name, Field field, int value) {
+    public Piece(Color color, String name, Field field, double value, char shortName) {
         this.color = color;
         this.name = name;
         this.field = field;
         this.value = value;
-        this.shortName = name.charAt(6);
+        this.shortName = shortName;
     }
 
     public abstract ArrayList<Field> getMoves(Turn t);
@@ -31,7 +31,7 @@ public abstract class Piece {
         this.color = color;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 

@@ -16,6 +16,7 @@ public class Chessboard {
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
     private Gamestate state;
     private boolean whiteCastlePermissionShort, whiteCastlePermissionLong, blackCastlePermissionShort, blackCastlePermissionLong;
+    private King b_king, w_king;
 
     // Singleton pattern
     private static Chessboard instance = null;
@@ -147,31 +148,36 @@ public class Chessboard {
 
                 // if fen is an uppercase letter aka a white piece
                 if (ascii >= 65 && ascii <= 90) {
-
                     switch (ascii) {
-                        case 'P' -> p = new Pawn(Color.WHITE, "White Pawn", field, 1);
-                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field, 3);
-                        case 'B' -> p = new Bishop(Color.WHITE, "White Bishop", field, 3);
-                        case 'R' -> p = new Rook(Color.WHITE, "White Rook", field, 5);
-                        case 'Q' -> p = new Queen(Color.WHITE, "White Queen", field, 9);
-                        case 'K' -> p = new King(Color.WHITE, "White King", field, Integer.MAX_VALUE);
+                        case 'P' -> p = new Pawn(Color.WHITE, "White Pawn", field, 1, 'P');
+                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field, 3, 'N');
+                        case 'B' -> p = new Bishop(Color.WHITE, "White Bishop", field, 3, 'B');
+                        case 'R' -> p = new Rook(Color.WHITE, "White Rook", field, 5, 'R');
+                        case 'Q' -> p = new Queen(Color.WHITE, "White Queen", field, 9, 'Q');
+                        case 'K' -> {
+                            p = new King(Color.WHITE, "White King", field, Integer.MAX_VALUE, 'K');
+                            w_king = (King) p;
+                        }
                     }
+                    whitePieces.add(p);
                 }
                 // if fen is a lowercase letter aka a black piece
                 else {
                     switch (ascii) {
-                        case 'p' -> p = new Pawn(Color.BLACK, "Black Pawn", field, 1);
-                        case 'n' -> p = new Knight(Color.BLACK, "Black Knight", field, 3);
-                        case 'b' -> p = new Bishop(Color.BLACK, "Black Bishop", field, 3);
-                        case 'r' -> p = new Rook(Color.BLACK, "Black Rook", field, 5);
-                        case 'q' -> p = new Queen(Color.BLACK, "Black Queen", field, 9);
-                        case 'k' -> p = new King(Color.BLACK, "Black King", field, Integer.MAX_VALUE);
+                        case 'p' -> p = new Pawn(Color.BLACK, "Black Pawn", field, 1, 'p');
+                        case 'n' -> p = new Knight(Color.BLACK, "Black Knight", field, 3, 'n');
+                        case 'b' -> p = new Bishop(Color.BLACK, "Black Bishop", field, 3, 'b');
+                        case 'r' -> p = new Rook(Color.BLACK, "Black Rook", field, 5, 'r');
+                        case 'q' -> p = new Queen(Color.BLACK, "Black Queen", field, 9, 'q');
+                        case 'k' -> {
+                            p = new King(Color.BLACK, "Black King", field, Integer.MAX_VALUE, 'k');
+                            b_king = (King) p;
+                        }
                     }
-
+                    blackPieces.add(p);
                 }
                 field.setPiece(p);
                 fields[i][position] = field;
-                whitePieces.add(p);
                 position++;
             }
         }
@@ -207,14 +213,30 @@ public class Chessboard {
         String[] groups = new String[]{"", "", "", "", "", ""};
         // Get the position of the chessboard
         for (int i = 0; i < fields.length; i++) {
+            int counter=0;
             for (int x = 0; x < fields[i].length; x++) {
                 if (fields[i][x].hasPiece()){
-
+                    if(counter > 0){
+                        groups[0] += counter;
+                        counter=0;
+                    }
+                    groups[0] += fields[i][x].getPiece().getShortName();
+                }else{
+                    counter++;
                 }
             }
+            if(counter > 0){
+                groups[0] += counter;
+            }
+            groups[0] += '/';
         }
+        groups[0] = groups[0].substring(0, groups[0].length()-1);
+        System.out.println(groups[0]);
+
         return "";
+
     }
+
 
     public Field[][] getFields() {
         return fields;

@@ -7,8 +7,8 @@ import model.Turn;
 import java.util.ArrayList;
 
 public class Knight extends Piece{
-    public Knight(Color color, String name, Field field, int value) {
-        super(color, name, field, value);
+    public Knight(Color color, String name, Field field, int value, char shortName) {
+        super(color, name, field, value, shortName);
     }
 
     @Override

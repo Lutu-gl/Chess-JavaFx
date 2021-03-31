@@ -7,8 +7,8 @@ import model.Turn;
 import java.util.ArrayList;
 
 public class Pawn extends Piece{
-    public Pawn(Color color, String name, Field field, int value) {
-        super(color, name, field, value);
+    public Pawn(Color color, String name, Field field, int value, char shortName) {
+        super(color, name, field, value, shortName);
     }
 
     @Override
