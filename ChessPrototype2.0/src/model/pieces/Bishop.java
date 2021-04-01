@@ -19,7 +19,6 @@ public class Bishop extends Piece{
         availableMoves = new ArrayList<>();
         chessboard = Chessboard.getInstance();
         int line = field.getLine(), column = field.getColumn();
-        // Go to left and down
         boolean[] continueSearches = new boolean[]{true, true, true, true};
         for (int gap = 1; ; gap++) {
             if (continueSearches[0])

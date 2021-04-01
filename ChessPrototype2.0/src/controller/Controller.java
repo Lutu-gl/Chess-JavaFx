@@ -38,6 +38,7 @@ public class Controller implements EventHandler<MouseEvent> {
             source.getStyleClass().remove("selectedField");
             source = null;
             System.out.println(turn);
+            turn.getMovingPiece().getMoves();
         }
     }
 }
