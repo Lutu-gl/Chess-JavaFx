@@ -1,8 +1,6 @@
 package model;
 
-import model.pieces.Knight;
-import model.pieces.Pawn;
-import model.pieces.Piece;
+import model.pieces.*;
 
 import java.util.ArrayList;
 
@@ -10,13 +8,15 @@ public class Chessboard {
     private Field[][] fields;
     private ArrayList<Turn> turns = new ArrayList<>();
     private int turn, ply;
+    private int currentTurn; // 0 => white; 1 => black;
     private int ruleCounter;
     private ArrayList<String> fens = new ArrayList<>();
     private ArrayList<Piece> whitePieces = new ArrayList<>();
     private ArrayList<Piece> blackPieces = new ArrayList<>();
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
     private Gamestate state;
-    private boolean whiteCastlePermission, blackCastlePermission;
+    private boolean whiteCastlePermissionShort, whiteCastlePermissionLong, blackCastlePermissionShort, blackCastlePermissionLong;
+    private King b_king, w_king;
 
     // Singleton pattern
     private static Chessboard instance = null;
@@ -29,9 +29,50 @@ public class Chessboard {
         return instance;
     }
 
-    public static void init(String fen) {
-        if (instance != null) return;
-        instance = new Chessboard();
+    public void createBoard(int size){
+        fields = new Field[size][size];
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                fields[j][i] = new Field(j, i);
+            }
+        }
+    }
+
+
+    public void printBoard(){
+        if(fields == null){
+            System.out.println("No board has been created yet");
+            return;
+        }
+        /*for (int i = 0; i < fields.length; i++)
+        {
+            for (int j = 0; j < fields.length; j++)
+            {
+                if(fields[j][i].hasPiece())
+                    System.out.println(fields[j][i].getPiece().getShortName());
+                else
+                    System.out.print("\\");
+                if(j+1 == fields.length){
+                    System.out.println();
+                }
+                else
+                    System.out.print("-");
+            }
+            System.out.println("-------------------");
+        }*/
+
+        for (int i = 0; i < fields.length; i++) {
+            for (int x = 0; x < fields[i].length; x++) {
+                if (fields[i][x].hasPiece())
+                    System.out.print(fields[i][x].getPiece().getShortName());
+                else
+                    System.out.print("-");
+            }
+            System.out.println();
+        }
+        System.out.println("\n-------------------\n");
     }
 
     public void createBoard(int size){
@@ -120,37 +161,129 @@ public class Chessboard {
             4 => half turns
             5 => turns
          */
-        /*String[] groups = fen.split(" ");
+        String[] groups = fen.split(" ");
+
+        // First of all set all the pieces on the board
         String[] positions = groups[0].split("/");
         for (int i = 0; i < positions.length; i++) {
             int position = 0;
-            for (int x = 0; x < positions[i].length(); i++) {
+            for (int x = 0; x < positions[i].length(); x++) {
                 int ascii = positions[i].charAt(x);
+                // If fen is a number aka an empty space
                 if (ascii >= 48 && ascii <= 57) {
                     int empty = ascii-48;
-                    for (int j = 0; j < position+empty; j++)
+                    for (int j = position; j < position+empty; j++)
                         fields[i][j] = new Field(i, j);
                     position += empty;
                     continue;
                 }
-                if (ascii >= 65 && ascii <= 90) {
-                    Piece p = null;
-                    Field field = new Field(i, position);
-                    switch (ascii) {
-                        case 'P' -> p = new Pawn(Color.WHITE, "White Pawn", field, 1);
-                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field, 1);
-                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field, 1);
-                    }
-                }
-            }
-        } */
 
+                Piece p = null;
+                Field field = new Field(i, position);
+
+                // if fen is an uppercase letter aka a white piece
+                if (ascii >= 65 && ascii <= 90) {
+                    switch (ascii) {
+                        case 'P' -> p = new Pawn(Color.WHITE, "White Pawn", field, 1, 'P');
+                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field, 3, 'N');
+                        case 'B' -> p = new Bishop(Color.WHITE, "White Bishop", field, 3, 'B');
+                        case 'R' -> p = new Rook(Color.WHITE, "White Rook", field, 5, 'R');
+                        case 'Q' -> p = new Queen(Color.WHITE, "White Queen", field, 9, 'Q');
+                        case 'K' -> {
+                            p = new King(Color.WHITE, "White King", field, Integer.MAX_VALUE, 'K');
+                            w_king = (King) p;
+                        }
+                    }
+                    whitePieces.add(p);
+                }
+                // if fen is a lowercase letter aka a black piece
+                else {
+                    switch (ascii) {
+                        case 'p' -> p = new Pawn(Color.BLACK, "Black Pawn", field, 1, 'p');
+                        case 'n' -> p = new Knight(Color.BLACK, "Black Knight", field, 3, 'n');
+                        case 'b' -> p = new Bishop(Color.BLACK, "Black Bishop", field, 3, 'b');
+                        case 'r' -> p = new Rook(Color.BLACK, "Black Rook", field, 5, 'r');
+                        case 'q' -> p = new Queen(Color.BLACK, "Black Queen", field, 9, 'q');
+                        case 'k' -> {
+                            p = new King(Color.BLACK, "Black King", field, Integer.MAX_VALUE, 'k');
+                            b_king = (King) p;
+                        }
+                    }
+                    blackPieces.add(p);
+                }
+                field.setPiece(p);
+                fields[i][position] = field;
+                position++;
+            }
+        }
+
+        // Now set the player whose turn it is
+        currentTurn = groups[1].equals("w") ? 0 : 1;
+
+        // Now check if the players has castle permissions
+        whiteCastlePermissionShort = false;
+        whiteCastlePermissionLong = false;
+        blackCastlePermissionShort = false;
+        blackCastlePermissionLong = false;
+        for (int i = 0; i < groups[2].length(); i++) {
+            switch (groups[2].charAt(i)) {
+                case 'K' -> whiteCastlePermissionShort = true;
+                case 'Q' -> whiteCastlePermissionLong = true;
+                case 'k' -> blackCastlePermissionShort = true;
+                case 'q' -> blackCastlePermissionLong = true;
+            }
+        }
+
+        // en passent (muas i no schaugen)
+        //if (!groups[3].equals("-"))
+
+        // set 50 half turn rule
+        ruleCounter = Integer.parseInt(groups[4]);
+
+        // set turns played
+        turn = Integer.parseInt(groups[5]);
 
     }
     public String getBoardAsFen(){
+        String[] groups = new String[]{"", "", "", "", "", ""};
+        // Get the position of the chessboard
+        for (int i = 0; i < fields.length; i++) {
+            int counter=0;
+            for (int x = 0; x < fields[i].length; x++) {
+                if (fields[i][x].hasPiece()){
+                    if(counter > 0){
+                        groups[0] += counter;
+                        counter=0;
+                    }
+                    groups[0] += fields[i][x].getPiece().getShortName();
+                }else{
+                    counter++;
+                }
+            }
+            if(counter > 0){
+                groups[0] += counter;
+            }
+            groups[0] += '/';
+        }
+        groups[0] = groups[0].substring(0, groups[0].length()-1);
 
-        return "";
+
+        //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+
+        groups[1] = currentTurn == 0 ? "w" : "b";
+
+        groups[2] = (whiteCastlePermissionShort ? "K" : "") + (whiteCastlePermissionLong ? "Q" : "") + (blackCastlePermissionShort ? "k" : "") + (blackCastlePermissionLong ? "q" : "");
+
+        groups[3] = "-";
+
+        groups[4] = ruleCounter +"";
+
+        groups[5] = turn+"";
+
+        return String.join(" ", groups);
+
     }
+
 
     public Field[][] getFields() {
         return fields;

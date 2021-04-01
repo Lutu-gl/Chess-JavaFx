@@ -12,6 +12,10 @@
     -fx-alignment: center;
 }
 
+.selectedField {
+    -fx-background-color: #80B563;
+}
+
 .index {
     -fx-alignment: center;
     -fx-font-weight: bold;

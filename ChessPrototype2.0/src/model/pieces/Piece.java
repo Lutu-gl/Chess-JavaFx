@@ -18,6 +18,7 @@ public abstract class Piece {
         this.name = name;
         this.field = field;
         this.value = value;
+        this.shortName = shortName;
     }
 
     public abstract ArrayList<Field> getMoves(Turn t);
@@ -30,7 +31,7 @@ public abstract class Piece {
         this.color = color;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
@@ -62,4 +63,14 @@ public abstract class Piece {
         this.shortName = shortName;
     }
 
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "color=" + color +
+                ", value=" + value +
+                ", name='" + name + '\'' +
+                /*", field=" + field +*/
+                ", shortName=" + shortName +
+                '}';
+    }
 }
