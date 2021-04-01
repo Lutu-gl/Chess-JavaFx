@@ -15,6 +15,7 @@ public class Main extends Application {
         board.createBoard(size);
         board.addFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        System.out.println(board.getBlackPieces().get(1).getMoves());
         board.printBoard();
 
         // Display the Chessboard

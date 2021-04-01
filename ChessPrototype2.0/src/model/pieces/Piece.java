@@ -2,16 +2,15 @@ package model.pieces;
 
 import model.Color;
 import model.Field;
-import model.Turn;
 
 import java.util.ArrayList;
 
 public abstract class Piece {
-    private Color color;
-    private int value;
-    private String name;
-    private Field field;
-    private char shortName;
+    protected Color color;
+    protected int value;
+    protected String name;
+    protected Field field;
+    protected char shortName;
 
     public Piece(Color color, String name, Field field, int value, char shortName) {
         this.color = color;
@@ -21,7 +20,7 @@ public abstract class Piece {
         this.shortName = shortName;
     }
 
-    public abstract ArrayList<Field> getMoves(Turn t);
+    public abstract ArrayList<Field> getMoves();
 
     public Color getColor() {
         return color;

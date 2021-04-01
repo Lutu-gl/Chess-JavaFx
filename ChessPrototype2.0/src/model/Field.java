@@ -4,7 +4,7 @@ import model.pieces.Piece;
 
 public class Field {
     private Piece piece;
-    private int x, y;
+    private int column, line;
     private boolean exists = true;
 
     public boolean isExists() {
@@ -15,12 +15,12 @@ public class Field {
         this.exists = exists;
     }
 
-    public Field(int x, int y) {
-        this(x, y, null);
+    public Field(int column, int line) {
+        this(column, line, null);
     }
-    public Field(int x, int y, Piece piece) {
-        this.x = x;
-        this.y = y;
+    public Field(int column, int line, Piece piece) {
+        this.column = column;
+        this.line = line;
         this.piece = piece;
     }
 
@@ -36,28 +36,28 @@ public class Field {
         this.piece = piece;
     }
 
-    public int getX() {
-        return x;
+    public int getColumn() {
+        return column;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setColumn(int column) {
+        this.column = column;
     }
 
-    public int getY() {
-        return y;
+    public int getLine() {
+        return line;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setLine(int line) {
+        this.line = line;
     }
 
     @Override
     public String toString() {
         return "Field{" +
                 "piece=" + piece +
-                ", x=" + x +
-                ", y=" + y +
+                ", x=" + column +
+                ", y=" + line +
                 '}';
     }
 }

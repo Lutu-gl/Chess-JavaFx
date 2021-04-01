@@ -35,7 +35,7 @@ public class Chessboard {
         {
             for (int j = 0; j < size; j++)
             {
-                fields[j][i] = new Field(j, i);
+                fields[i][j] = new Field(i, j);
             }
         }
     }

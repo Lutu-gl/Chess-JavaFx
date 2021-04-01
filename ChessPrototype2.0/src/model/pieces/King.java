@@ -2,7 +2,6 @@ package model.pieces;
 
 import model.Color;
 import model.Field;
-import model.Turn;
 
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Field> getMoves(Turn t) {
+    public ArrayList<Field> getMoves() {
         return null;
     }
 }
