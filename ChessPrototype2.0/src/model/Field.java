@@ -5,6 +5,15 @@ import model.pieces.Piece;
 public class Field {
     private Piece piece;
     private int x, y;
+    private boolean exists = true;
+
+    public boolean isExists() {
+        return exists;
+    }
+
+    public void setExists(boolean exists) {
+        this.exists = exists;
+    }
 
     public Field(int x, int y) {
         this(x, y, null);
