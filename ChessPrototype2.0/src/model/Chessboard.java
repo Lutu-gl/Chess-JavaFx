@@ -75,41 +75,6 @@ public class Chessboard {
         System.out.println("\n-------------------\n");
     }
 
-    public void createBoard(int size){
-        fields = new Field[size][size];
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-            {
-                fields[j][i] = new Field(j, i);
-            }
-        }
-    }
-
-
-    public void printBoard(){
-        if(fields == null){
-            System.out.println("No board has been created yet");
-            return;
-        }
-        for (int i = 0; i < fields.length; i++)
-        {
-            for (int j = 0; j < fields.length; j++)
-            {
-                if(fields[j][i].hasPiece())
-                    System.out.println(fields[j][i].getPiece().getShortName());
-                else
-                    System.out.print("\\");
-                if(j+1 == fields.length){
-                    System.out.println();
-                }
-                else
-                    System.out.print("-");
-            }
-            System.out.println("-------------------");
-        }
-    }
-
     public void addPiece(Piece p){
         if(p.getColor() == Color.BLACK)
             blackPieces.add(p);
@@ -144,6 +109,10 @@ public class Chessboard {
         return false;
     }
     public void movePiece(Piece p, Field f){
+
+        p.getField().setPiece(null);//Remove Piece from Source
+        p.setField(f); //Update Field in Piece
+        f.setPiece(p); //Move Piece to new Field
 
     }
     public void undoTurn(){

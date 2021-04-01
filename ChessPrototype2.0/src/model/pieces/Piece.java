@@ -13,7 +13,7 @@ public abstract class Piece {
     private Field field;
     private char shortName;
 
-    public Piece(Color color, String name, Field field, int value) {
+    public Piece(Color color, String name, Field field, int value, char shortName) {
         this.color = color;
         this.name = name;
         this.field = field;
