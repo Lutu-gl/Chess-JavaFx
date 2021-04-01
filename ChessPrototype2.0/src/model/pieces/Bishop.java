@@ -21,7 +21,7 @@ public class Bishop extends Piece{
         int line = field.getLine(), column = field.getColumn();
         // Go to left and down
         boolean[] continueSearches = new boolean[]{true, true, true, true};
-        for (int gap = 1; gap < chessboard.getFields().length; gap++) {
+        for (int gap = 1; ; gap++) {
             if (continueSearches[0])
                 continueSearches[0] = evaluate(line+gap, column+gap);
             if (continueSearches[1])
@@ -30,6 +30,8 @@ public class Bishop extends Piece{
                 continueSearches[2] = evaluate(line-gap, column+gap);
             if (continueSearches[3])
                 continueSearches[3] = evaluate(line-gap, column-gap);
+            if (!continueSearches[0] && !continueSearches[1] && !continueSearches[2] && !continueSearches[3])
+                break;
         }
         return availableMoves;
     }
