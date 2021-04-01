@@ -56,8 +56,8 @@ public class Field {
     public String toString() {
         return "Field{" +
                 "piece=" + piece +
-                ", x=" + column +
-                ", y=" + line +
+                ", column=" + column +
+                ", line=" + line +
                 '}';
     }
 }

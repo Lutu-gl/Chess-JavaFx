@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import model.Chessboard;
 import model.Field;
 import model.Turn;
+import model.pieces.Rook;
 import view.FieldLabel;
 
 public class Controller implements EventHandler<MouseEvent> {

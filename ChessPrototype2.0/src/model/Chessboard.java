@@ -21,6 +21,7 @@ public class Chessboard {
     // Singleton pattern
     private static Chessboard instance = null;
 
+
     private Chessboard() {}
 
     public static Chessboard getInstance() {
@@ -35,7 +36,7 @@ public class Chessboard {
         {
             for (int j = 0; j < size; j++)
             {
-                fields[i][j] = new Field(i, j);
+                fields[i][j] = new Field(j, i);
             }
         }
     }
@@ -141,14 +142,12 @@ public class Chessboard {
                 // If fen is a number aka an empty space
                 if (ascii >= 48 && ascii <= 57) {
                     int empty = ascii-48;
-                    for (int j = position; j < position+empty; j++)
-                        fields[i][j] = new Field(i, j);
                     position += empty;
                     continue;
                 }
 
                 Piece p = null;
-                Field field = new Field(i, position);
+                Field field = fields[i][position];
 
                 // if fen is an uppercase letter aka a white piece
                 if (ascii >= 65 && ascii <= 90) {

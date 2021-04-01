@@ -17,7 +17,7 @@ public class Knight extends Piece{
         int x = this.field.getColumn(), y = this.field.getLine();
         ArrayList<Field> moves = new ArrayList<Field>();
         System.out.println(x +" " + y);
-        if(isValid(labels[x+1][y-2]))
+        /*if(isValid(labels[x+1][y-2]))
             moves.add(labels[x+1][y-2]);
 
         if(isValid(labels[x+2][y-1]))
@@ -40,6 +40,8 @@ public class Knight extends Piece{
 
         if(isValid(labels[x-1][y-2]))
             moves.add(labels[x-1][y-2]);
+
+         */
 
         return moves;
     }

@@ -14,7 +14,8 @@ public class Main extends Application {
         Chessboard board = Chessboard.getInstance();
         board.createBoard(size);
         board.addFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        board.setBoardByFen("rnbqkbnr/pppppppp/8/2R5/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        //board.setBoardByFen("rnkrp/ppppp/5/5/RNBQK w KQkq - 0 1");
         System.out.println(board.getBlackPieces().get(1).getMoves());
         board.printBoard();
 
@@ -31,6 +32,8 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon.png")));
         // Display the window
         primaryStage.show();
+
+        System.out.println(board.getFields()[0][1]);
     }
 
 
