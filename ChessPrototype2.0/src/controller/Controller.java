@@ -2,6 +2,8 @@ package controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import model.Chessboard;
+import model.Field;
 import model.Turn;
 import view.FieldLabel;
 
@@ -25,6 +27,8 @@ public class Controller implements EventHandler<MouseEvent> {
 
         if(source == null){
             FieldLabel fieldLabel = (FieldLabel) mouseEvent.getSource();
+            Field clickedField = Chessboard.getInstance().getFields()[fieldLabel.getLine()][fieldLabel.getColumn()];
+            if (!clickedField.hasPiece() || !clickedField.getPiece().getColor().equals(Chessboard.getInstance().getCurrentTurn())) return;
             fieldLabel.getStyleClass().add("selectedField");
             source =fieldLabel;
         }else{

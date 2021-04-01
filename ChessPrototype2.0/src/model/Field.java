@@ -15,7 +15,7 @@ public class Field {
         this.piece = piece;
     }
 
-    boolean hasPiece(){
+    public boolean hasPiece(){
         return piece != null;
     }
 

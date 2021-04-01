@@ -8,7 +8,7 @@ public class Chessboard {
     private Field[][] fields;
     private ArrayList<Turn> turns = new ArrayList<>();
     private int turn, ply;
-    private int currentTurn; // 0 => white; 1 => black;
+    private Color currentTurn; // 0 => white; 1 => black;
     private int ruleCounter;
     private ArrayList<String> fens = new ArrayList<>();
     private ArrayList<Piece> whitePieces = new ArrayList<>();
@@ -187,7 +187,7 @@ public class Chessboard {
         }
 
         // Now set the player whose turn it is
-        currentTurn = groups[1].equals("w") ? 0 : 1;
+        currentTurn = groups[1].equals("w") ? Color.WHITE : Color.BLACK;
 
         // Now check if the players has castle permissions
         whiteCastlePermissionShort = false;
@@ -239,7 +239,7 @@ public class Chessboard {
 
         //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 
-        groups[1] = currentTurn == 0 ? "w" : "b";
+        groups[1] = currentTurn.equals(Color.WHITE) ? "w" : "b";
 
         groups[2] = (whiteCastlePermissionShort ? "K" : "") + (whiteCastlePermissionLong ? "Q" : "") + (blackCastlePermissionShort ? "k" : "") + (blackCastlePermissionLong ? "q" : "");
 
@@ -298,6 +298,8 @@ public class Chessboard {
         this.state = state;
     }
 
-
+    public Color getCurrentTurn() {
+        return currentTurn;
+    }
 
 }

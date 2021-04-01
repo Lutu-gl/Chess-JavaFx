@@ -1,6 +1,10 @@
 package model;
 
 public class Main {
+
+    // THIS MAIN SHOULD NOT BE USED ANYMORE. PLEASE USE MAIN IN VIEW PACKAGE
+    // I LÖSCH SE NO NET WEIL I SE NET GEMOCHT HON
+
     public static void main(String[] args) {
         Chessboard board = Chessboard.getInstance();
         board.createBoard(8);
