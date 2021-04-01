@@ -69,7 +69,7 @@ public abstract class Piece {
                 "color=" + color +
                 ", value=" + value +
                 ", name='" + name + '\'' +
-                ", field=" + field +
+                /*", field=" + field +*/
                 ", shortName=" + shortName +
                 '}';
     }
