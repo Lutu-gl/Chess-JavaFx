@@ -11,42 +11,32 @@ public class Knight extends Piece{
         super(color, name, field, value, shortName);
     }
 
+    private Chessboard chessboard;
+    private ArrayList<Field> availableMoves;
+
     @Override
     public ArrayList<Field> getMoves() {
-        Field[][] labels = Chessboard.getInstance().getFields();
-        int x = this.field.getColumn(), y = this.field.getLine();
-        ArrayList<Field> moves = new ArrayList<Field>();
-        System.out.println(x +" " + y);
-        /*if(isValid(labels[x+1][y-2]))
-            moves.add(labels[x+1][y-2]);
+        chessboard = Chessboard.getInstance();
+        int line = field.getLine(), column = field.getColumn();
+        availableMoves = new ArrayList<>();
 
-        if(isValid(labels[x+2][y-1]))
-            moves.add(labels[x+2][y-1]);
+        evaluate(line+1, column+2);
+        evaluate(line+2, column+1);
+        evaluate(line+2, column-1);
+        evaluate(line+1, column-2);
+        evaluate(line-1, column-2);
+        evaluate(line-2, column-1);
+        evaluate(line-2, column+1);
+        evaluate(line-1, column+2);
 
-        if(isValid(labels[x+2][y+1]))
-            moves.add(labels[x+2][y+1]);
-
-        if(isValid(labels[x+1][y+2]))
-            moves.add(labels[x+1][y+2]);
-
-        if(isValid(labels[x-1][y+2]))
-            moves.add(labels[x-1][y+2]);
-
-        if(isValid(labels[x-2][y+1]))
-            moves.add(labels[x-2][y+1]);
-
-        if(isValid(labels[x-2][y-1]))
-            moves.add(labels[x-2][y-1]);
-
-        if(isValid(labels[x-1][y-2]))
-            moves.add(labels[x-1][y-2]);
-
-         */
-
-        return moves;
+        return availableMoves;
     }
 
-    private boolean isValid(Field field){
-        return field.isExists()&&(field.hasPiece() && field.getPiece().getColor() != this.color) || !field.hasPiece();
+    private void evaluate(int line, int column) {
+        if (line >= chessboard.getFields().length || column >= chessboard.getFields().length || line < 0 || column < 0) return;
+        Field nextField = chessboard.getFields()[line][column];
+        if (!nextField.isExists()) return;
+        if (nextField.hasPiece() && nextField.getPiece().getColor().equals(chessboard.getCurrentTurn())) return;
+        availableMoves.add(nextField);
     }
 }
