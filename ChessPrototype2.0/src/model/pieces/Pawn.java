@@ -17,7 +17,13 @@ public class Pawn extends Piece{
 
         int column = this.field.getColumn(), line = this.getField().getLine();
         Field[][] fields = Chessboard.getInstance().getFields();
-        int defaultY = this.getColor() == Color.BLACK ?  1 : fields.length-2;
+
+        int defaultY;
+        if(fields.length>=4){ //if the Board has less than 4 lines the pawn cant move two Fields
+            defaultY = this.getColor() == Color.BLACK ?  1 : fields.length-2;
+        }
+        else
+            defaultY = Integer.MAX_VALUE;
         int moveDirection = this.getColor() == Color.BLACK ? 1 : -1;
         availableMoves = new ArrayList<>();
         if(fieldExists(column, line+moveDirection) && !fields[line+moveDirection][column].hasPiece())
@@ -38,7 +44,7 @@ public class Pawn extends Piece{
     private boolean fieldExists(int column, int line){
         Field[][] fields = Chessboard.getInstance().getFields();
         System.out.println(column + " " + line + " = ");
-        if(line>fields.length || line<0 || column>fields.length || column<0) return false;
+        if(line>=fields.length || line<0 || column>=fields[0].length || column<0) return false;
         return fields[line][column].isExists();
 
     }
