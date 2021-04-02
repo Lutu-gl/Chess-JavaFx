@@ -43,7 +43,7 @@ public class Bishop extends Piece{
             // Schauen ob sich ein Piece darauf befindet
             if (nextField.hasPiece()) {
                 // Bei gegnerischer Figur kann man schlagen
-                if (!nextField.getPiece().getColor().equals(chessboard.getCurrentTurn()))
+                if (!nextField.getPiece().getColor().equals(chessboard.getColorToMove()))
                     availableMoves.add(nextField);
                 // Die Suche wird abgebrochen, da ein Bishop nicht über Figuren laufen kann
                 return false;

@@ -14,9 +14,10 @@ public class Main extends Application {
         Chessboard board = Chessboard.getInstance();
         board.createBoard(size);
         board.addFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        board.setBoardByFen("rnbqkbnr/pppppppp/1K6/8/8/8/PPPPPPPP/RNBQRBNR w KQkq - 0 1");
+        board.setBoardByFen("8/8/8/8/8/2p1p3/3P4/8 w - - 0 1");
         //board.setBoardByFen("rnkrp/ppppp/5/5/RNBQK w KQkq - 0 1");
-        System.out.println(board.getBlackPieces().get(1).getMoves());
+        //System.out.println(board.getBlackPieces().get(0).getMoves());
+        System.out.println(board.getWhitePieces().get(0).getMoves());
         board.printBoard();
 
         // Display the Chessboard

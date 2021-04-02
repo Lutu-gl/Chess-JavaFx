@@ -36,7 +36,7 @@ public class Knight extends Piece{
         if (line >= chessboard.getFields().length || column >= chessboard.getFields().length || line < 0 || column < 0) return;
         Field nextField = chessboard.getFields()[line][column];
         if (!nextField.isExists()) return;
-        if (nextField.hasPiece() && nextField.getPiece().getColor().equals(chessboard.getCurrentTurn())) return;
+        if (nextField.hasPiece() && nextField.getPiece().getColor().equals(chessboard.getColorToMove())) return;
         availableMoves.add(nextField);
     }
 }
