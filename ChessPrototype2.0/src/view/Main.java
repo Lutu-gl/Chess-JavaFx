@@ -13,8 +13,14 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
         board.createBoard(size);
-        board.addFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        board.setBoardByFen("rn2kbnr/ppp1p2p/4b3/3pqpp1/2P1P3/2NB1N1P/PP1P1PP1/R1BQK2R w KQkq - 0 7");
+        String fen = "";
+
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
+        //String fen = "rn2kbnr/ppp1p2p/4b3/3pqpp1/2P1P3/2NB1N1P/PP1P1PP1/R1BQK2R w KQkq - 0 7"; //Crazy fen
+
+
+        board.addFen(fen);
+        board.setBoardByFen(fen);
         //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         //System.out.println(board.getBlackPieces().get(0).getMoves());
         //System.out.println(board.getBlackPieces().get(0).getMoves());

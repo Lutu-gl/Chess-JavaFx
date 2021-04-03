@@ -57,10 +57,10 @@ public class Controller implements EventHandler<MouseEvent> {
             Turn turn = new Turn(source, target);
             source.unselect();
             source = null;
-            System.out.println(turn);
 
             unmarkAvailableMoves();
-            turn.getMovingPiece().getMoves().forEach(System.out::println);
+            //turn.getMovingPiece().getMoves().forEach(System.out::println);
+            Chessboard.getInstance().handleTurn(turn);
         }
     }
 

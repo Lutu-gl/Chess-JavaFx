@@ -44,7 +44,7 @@ public class Pawn extends Piece{
     }
     private boolean fieldExists(int column, int line){
         Field[][] fields = Chessboard.getInstance().getFields();
-        System.out.println(column + " " + line + " = ");
+        //System.out.println(column + " " + line + " = ");
         if(line>=fields.length || line<0 || column>=fields[0].length || column<0) return false;
         return fields[line][column].isExists();
 

@@ -76,7 +76,13 @@ public class ChessboardView {
     }
 
     public static void display() {
+        //System.out.println(Chessboard.getInstance().getBoardAsFen());
+        deleteImages();
         setFEN(Chessboard.getInstance().getBoardAsFen());
+    }
+
+    private static void deleteImages(){
+        board.forEach(line -> line.forEach(element -> element.setGraphic(null)));
     }
 
     public static ArrayList<ArrayList<FieldLabel>> getBoard() {
