@@ -54,13 +54,23 @@ public class Controller implements EventHandler<MouseEvent> {
                 return;
             }
             target = clickedFieldLabel;
-            Turn turn = new Turn(source, target);
-            source.unselect();
-            source = null;
+            //if (!highlighted.contains(target))
+            //    return;
+            System.out.println(highlighted);
+            for (int i = 0; i < highlighted.size(); i++) {
+                if (highlighted.get(i).getLine() == target.getLine() && highlighted.get(i).getColumn() == target.getColumn()) {
+                    Turn turn = new Turn(source, target);
+                    source.unselect();
+                    source = null;
 
-            unmarkAvailableMoves();
-            //turn.getMovingPiece().getMoves().forEach(System.out::println);
-            Chessboard.getInstance().handleTurn(turn);
+                    unmarkAvailableMoves();
+                    //turn.getMovingPiece().getMoves().forEach(System.out::println);
+                    Chessboard.getInstance().handleTurn(turn);
+                    break;
+                }
+            }
+
+
         }
     }
 
@@ -84,6 +94,7 @@ public class Controller implements EventHandler<MouseEvent> {
             else
                 fieldLabel.removeOutline();
         });
+        highlighted.clear();
     }
 
 }

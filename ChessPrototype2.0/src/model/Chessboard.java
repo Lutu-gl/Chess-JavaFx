@@ -2,6 +2,8 @@ package model;
 
 import model.pieces.*;
 import view.ChessboardView;
+import view.PlaySound;
+import view.Sound;
 
 import java.util.ArrayList;
 
@@ -107,14 +109,18 @@ public class Chessboard {
     }
 
     public boolean handleTurn(Turn t){
-        System.out.println("Der gespielte Turn ist: " + t);
+        //System.out.println("Der gespielte Turn ist: " + t);
         movePiece(t.getMovingPiece(), t.getTargetField() );
-
+        colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
 
         endTurn();
         return true;
     }
     public void movePiece(Piece p, Field f){
+        if (f.hasPiece())
+            PlaySound.play(Sound.CAPTURE);
+        else
+            PlaySound.play(Sound.MOVE);
         p.getField().setPiece(null);//Remove Piece from Source
         p.setField(f); //Update Field in Piece
         f.setPiece(p); //Move Piece to new Field
@@ -126,7 +132,7 @@ public class Chessboard {
     //Am ende von jedem Zug
     public void endTurn(){
 
-        System.out.println(getBoardAsFen());
+        //System.out.println(getBoardAsFen());
         ChessboardView.display();
     }
     public void setBoardByFen(String fen){
