@@ -46,11 +46,15 @@ public class ChessboardView {
 
         for (int i = 0; i < lines.length; i++) {
             int position = 0;
+            String empty = "";
             for (int x = 0; x < lines[i].length(); x++) {
                 int ascii = lines[i].charAt(x);
                 if (ascii >= 48 && ascii <= 57) {
-                    position += ascii-48;
+                    empty += lines[i].charAt(x);
                     continue;
+                } else if (empty.length() > 0) {
+                    position += Integer.parseInt(empty);
+                    empty = "";
                 }
                 ImageView image = null;
                 if (ascii >= 65 && ascii <= 90) {
