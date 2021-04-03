@@ -9,12 +9,14 @@ import javafx.scene.layout.GridPane;
 import model.Chessboard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ChessboardView {
     private static ArrayList<ArrayList<FieldLabel>> board;
     public static Scene init( int l, int w) {
         GridPane gridPane = new GridPane();
         board = new ArrayList<>();
+
         for (int i = 0; i < l; i++) {
             ArrayList<FieldLabel> buffer = new ArrayList<>();
             for (int x = 0; x < w; x++) {
@@ -41,6 +43,7 @@ public class ChessboardView {
 
         return new Scene(gridPane, w*100+50, l*100+50);
     }
+
     public static void setFEN(String fen) {
         String[] lines = fen.substring(0, fen.indexOf(" ")).split("/");
 

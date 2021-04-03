@@ -29,3 +29,8 @@
     -fx-font-size: 30px;
     -fx-min-width: 100px;
 }
+.potentialTake{
+    -fx-border-radius: 20 20 20 20;
+    -fx-background-radius: 0 0 0 0;
+    -fx-border-color: red;
+}

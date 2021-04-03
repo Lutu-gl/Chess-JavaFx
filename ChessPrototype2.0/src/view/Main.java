@@ -9,15 +9,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        int size = 4;
+        int size = 8;
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
         board.createBoard(size);
         board.addFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        board.setBoardByFen("4/p3/4/4 w - - 0 1");
+        board.setBoardByFen("rn2kbnr/ppp1p2p/4b3/3pqpp1/2P1P3/2NB1N1P/PP1P1PP1/R1BQK2R w KQkq - 0 7");
         //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         //System.out.println(board.getBlackPieces().get(0).getMoves());
-        System.out.println(board.getBlackPieces().get(0).getMoves());
+        //System.out.println(board.getBlackPieces().get(0).getMoves());
         board.printBoard();
 
         // Display the Chessboard

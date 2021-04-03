@@ -24,11 +24,12 @@ public class Pawn extends Piece{
         }
         else
             defaultY = Integer.MAX_VALUE;
+
         int moveDirection = this.getColor() == Color.BLACK ? 1 : -1;
         availableMoves = new ArrayList<>();
-        if(fieldExists(column, line+moveDirection) && !fields[line+moveDirection][column].hasPiece())
+        if(fieldExists(column, line+moveDirection) && !fields[line+moveDirection][column].hasPiece() && !fields[line+moveDirection][column].hasPiece())
             availableMoves.add(fields[line+moveDirection][column]);
-        if(defaultY == line && fieldExists(column, line+moveDirection*2) && !fields[line+moveDirection*2][column].hasPiece())
+        if(defaultY == line && fieldExists(column, line+moveDirection*2) && !fields[line+moveDirection*2][column].hasPiece() && !fields[line+moveDirection][column].hasPiece())
             availableMoves.add(fields[line+moveDirection*2][column]);
 
         evaluate(column+1, line+moveDirection);
