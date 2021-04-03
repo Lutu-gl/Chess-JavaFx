@@ -137,13 +137,16 @@ public class Chessboard {
         String[] positions = groups[0].split("/");
         for (int i = 0; i < positions.length; i++) {
             int position = 0;
+            String empty = "";
             for (int x = 0; x < positions[i].length(); x++) {
                 int ascii = positions[i].charAt(x);
                 // If fen is a number aka an empty space
                 if (ascii >= 48 && ascii <= 57) {
-                    int empty = ascii-48;
-                    position += empty;
+                    empty += positions[i].charAt(x);
                     continue;
+                } else if (empty.length() > 0) {
+                    position += Integer.parseInt(empty);
+                    empty = "";
                 }
 
                 Piece p = null;
