@@ -108,7 +108,7 @@ public class Chessboard {
 
     public boolean handleTurn(Turn t){
         System.out.println("Der gespielte Turn ist: " + t);
-        movePiece(t.getMovingPiece(), fields[t.getTargetField().getLine()][t.getTargetField().getColumn()] );
+        movePiece(t.getMovingPiece(), t.getTargetField() );
 
 
         endTurn();

@@ -4,16 +4,18 @@ import model.pieces.Piece;
 import view.FieldLabel;
 
 public class Turn {
-    private FieldLabel sourceField;
-    private FieldLabel targetField;
+    private Field sourceField;
+    private Field targetField;
     private Piece movingPiece;
     private Piece eatenPiece;
 
     public Turn(FieldLabel sourceField, FieldLabel targetField) {
-        this.sourceField = sourceField;
-        this.targetField = targetField;
-
         Chessboard chessboard = Chessboard.getInstance();
+
+        this.sourceField = chessboard.getFields()[sourceField.getLine()][sourceField.getColumn()];
+        this.targetField = chessboard.getFields()[targetField.getLine()][targetField.getColumn()];
+
+
 
         // Sets movingPiece and eatenPiece
         if(chessboard.getFields()[sourceField.getLine()][sourceField.getColumn()].hasPiece()){
@@ -25,19 +27,19 @@ public class Turn {
 
     }
 
-    public FieldLabel getSourceField() {
+    public Field getSourceField() {
         return sourceField;
     }
 
-    public void setSourceField(FieldLabel sourceField) {
+    public void setSourceField(Field sourceField) {
         this.sourceField = sourceField;
     }
 
-    public FieldLabel getTargetField() {
+    public Field getTargetField() {
         return targetField;
     }
 
-    public void setTargetField(FieldLabel targetField) {
+    public void setTargetField(Field targetField) {
         this.targetField = targetField;
     }
 
