@@ -33,40 +33,57 @@ public class Controller implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent mouseEvent) {
 
+        FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
+        Field clickedField = Chessboard.getInstance().getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
         if(source == null)
         {
-            FieldLabel fieldLabel = (FieldLabel) mouseEvent.getSource();
-            Field clickedField = Chessboard.getInstance().getFields()[fieldLabel.getLine()][fieldLabel.getColumn()];
+            //FieldLabel fieldLabel = (FieldLabel) mouseEvent.getSource();
             if (!clickedField.hasPiece() || !clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) return;
-            fieldLabel.getStyleClass().add("selectedField");
-            source = fieldLabel;
+            clickedFieldLabel.select();
+            source = clickedFieldLabel;
 
-            //kannt man eventuell in a eigne Methode tian oder af ChessboardView a Methode mochn wos des tuat
-            for (Field d : Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()].getPiece().getMoves())
-            {
-                if(!d.hasPiece()){
-                    ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()).mark();
-                }
-                else{
-                    ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()).outline();
-                }
-                highlighted.add(ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()));
+            markAvailableMoves();
+        }
+        else {
+            if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) {
+                source.unselect();
+                source = clickedFieldLabel;
+                source.select();
+                unmarkAvailableMoves();
+                markAvailableMoves();
+                return;
             }
-
-        } else {
-            target = (FieldLabel) mouseEvent.getSource();
+            target = clickedFieldLabel;
             Turn turn = new Turn(source, target);
-            source.getStyleClass().remove("selectedField");
+            source.unselect();
             source = null;
             System.out.println(turn);
 
-            highlighted.forEach(fieldLabel -> {
-                if(fieldLabel.isMarked())
-                    fieldLabel.unmark();
-                else
-                    fieldLabel.removeOutline();
-            });
+            unmarkAvailableMoves();
             turn.getMovingPiece().getMoves().forEach(System.out::println);
         }
     }
+
+    private void markAvailableMoves() {
+        for (Field d : Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()].getPiece().getMoves())
+        {
+            if(!d.hasPiece()){
+                ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()).mark();
+            }
+            else{
+                ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()).outline();
+            }
+            highlighted.add(ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()));
+        }
+    }
+
+    private void unmarkAvailableMoves() {
+        highlighted.forEach(fieldLabel -> {
+            if(fieldLabel.isMarked())
+                fieldLabel.unmark();
+            else
+                fieldLabel.removeOutline();
+        });
+    }
+
 }

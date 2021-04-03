@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 public class FieldLabel extends Label {
 
     private int line, column;
-    private boolean isMarked=false, isOutlined=false;
+    private boolean isMarked=false, isOutlined=false, isSelected=false;
 
 
     public FieldLabel(){
@@ -55,6 +55,14 @@ public class FieldLabel extends Label {
     public void removeOutline(){
         isOutlined = false;
         this.getStyleClass().remove("potentialTake");
+    }
+    public void select() {
+        isSelected = true;
+        this.getStyleClass().add("selectedField");
+    }
+    public void unselect() {
+        isSelected = false;
+        this.getStyleClass().remove("selectedField");
     }
     public boolean isMarked() {
         return isMarked;
