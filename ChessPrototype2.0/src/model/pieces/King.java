@@ -50,14 +50,23 @@ public class King extends Piece{
         }
     }
     public boolean isInCheck(){
-        for (Piece p : chessboard.getColorToMove() == Color.BLACK ? chessboard.getWhitePieces(): chessboard.getBlackPieces())
+
+        //System.out.println("I am here:" + this.field);
+        ArrayList<Piece> pieces = chessboard.getColorToMove() == Color.BLACK ? chessboard.getWhitePieces(): chessboard.getBlackPieces();
+
+        for (Piece p : pieces)
         {
-            //System.out.println(p);
+            //System.out.println(p.getMoves().size());
             for (Field f : p.getMoves())
             {
-                if (f.getPiece() == this)
+                //System.out.println((p == Chessboard.getInstance().getFields()[p.getField().getLine()][p.getField().getColumn()].getPiece()));
+                System.out.println("\t"+f);
+                if (f == this.getField()){
+                    System.err.println("IN SCHACH VON " + p.getField());
                     return true;
+                }
             }
+
         }
         return false;
     }

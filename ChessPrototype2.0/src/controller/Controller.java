@@ -56,7 +56,7 @@ public class Controller implements EventHandler<MouseEvent> {
             target = clickedFieldLabel;
             //if (!highlighted.contains(target))
             //    return;
-            System.out.println(highlighted);
+            //System.out.println(highlighted);
             for (int i = 0; i < highlighted.size(); i++) {
                 if (highlighted.get(i).getLine() == target.getLine() && highlighted.get(i).getColumn() == target.getColumn()) {
                     Turn turn = new Turn(source, target);
@@ -77,6 +77,7 @@ public class Controller implements EventHandler<MouseEvent> {
     private void markAvailableMoves() {
         for (Field d : Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()].getPiece().getMoves())
         {
+            System.out.println(d);
             if(!d.hasPiece()){
                 ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()).mark();
             }

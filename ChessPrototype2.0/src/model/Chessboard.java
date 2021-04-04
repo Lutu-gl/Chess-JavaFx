@@ -108,10 +108,18 @@ public class Chessboard {
         return eatenPieces.remove(p);
     }
 
+    public King getB_king() {
+        return b_king;
+    }
+
+    public King getW_king() {
+        return w_king;
+    }
+
     public boolean handleTurn(Turn t){
-        //System.out.println("Der gespielte Turn ist: " + t);
+        King currentKing = colorToMove == Color.BLACK ? b_king: w_king;
         movePiece(t.getMovingPiece(), t.getTargetField() );
-        if(colorToMove == Color.BLACK ? b_king.isInCheck() : w_king.isInCheck()){
+        if(currentKing.isInCheck()){
             undoTurn(t);
             return false;
         }
