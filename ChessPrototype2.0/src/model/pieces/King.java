@@ -11,7 +11,7 @@ public class King extends Piece{
         super(color, name, field, value, shortName);
     }
 
-    private Chessboard chessboard;
+    private Chessboard chessboard = Chessboard.getInstance();
     private ArrayList<Field> availableMoves;
 
     @Override
@@ -48,5 +48,17 @@ public class King extends Piece{
         }else{ //Wenns nit existiert
             return false;
         }
+    }
+    public boolean isInCheck(){
+        for (Piece p : chessboard.getColorToMove() == Color.BLACK ? chessboard.getWhitePieces(): chessboard.getBlackPieces())
+        {
+            //System.out.println(p);
+            for (Field f : p.getMoves())
+            {
+                if (f.getPiece() == this)
+                    return true;
+            }
+        }
+        return false;
     }
 }

@@ -111,23 +111,40 @@ public class Chessboard {
     public boolean handleTurn(Turn t){
         //System.out.println("Der gespielte Turn ist: " + t);
         movePiece(t.getMovingPiece(), t.getTargetField() );
+        if(colorToMove == Color.BLACK ? b_king.isInCheck() : w_king.isInCheck()){
+            undoTurn(t);
+            return false;
+        }
         colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+
+
 
         endTurn();
         return true;
     }
     public void movePiece(Piece p, Field f){
-        if (f.hasPiece())
+        if (f.hasPiece()){
+            addPieceToEaten(f.getPiece());
+            removePiece(f.getPiece());
             PlaySound.play(Sound.CAPTURE);
+        }
         else
             PlaySound.play(Sound.MOVE);
         p.getField().setPiece(null);//Remove Piece from Source
         p.setField(f); //Update Field in Piece
         f.setPiece(p); //Move Piece to new Field
-
     }
-    public void undoTurn(){
-
+    public void undoTurn(Turn t){
+        t.getSourceField().setPiece(t.getMovingPiece()); //move Piece Back to source
+        t.getMovingPiece().setField(t.getSourceField()); //Update Field in Piece
+        if(t.getEatenPiece() != null){//if there has been a eaten Piece it gets reset aswell
+            t.getEatenPiece().setField(t.getTargetField());
+            t.getTargetField().setPiece(t.getEatenPiece());
+            addPiece(t.getEatenPiece());
+            removePieceFromEaten(t.getEatenPiece());
+        }
+        else
+            t.getTargetField().setPiece(null);
     }
     //Am ende von jedem Zug
     public void endTurn(){
