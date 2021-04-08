@@ -14,10 +14,11 @@ import view.Main;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Controller implements EventHandler<MouseEvent> {
+public class Controller implements EventHandler<MouseEvent>{
     private FieldLabel source=null;
     private FieldLabel target=null;
     private ArrayList<FieldLabel> highlighted = new ArrayList<>();
+    private FieldLabel selectedLabel=null;
     private static Controller instance=null;
 
     private Controller(){
@@ -39,18 +40,17 @@ public class Controller implements EventHandler<MouseEvent> {
         {
             //FieldLabel fieldLabel = (FieldLabel) mouseEvent.getSource();
             if (!clickedField.hasPiece() || !clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) return;
-            clickedFieldLabel.select();
             source = clickedFieldLabel;
-
-            markAvailableMoves();
+            selectLabel(source);
+            markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()]);
         }
         else {
             if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) {
                 source.unselect();
                 source = clickedFieldLabel;
-                source.select();
+                selectLabel(source);
                 unmarkAvailableMoves();
-                markAvailableMoves();
+                markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()]);
                 return;
             }
             target = clickedFieldLabel;
@@ -60,7 +60,7 @@ public class Controller implements EventHandler<MouseEvent> {
             for (int i = 0; i < highlighted.size(); i++) {
                 if (highlighted.get(i).getLine() == target.getLine() && highlighted.get(i).getColumn() == target.getColumn()) {
                     Turn turn = new Turn(source, target);
-                    source.unselect();
+                    unSelectLabel();
                     source = null;
 
                     unmarkAvailableMoves();
@@ -74,8 +74,9 @@ public class Controller implements EventHandler<MouseEvent> {
         }
     }
 
-    private void markAvailableMoves() {
-        for (Field d : Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()].getPiece().getMoves())
+    public void markAvailableMoves(Field f) {
+        //for (Field d : Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()].getPiece().getMoves())
+        for (Field d : f.getPiece().getMoves())
         {
             System.out.println(d);
             if(!d.hasPiece()){
@@ -88,7 +89,7 @@ public class Controller implements EventHandler<MouseEvent> {
         }
     }
 
-    private void unmarkAvailableMoves() {
+    public void unmarkAvailableMoves() {
         highlighted.forEach(fieldLabel -> {
             if(fieldLabel.isMarked())
                 fieldLabel.unmark();
@@ -96,6 +97,16 @@ public class Controller implements EventHandler<MouseEvent> {
                 fieldLabel.removeOutline();
         });
         highlighted.clear();
+    }
+
+    public void selectLabel(FieldLabel f) {
+        f.select();
+        selectedLabel = f;
+    }
+
+    public void unSelectLabel() {
+        selectedLabel.unselect();
+        selectedLabel = null;
     }
 
 }

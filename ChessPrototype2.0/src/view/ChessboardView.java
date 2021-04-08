@@ -1,15 +1,19 @@
 package view;
 
-import controller.ClickHandler;
 import controller.Controller;
+import controller.DragOverHandler;
+import controller.DragStartHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import model.Chessboard;
+import model.Field;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ChessboardView {
     private static ArrayList<ArrayList<FieldLabel>> board;
@@ -20,9 +24,48 @@ public class ChessboardView {
         for (int i = 0; i < l; i++) {
             ArrayList<FieldLabel> buffer = new ArrayList<>();
             for (int x = 0; x < w; x++) {
-                FieldLabel lbl = new FieldLabel(i,x);
+                FieldLabel lbl = new FieldLabel(i, x);
                 lbl.getStyleClass().add((i+x)%2==0 ? "whiteField" : "blackField");
                 lbl.setOnMouseClicked(Controller.getInstance());
+                //lbl.setOnDragDetected(DragStartHandler.getInstance());
+
+                // Start dragEvent
+                lbl.setOnDragDetected(e -> {
+                    FieldLabel clickedFieldLabel = (FieldLabel) e.getSource();
+                    Chessboard chessboard = Chessboard.getInstance();
+                    Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
+                    if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(chessboard.getColorToMove())) {
+                        System.out.println("Drag start!");
+                        Controller.getInstance().selectLabel(clickedFieldLabel);
+                        Controller.getInstance().markAvailableMoves(clickedField);
+
+                        Dragboard db = lbl.startDragAndDrop(TransferMode.ANY);
+
+                        /* Put a string on a dragboard */
+                        ClipboardContent content = new ClipboardContent();
+                        content.putString("Drag event");
+                        db.setContent(content);
+                    }
+
+                    e.consume();
+                });
+
+                // Check if field is legal
+                lbl.setOnDragOver(e -> {
+                    //if (e.getGestureSource() != lbl)
+                    e.acceptTransferModes(TransferMode.MOVE);
+                    e.consume();
+                });
+
+                // Drop piece
+                lbl.setOnDragDropped(e -> {
+                    Controller.getInstance().unmarkAvailableMoves();
+                    Controller.getInstance().unSelectLabel();
+                    System.out.println(e.getSource());
+                    e.setDropCompleted(true);
+                    e.consume();
+                });
+
                 buffer.add(lbl);
                 gridPane.add(lbl, x, i);
             }
