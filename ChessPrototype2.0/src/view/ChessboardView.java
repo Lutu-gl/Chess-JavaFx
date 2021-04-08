@@ -12,7 +12,9 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import model.Chessboard;
 import model.Field;
+import model.Turn;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ChessboardView {
@@ -35,10 +37,9 @@ public class ChessboardView {
                     Chessboard chessboard = Chessboard.getInstance();
                     Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
                     if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(chessboard.getColorToMove())) {
-                        System.out.println("Drag start!");
                         Controller.getInstance().selectLabel(clickedFieldLabel);
                         Controller.getInstance().markAvailableMoves(clickedField);
-
+                        Controller.getInstance().setSource(clickedFieldLabel);
                         Dragboard db = lbl.startDragAndDrop(TransferMode.ANY);
 
                         /* Put a string on a dragboard */
@@ -52,18 +53,34 @@ public class ChessboardView {
 
                 // Check if field is legal
                 lbl.setOnDragOver(e -> {
-                    //if (e.getGestureSource() != lbl)
                     e.acceptTransferModes(TransferMode.MOVE);
                     e.consume();
                 });
 
                 // Drop piece
                 lbl.setOnDragDropped(e -> {
-                    Controller.getInstance().unmarkAvailableMoves();
-                    Controller.getInstance().unSelectLabel();
-                    System.out.println(e.getSource());
+
+                    Controller controller = Controller.getInstance();
+                    FieldLabel targetLabel = (FieldLabel) e.getGestureTarget();
+                    Chessboard chessboard = Chessboard.getInstance();
+
+                    controller.setTarget(targetLabel);
+
+                    ArrayList<FieldLabel> highlighted = controller.getHighlighted();
+                    Turn turn = null;
+                    for (int j = 0; j < highlighted.size(); j++) {
+                        if (highlighted.get(j).getLine() == controller.getTarget().getLine() && highlighted.get(j).getColumn() == controller.getTarget().getColumn()) {
+                            turn = new Turn(controller.getSource(), controller.getTarget());
+                            break;
+                        }
+                    }
+
+                    controller.unmarkAvailableMoves();
+                    controller.unSelectLabel();
                     e.setDropCompleted(true);
                     e.consume();
+                    if (turn == null) return;
+                    chessboard.handleTurn(turn);
                 });
 
                 buffer.add(lbl);

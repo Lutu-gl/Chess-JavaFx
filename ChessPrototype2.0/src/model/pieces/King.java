@@ -60,7 +60,7 @@ public class King extends Piece{
             for (Field f : p.getMoves())
             {
                 //System.out.println((p == Chessboard.getInstance().getFields()[p.getField().getLine()][p.getField().getColumn()].getPiece()));
-                System.out.println("\t"+f);
+                //System.out.println("\t"+f);
                 if (f == this.getField()){
                     System.err.println("IN SCHACH VON " + p.getField());
                     return true;

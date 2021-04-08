@@ -25,9 +25,5 @@ public class DragStartHandler implements EventHandler<MouseEvent> {
         FieldLabel clickedField = (FieldLabel) mouseEvent.getSource();
         Dragboard db = clickedField.startDragAndDrop(TransferMode.ANY);
         mouseEvent.consume();
-
-        //Dragboard db = (FieldLabel) mouseEvent.getSource()
-                //.startDragAndDrop(TransferMode.ANY);
-
     }
 }

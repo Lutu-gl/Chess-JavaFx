@@ -1,20 +1,17 @@
 package controller;
 
 import javafx.event.EventHandler;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.Chessboard;
 import model.Field;
 import model.Turn;
 import view.ChessboardView;
 import view.FieldLabel;
-import view.Main;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Controller implements EventHandler<MouseEvent>{
+
     private FieldLabel source=null;
     private FieldLabel target=null;
     private ArrayList<FieldLabel> highlighted = new ArrayList<>();
@@ -38,7 +35,6 @@ public class Controller implements EventHandler<MouseEvent>{
         Field clickedField = Chessboard.getInstance().getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
         if(source == null)
         {
-            //FieldLabel fieldLabel = (FieldLabel) mouseEvent.getSource();
             if (!clickedField.hasPiece() || !clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) return;
             source = clickedFieldLabel;
             selectLabel(source);
@@ -54,9 +50,6 @@ public class Controller implements EventHandler<MouseEvent>{
                 return;
             }
             target = clickedFieldLabel;
-            //if (!highlighted.contains(target))
-            //    return;
-            //System.out.println(highlighted);
             for (int i = 0; i < highlighted.size(); i++) {
                 if (highlighted.get(i).getLine() == target.getLine() && highlighted.get(i).getColumn() == target.getColumn()) {
                     Turn turn = new Turn(source, target);
@@ -64,21 +57,16 @@ public class Controller implements EventHandler<MouseEvent>{
                     source = null;
 
                     unmarkAvailableMoves();
-                    //turn.getMovingPiece().getMoves().forEach(System.out::println);
                     Chessboard.getInstance().handleTurn(turn);
                     break;
                 }
             }
-
-
         }
     }
 
     public void markAvailableMoves(Field f) {
-        //for (Field d : Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()].getPiece().getMoves())
         for (Field d : f.getPiece().getMoves())
         {
-            System.out.println(d);
             if(!d.hasPiece()){
                 ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()).mark();
             }
@@ -107,6 +95,26 @@ public class Controller implements EventHandler<MouseEvent>{
     public void unSelectLabel() {
         selectedLabel.unselect();
         selectedLabel = null;
+    }
+
+    public void setSource(FieldLabel source) {
+        this.source = source;
+    }
+
+    public void setTarget(FieldLabel target) {
+        this.target = target;
+    }
+
+    public ArrayList<FieldLabel> getHighlighted() {
+        return highlighted;
+    }
+
+    public FieldLabel getSource() {
+        return source;
+    }
+
+    public FieldLabel getTarget() {
+        return target;
     }
 
 }
