@@ -1,24 +1,23 @@
 package view;
 
 import controller.Controller;
+import controller.DragDetectedHandler;
+import controller.DragDroppedHandler;
 import controller.DragOverHandler;
-import controller.DragStartHandler;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import model.Chessboard;
-import model.Field;
-import model.Turn;
+import model.Color;
+import model.pieces.Piece;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ChessboardView {
     private static ArrayList<ArrayList<FieldLabel>> board;
+    private static Scene mainScene;
     public static Scene init( int l, int w) {
         GridPane gridPane = new GridPane();
         board = new ArrayList<>();
@@ -29,59 +28,11 @@ public class ChessboardView {
                 FieldLabel lbl = new FieldLabel(i, x);
                 lbl.getStyleClass().add((i+x)%2==0 ? "whiteField" : "blackField");
                 lbl.setOnMouseClicked(Controller.getInstance());
-                //lbl.setOnDragDetected(DragStartHandler.getInstance());
 
-                // Start dragEvent
-                lbl.setOnDragDetected(e -> {
-                    FieldLabel clickedFieldLabel = (FieldLabel) e.getSource();
-                    Chessboard chessboard = Chessboard.getInstance();
-                    Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
-                    if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(chessboard.getColorToMove())) {
-                        Controller.getInstance().selectLabel(clickedFieldLabel);
-                        Controller.getInstance().markAvailableMoves(clickedField);
-                        Controller.getInstance().setSource(clickedFieldLabel);
-                        Dragboard db = lbl.startDragAndDrop(TransferMode.ANY);
-
-                        /* Put a string on a dragboard */
-                        ClipboardContent content = new ClipboardContent();
-                        content.putString("Drag event");
-                        db.setContent(content);
-                    }
-
-                    e.consume();
-                });
-
-                // Check if field is legal
-                lbl.setOnDragOver(e -> {
-                    e.acceptTransferModes(TransferMode.MOVE);
-                    e.consume();
-                });
-
-                // Drop piece
-                lbl.setOnDragDropped(e -> {
-
-                    Controller controller = Controller.getInstance();
-                    FieldLabel targetLabel = (FieldLabel) e.getGestureTarget();
-                    Chessboard chessboard = Chessboard.getInstance();
-
-                    controller.setTarget(targetLabel);
-
-                    ArrayList<FieldLabel> highlighted = controller.getHighlighted();
-                    Turn turn = null;
-                    for (int j = 0; j < highlighted.size(); j++) {
-                        if (highlighted.get(j).getLine() == controller.getTarget().getLine() && highlighted.get(j).getColumn() == controller.getTarget().getColumn()) {
-                            turn = new Turn(controller.getSource(), controller.getTarget());
-                            break;
-                        }
-                    }
-
-                    controller.unmarkAvailableMoves();
-                    controller.unSelectLabel();
-                    e.setDropCompleted(true);
-                    e.consume();
-                    if (turn == null) return;
-                    chessboard.handleTurn(turn);
-                });
+                // Set handler for drag and drop
+                lbl.setOnDragDetected(new DragDetectedHandler());
+                lbl.setOnDragOver(new DragOverHandler());
+                lbl.setOnDragDropped(new DragDroppedHandler());
 
                 buffer.add(lbl);
                 gridPane.add(lbl, x, i);
@@ -101,7 +52,8 @@ public class ChessboardView {
             gridPane.add(letter, i, l+1);
         }
 
-        return new Scene(gridPane, w*100+50, l*100+50);
+        mainScene = new Scene(gridPane, w*100+50, l*100+50);
+        return mainScene;
     }
 
     public static void setFEN(String fen) {
@@ -141,6 +93,7 @@ public class ChessboardView {
         setFEN(Chessboard.getInstance().getBoardAsFen());
     }
 
+
     private static void deleteImages(){
         board.forEach(line -> line.forEach(element -> element.setGraphic(null)));
     }
@@ -149,4 +102,7 @@ public class ChessboardView {
         return board;
     }
 
+    public static Scene getMainScene() {
+        return mainScene;
+    }
 }

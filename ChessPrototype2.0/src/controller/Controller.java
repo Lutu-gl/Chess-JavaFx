@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import model.Chessboard;
 import model.Field;
@@ -43,10 +44,12 @@ public class Controller implements EventHandler<MouseEvent>{
         else {
             if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) {
                 source.unselect();
-                source = clickedFieldLabel;
-                selectLabel(source);
                 unmarkAvailableMoves();
-                markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()]);
+                if (clickedFieldLabel != source) {
+                    source = clickedFieldLabel;
+                    selectLabel(source);
+                    markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()]);
+                }
                 return;
             }
             target = clickedFieldLabel;

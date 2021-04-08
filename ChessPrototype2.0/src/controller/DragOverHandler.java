@@ -2,21 +2,13 @@ package controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 
 public class DragOverHandler implements EventHandler<DragEvent> {
 
-    private DragOverHandler(){}
-
-    private static DragOverHandler instance = null;
-
-    public static DragOverHandler getInstance() {
-        if (instance == null)
-            instance = new DragOverHandler();
-        return instance;
-    }
-
     @Override
     public void handle(DragEvent dragEvent) {
-
+        dragEvent.acceptTransferModes(TransferMode.MOVE);
+        dragEvent.consume();
     }
 }
