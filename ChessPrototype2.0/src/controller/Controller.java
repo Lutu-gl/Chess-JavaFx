@@ -49,6 +49,8 @@ public class Controller implements EventHandler<MouseEvent>{
                     source = clickedFieldLabel;
                     selectLabel(source);
                     markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()]);
+                } else { //Wenns das selbe Piece ist, dann wird source auf null gesetzt!
+                    source = null;
                 }
                 return;
             }
