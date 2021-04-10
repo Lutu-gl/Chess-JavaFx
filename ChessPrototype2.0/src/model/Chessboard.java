@@ -119,14 +119,8 @@ public class Chessboard {
     public boolean handleTurn(Turn t){
         King currentKing = colorToMove == Color.BLACK ? b_king: w_king;
         movePiece(t.getMovingPiece(), t.getTargetField() );
-        if(currentKing.isInCheck()){
-            undoTurn(t);
-            return false;
-        }
         colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
-
-
-
+        
         endTurn();
         return true;
     }
@@ -157,9 +151,35 @@ public class Chessboard {
     //Am ende von jedem Zug
     public void endTurn(){
 
-        //System.out.println(getBoardAsFen());
         ChessboardView.display();
     }
+
+    public boolean isLegal(Field destination, Field start) {
+        // Backup the possible eaten piece
+        Piece eatenPiece = destination.getPiece();
+
+        // Play position
+        destination.setPiece(start.getPiece());
+        destination.getPiece().setField(destination);
+        start.setPiece(null);
+
+        //printBoard();
+
+
+        // Check if check
+        boolean inCheck = (colorToMove.equals(Color.WHITE)?w_king:b_king).isInCheck();
+
+
+        // Undo move
+        start.setPiece(destination.getPiece());
+        start.getPiece().setField(start);
+        destination.setPiece(eatenPiece);
+
+        //printBoard();
+
+        return !inCheck;
+    }
+
     public void setBoardByFen(String fen){
         /*
             0 => positions

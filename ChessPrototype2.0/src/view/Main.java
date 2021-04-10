@@ -15,11 +15,11 @@ public class Main extends Application {
         board.createBoard(size);
         String fen = "";
 
-        //fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
         //fen = "rn2kbnr/ppp1p2p/4b3/3pqpp1/2P1P3/2NB1N1P/PP1P1PP1/R1BQK2R w KQkq - 0 7"; //Crazy fen
         //fen = "8/3k3p/8/8/8/3N4/8/3K4 w - - 0 1"; //check test
-        fen = "8/Q1qk3p/8/8/8/3N4/8/3K4 w - - 0 1"; //check test2
-
+        //fen = "8/Q1qk3p/8/8/8/3N4/8/3K4 w - - 0 1"; //check test2
+        //fen = "8/2p5/8/8/2K2qk1/8/8/5P2 w - - 0 1";
 
         board.addFen(fen);
         board.setBoardByFen(fen);

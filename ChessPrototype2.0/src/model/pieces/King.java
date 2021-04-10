@@ -5,6 +5,7 @@ import model.Color;
 import model.Field;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class King extends Piece{
     public King(Color color, String name, Field field, int value, char shortName) {
@@ -49,7 +50,7 @@ public class King extends Piece{
             return false;
         }
     }
-    public boolean isInCheck(){
+    /*public boolean isInCheck(){
 
         //System.out.println("I am here:" + this.field);
         ArrayList<Piece> pieces = chessboard.getColorToMove() == Color.BLACK ? chessboard.getWhitePieces(): chessboard.getBlackPieces();
@@ -69,5 +70,70 @@ public class King extends Piece{
 
         }
         return false;
+    }*/
+    public boolean isInCheck() {
+
+        // Search
+        ArrayList<Character> search = new ArrayList<>();
+
+        // Check for checks by knight
+        search.add(color.equals(Color.WHITE)?'n':'N');
+        if (checkHelper(new Knight(color, "ByKingGenerated", field, 3, 'G').getMoves(), search)) return true;
+        search.clear();
+
+        // Check for check by bishop or queen
+        if (color.equals(Color.WHITE)) Collections.addAll(search, 'b','q');
+        else Collections.addAll(search, 'B','Q');
+        if (checkHelper(new Bishop(color, "ByKingGenerated", field, 3, 'G').getMoves(), search)) return true;
+        search.clear();
+
+        // Check for check by rook or queen
+        if (color.equals(Color.WHITE)) Collections.addAll(search, 'r','q');
+        else Collections.addAll(search, 'R','Q');
+        if (checkHelper(new Rook(color, "ByKingGenerated", field, 5, 'G').getMoves(), search)) return true;
+        search.clear();
+
+        // Check for check by King
+        if (color.equals(Color.WHITE)) Collections.addAll(search, 'k');
+        else Collections.addAll(search, 'K');
+        if (checkHelper(new King(color, "ByKingGenerated", field, 5, 'G').getMoves(), search)) return true;
+        search.clear();
+
+        // Check for check by Pawn
+        Field pawnField;
+        if (color.equals(Color.WHITE)) {
+            // Check for piece left above
+            if (field.getLine() >= 1 && field.getColumn() >= 1) {
+                pawnField = Chessboard.getInstance().getFields()[field.getLine() - 1][field.getColumn() - 1];
+                if (pawnField.hasPiece() && pawnField.getPiece().getShortName() == 'p') return true;
+            }
+            // Check for piece right above
+            if (field.getLine() >= 1 && field.getColumn() < Chessboard.getInstance().getFields().length-1) {
+                pawnField = Chessboard.getInstance().getFields()[field.getLine() - 1][field.getColumn() + 1];
+                if (pawnField.hasPiece() && pawnField.getPiece().getShortName() == 'p') return true;
+            }
+        } else {
+            // Check for piece left below
+            if (field.getLine() < Chessboard.getInstance().getFields().length-1 && field.getColumn() >= 1) {
+                pawnField = Chessboard.getInstance().getFields()[field.getLine() + 1][field.getColumn() - 1];
+                if (pawnField.hasPiece() && pawnField.getPiece().getShortName() == 'P') return true;
+            }
+            // Check for piece right below
+            if (field.getLine() < Chessboard.getInstance().getFields().length-1 && field.getColumn() < Chessboard.getInstance().getFields().length-1) {
+                pawnField = Chessboard.getInstance().getFields()[field.getLine() + 1][field.getColumn() + 1];
+                if (pawnField.hasPiece() && pawnField.getPiece().getShortName() == 'P') return true;
+            }
+        }
+        return false;
     }
+
+    private boolean checkHelper(ArrayList<Field> moves, ArrayList<Character> search) {
+
+        for (Field move : moves) {
+            if (move.hasPiece() && search.contains(move.getPiece().getShortName()))
+                return true;
+        }
+        return false;
+    }
+
 }

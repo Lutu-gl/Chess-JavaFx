@@ -72,6 +72,10 @@ public class Controller implements EventHandler<MouseEvent>{
     public void markAvailableMoves(Field f) {
         for (Field d : f.getPiece().getMoves())
         {
+
+            if (!Chessboard.getInstance().isLegal(d, Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()])) continue;
+
+
             if(!d.hasPiece()){
                 ChessboardView.getBoard().get(d.getLine()).get(d.getColumn()).mark();
             }
@@ -83,6 +87,7 @@ public class Controller implements EventHandler<MouseEvent>{
     }
 
     public void unmarkAvailableMoves() {
+        if (highlighted == null) return;
         highlighted.forEach(fieldLabel -> {
             if(fieldLabel.isMarked())
                 fieldLabel.unmark();
@@ -98,6 +103,7 @@ public class Controller implements EventHandler<MouseEvent>{
     }
 
     public void unSelectLabel() {
+        if (selectedLabel == null) return;
         selectedLabel.unselect();
         selectedLabel = null;
     }
