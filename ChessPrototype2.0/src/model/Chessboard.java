@@ -120,11 +120,34 @@ public class Chessboard {
         King currentKing = colorToMove == Color.BLACK ? b_king: w_king;
         movePiece(t.getMovingPiece(), t.getTargetField() );
         colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
-        
+
         endTurn();
         return true;
     }
     public void movePiece(Piece p, Field f){
+        if (p instanceof King) {
+            if (p.getColor().equals(Color.WHITE)) {
+                whiteCastlePermissionShort = false;
+                whiteCastlePermissionLong = false;
+            } else {
+                blackCastlePermissionShort = false;
+                blackCastlePermissionLong = false;
+            }
+        } else if (p instanceof Rook) {
+            if (p.getColor().equals(Color.WHITE)) {
+                if (p.getField().getLine() == 7 && p.getField().getColumn() == 0)
+                    whiteCastlePermissionShort = false;
+                else if (p.getField().getLine() == 7 && p.getField().getColumn() == 7)
+                    whiteCastlePermissionLong = false;
+            } else {
+                if (p.getField().getLine() == 0 && p.getField().getColumn() == 0)
+                    blackCastlePermissionShort = false;
+                else if (p.getField().getLine() == 0 && p.getField().getColumn() == 7)
+                    blackCastlePermissionLong = false;
+            }
+        }
+
+
         if (f.hasPiece()){
             addPieceToEaten(f.getPiece());
             removePiece(f.getPiece());
@@ -150,13 +173,15 @@ public class Chessboard {
     }
     //Am ende von jedem Zug
     public void endTurn(){
-
+        printBoard();
         ChessboardView.display();
     }
 
     public boolean isLegal(Field destination, Field start) {
         // Backup the possible eaten piece
+
         Piece eatenPiece = destination.getPiece();
+
 
         // Play position
         destination.setPiece(start.getPiece());
@@ -178,6 +203,7 @@ public class Chessboard {
         //printBoard();
 
         return !inCheck;
+
     }
 
     public void setBoardByFen(String fen){
@@ -361,6 +387,10 @@ public class Chessboard {
 
     public Color getColorToMove() {
         return colorToMove;
+    }
+
+    public boolean[] getCastlePermissions() {
+        return new boolean[]{whiteCastlePermissionShort, whiteCastlePermissionLong, blackCastlePermissionShort, blackCastlePermissionLong};
     }
 
 }
