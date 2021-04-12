@@ -86,9 +86,12 @@ public class Chessboard {
             whitePieces.add(p);
     }
 
-    //muas man no is ende fun string entfernen
+    //Ende (Also die Züge und ruleCounter) entfernen
     public void addFen(String fen){
-        fens.add(fen.substring(0, fen.indexOf(" ")));
+        fen  = fen.substring(0, fen.lastIndexOf(' '));
+        fen  = fen.substring(0, fen.lastIndexOf(' '));
+
+        fens.add(fen);
     }
 
     public boolean removePiece(Piece p){
@@ -120,7 +123,35 @@ public class Chessboard {
         King currentKing = colorToMove == Color.BLACK ? b_king: w_king;
         movePiece(t.getMovingPiece(), t.getTargetField() );
         colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
-        
+
+        //handeln der 50 move rule
+        ruleCounter++;
+        if(t.getMovingPiece() instanceof Pawn || t.getEatenPiece() != null){
+            ruleCounter = 0;
+        }else if(ruleCounter >= 100){
+            state = Gamestate.DRAW;
+        }
+
+        //handeln der moves
+        if(colorToMove == Color.WHITE){
+            turn++;
+        }
+
+        //handlern der 3 fold repetition
+        int threefoldCounter=0;
+        addFen(getBoardAsFen());
+
+        String fen = fens.get(fens.size()-1);
+        for(String f : fens){
+            if(fen.equals(f)){
+                threefoldCounter++;
+            }
+        }
+        if(threefoldCounter >= 3){
+            System.out.println("Treefold applies. Anyone can claim a DRAW!");
+            state = Gamestate.PLAYER_CAN_CLAIM_DRAW;
+        }
+
         endTurn();
         return true;
     }
@@ -151,6 +182,8 @@ public class Chessboard {
     //Am ende von jedem Zug
     public void endTurn(){
 
+
+        System.out.println("Fen in endTurn(): " + getBoardAsFen());
         ChessboardView.display();
     }
 
