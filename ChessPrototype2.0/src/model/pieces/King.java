@@ -34,19 +34,27 @@ public class King extends Piece{
         if (castle) {
             boolean[] permissions = chessboard.getCastlePermissions();
             if (color.equals(Color.WHITE)) {
-                if (permissions[0] && chessboard.isLegal(chessboard.getFields()[line][column-2], field) && !isInCheck())
+                if (permissions[0] && chessboard.isLegal(chessboard.getFields()[line][column-2], field) && !isInCheck() && freeSpace(chessboard.getFields()[line][0], field))
                     availableMoves.add(chessboard.getFields()[line][column - 2]);
-                if (permissions[1] && chessboard.isLegal(chessboard.getFields()[line][column+2], field) && !isInCheck())
+                if (permissions[1] && chessboard.isLegal(chessboard.getFields()[line][column+2], field) && !isInCheck() && freeSpace(field, chessboard.getFields()[line][chessboard.getFields().length-1]))
                     availableMoves.add(chessboard.getFields()[line][column + 2]);
             } else {
-                if (permissions[2] && chessboard.isLegal(chessboard.getFields()[line][column-2], field) && !isInCheck())
+                if (permissions[2] && chessboard.isLegal(chessboard.getFields()[line][column-2], field) && !isInCheck() && freeSpace(chessboard.getFields()[line][0], field))
                     availableMoves.add(chessboard.getFields()[line][column - 2]);
-                if (permissions[3] && chessboard.isLegal(chessboard.getFields()[line][column+2], field) && !isInCheck())
+                if (permissions[3] && chessboard.isLegal(chessboard.getFields()[line][column+2], field) && !isInCheck() && freeSpace(field, chessboard.getFields()[line][chessboard.getFields().length-1]))
                     availableMoves.add(chessboard.getFields()[line][column + 2]);
             }
         }
-
         return availableMoves;
+    }
+
+    private boolean freeSpace(Field start, Field end) {
+        int line = start.getLine(), column = start.getColumn();
+        for (int i = 1; column+i < end.getColumn(); i++) {
+            if (Chessboard.getInstance().getFields()[line][column+i].hasPiece())
+                return false;
+        }
+        return true;
     }
 
     @Override

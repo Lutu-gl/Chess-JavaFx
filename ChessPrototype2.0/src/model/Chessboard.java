@@ -20,6 +20,7 @@ public class Chessboard {
     private Gamestate state;
     private boolean whiteCastlePermissionShort, whiteCastlePermissionLong, blackCastlePermissionShort, blackCastlePermissionLong;
     private King b_king, w_king;
+    private Sound playSound;
 
     // Singleton pattern
     private static Chessboard instance = null;
@@ -155,14 +156,42 @@ public class Chessboard {
         endTurn();
         return true;
     }
-    public void movePiece(Piece p, Field f){
+
+    public void movePiece(Piece p, Field f) {
+        movePiece(p, f, true);
+    }
+
+    public void movePiece(Piece p, Field f, boolean s){
+
+        playSound = Sound.MOVE;
+
         if (p instanceof King) {
             if (p.getColor().equals(Color.WHITE)) {
                 whiteCastlePermissionShort = false;
                 whiteCastlePermissionLong = false;
+                // Check if it is left castling
+                if (w_king.getField().getColumn() - f.getColumn() == 2) {
+                    movePiece(fields[fields.length - 1][0].getPiece(), fields[fields.length - 1][p.getField().getColumn() - 1], false);
+                    playSound = Sound.CASTLE;
+                }
+                // Check if it is right castling
+                else if (f.getColumn() - w_king.getField().getColumn() == 2) {
+                    movePiece(fields[fields.length - 1][fields.length - 1].getPiece(), fields[fields.length - 1][p.getField().getColumn() + 1], false);
+                    playSound = Sound.CASTLE;
+                }
             } else {
                 blackCastlePermissionShort = false;
                 blackCastlePermissionLong = false;
+                // Check if it is left castling
+                if (b_king.getField().getColumn() - f.getColumn() == 2) {
+                    movePiece(fields[0][0].getPiece(), fields[0][p.getField().getColumn() - 1], false);
+                    playSound = Sound.CASTLE;
+                }
+                // Check if it is right castling
+                else if (f.getColumn() - b_king.getField().getColumn() == 2) {
+                    movePiece(fields[0][fields.length - 1].getPiece(), fields[0][p.getField().getColumn() + 1], false);
+                    playSound = Sound.CASTLE;
+                }
             }
         } else if (p instanceof Rook) {
             if (p.getColor().equals(Color.WHITE)) {
@@ -195,14 +224,20 @@ public class Chessboard {
                         blackCastlePermissionLong = false;
                 }
             }
-            PlaySound.play(Sound.CAPTURE);
+            playSound = Sound.CAPTURE;
         }
-        else
-            PlaySound.play(Sound.MOVE);
+
+        if (s)
+            PlaySound.play(playSound);
+
         p.getField().setPiece(null);//Remove Piece from Source
         p.setField(f); //Update Field in Piece
         f.setPiece(p); //Move Piece to new Field
+
+        printBoard();
+
     }
+
     public void undoTurn(Turn t){
         t.getSourceField().setPiece(t.getMovingPiece()); //move Piece Back to source
         t.getMovingPiece().setField(t.getSourceField()); //Update Field in Piece
@@ -217,7 +252,6 @@ public class Chessboard {
     }
     //Am ende von jedem Zug
     public void endTurn(){
-        printBoard();
         ChessboardView.display();
     }
 
