@@ -21,7 +21,8 @@ public class Main extends Application {
         //fen = "8/Q1qk3p/8/8/8/3N4/8/3K4 w - - 0 1"; //check test2
         //fen = "r3k2r/pppq1ppp/2np1n2/2b1p1B1/2B1P1b1/2NP1N2/PPP1QPPP/R3K2R w KQkq - 4 8";
         //fen = "r3k3/4n3/4P3/2p5/8/2K1N3/8/7R w - - 0 1";
-        fen = "rnbqkbnr/ppp2ppp/8/3pp3/3PP3/8/PPPK1PPP/RNBQ1BNR b - - 0 1";
+        //fen = "rnbqkbnr/ppp2ppp/8/3pp3/3PP3/8/PPPK1PPP/RNBQ1BNR b - - 0 1";
+        fen = "r2qk2r/ppp1pppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1";
 
         board.addFen(fen);
         board.setBoardByFen(fen);

@@ -34,13 +34,15 @@ public class King extends Piece{
         if (castle) {
             boolean[] permissions = chessboard.getCastlePermissions();
             if (color.equals(Color.WHITE)) {
-                if (permissions[0] && chessboard.isLegal(chessboard.getFields()[line][column-2], field))
+                if (permissions[0] && chessboard.isLegal(chessboard.getFields()[line][column-2], field) && !isInCheck())
                     availableMoves.add(chessboard.getFields()[line][column - 2]);
-                if (permissions[1] && chessboard.isLegal(chessboard.getFields()[line][column+2], field))
+                if (permissions[1] && chessboard.isLegal(chessboard.getFields()[line][column+2], field) && !isInCheck())
                     availableMoves.add(chessboard.getFields()[line][column + 2]);
             } else {
-                if (permissions[2] && chessboard.isLegal(chessboard.getFields()[line][column-2], field)) availableMoves.add(chessboard.getFields()[line][column - 2]);
-                if (permissions[3] && chessboard.isLegal(chessboard.getFields()[line][column+2], field)) availableMoves.add(chessboard.getFields()[line][column + 2]);
+                if (permissions[2] && chessboard.isLegal(chessboard.getFields()[line][column-2], field) && !isInCheck())
+                    availableMoves.add(chessboard.getFields()[line][column - 2]);
+                if (permissions[3] && chessboard.isLegal(chessboard.getFields()[line][column+2], field) && !isInCheck())
+                    availableMoves.add(chessboard.getFields()[line][column + 2]);
             }
         }
 
@@ -137,11 +139,10 @@ public class King extends Piece{
 
          */
         // Check knight checks first
+        char search = color.equals(Color.WHITE) ? 'n' : 'N';
         for (Field move : new Knight(color, "ByKingGenerated", field, 3, 'G').getMoves()) {
             if (move.hasPiece()) {
-                if (color.equals(Color.WHITE) && move.getPiece().getShortName() == 'n')
-                    return true;
-                else if (color.equals(Color.BLACK) && move.getPiece().getShortName() == 'N')
+                if (move.getPiece().getShortName() == search)
                     return true;
             }
         }
@@ -156,9 +157,15 @@ public class King extends Piece{
             if (checkHelperPawn(line+1, column+1, 'P')) return true;
         }
 
-
-        // TODO: Check king checks now
-
+        search = color.equals(Color.WHITE) ? 'k' : 'K';
+        int size = chessboard.getFields().length;
+        for (int i = -1; i < 2; i++) {
+            for (int x = -1; x < 2; x++) {
+                if (line+i < 0 || column+x < 0 || line+i >= size || column+x >= size) continue;
+                Field move = chessboard.getFields()[line+i][column+x];
+                if (move.hasPiece() && move.getPiece().getShortName() == search) return true;
+            }
+        }
         // Check checks for all other pieces now!!
         /*
         Indexes:

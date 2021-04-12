@@ -151,6 +151,19 @@ public class Chessboard {
         if (f.hasPiece()){
             addPieceToEaten(f.getPiece());
             removePiece(f.getPiece());
+            if (f.getPiece() instanceof Rook) {
+                if (f.getPiece().getColor().equals(Color.WHITE)) {
+                    if (f.getLine() == 7 && f.getColumn() == 0)
+                        whiteCastlePermissionShort = false;
+                    else if (p.getField().getLine() == 7 && p.getField().getColumn() == 7)
+                        whiteCastlePermissionLong = false;
+                } else {
+                    if (p.getField().getLine() == 0 && p.getField().getColumn() == 0)
+                        blackCastlePermissionShort = false;
+                    else if (p.getField().getLine() == 0 && p.getField().getColumn() == 7)
+                        blackCastlePermissionLong = false;
+                }
+            }
             PlaySound.play(Sound.CAPTURE);
         }
         else
