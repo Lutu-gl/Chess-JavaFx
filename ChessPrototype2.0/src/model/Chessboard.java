@@ -152,13 +152,50 @@ public class Chessboard {
             state = Gamestate.PLAYER_CAN_CLAIM_DRAW;
         }
 
+
         endTurn();
         return true;
     }
     public void movePiece(Piece p, Field f){
+        if (p instanceof King) {
+            if (p.getColor().equals(Color.WHITE)) {
+                whiteCastlePermissionShort = false;
+                whiteCastlePermissionLong = false;
+            } else {
+                blackCastlePermissionShort = false;
+                blackCastlePermissionLong = false;
+            }
+        } else if (p instanceof Rook) {
+            if (p.getColor().equals(Color.WHITE)) {
+                if (p.getField().getLine() == 7 && p.getField().getColumn() == 0)
+                    whiteCastlePermissionShort = false;
+                else if (p.getField().getLine() == 7 && p.getField().getColumn() == 7)
+                    whiteCastlePermissionLong = false;
+            } else {
+                if (p.getField().getLine() == 0 && p.getField().getColumn() == 0)
+                    blackCastlePermissionShort = false;
+                else if (p.getField().getLine() == 0 && p.getField().getColumn() == 7)
+                    blackCastlePermissionLong = false;
+            }
+        }
+
+
         if (f.hasPiece()){
             addPieceToEaten(f.getPiece());
             removePiece(f.getPiece());
+            if (f.getPiece() instanceof Rook) {
+                if (f.getPiece().getColor().equals(Color.WHITE)) {
+                    if (f.getLine() == 7 && f.getColumn() == 0)
+                        whiteCastlePermissionShort = false;
+                    else if (p.getField().getLine() == 7 && p.getField().getColumn() == 7)
+                        whiteCastlePermissionLong = false;
+                } else {
+                    if (p.getField().getLine() == 0 && p.getField().getColumn() == 0)
+                        blackCastlePermissionShort = false;
+                    else if (p.getField().getLine() == 0 && p.getField().getColumn() == 7)
+                        blackCastlePermissionLong = false;
+                }
+            }
             PlaySound.play(Sound.CAPTURE);
         }
         else
@@ -181,15 +218,15 @@ public class Chessboard {
     }
     //Am ende von jedem Zug
     public void endTurn(){
-
-
-        System.out.println("Fen in endTurn(): " + getBoardAsFen());
+        printBoard();
         ChessboardView.display();
     }
 
     public boolean isLegal(Field destination, Field start) {
         // Backup the possible eaten piece
+
         Piece eatenPiece = destination.getPiece();
+
 
         // Play position
         destination.setPiece(start.getPiece());
@@ -211,6 +248,7 @@ public class Chessboard {
         //printBoard();
 
         return !inCheck;
+
     }
 
     public void setBoardByFen(String fen){
@@ -394,6 +432,10 @@ public class Chessboard {
 
     public Color getColorToMove() {
         return colorToMove;
+    }
+
+    public boolean[] getCastlePermissions() {
+        return new boolean[]{whiteCastlePermissionShort, whiteCastlePermissionLong, blackCastlePermissionShort, blackCastlePermissionLong};
     }
 
 }

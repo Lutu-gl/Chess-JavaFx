@@ -67,6 +67,7 @@ public class Controller implements EventHandler<MouseEvent>{
                 }
             }
         }
+
     }
 
     public void markAvailableMoves(Field f) {
