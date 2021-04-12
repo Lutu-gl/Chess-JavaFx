@@ -152,7 +152,6 @@ public class Chessboard {
             state = Gamestate.PLAYER_CAN_CLAIM_DRAW;
         }
 
-
         endTurn();
         return true;
     }
