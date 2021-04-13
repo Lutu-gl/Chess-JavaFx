@@ -19,7 +19,7 @@ public class Chessboard {
     private ArrayList<Piece> blackPieces = new ArrayList<>();
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
     private Gamestate state;
-    private boolean whiteCastlePermissionShort, whiteCastlePermissionLong, blackCastlePermissionShort, blackCastlePermissionLong;
+    private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort;
     private King b_king, w_king;
     private Sound playSound;
 
@@ -128,8 +128,8 @@ public class Chessboard {
 
         if (p instanceof King) {
             if (p.getColor().equals(Color.WHITE)) {
-                whiteCastlePermissionShort = false;
                 whiteCastlePermissionLong = false;
+                whiteCastlePermissionShort = false;
                 // Check if it is left castling
                 if (w_king.getField().getColumn() - f.getColumn() == 2) {
                     movePiece(fields[fields.length - 1][0].getPiece(), fields[fields.length - 1][p.getField().getColumn() - 1], false);
@@ -141,8 +141,8 @@ public class Chessboard {
                     playSound = Sound.CASTLE;
                 }
             } else {
-                blackCastlePermissionShort = false;
                 blackCastlePermissionLong = false;
+                blackCastlePermissionShort = false;
                 // Check if it is left castling
                 if (b_king.getField().getColumn() - f.getColumn() == 2) {
                     movePiece(fields[0][0].getPiece(), fields[0][p.getField().getColumn() - 1], false);
@@ -157,28 +157,28 @@ public class Chessboard {
         } else if (p instanceof Rook) {
             if (p.getColor().equals(Color.WHITE)) {
                 if (p.getField().getLine() == 7 && p.getField().getColumn() == 0)
-                    whiteCastlePermissionShort = false;
-                else if (p.getField().getLine() == 7 && p.getField().getColumn() == 7)
                     whiteCastlePermissionLong = false;
+                else if (p.getField().getLine() == 7 && p.getField().getColumn() == 7)
+                    whiteCastlePermissionShort = false;
             } else {
                 if (p.getField().getLine() == 0 && p.getField().getColumn() == 0)
-                    blackCastlePermissionShort = false;
-                else if (p.getField().getLine() == 0 && p.getField().getColumn() == 7)
                     blackCastlePermissionLong = false;
+                else if (p.getField().getLine() == 0 && p.getField().getColumn() == 7)
+                    blackCastlePermissionShort = false;
             }
         }
 
         if (f.hasPiece() && f.getPiece() instanceof Rook) {
             if (f.getPiece().getColor().equals(Color.WHITE)) {
                 if (f.getLine() == fields.length-1 && f.getColumn() == 0)
-                    whiteCastlePermissionShort = false;
-                else if (f.getLine() == fields.length-1 && f.getColumn() == fields.length-1)
                     whiteCastlePermissionLong = false;
+                else if (f.getLine() == fields.length-1 && f.getColumn() == fields.length-1)
+                    whiteCastlePermissionShort = false;
             } else {
                 if (f.getLine() == 0 && f.getColumn() == 0)
-                    blackCastlePermissionShort = false;
-                else if (f.getLine() == 0 && f.getColumn() == fields.length-1)
                     blackCastlePermissionLong = false;
+                else if (f.getLine() == 0 && f.getColumn() == fields.length-1)
+                    blackCastlePermissionShort = false;
             }
         }
         movePiece(p, f );
@@ -361,16 +361,16 @@ public class Chessboard {
         colorToMove = groups[1].equals("w") ? Color.WHITE : Color.BLACK;
 
         // Now check if the players has castle permissions
-        whiteCastlePermissionShort = false;
         whiteCastlePermissionLong = false;
-        blackCastlePermissionShort = false;
+        whiteCastlePermissionShort = false;
         blackCastlePermissionLong = false;
+        blackCastlePermissionShort = false;
         for (int i = 0; i < groups[2].length(); i++) {
             switch (groups[2].charAt(i)) {
-                case 'K' -> whiteCastlePermissionShort = true;
-                case 'Q' -> whiteCastlePermissionLong = true;
-                case 'k' -> blackCastlePermissionShort = true;
-                case 'q' -> blackCastlePermissionLong = true;
+                case 'K' -> whiteCastlePermissionLong = true;
+                case 'Q' -> whiteCastlePermissionShort = true;
+                case 'k' -> blackCastlePermissionLong = true;
+                case 'q' -> blackCastlePermissionShort = true;
             }
         }
 
@@ -412,7 +412,7 @@ public class Chessboard {
 
         groups[1] = colorToMove.equals(Color.WHITE) ? "w" : "b";
 
-        groups[2] = (whiteCastlePermissionShort ? "K" : "") + (whiteCastlePermissionLong ? "Q" : "") + (blackCastlePermissionShort ? "k" : "") + (blackCastlePermissionLong ? "q" : "");
+        groups[2] = (whiteCastlePermissionLong ? "K" : "") + (whiteCastlePermissionShort ? "Q" : "") + (blackCastlePermissionLong ? "k" : "") + (blackCastlePermissionShort ? "q" : "");
 
         groups[3] = "-";
 
@@ -474,7 +474,7 @@ public class Chessboard {
     }
 
     public boolean[] getCastlePermissions() {
-        return new boolean[]{whiteCastlePermissionShort, whiteCastlePermissionLong, blackCastlePermissionShort, blackCastlePermissionLong};
+        return new boolean[]{whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort};
     }
 
 }
