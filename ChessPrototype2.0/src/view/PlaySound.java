@@ -25,20 +25,4 @@ public class PlaySound {
         }
         clip.start();
     }
-
-    public static void main(String[] args) throws InterruptedException {
-
-        PlaySound.play(Sound.MOVE);
-        Thread.sleep(1000);
-        PlaySound.play(Sound.CAPTURE);
-        Thread.sleep(1000);
-        PlaySound.play(Sound.CASTLE);
-        Thread.sleep(1000);
-        PlaySound.play(Sound.CHECK);
-        Thread.sleep(1000);
-        PlaySound.play(Sound.MATE);
-        Thread.sleep(1000);
-        PlaySound.play(Sound.STALEMATE);
-        Thread.sleep(1000);
-    }
 }
