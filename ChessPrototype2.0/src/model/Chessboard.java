@@ -122,51 +122,9 @@ public class Chessboard {
     }
 
     public boolean handleTurn(Turn t){
-        King currentKing = colorToMove == Color.BLACK ? b_king: w_king;
-        movePiece(t.getMovingPiece(), t.getTargetField() );
-        colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
-        if(t.getMovingPiece() instanceof Pawn)
-            ((Pawn)t.getMovingPiece()).promoteIfPossible();
 
-        //handeln der 50 move rule
-        ruleCounter++;
-        if(t.getMovingPiece() instanceof Pawn || t.getEatenPiece() != null){
-            ruleCounter = 0;
-        }else if(ruleCounter >= 100){
-            state = Gamestate.DRAW;
-        }
-
-        //handeln der moves
-        if(colorToMove == Color.WHITE){
-            turn++;
-        }
-
-        //handlern der 3 fold repetition
-        int threefoldCounter=0;
-        addFen(getBoardAsFen());
-
-        String fen = fens.get(fens.size()-1);
-        for(String f : fens){
-            if(fen.equals(f)){
-                threefoldCounter++;
-            }
-        }
-        if(threefoldCounter >= 3){
-            System.out.println("Treefold applies. Anyone can claim a DRAW!");
-            state = Gamestate.PLAYER_CAN_CLAIM_DRAW;
-        }
-
-        endTurn();
-        return true;
-    }
-
-    public void movePiece(Piece p, Field f) {
-        movePiece(p, f, true);
-    }
-
-    public void movePiece(Piece p, Field f, boolean s){
-
-        playSound = Sound.MOVE;
+        Piece p = t.getMovingPiece();
+        Field f = t.getTargetField();
 
         if (p instanceof King) {
             if (p.getColor().equals(Color.WHITE)) {
@@ -210,23 +168,67 @@ public class Chessboard {
             }
         }
 
+        if (f.hasPiece() && f.getPiece() instanceof Rook) {
+            if (f.getPiece().getColor().equals(Color.WHITE)) {
+                if (f.getLine() == fields.length-1 && f.getColumn() == 0)
+                    whiteCastlePermissionShort = false;
+                else if (f.getLine() == fields.length-1 && f.getColumn() == fields.length-1)
+                    whiteCastlePermissionLong = false;
+            } else {
+                if (f.getLine() == 0 && f.getColumn() == 0)
+                    blackCastlePermissionShort = false;
+                else if (f.getLine() == 0 && f.getColumn() == fields.length-1)
+                    blackCastlePermissionLong = false;
+            }
+        }
+        movePiece(p, f );
+        colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+        if(t.getMovingPiece() instanceof Pawn)
+            ((Pawn)t.getMovingPiece()).promoteIfPossible();
+
+        //handeln der 50 move rule
+        ruleCounter++;
+        if(t.getMovingPiece() instanceof Pawn || t.getEatenPiece() != null){
+            ruleCounter = 0;
+        }else if(ruleCounter >= 100){
+            state = Gamestate.DRAW;
+        }
+
+        //handeln der moves
+        if(colorToMove == Color.WHITE){
+            turn++;
+        }
+
+        //handlern der 3 fold repetition
+        int threefoldCounter=0;
+        addFen(getBoardAsFen());
+
+        String fen = fens.get(fens.size()-1);
+        for(String fe : fens){
+            if(fen.equals(fe)){
+                threefoldCounter++;
+            }
+        }
+        if(threefoldCounter >= 3){
+            System.out.println("Treefold applies. Anyone can claim a DRAW!");
+            state = Gamestate.PLAYER_CAN_CLAIM_DRAW;
+        }
+
+        endTurn();
+        return true;
+    }
+
+    public void movePiece(Piece p, Field f) {
+        movePiece(p, f, true);
+    }
+
+    public void movePiece(Piece p, Field f, boolean s){
+
+        playSound = Sound.MOVE;
 
         if (f.hasPiece()){
             addPieceToEaten(f.getPiece());
             removePiece(f.getPiece());
-            if (f.getPiece() instanceof Rook) {
-                if (f.getPiece().getColor().equals(Color.WHITE)) {
-                    if (f.getLine() == 7 && f.getColumn() == 0)
-                        whiteCastlePermissionShort = false;
-                    else if (p.getField().getLine() == 7 && p.getField().getColumn() == 7)
-                        whiteCastlePermissionLong = false;
-                } else {
-                    if (p.getField().getLine() == 0 && p.getField().getColumn() == 0)
-                        blackCastlePermissionShort = false;
-                    else if (p.getField().getLine() == 0 && p.getField().getColumn() == 7)
-                        blackCastlePermissionLong = false;
-                }
-            }
             playSound = Sound.CAPTURE;
         }
 
