@@ -10,6 +10,10 @@ public class Knight extends Piece{
     public Knight(Color color, String name, Field field, int value, char shortName) {
         super(color, name, field, value, shortName);
     }
+    public Knight(Color color, String name, Field field) {
+        super(color, name, field, 3, color == Color.BLACK ? 'n' : 'N');
+    }
+
 
     private Chessboard chessboard;
     private ArrayList<Field> availableMoves;

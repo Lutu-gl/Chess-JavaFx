@@ -11,7 +11,9 @@ public class King extends Piece{
     public King(Color color, String name, Field field, int value, char shortName) {
         super(color, name, field, value, shortName);
     }
-
+    public King(Color color, String name, Field field) {
+        super(color, name, field, Integer.MAX_VALUE, color == Color.BLACK ? 'k' : 'K');
+    }
     private Chessboard chessboard = Chessboard.getInstance();
     private ArrayList<Field> availableMoves;
 
@@ -28,7 +30,6 @@ public class King extends Piece{
                 evaluate(line, column+i);
             }
         }
-
         return availableMoves;
     }
 
@@ -54,7 +55,7 @@ public class King extends Piece{
 
         //System.out.println("I am here:" + this.field);
         ArrayList<Piece> pieces = chessboard.getColorToMove() == Color.BLACK ? chessboard.getWhitePieces(): chessboard.getBlackPieces();
-
+        
         for (Piece p : pieces)
         {
             //System.out.println(p.getMoves().size());

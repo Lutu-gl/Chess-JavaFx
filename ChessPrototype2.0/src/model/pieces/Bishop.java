@@ -10,6 +10,9 @@ public class Bishop extends Piece{
     public Bishop(Color color, String name, Field field, int value, char shortName) {
         super(color, name, field, value, shortName);
     }
+    public Bishop(Color color, String name, Field field) {
+        super(color, name, field, 3, color == Color.BLACK ? 'b' : 'B');
+    }
 
     private Chessboard chessboard;
     private ArrayList<Field> availableMoves;

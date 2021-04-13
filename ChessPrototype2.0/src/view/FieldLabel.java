@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 public class FieldLabel extends Label {
 
     private int line, column;
-    private boolean isMarked=false, isOutlined=false, isSelected=false;
+    private boolean isMarked=false, isOutlined=false, isSelected=false, isCheckLabel = false;
 
 
     public FieldLabel(){
@@ -37,6 +37,7 @@ public class FieldLabel extends Label {
     public void setColumn(int y) {
         this.column = y;
     }
+
     public void mark(){
         isMarked = true;
         ImageView img = new ImageView( new Image(Main.class.getResourceAsStream("/dot.png")));
@@ -64,11 +65,22 @@ public class FieldLabel extends Label {
         isSelected = false;
         this.getStyleClass().remove("selectedField");
     }
+    public void markAsCheck(){
+        isCheckLabel = true;
+        this.getStyleClass().add("checkLabel");
+    }
+    public void unmarkAsCheck(){
+        isCheckLabel = false;
+        this.getStyleClass().remove("checkLabel()");
+    }
     public boolean isMarked() {
         return isMarked;
     }
     public boolean isOutlined() {
         return isOutlined;
+    }
+    public boolean isCheckLabel() {
+        return isCheckLabel;
     }
     @Override
     public String toString() {

@@ -13,6 +13,9 @@ public class Queen extends Piece{
     public Queen(Color color, String name, Field field, int value, char shortName) {
         super(color, name, field, value, shortName);
     }
+    public Queen(Color color, String name, Field field) {
+        super(color, name, field, 9, color == Color.BLACK ? 'q' : 'Q');
+    }
 
     private Chessboard chessboard;
     private ArrayList<Field> availableMoves;

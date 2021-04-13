@@ -10,6 +10,9 @@ public class Rook extends Piece{
     public Rook(Color color, String name, Field field, int value, char shortName) {
         super(color, name, field, value, shortName);
     }
+    public Rook(Color color, String name, Field field) {
+        super(color, name, field, 5, color == Color.BLACK ? 'r' : 'R');
+    }
     private Chessboard chessboard;
     private ArrayList<Field> availableMoves;
 

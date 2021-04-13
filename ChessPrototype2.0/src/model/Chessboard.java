@@ -1,5 +1,6 @@
 package model;
 
+import controller.Controller;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -120,7 +121,8 @@ public class Chessboard {
         King currentKing = colorToMove == Color.BLACK ? b_king: w_king;
         movePiece(t.getMovingPiece(), t.getTargetField() );
         colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
-        
+        if(t.getMovingPiece() instanceof Pawn)
+            ((Pawn)t.getMovingPiece()).promoteIfPossible();
         endTurn();
         return true;
     }
@@ -155,6 +157,7 @@ public class Chessboard {
     }
 
     public boolean isLegal(Field destination, Field start) {
+
         // Backup the possible eaten piece
         Piece eatenPiece = destination.getPiece();
 
@@ -213,13 +216,13 @@ public class Chessboard {
                 // if fen is an uppercase letter aka a white piece
                 if (ascii >= 65 && ascii <= 90) {
                     switch (ascii) {
-                        case 'P' -> p = new Pawn(Color.WHITE, "White Pawn", field, 1, 'P');
-                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field, 3, 'N');
-                        case 'B' -> p = new Bishop(Color.WHITE, "White Bishop", field, 3, 'B');
-                        case 'R' -> p = new Rook(Color.WHITE, "White Rook", field, 5, 'R');
-                        case 'Q' -> p = new Queen(Color.WHITE, "White Queen", field, 9, 'Q');
+                        case 'P' -> p = new Pawn(Color.WHITE, "White Pawn", field);
+                        case 'N' -> p = new Knight(Color.WHITE, "White Knight", field);
+                        case 'B' -> p = new Bishop(Color.WHITE, "White Bishop", field);
+                        case 'R' -> p = new Rook(Color.WHITE, "White Rook", field);
+                        case 'Q' -> p = new Queen(Color.WHITE, "White Queen", field);
                         case 'K' -> {
-                            p = new King(Color.WHITE, "White King", field, Integer.MAX_VALUE, 'K');
+                            p = new King(Color.WHITE, "White King", field);
                             w_king = (King) p;
                         }
                     }
@@ -228,13 +231,13 @@ public class Chessboard {
                 // if fen is a lowercase letter aka a black piece
                 else {
                     switch (ascii) {
-                        case 'p' -> p = new Pawn(Color.BLACK, "Black Pawn", field, 1, 'p');
-                        case 'n' -> p = new Knight(Color.BLACK, "Black Knight", field, 3, 'n');
-                        case 'b' -> p = new Bishop(Color.BLACK, "Black Bishop", field, 3, 'b');
-                        case 'r' -> p = new Rook(Color.BLACK, "Black Rook", field, 5, 'r');
-                        case 'q' -> p = new Queen(Color.BLACK, "Black Queen", field, 9, 'q');
+                        case 'p' -> p = new Pawn(Color.BLACK, "Black Pawn", field);
+                        case 'n' -> p = new Knight(Color.BLACK, "Black Knight", field);
+                        case 'b' -> p = new Bishop(Color.BLACK, "Black Bishop", field);
+                        case 'r' -> p = new Rook(Color.BLACK, "Black Rook", field);
+                        case 'q' -> p = new Queen(Color.BLACK, "Black Queen", field);
                         case 'k' -> {
-                            p = new King(Color.BLACK, "Black King", field, Integer.MAX_VALUE, 'k');
+                            p = new King(Color.BLACK, "Black King", field);
                             b_king = (King) p;
                         }
                     }

@@ -37,3 +37,6 @@
     -fx-border-color: red;
      */
 }
+.checkLabel{
+    -fx-effect: innershadow(gaussian, red, 10, 0.5, 0, 0);
+}

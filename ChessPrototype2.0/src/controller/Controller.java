@@ -1,11 +1,12 @@
 package controller;
 
 import javafx.event.EventHandler;
-import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import model.Chessboard;
 import model.Field;
 import model.Turn;
+import model.pieces.Pawn;
+import model.pieces.Piece;
 import view.ChessboardView;
 import view.FieldLabel;
 
@@ -17,6 +18,7 @@ public class Controller implements EventHandler<MouseEvent>{
     private FieldLabel target=null;
     private ArrayList<FieldLabel> highlighted = new ArrayList<>();
     private FieldLabel selectedLabel=null;
+    private FieldLabel checkLabel=null;
     private static Controller instance=null;
 
     private Controller(){
@@ -108,6 +110,21 @@ public class Controller implements EventHandler<MouseEvent>{
         selectedLabel = null;
     }
 
+    public FieldLabel fieldToFieldLabel(Field f){
+        return ChessboardView.getBoard().get(f.getLine()).get(f.getColumn());
+    }
+
+    public void markCheck(FieldLabel f){
+        checkLabel = f;
+        f.markAsCheck();
+    }
+    public void unmarkCheck(){
+        if(checkLabel==null) return;
+        checkLabel.unmarkAsCheck();
+        checkLabel = null;
+
+    }
+
     public void setSource(FieldLabel source) {
         this.source = source;
     }
@@ -128,4 +145,7 @@ public class Controller implements EventHandler<MouseEvent>{
         return target;
     }
 
+    public Piece promotionDialog(Pawn pawn) {
+        return new PromotionDialog(pawn).getResult();
+    }
 }

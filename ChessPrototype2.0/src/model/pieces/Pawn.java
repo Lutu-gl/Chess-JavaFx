@@ -1,8 +1,20 @@
 package model.pieces;
 
+import controller.Controller;
+import controller.PromotionDialog;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 import model.Chessboard;
 import model.Color;
 import model.Field;
+import view.Main;
 
 import java.util.ArrayList;
 
@@ -10,6 +22,10 @@ import java.util.ArrayList;
 public class Pawn extends Piece{
     public Pawn(Color color, String name, Field field, int value, char shortName) {
         super(color, name, field, value, shortName);
+    }
+
+    public Pawn(Color color, String name, Field field) {
+        super(color, name, field, 1, color == Color.BLACK ? 'p' : 'P');
     }
     private ArrayList<Field> availableMoves;
     @Override
@@ -47,6 +63,15 @@ public class Pawn extends Piece{
         //System.out.println(column + " " + line + " = ");
         if(line>=fields.length || line<0 || column>=fields[0].length || column<0) return false;
         return fields[line][column].isExists();
+    }
+    public void promoteIfPossible(){
+        if(this.getField().getLine() == Chessboard.getInstance().getFields()[0].length-1 || this.getField().getLine() == 0){
+            Piece p = Controller.getInstance().promotionDialog(this);
+            Chessboard.getInstance().removePiece(this);
+            Chessboard.getInstance().addPiece(p);
+            p.setField(this.getField());
+            p.getField().setPiece(p);
+        }
 
     }
 }
