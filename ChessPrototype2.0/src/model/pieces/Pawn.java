@@ -51,6 +51,12 @@ public class Pawn extends Piece{
         evaluate(column+1, line+moveDirection);
         evaluate(column-1, line+moveDirection);
 
+        //enPassant
+        Pawn pawn = Chessboard.getInstance().getEnPassantable();
+        if(pawn != null && (pawn.getField().getColumn() + 1 == getField().getColumn() || pawn.getField().getColumn() - 1 == getField().getColumn())){
+            availableMoves.add(fields[pawn.getField().getLine() + (color == Color.WHITE ? -1 : +1)][pawn.getField().getColumn()]);
+        }
+
         return availableMoves;
     }
     private void evaluate(int column, int line){

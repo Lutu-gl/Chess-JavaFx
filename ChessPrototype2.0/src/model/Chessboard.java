@@ -1,7 +1,6 @@
 package model;
 
 import controller.Controller;
-import javafx.scene.control.Control;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -15,6 +14,7 @@ public class Chessboard {
     private int turn, ply;
     private Color colorToMove;
     private int ruleCounter;
+    private Pawn enPassantable;
     private ArrayList<String> fens = new ArrayList<>();
     private ArrayList<Piece> whitePieces = new ArrayList<>();
     private ArrayList<Piece> blackPieces = new ArrayList<>();
@@ -23,6 +23,7 @@ public class Chessboard {
     private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort;
     private King b_king, w_king;
     private Sound playSound;
+    private int sizeOfBoard;
 
     // Singleton pattern
     private static Chessboard instance = null;
@@ -37,6 +38,7 @@ public class Chessboard {
     }
 
     public void createBoard(int size){
+        this.sizeOfBoard = size;
         fields = new Field[size][size];
         for (int i = 0; i < size; i++)
         {
@@ -190,10 +192,52 @@ public class Chessboard {
                     blackCastlePermissionShort = false;
             }
         }
-        movePiece(p, f, s );
+
+
+        //enPassant als möglich setzen und enPassant handeln:
+        enPassantable = null;
+        if(t.getMovingPiece() instanceof Pawn){
+            //En passant als möglich setzen
+            if( (t.getTargetField().getLine() == t.getSourceField().getLine() + 2) || t.getTargetField().getLine() == t.getSourceField().getLine() - 2){
+                int line = t.getTargetField().getLine();
+                int column = t.getTargetField().getColumn();
+
+
+                //Look if right is a Pawn
+                if (column + 1 < sizeOfBoard) {
+                    Field field = fields[line][column+1];
+                    if(field.isExists() && field.hasPiece() && field.getPiece() instanceof Pawn && field.getPiece().getColor() != colorToMove){
+                        enPassantable = (Pawn) t.getMovingPiece();
+                    }
+                }
+                //Look if left is a Pawn
+                if(column - 1 >= 0){
+                    Field field = fields[line][column-1];
+                    if(field.isExists() && field.hasPiece() && field.getPiece() instanceof Pawn && field.getPiece().getColor() != colorToMove){
+                        enPassantable = (Pawn) t.getMovingPiece();
+                    }
+                }
+            }
+            //En passant handeln
+            if(!t.getTargetField().hasPiece() && t.getSourceField().getColumn() != t.getTargetField().getColumn()){
+                Piece removeThisPawn = fields[t.getTargetField().getLine() + (colorToMove == Color.WHITE ? 1 : -1) ][t.getTargetField().getColumn()].getPiece();
+                removePiece(removeThisPawn); //Den Bauer löschen (weil das targetField ein anderes ist als wo der andere Bauer steht und das dann nicht gelöscht wird....)
+                addPieceToEaten(removeThisPawn);
+                removeThisPawn.getField().setPiece(null); //So löscht man den Bauer wirklich
+                PlaySound.play(Sound.CAPTURE);
+                s = false;
+            }
+        }
+
+
+
+        movePiece(p, f, s);
         colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+        //Promotion
         if(t.getMovingPiece() instanceof Pawn)
             ((Pawn)t.getMovingPiece()).promoteIfPossible();
+
+
 
         //handeln der 50 move rule
         ruleCounter++;
@@ -448,6 +492,21 @@ public class Chessboard {
 
         groups[2] = (whiteCastlePermissionLong ? "K" : "") + (whiteCastlePermissionShort ? "Q" : "") + (blackCastlePermissionLong ? "k" : "") + (blackCastlePermissionShort ? "q" : "");
 
+/*
+Bei enpassant:
+    In handle Turn:
+        Den Bauer enpassantable auf null setzen.
+        Schauen ob sich ein Bauer 2 bewegt hat und ob neben ihm ein anderer Bauer (anderer Farbe) steht. Wenn ja den Bauer als enPassantable setzen für den negschten Zug.
+
+    In Pawn (avaibalemoves):
+        Von Chessboard den enpassantable Bauer holen mit getenpassantable
+        Wenn er den essen kann, dann den Zug als avaibleMoves hinzufügen
+
+    (Vielleicht) In handle Turn schauen ob es ein enPassant Zug war, weil imfall muss man den Bauer oben noch entfernen
+
+
+
+ */
         groups[3] = "-";
 
         groups[4] = ruleCounter +"";
@@ -501,6 +560,14 @@ public class Chessboard {
 
     public void setState(Gamestate state) {
         this.state = state;
+    }
+
+    public Pawn getEnPassantable() {
+        return enPassantable;
+    }
+
+    public void setEnPassantable(Pawn enPassantable) {
+        this.enPassantable = enPassantable;
     }
 
     public Color getColorToMove() {
