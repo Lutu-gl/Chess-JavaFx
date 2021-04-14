@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.control.Control;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -123,8 +124,12 @@ public class Chessboard {
 
     public boolean handleTurn(Turn t){
 
+        // TODO: Farbe von Check ändern, ist momentan nur Rot
+        Controller.getInstance().fieldToFieldLabel((colorToMove.equals(Color.WHITE)?w_king:b_king).getField()).unmarkAsCheck();
+
         Piece p = t.getMovingPiece();
         Field f = t.getTargetField();
+        boolean s = true;
 
         if (p instanceof King) {
             if (p.getColor().equals(Color.WHITE)) {
@@ -133,12 +138,14 @@ public class Chessboard {
                 // Check if it is left castling
                 if (w_king.getField().getColumn() - f.getColumn() == 2) {
                     movePiece(fields[fields.length - 1][0].getPiece(), fields[fields.length - 1][p.getField().getColumn() - 1], false);
-                    playSound = Sound.CASTLE;
+                    PlaySound.play(Sound.CASTLE);
+                    s = false;
                 }
                 // Check if it is right castling
                 else if (f.getColumn() - w_king.getField().getColumn() == 2) {
                     movePiece(fields[fields.length - 1][fields.length - 1].getPiece(), fields[fields.length - 1][p.getField().getColumn() + 1], false);
-                    playSound = Sound.CASTLE;
+                    PlaySound.play(Sound.CASTLE);
+                    s = false;
                 }
             } else {
                 blackCastlePermissionLong = false;
@@ -146,12 +153,14 @@ public class Chessboard {
                 // Check if it is left castling
                 if (b_king.getField().getColumn() - f.getColumn() == 2) {
                     movePiece(fields[0][0].getPiece(), fields[0][p.getField().getColumn() - 1], false);
-                    playSound = Sound.CASTLE;
+                    PlaySound.play(Sound.CASTLE);
+                    s = false;
                 }
                 // Check if it is right castling
                 else if (f.getColumn() - b_king.getField().getColumn() == 2) {
                     movePiece(fields[0][fields.length - 1].getPiece(), fields[0][p.getField().getColumn() + 1], false);
-                    playSound = Sound.CASTLE;
+                    PlaySound.play(Sound.CASTLE);
+                    s = false;
                 }
             }
         } else if (p instanceof Rook) {
@@ -181,7 +190,7 @@ public class Chessboard {
                     blackCastlePermissionShort = false;
             }
         }
-        movePiece(p, f );
+        movePiece(p, f, s );
         colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
         if(t.getMovingPiece() instanceof Pawn)
             ((Pawn)t.getMovingPiece()).promoteIfPossible();
@@ -232,15 +241,25 @@ public class Chessboard {
             playSound = Sound.CAPTURE;
         }
 
-        if (s)
-            PlaySound.play(playSound);
-
         p.getField().setPiece(null);//Remove Piece from Source
         p.setField(f); //Update Field in Piece
         f.setPiece(p); //Move Piece to new Field
 
-        printBoard();
+        King king = (colorToMove.equals(Color.WHITE)) ? b_king : w_king;
+        if (king.isInCheck()) {
+            Controller.getInstance().fieldToFieldLabel(king.getField()).markAsCheck();
+            if (checkIfMate(colorToMove)){
+                playSound = Sound.MATE;
+                state = colorToMove.equals(Color.WHITE) ? Gamestate.WHITE_WINS : Gamestate.BLACK_WINS;
+                System.out.println(state);
+            } else
+                playSound = Sound.CHECK;
+        }
 
+        if (s)
+            PlaySound.play(playSound);
+
+        printBoard();
     }
 
     public void undoTurn(Turn t){
@@ -260,7 +279,7 @@ public class Chessboard {
         ChessboardView.display();
     }
 
-    public boolean isLegal(Field destination, Field start) {
+    public boolean isLegal(Field destination, Field start, Color color) {
 
         // Backup the possible eaten piece
 
@@ -276,7 +295,7 @@ public class Chessboard {
 
 
         // Check if check
-        boolean inCheck = (colorToMove.equals(Color.WHITE)?w_king:b_king).isInCheck();
+        boolean inCheck = (color.equals(Color.WHITE)?w_king:b_king).isInCheck();
 
 
         // Undo move
@@ -288,6 +307,21 @@ public class Chessboard {
 
         return !inCheck;
 
+    }
+
+    private boolean checkIfMate(Color color) {
+        Color invertedColor = color.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+        ArrayList<Piece> pieces = color.equals(Color.WHITE) ? blackPieces : whitePieces;
+        for (Piece p : pieces) {
+            for (Field move : p.getMoves()) {
+                if (isLegal(move, p.getField(), invertedColor)) {
+                    System.out.println(move);
+                    System.out.println(p.getField());
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void setBoardByFen(String fen){

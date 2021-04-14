@@ -76,7 +76,7 @@ public class Controller implements EventHandler<MouseEvent>{
         for (Field d : f.getPiece().getMoves())
         {
 
-            if (!Chessboard.getInstance().isLegal(d, Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()])) continue;
+            if (!Chessboard.getInstance().isLegal(d, Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()], Chessboard.getInstance().getColorToMove())) continue;
 
 
             if(!d.hasPiece()){

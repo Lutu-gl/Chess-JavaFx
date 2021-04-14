@@ -36,14 +36,14 @@ public class King extends Piece{
         if (castle) {
             boolean[] permissions = chessboard.getCastlePermissions();
             if (color.equals(Color.WHITE)) {
-                if (permissions[0] && chessboard.isLegal(chessboard.getFields()[line][column-2], field) && !isInCheck() && freeSpace(chessboard.getFields()[line][0], field))
+                if (permissions[0] && chessboard.isLegal(chessboard.getFields()[line][column-2], field, color) && !isInCheck() && freeSpace(chessboard.getFields()[line][0], field))
                     availableMoves.add(chessboard.getFields()[line][column - 2]);
-                if (permissions[1] && chessboard.isLegal(chessboard.getFields()[line][column+2], field) && !isInCheck() && freeSpace(field, chessboard.getFields()[line][chessboard.getFields().length-1]))
+                if (permissions[1] && chessboard.isLegal(chessboard.getFields()[line][column+2], field, color) && !isInCheck() && freeSpace(field, chessboard.getFields()[line][chessboard.getFields().length-1]))
                     availableMoves.add(chessboard.getFields()[line][column + 2]);
             } else {
-                if (permissions[2] && chessboard.isLegal(chessboard.getFields()[line][column-2], field) && !isInCheck() && freeSpace(chessboard.getFields()[line][0], field))
+                if (permissions[2] && chessboard.isLegal(chessboard.getFields()[line][column-2], field, color) && !isInCheck() && freeSpace(chessboard.getFields()[line][0], field))
                     availableMoves.add(chessboard.getFields()[line][column - 2]);
-                if (permissions[3] && chessboard.isLegal(chessboard.getFields()[line][column+2], field) && !isInCheck() && freeSpace(field, chessboard.getFields()[line][chessboard.getFields().length-1]))
+                if (permissions[3] && chessboard.isLegal(chessboard.getFields()[line][column+2], field, color) && !isInCheck() && freeSpace(field, chessboard.getFields()[line][chessboard.getFields().length-1]))
                     availableMoves.add(chessboard.getFields()[line][column + 2]);
             }
         }
@@ -85,69 +85,6 @@ public class King extends Piece{
 
     public boolean isInCheck() {
 
-        /*
-        // Search
-        ArrayList<Character> search = new ArrayList<>();
-
-        // Check for checks by knight
-        search.add(color.equals(Color.WHITE)?'n':'N');
-        if (checkHelper(new Knight(color, "ByKingGenerated", field, 3, 'G').getMoves(), search))
-            return true;
-        search.clear();
-
-        // Check for check by bishop or queen
-        if (color.equals(Color.WHITE)) Collections.addAll(search, 'b','q');
-        else Collections.addAll(search, 'B','Q');
-        if (checkHelper(new Bishop(color, "ByKingGenerated", field, 3, 'G').getMoves(), search))
-            return true;
-        search.clear();
-
-        // Check for check by rook or queen
-        if (color.equals(Color.WHITE)) Collections.addAll(search, 'r','q');
-        else Collections.addAll(search, 'R','Q');
-        if (checkHelper(new Rook(color, "ByKingGenerated", field, 5, 'G').getMoves(), search))
-            return true;
-        search.clear();
-
-        // Check for check by King
-        if (color.equals(Color.WHITE)) Collections.addAll(search, 'k');
-        else Collections.addAll(search, 'K');
-        if (checkHelper(getMoves(false), search))
-            return true;
-        search.clear();
-
-        // Check for check by Pawn
-        Field pawnField;
-        if (color.equals(Color.WHITE)) {
-            // Check for piece left above
-            if (field.getLine() >= 1 && field.getColumn() >= 1) {
-                pawnField = Chessboard.getInstance().getFields()[field.getLine() - 1][field.getColumn() - 1];
-                if (pawnField.hasPiece() && pawnField.getPiece().getShortName() == 'p')
-                    return true;
-            }
-            // Check for piece right above
-            if (field.getLine() >= 1 && field.getColumn() < Chessboard.getInstance().getFields().length-1) {
-                pawnField = Chessboard.getInstance().getFields()[field.getLine() - 1][field.getColumn() + 1];
-                if (pawnField.hasPiece() && pawnField.getPiece().getShortName() == 'p')
-                    return true;
-            }
-        } else {
-            // Check for piece left below
-            if (field.getLine() < Chessboard.getInstance().getFields().length-1 && field.getColumn() >= 1) {
-                pawnField = Chessboard.getInstance().getFields()[field.getLine() + 1][field.getColumn() - 1];
-                if (pawnField.hasPiece() && pawnField.getPiece().getShortName() == 'P')
-                    return true;
-            }
-            // Check for piece right below
-            if (field.getLine() < Chessboard.getInstance().getFields().length-1 && field.getColumn() < Chessboard.getInstance().getFields().length-1) {
-                pawnField = Chessboard.getInstance().getFields()[field.getLine() + 1][field.getColumn() + 1];
-                if (pawnField.hasPiece() && pawnField.getPiece().getShortName() == 'P')
-                    return true;
-            }
-        }
-        return false;
-
-         */
         // Check knight checks first
         char search = color.equals(Color.WHITE) ? 'n' : 'N';
         for (Field move : new Knight(color, "ByKingGenerated", field, 3, 'G').getMoves()) {
