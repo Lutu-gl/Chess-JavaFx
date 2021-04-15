@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import model.Chessboard;
 import model.Field;
+import model.Gamestate;
 import model.Turn;
 import model.pieces.Pawn;
 import model.pieces.Piece;
@@ -33,6 +34,8 @@ public class Controller implements EventHandler<MouseEvent>{
 
     @Override
     public void handle(MouseEvent mouseEvent) {
+
+        if (!Chessboard.getInstance().getState().equals(Gamestate.PLAYING)) return;
 
         FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
         Field clickedField = Chessboard.getInstance().getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];

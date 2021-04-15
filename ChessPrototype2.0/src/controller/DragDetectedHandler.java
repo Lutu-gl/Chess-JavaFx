@@ -12,6 +12,7 @@ import javafx.scene.input.TransferMode;
 import model.Chessboard;
 import model.Color;
 import model.Field;
+import model.Gamestate;
 import view.ChessboardView;
 import view.FieldLabel;
 import view.Main;
@@ -20,8 +21,10 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent mouseEvent) {
-        FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
         Chessboard chessboard = Chessboard.getInstance();
+        if (!chessboard.getState().equals(Gamestate.PLAYING)) return;
+
+        FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
         Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
 
         // Check if dragged piece belongs to the player

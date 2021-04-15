@@ -39,6 +39,7 @@ public class Chessboard {
 
     public void createBoard(int size){
         this.sizeOfBoard = size;
+        state = Gamestate.PLAYING;
         fields = new Field[size][size];
         for (int i = 0; i < size; i++)
         {
