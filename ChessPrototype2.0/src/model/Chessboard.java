@@ -322,6 +322,7 @@ public class Chessboard {
     }
     //Am ende von jedem Zug
     public void endTurn(){
+        System.out.println(getBoardAsFen());
         ChessboardView.display();
     }
 
@@ -453,9 +454,11 @@ public class Chessboard {
                 case 'q' -> blackCastlePermissionShort = true;
             }
         }
-
-        // en passent (muas i no schaugen)
-        //if (!groups[3].equals("-"))
+        //Wenn der Fen richtig ist, dann sollten hier keine Exceptions geworfen werden
+        if (!groups[3].equals("-")){
+            Field field = fields[Math.abs(Integer.parseInt(String.valueOf(groups[3].charAt(1)))-8) + (colorToMove == Color.WHITE ? 1 : -1)][groups[3].charAt(0) - 'a'];
+            enPassantable = (Pawn) field.getPiece();
+        }
 
         // set 50 half turn rule
         ruleCounter = Integer.parseInt(groups[4]);
@@ -494,22 +497,11 @@ public class Chessboard {
 
         groups[2] = (whiteCastlePermissionLong ? "K" : "") + (whiteCastlePermissionShort ? "Q" : "") + (blackCastlePermissionLong ? "k" : "") + (blackCastlePermissionShort ? "q" : "");
 
-/*
-Bei enpassant:
-    In handle Turn:
-        Den Bauer enpassantable auf null setzen.
-        Schauen ob sich ein Bauer 2 bewegt hat und ob neben ihm ein anderer Bauer (anderer Farbe) steht. Wenn ja den Bauer als enPassantable setzen für den negschten Zug.
-
-    In Pawn (avaibalemoves):
-        Von Chessboard den enpassantable Bauer holen mit getenpassantable
-        Wenn er den essen kann, dann den Zug als avaibleMoves hinzufügen
-
-    (Vielleicht) In handle Turn schauen ob es ein enPassant Zug war, weil imfall muss man den Bauer oben noch entfernen
-
-
-
- */
-        groups[3] = "-";
+        if(enPassantable == null){
+            groups[3] = "-";
+        }else{
+            groups[3] = fields[enPassantable.getField().getLine() + (colorToMove == Color.WHITE ? -1 : 1)][enPassantable.getField().getColumn()].getName();
+        }
 
         groups[4] = ruleCounter +"";
 

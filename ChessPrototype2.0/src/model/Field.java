@@ -6,6 +6,7 @@ public class Field {
     private Piece piece;
     private int column, line;
     private boolean exists = true;
+    private String name = "";
 
     public boolean isExists() {
         return exists;
@@ -22,6 +23,9 @@ public class Field {
         this.column = column;
         this.line = line;
         this.piece = piece;
+
+        this.name += (char) ('a' + column);
+        this.name +=  Math.abs(line-8);
     }
 
     public boolean hasPiece(){
@@ -50,6 +54,14 @@ public class Field {
 
     public void setLine(int line) {
         this.line = line;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
