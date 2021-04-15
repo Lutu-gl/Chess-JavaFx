@@ -304,10 +304,10 @@ public class Chessboard {
         if (s)
             PlaySound.play(playSound);
 
-        printBoard();
+        //printBoard();
     }
 
-    public void undoTurn(Turn t){
+    public void undoTurn(Turn t, Color color){
         t.getSourceField().setPiece(t.getMovingPiece()); //move Piece Back to source
         t.getMovingPiece().setField(t.getSourceField()); //Update Field in Piece
         if(t.getEatenPiece() != null){//if there has been a eaten Piece it gets reset aswell
@@ -318,6 +318,7 @@ public class Chessboard {
         }
         else
             t.getTargetField().setPiece(null);
+        colorToMove = color;
     }
     //Am ende von jedem Zug
     public void endTurn(){

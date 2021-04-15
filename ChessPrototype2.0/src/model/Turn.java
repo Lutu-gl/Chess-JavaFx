@@ -26,6 +26,15 @@ public class Turn {
         }
 
     }
+    public Turn(Field sourceField, Field targetField) {
+        this.sourceField = sourceField;
+        this.targetField = targetField;
+
+        if (sourceField.hasPiece())
+            movingPiece = sourceField.getPiece();
+        if (targetField.hasPiece())
+            eatenPiece = targetField.getPiece();
+    }
 
     public Field getSourceField() {
         return sourceField;

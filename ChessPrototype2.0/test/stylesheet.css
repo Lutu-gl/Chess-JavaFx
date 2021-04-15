@@ -1,0 +1,42 @@
+.whiteField {
+    -fx-background-color: #f0d9b5;
+    -fx-min-height: 100px;
+    -fx-min-width: 100px;
+    -fx-alignment: center;
+}
+
+.blackField {
+    -fx-background-color: #b58863;
+    -fx-min-height: 100px;
+    -fx-min-width: 100px;
+    -fx-alignment: center;
+}
+
+.selectedField {
+    -fx-background-color: #829769;
+}
+
+.index {
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-min-height: 100px;
+}
+
+.letter {
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-min-width: 100px;
+}
+.potentialTake{
+    -fx-effect: innershadow(gaussian, red, 10, 0.5, 0, 0);
+    /*
+    -fx-border-radius: 20 20 20 20;
+    -fx-background-radius: 0 0 0 0;
+    -fx-border-color: red;
+     */
+}
+.checkLabel{
+    -fx-background-color: red;
+}
