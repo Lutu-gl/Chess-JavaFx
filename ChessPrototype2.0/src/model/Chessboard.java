@@ -24,16 +24,21 @@ public class Chessboard {
     private King b_king, w_king;
     private Sound playSound;
     private int sizeOfBoard;
+    ArrayList<Observer> observers = new ArrayList<>();
+
 
     // Singleton pattern
     private static Chessboard instance = null;
 
 
-    private Chessboard() {}
+    private Chessboard() {
+        register(new GamestateObserver(this));
+    }
 
     public static Chessboard getInstance() {
         if (instance == null)
             instance = new Chessboard();
+
         return instance;
     }
 
@@ -264,7 +269,6 @@ public class Chessboard {
             }
         }
         if(threefoldCounter >= 3){
-            System.out.println("Treefold applies. Anyone can claim a DRAW!");
             state = Gamestate.PLAYER_CAN_CLAIM_DRAW;
         }
 
@@ -296,7 +300,6 @@ public class Chessboard {
             if (checkIfMate(colorToMove)){
                 playSound = Sound.MATE;
                 state = colorToMove.equals(Color.WHITE) ? Gamestate.WHITE_WINS : Gamestate.BLACK_WINS;
-                System.out.println(state);
             } else
                 playSound = Sound.CHECK;
         }
@@ -322,6 +325,7 @@ public class Chessboard {
     }
     //Am ende von jedem Zug
     public void endTurn(){
+        notifyObserver();
         System.out.println(getBoardAsFen());
         ChessboardView.display();
     }
@@ -511,6 +515,18 @@ public class Chessboard {
 
     }
 
+    public void notifyObserver(){
+        for(Observer o : observers){
+            o.update();
+        }
+    }
+    public void register(Observer o) {
+        observers.add(o);
+    }
+
+    public void unregister(Observer o) {
+        observers.remove(o);
+    }
 
     public Field[][] getFields() {
         return fields;
