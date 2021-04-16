@@ -26,6 +26,7 @@ public class Chessboard {
     private int sizeOfBoard;
     ArrayList<Observer> observers = new ArrayList<>();
 
+    public boolean debug = false;
 
     // Singleton pattern
     private static Chessboard instance = null;
@@ -296,7 +297,8 @@ public class Chessboard {
 
         King king = (colorToMove.equals(Color.WHITE)) ? b_king : w_king;
         if (king.isInCheck()) {
-            Controller.getInstance().fieldToFieldLabel(king.getField()).markAsCheck();
+            if (!debug)
+                Controller.getInstance().fieldToFieldLabel(king.getField()).markAsCheck();
             if (checkIfMate(colorToMove)){
                 playSound = Sound.MATE;
                 state = colorToMove.equals(Color.WHITE) ? Gamestate.WHITE_WINS : Gamestate.BLACK_WINS;
@@ -310,7 +312,7 @@ public class Chessboard {
         //printBoard();
     }
 
-    public void undoTurn(Turn t, Color color){
+    public void undoTurn(Turn t, Color color, Gamestate s){
         t.getSourceField().setPiece(t.getMovingPiece()); //move Piece Back to source
         t.getMovingPiece().setField(t.getSourceField()); //Update Field in Piece
         if(t.getEatenPiece() != null){//if there has been a eaten Piece it gets reset aswell
@@ -322,6 +324,7 @@ public class Chessboard {
         else
             t.getTargetField().setPiece(null);
         colorToMove = color;
+        state = s;
     }
     //Am ende von jedem Zug
     public void endTurn(){
@@ -366,8 +369,6 @@ public class Chessboard {
         for (Piece p : pieces) {
             for (Field move : p.getMoves()) {
                 if (isLegal(move, p.getField(), invertedColor)) {
-                    System.out.println(move);
-                    System.out.println(p.getField());
                     return false;
                 }
             }
@@ -582,6 +583,10 @@ public class Chessboard {
 
     public Color getColorToMove() {
         return colorToMove;
+    }
+
+    public void setColorToMove(Color color) {
+        colorToMove = color;
     }
 
     public boolean[] getCastlePermissions() {
