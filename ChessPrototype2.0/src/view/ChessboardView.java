@@ -1,11 +1,9 @@
 package view;
 
-import controller.Controller;
-import controller.DragDetectedHandler;
-import controller.DragDroppedHandler;
-import controller.DragOverHandler;
+import controller.*;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -52,7 +50,11 @@ public class ChessboardView {
             gridPane.add(letter, i, l+1);
         }
 
-        mainScene = new Scene(gridPane, w*100+50, l*100+50);
+        Button turnBack = new Button("Turn back!");
+        turnBack.setOnAction(new TurnBackHandler());
+        gridPane.add(turnBack, w+2, 0);
+
+        mainScene = new Scene(gridPane, w*100+100, l*100+50);
         return mainScene;
     }
 

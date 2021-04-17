@@ -18,9 +18,9 @@ public class Main extends Application {
         board.createBoard(size);
         String fen = "";
 
-//        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
 //        fen = "rnbqkbnr/2pp2p1/1p2pP2/pP6/8/2P3p1/P2P1P1P/RNBQKBNR w KQkq a6 0 8"; //en passant fen
-        fen = "1k6/ppp3PQ/8/8/p7/4K3/8/8 w - - 0 1";
+        //fen = "1k6/ppp3PQ/8/8/p7/4K3/8/8 w - - 0 1";
         //fen = "rn2kbnr/ppp1p2p/4b3/3pqpp1/2P1P3/2NB1N1P/PP1P1PP1/R1BQK2R w KQkq - 0 7"; //Crazy fen
         //fen = "r3k2r/p1qppp1p/8/7b/8/6Q1/P2PP2P/R3K2R w KQkq - 3 15"; //Castle Fen
         //fen = "8/3k3p/8/8/8/3N4/8/3K4 w - - 0 1"; //check test
@@ -33,7 +33,7 @@ public class Main extends Application {
         //fen = "r2qk2r/ppp1pppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1";
         //fen = "r3k2r/pbppqpbp/1pn2np1/4p3/4P3/1PN2NP1/PBPPQPBP/R3K2R w KQkq - 0 1";
         //fen = "rnbqk2r/pppp1ppp/3b4/P3p3/2B1P3/5N2/1PPP1nPP/RNBQK2R b KQkq - 0 6";
-//        fen = "rnbq1bnr/pppppkpp/8/8/8/8/PPPPP1PP/RNBQK2R w KQ - 0 1";
+        //fen = "rnbq1bnr/pppppkpp/8/8/8/8/PPPPP1PP/RNBQK2R w KQ - 0 1";
 
         board.addFen(fen);
         board.setBoardByFen(fen);
