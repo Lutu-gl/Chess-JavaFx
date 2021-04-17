@@ -237,12 +237,10 @@ public class Chessboard {
         }
 
 
-
         movePiece(p, f, s);
+
         colorToMove = colorToMove.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
-        //Promotion
-        if(t.getMovingPiece() instanceof Pawn)
-            ((Pawn)t.getMovingPiece()).promoteIfPossible();
+
 
 
 
@@ -283,6 +281,7 @@ public class Chessboard {
 
     public void movePiece(Piece p, Field f, boolean s){
 
+
         playSound = Sound.MOVE;
 
         if (f.hasPiece()){
@@ -294,6 +293,12 @@ public class Chessboard {
         p.getField().setPiece(null);//Remove Piece from Source
         p.setField(f); //Update Field in Piece
         f.setPiece(p); //Move Piece to new Field
+
+        //Promotion
+        if(p instanceof Pawn){
+            ((Pawn)p).promoteIfPossible();
+        }
+
 
         King king = (colorToMove.equals(Color.WHITE)) ? b_king : w_king;
         if (king.isInCheck()) {
