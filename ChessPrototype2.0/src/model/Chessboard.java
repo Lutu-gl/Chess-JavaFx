@@ -324,6 +324,26 @@ public class Chessboard {
             } else
                 playSound = Sound.CHECK;
         }
+        // Check if it is stalemate
+        else {
+            ArrayList<Piece> pieces = colorToMove.equals(Color.WHITE) ? blackPieces : whitePieces;
+            boolean stalemate = true;
+            for (Piece piece : pieces) {
+                for (Field move : piece.getMoves()) {
+                    if (isLegal(move, piece.getField(), colorToMove.equals(Color.WHITE)?Color.BLACK:Color.WHITE)) {
+                        stalemate = false;
+                        break;
+                    }
+                }
+                if (!stalemate) {
+                    break;
+                }
+            }
+            if (stalemate) {
+                playSound = Sound.STALEMATE;
+                state = Gamestate.STALEMATE;
+            }
+        }
 
         if (s)
             PlaySound.play(playSound);
