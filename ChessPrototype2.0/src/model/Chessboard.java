@@ -140,6 +140,9 @@ public class Chessboard {
         Field f = t.getTargetField();
         boolean s = true;
         t.setGamestate(state);
+        t.setRuleCounter(ruleCounter);
+        t.setEnpassantable(enPassantable);
+        t.setTurnsPlayed(turn);
 
         if (p instanceof King) {
             if (p.getColor().equals(Color.WHITE)) {
@@ -230,9 +233,12 @@ public class Chessboard {
                     }
                 }
             }
+
             //En passant handeln
             if(!t.getTargetField().hasPiece() && t.getSourceField().getColumn() != t.getTargetField().getColumn()){
                 Piece removeThisPawn = fields[t.getTargetField().getLine() + (colorToMove == Color.WHITE ? 1 : -1) ][t.getTargetField().getColumn()].getPiece();
+                t.setEnpassantTurn(true);
+                t.setEatenPiece(removeThisPawn);
                 removePiece(removeThisPawn); //Den Bauer löschen (weil das targetField ein anderes ist als wo der andere Bauer steht und das dann nicht gelöscht wird....)
                 addPieceToEaten(removeThisPawn);
                 removeThisPawn.getField().setPiece(null); //So löscht man den Bauer wirklich
@@ -366,18 +372,27 @@ public class Chessboard {
             blackCastlePermissionLong = t.getCastlePermissions()[2];
             blackCastlePermissionShort = t.getCastlePermissions()[3];
         }
+        // If it was an enpassant turn
+        if (t.isEnpassantTurn()) {
+            int offset = colorToMove.equals(Color.WHITE) ? 1 : -1;
+            fields[t.getTargetField().getLine()+offset][t.getTargetField().getColumn()].setPiece(t.getEatenPiece());
+            t.setEatenPiece(null);
+        }
+
+        // Set back the enpassantable pawn
+        enPassantable = t.getEnpassantable();
 
         // Move back the piece to its original place and restore eaten pieces
         t.getSourceField().setPiece(t.getMovingPiece()); //move Piece Back to source
         t.getMovingPiece().setField(t.getSourceField()); //Update Field in Piece
-        if(t.getEatenPiece() != null){//if there has been a eaten Piece it gets reset aswell
+        if (t.getEatenPiece() != null) {//if there has been a eaten Piece it gets reset aswell
             t.getEatenPiece().setField(t.getTargetField());
             t.getTargetField().setPiece(t.getEatenPiece());
             addPiece(t.getEatenPiece());
             removePieceFromEaten(t.getEatenPiece());
-        }
-        else
+        } else
             t.getTargetField().setPiece(null);
+
 
 
         // Check if the kings must be marked or unmarked as check!
@@ -394,6 +409,15 @@ public class Chessboard {
 
         // Set back the gamestate
         state = t.getGamestate();
+
+        // Ganzzüge zurücksetzen
+        turn = t.getTurnsPlayed();
+
+        // Set back the 50 move rule counter
+        ruleCounter = t.getRuleCounter();
+
+        // remove the fen from fens
+        fens.remove(fens.size()-1);
 
         // Remove the turn from played turns and display the board
         turns.remove(turns.size()-1);

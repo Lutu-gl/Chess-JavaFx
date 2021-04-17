@@ -1,9 +1,8 @@
 package model;
 
+import model.pieces.Pawn;
 import model.pieces.Piece;
 import view.FieldLabel;
-
-import java.util.Arrays;
 
 public class Turn {
     private Field sourceField;
@@ -11,30 +10,15 @@ public class Turn {
     private Piece movingPiece;
     private Piece eatenPiece;
     private Color colorToMove;
-    private boolean isCastleTurn;
+    private boolean isCastleTurn, isEnpassantTurn;
     private Gamestate gamestate;
     private boolean[] castlePermissions;
-    private int castleSide, turnNumber;
+    private int castleSide, turnNumber, ruleCounter, turnsPlayed;
+    private Pawn enpassantable;
 
     public Turn(FieldLabel sourceField, FieldLabel targetField) {
         this(Chessboard.getInstance().getFields()[sourceField.getLine()][sourceField.getColumn()],
              Chessboard.getInstance().getFields()[targetField.getLine()][targetField.getColumn()]);
-
-        /*Chessboard chessboard = Chessboard.getInstance();
-
-        this.sourceField = chessboard.getFields()[sourceField.getLine()][sourceField.getColumn()];
-        this.targetField = chessboard.getFields()[targetField.getLine()][targetField.getColumn()];
-        this.isCastleTurn = false;
-
-
-        // Sets movingPiece and eatenPiece
-        if(chessboard.getFields()[sourceField.getLine()][sourceField.getColumn()].hasPiece()){
-            movingPiece = chessboard.getFields()[sourceField.getLine()][sourceField.getColumn()].getPiece();
-        }
-        if(chessboard.getFields()[targetField.getLine()][targetField.getColumn()].hasPiece()){
-            eatenPiece = chessboard.getFields()[targetField.getLine()][targetField.getColumn()].getPiece();
-        }*/
-
     }
     public Turn(Field sourceField, Field targetField) {
         this.sourceField = sourceField;
@@ -90,11 +74,6 @@ public class Turn {
          */
         isCastleTurn = true;
         // deep copy the castling permissions
-        System.out.println("HERE!");
-        System.out.println(castlePermissions[0]);
-        System.out.println(castlePermissions[1]);
-        System.out.println(castlePermissions[2]);
-        System.out.println(castlePermissions[3]);
         this.castlePermissions = new boolean[] {castlePermissions[0],castlePermissions[1],castlePermissions[2],castlePermissions[3]};
         this.castleSide = side;
     }
@@ -135,5 +114,38 @@ public class Turn {
 
     public int getTurnNumber() {
         return turnNumber;
+    }
+
+    public int getRuleCounter() {
+        return ruleCounter;
+    }
+
+    public void setRuleCounter(int ruleCounter) {
+        this.ruleCounter = ruleCounter;
+    }
+
+    public void setEnpassantTurn(boolean t) {
+        isEnpassantTurn = t;
+    }
+
+    public void setEnpassantable(Pawn pawn) {
+        enpassantable = pawn;
+    }
+
+    public Pawn getEnpassantable() {
+        return enpassantable;
+    }
+
+    public boolean isEnpassantTurn() {
+        return isEnpassantTurn;
+    }
+
+
+    public int getTurnsPlayed() {
+        return turnsPlayed;
+    }
+
+    public void setTurnsPlayed(int turnsPlayed) {
+        this.turnsPlayed = turnsPlayed;
     }
 }
