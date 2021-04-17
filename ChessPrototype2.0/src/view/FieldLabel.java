@@ -71,7 +71,7 @@ public class FieldLabel extends Label {
     }
     public void unmarkAsCheck(){
         isCheckLabel = false;
-        this.getStyleClass().remove("checkLabel");
+        this.getStyleClass().removeAll("checkLabel");
     }
     public boolean isMarked() {
         return isMarked;

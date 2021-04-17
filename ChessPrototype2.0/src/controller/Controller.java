@@ -125,7 +125,6 @@ public class Controller implements EventHandler<MouseEvent>{
         if(checkLabel==null) return;
         checkLabel.unmarkAsCheck();
         checkLabel = null;
-
     }
 
     public void setSource(FieldLabel source) {
