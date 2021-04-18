@@ -1,10 +1,13 @@
 package view;
 
+import model.Chessboard;
+
 import javax.sound.sampled.*;
 import java.io.IOException;
 
 public class PlaySound {
     public static void play(Sound sound) {
+        if (Chessboard.getInstance().debug) return;
         AudioInputStream audioIn = null;
         try {
             audioIn = AudioSystem.getAudioInputStream(sound.getFile());

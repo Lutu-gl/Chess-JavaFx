@@ -42,6 +42,12 @@ public class ChessRulesetTest {
         int numberPositions = 0;
         // Iterate through all the moves
 
+        for (Turn move : moves) {
+            chessboard.handleTurn(move);
+            numberPositions += moveGenerationTest(depth-1);
+            chessboard.undoTurn(move);
+        }
+        return numberPositions;
         /*
         for (Turn move : moves) {
             Color color = chessboard.getColorToMove();
@@ -65,8 +71,6 @@ public class ChessRulesetTest {
 
          */
 //        System.out.println("-----------\n");
-
-        return numberPositions;
     }
 
     @Test
@@ -74,14 +78,14 @@ public class ChessRulesetTest {
         int[] possibilities = new int[]{20, 400, 8902, 197281, 4865609, 119060324};
         chessboard.createBoard(8);
         //chessboard.setBoardByFen("8/8/6pp/6pk/6pp/p5Pr/P7/K7 b - - 0 1");
-//        chessboard.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        chessboard.setBoardByFen("B7/1K6/8/8/8/7N/7p/7k w - - 0 1");
+        chessboard.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        //chessboard.setBoardByFen("B7/1K6/8/8/8/7N/7p/7k w - - 0 1");
         chessboard.debug = true;
 
 //        System.out.println(moveGenerationTest(5));
 //        System.out.println(count - moveGenerationTest((1)) - moveGenerationTest(2) - moveGenerationTest(3) - moveGenerationTest(4));
 
-        System.out.println(moveGenerationTest(5));
+        System.out.println(moveGenerationTest(4));
 
         int counter = 1;
 

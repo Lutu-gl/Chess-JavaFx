@@ -134,7 +134,8 @@ public class Chessboard {
     public boolean handleTurn(Turn t){
 
         // TODO: Farbe von Check ändern, ist momentan nur Rot
-        Controller.getInstance().fieldToFieldLabel((colorToMove.equals(Color.WHITE)?w_king:b_king).getField()).unmarkAsCheck();
+        if (!debug)
+            Controller.getInstance().fieldToFieldLabel((colorToMove.equals(Color.WHITE)?w_king:b_king).getField()).unmarkAsCheck();
 
         Piece p = t.getMovingPiece();
         Field f = t.getTargetField();
@@ -447,8 +448,9 @@ public class Chessboard {
     //Am ende von jedem Zug
     public void endTurn(){
         notifyObserver();
-        System.out.println(getBoardAsFen());
-        ChessboardView.display();
+        //System.out.println(getBoardAsFen());
+        if (!debug)
+            ChessboardView.display();
     }
 
     public boolean isLegal(Field destination, Field start, Color color) {
