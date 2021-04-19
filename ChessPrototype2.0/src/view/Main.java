@@ -35,6 +35,8 @@ public class Main extends Application {
         //fen = "rnbqk2r/pppp1ppp/3b4/P3p3/2B1P3/5N2/1PPP1nPP/RNBQK2R b KQkq - 0 6";
         //fen = "rnbq1bnr/pppppkpp/8/8/8/8/PPPPP1PP/RNBQK2R w KQ - 0 1";
         //fen = "k7/8/8/2Q5/K7/8/8/8 w - - 0 1"; // Stalemate fen
+        //fen = "k7/8/8/1Pp5/8/8/8/K7 w - c6 0 1";
+        //fen = "k7/8/8/1Pp5/8/8/8/K7 w - c6 0 1";
 
         board.addFen(fen);
         board.setBoardByFen(fen);

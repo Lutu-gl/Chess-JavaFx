@@ -11,7 +11,7 @@ public class GamestateObserver extends Observer{
     public void update() {
         Gamestate gamestate = chessboard.getState();
 
-        if(gamestate == Gamestate.PLAYING) {
+        if(gamestate == Gamestate.PLAYING || Chessboard.getInstance().debug) {
             return;
         }else if(gamestate == Gamestate.BLACK_WINS) {
              System.out.println("Black wins");

@@ -397,6 +397,8 @@ public class Chessboard {
         if (t.isEnpassantTurn()) {
             int offset = colorToMove.equals(Color.WHITE) ? 1 : -1;
             fields[t.getTargetField().getLine()+offset][t.getTargetField().getColumn()].setPiece(t.getEatenPiece());
+            addPiece(t.getEatenPiece());
+            removePieceFromEaten(t.getEatenPiece());
             t.setEatenPiece(null);
         }
 
