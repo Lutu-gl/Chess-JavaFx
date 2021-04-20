@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 
 public class ChessRulesetTest {
-    private final Chessboard chessboard = Chessboard.getInstance();
+    private Chessboard chessboard;
     private static int count = 0;
 
     int moveGenerationTest(int depth) {
@@ -52,13 +52,23 @@ public class ChessRulesetTest {
 
     @Test
     public void chessInDepth()  {
-        int[] possibilities = new int[]{1, 20, 400, 8902, 197281, 4865609, 119060324};
-        chessboard.createBoard(8);
-        chessboard.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        doTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8, new int[]{1, 20, 400, 8902, 197281, 4865609});
+    }
+
+    @Test
+    public void castleInDepth()  {
+        doTest("r3k2r/p6p/8/8/8/8/P6P/R3K2R w KQkq - 0 1", 8, new int[]{1, 16, 242, 4494, 79781, 1625831});
+    }
+
+    public void doTest(String fen, int boardSize, int[] possibilities) {
+        Chessboard.getInstance().reset();
+        chessboard = Chessboard.getInstance();
+        chessboard.createBoard(boardSize);
+        chessboard.setBoardByFen(fen);
         chessboard.debug = true;
 
+        chessboard.printBoard();
         for (int i = 0; i < possibilities.length; i++)
             assertEquals(possibilities[i], moveGenerationTest(i));
-
     }
 }

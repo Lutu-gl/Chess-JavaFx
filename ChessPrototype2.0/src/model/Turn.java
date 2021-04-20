@@ -66,7 +66,7 @@ public class Turn {
         this.eatenPiece = eatenPiece;
     }
 
-    public void setCastleTurn(boolean[] castlePermissions, int side) {
+    public void setCastleTurn(int side) {
         /*
             side
             0 => long castling
@@ -74,7 +74,7 @@ public class Turn {
          */
         isCastleTurn = true;
         // deep copy the castling permissions
-        this.castlePermissions = new boolean[] {castlePermissions[0],castlePermissions[1],castlePermissions[2],castlePermissions[3]};
+        //this.castlePermissions = new boolean[] {castlePermissions[0],castlePermissions[1],castlePermissions[2],castlePermissions[3]};
         this.castleSide = side;
     }
 
@@ -147,5 +147,10 @@ public class Turn {
 
     public void setTurnsPlayed(int turnsPlayed) {
         this.turnsPlayed = turnsPlayed;
+    }
+
+    public void setCastlePermissions(boolean[] castlePermissions) {
+        // deep copy the castling permissions
+        this.castlePermissions = new boolean[] {castlePermissions[0],castlePermissions[1],castlePermissions[2],castlePermissions[3]};
     }
 }

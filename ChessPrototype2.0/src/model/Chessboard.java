@@ -43,6 +43,11 @@ public class Chessboard {
         return instance;
     }
 
+    public void reset() {
+        if (instance != null)
+            instance = null;
+    }
+
     public void createBoard(int size){
         this.sizeOfBoard = size;
         state = Gamestate.PLAYING;
@@ -144,6 +149,7 @@ public class Chessboard {
         t.setRuleCounter(ruleCounter);
         t.setEnpassantable(enPassantable);
         t.setTurnsPlayed(turn);
+        t.setCastlePermissions(getCastlePermissions());
 
         if (p instanceof King) {
             if (p.getColor().equals(Color.WHITE)) {
@@ -151,14 +157,14 @@ public class Chessboard {
                 if (w_king.getField().getColumn() - f.getColumn() == 2) {
                     movePiece(fields[fields.length - 1][0].getPiece(), fields[fields.length - 1][p.getField().getColumn() - 1], false);
                     PlaySound.play(Sound.CASTLE);
-                    t.setCastleTurn(getCastlePermissions(), 0);
+                    t.setCastleTurn(0);
                     s = false;
                 }
                 // Check if it is right castling
                 else if (f.getColumn() - w_king.getField().getColumn() == 2) {
                     movePiece(fields[fields.length - 1][fields.length - 1].getPiece(), fields[fields.length - 1][p.getField().getColumn() + 1], false);
                     PlaySound.play(Sound.CASTLE);
-                    t.setCastleTurn(getCastlePermissions(), 1);
+                    t.setCastleTurn(1);
                     s = false;
                 }
                 whiteCastlePermissionLong = false;
@@ -168,14 +174,14 @@ public class Chessboard {
                 if (b_king.getField().getColumn() - f.getColumn() == 2) {
                     movePiece(fields[0][0].getPiece(), fields[0][p.getField().getColumn() - 1], false);
                     PlaySound.play(Sound.CASTLE);
-                    t.setCastleTurn(getCastlePermissions(), 0);
+                    t.setCastleTurn(0);
                     s = false;
                 }
                 // Check if it is right castling
                 else if (f.getColumn() - b_king.getField().getColumn() == 2) {
                     movePiece(fields[0][fields.length - 1].getPiece(), fields[0][p.getField().getColumn() + 1], false);
                     PlaySound.play(Sound.CASTLE);
-                    t.setCastleTurn(getCastlePermissions(), 1);
+                    t.setCastleTurn(1);
                     s = false;
                 }
                 blackCastlePermissionLong = false;
@@ -386,12 +392,6 @@ public class Chessboard {
             }
             // move the rook
             movePiece(rook, destination, false);
-
-            // Set castling permissions back
-            whiteCastlePermissionLong = t.getCastlePermissions()[0];
-            whiteCastlePermissionShort = t.getCastlePermissions()[1];
-            blackCastlePermissionLong = t.getCastlePermissions()[2];
-            blackCastlePermissionShort = t.getCastlePermissions()[3];
         }
         // If it was an enpassant turn
         if (t.isEnpassantTurn()) {
@@ -401,6 +401,12 @@ public class Chessboard {
             removePieceFromEaten(t.getEatenPiece());
             t.setEatenPiece(null);
         }
+
+        // Set castling permissions back
+        whiteCastlePermissionLong = t.getCastlePermissions()[0];
+        whiteCastlePermissionShort = t.getCastlePermissions()[1];
+        blackCastlePermissionLong = t.getCastlePermissions()[2];
+        blackCastlePermissionShort = t.getCastlePermissions()[3];
 
         // Set back the enpassantable pawn
         enPassantable = t.getEnpassantable();
