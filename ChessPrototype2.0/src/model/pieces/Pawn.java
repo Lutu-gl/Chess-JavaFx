@@ -53,7 +53,7 @@ public class Pawn extends Piece{
 
         //enPassant
         Pawn pawn = Chessboard.getInstance().getEnPassantable();
-        if(pawn != null && (pawn.getField().getColumn() + 1 == getField().getColumn() || pawn.getField().getColumn() - 1 == getField().getColumn())){
+        if(pawn != null && (pawn.getField().getColumn() + 1 == getField().getColumn() || pawn.getField().getColumn() - 1 == getField().getColumn()) && pawn.getField().getLine() == getField().getLine()){
            Field f =  fields[pawn.getField().getLine() + (color == Color.WHITE ? -1 : +1)][pawn.getField().getColumn()];
            pawn.getField().setPiece(null);
            if(Chessboard.getInstance().isLegal(f, field, color))
