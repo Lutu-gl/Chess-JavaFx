@@ -26,6 +26,8 @@ public class ChessRulesetTest {
 
         int numberPositions = 0;
 
+        //moves.forEach(System.out::println);
+
         for (Turn move : moves) {
             chessboard.handleTurn(move);
             numberPositions += moveGenerationTest(depth - 1);
@@ -68,7 +70,7 @@ public class ChessRulesetTest {
     private void doTest(String fen, int boardSize, int[] possibilities) {
         Chessboard.getInstance().reset();
         chessboard = Chessboard.getInstance();
-        chessboard.createBoard(boardSize);
+        chessboard.createBoard(boardSize, true, true);
         chessboard.setBoardByFen(fen);
         chessboard.debug = true;
 

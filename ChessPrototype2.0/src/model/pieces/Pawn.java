@@ -45,8 +45,15 @@ public class Pawn extends Piece{
 
         int moveDirection = this.getColor() == Color.BLACK ? 1 : -1;
         availableMoves = new ArrayList<>();
-        if(fieldExists(column, line+moveDirection) && !fields[line+moveDirection][column].hasPiece() && !fields[line+moveDirection][column].hasPiece())
+        if(fieldExists(column, line+moveDirection) && !fields[line+moveDirection][column].hasPiece() && !fields[line+moveDirection][column].hasPiece()){
             availableMoves.add(fields[line+moveDirection][column]);
+            if (line == 1 || line == Chessboard.getInstance().getFields().length -1) {
+                for (int i = 0; i < 3; i++) {
+                    availableMoves.add(fields[line][column-1]);
+                }
+            }
+        }
+
         if(defaultY == line && fieldExists(column, line+moveDirection*2) && !fields[line+moveDirection*2][column].hasPiece() && !fields[line+moveDirection][column].hasPiece())
             availableMoves.add(fields[line+moveDirection*2][column]);
 
@@ -62,18 +69,20 @@ public class Pawn extends Piece{
                 availableMoves.add(f);
            pawn.getField().setPiece(pawn);
         }
+        //Promotion
+
+
+
+        //availableMoves.forEach(System.out::println);
 
         return availableMoves;
     }
     private void evaluate(int column, int line){
+       // System.out.println(line);
+        //System.out.println(column);
         Field[][] fields = Chessboard.getInstance().getFields();
         if(fieldExists(column, line) && fields[line][column].hasPiece() && fields[line][column].getPiece().getColor() != this.color) {
-            if (line == 0 || line == Chessboard.getInstance().getFields().length -1) {
-                for (int i = 0; i < 4; i++)
-                    availableMoves.add(fields[line][column]);
-            }
-            else
-                availableMoves.add(fields[line][column]);
+            availableMoves.add(fields[line][column]);
         }
 
     }
@@ -104,7 +113,6 @@ public class Pawn extends Piece{
             chessboard.addPiece(p);
             p.setField(this.getField());
             p.getField().setPiece(p);
-
         }
     }
 }
