@@ -47,9 +47,9 @@ public class Pawn extends Piece{
         availableMoves = new ArrayList<>();
         if(fieldExists(column, line+moveDirection) && !fields[line+moveDirection][column].hasPiece() && !fields[line+moveDirection][column].hasPiece()){
             availableMoves.add(fields[line+moveDirection][column]);
-            if (line == 1 || line == Chessboard.getInstance().getFields().length -1) {
+            if (line + moveDirection == 0 || line + moveDirection== Chessboard.getInstance().getFields().length) {
                 for (int i = 0; i < 3; i++) {
-                    availableMoves.add(fields[line][column-1]);
+                    availableMoves.add(fields[line+moveDirection][column]);
                 }
             }
         }
@@ -69,17 +69,11 @@ public class Pawn extends Piece{
                 availableMoves.add(f);
            pawn.getField().setPiece(pawn);
         }
-        //Promotion
-
-
-
         //availableMoves.forEach(System.out::println);
 
         return availableMoves;
     }
     private void evaluate(int column, int line){
-       // System.out.println(line);
-        //System.out.println(column);
         Field[][] fields = Chessboard.getInstance().getFields();
         if(fieldExists(column, line) && fields[line][column].hasPiece() && fields[line][column].getPiece().getColor() != this.color) {
             availableMoves.add(fields[line][column]);

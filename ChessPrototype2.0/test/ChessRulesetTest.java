@@ -5,6 +5,7 @@ import model.pieces.King;
 import model.pieces.Piece;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -65,6 +66,7 @@ public class ChessRulesetTest {
     @Test
     public void promotionInDepth() {
         doTest("k7/7P/8/8/8/8/8/K7 w - - 0 1", 8, new int[]{1,7});
+        //doTest("k6n/7P/8/8/8/8/8/K7 w - - 0 1", 8, new int[]{1,3});
     }
 
     private void doTest(String fen, int boardSize, int[] possibilities) {
@@ -73,6 +75,7 @@ public class ChessRulesetTest {
         chessboard.createBoard(boardSize, true, true);
         chessboard.setBoardByFen(fen);
         chessboard.debug = true;
+
 
         chessboard.printBoard();
         for (int i = 0; i < possibilities.length; i++)
