@@ -28,6 +28,8 @@ public class Pawn extends Piece{
         super(color, name, field, 1, color == Color.BLACK ? 'p' : 'P');
     }
     private ArrayList<Field> availableMoves;
+    private static int promotionPieces;
+
     @Override
     public ArrayList<Field> getMoves() {
 
@@ -65,8 +67,15 @@ public class Pawn extends Piece{
     }
     private void evaluate(int column, int line){
         Field[][] fields = Chessboard.getInstance().getFields();
-        if(fieldExists(column, line) && fields[line][column].hasPiece() && fields[line][column].getPiece().getColor() != this.color)
-            availableMoves.add(fields[line][column]);
+        if(fieldExists(column, line) && fields[line][column].hasPiece() && fields[line][column].getPiece().getColor() != this.color) {
+            if (line == 0 || line == Chessboard.getInstance().getFields().length -1) {
+                for (int i = 0; i < 4; i++)
+                    availableMoves.add(fields[line][column]);
+            }
+            else
+                availableMoves.add(fields[line][column]);
+        }
+
     }
     private boolean fieldExists(int column, int line){
         Field[][] fields = Chessboard.getInstance().getFields();
@@ -75,13 +84,27 @@ public class Pawn extends Piece{
         return fields[line][column].isExists();
     }
     public void promoteIfPossible(){
-        if(this.getField().getLine() == Chessboard.getInstance().getFields()[0].length-1 || this.getField().getLine() == 0){
-            Piece p = Controller.getInstance().promotionDialog(this);
-            Chessboard.getInstance().removePiece(this);
-            Chessboard.getInstance().addPiece(p);
+        Chessboard chessboard = Chessboard.getInstance();
+
+        if(this.getField().getLine() == chessboard.getFields()[0].length-1 || this.getField().getLine() == 0){
+            Piece p = null;
+            if((color == Color.WHITE && chessboard.getPlaysAI()[0]) || (color == Color.BLACK && chessboard.getPlaysAI()[1])){
+                String colorString = color.toString().charAt(0) + color.toString().substring(1).toLowerCase();
+                switch (promotionPieces){
+                    case 0 -> p = new Queen(color, colorString + " Queen", field);
+                    case 1 -> p = new Rook(color, colorString + " Rook", field);
+                    case 2 -> p = new Bishop(color, colorString + " Bishop", field);
+                    case 3 -> p = new Knight(color, colorString + " Knight", field);
+                }
+                promotionPieces = (promotionPieces + 1) % 4;
+            }else {
+                p = Controller.getInstance().promotionDialog(this);
+            }
+            chessboard.removePiece(this);
+            chessboard.addPiece(p);
             p.setField(this.getField());
             p.getField().setPiece(p);
-        }
 
+        }
     }
 }

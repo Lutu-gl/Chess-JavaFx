@@ -14,7 +14,7 @@ public class Chessboard {
     private int turn, ply;
     private Color colorToMove;
     private int ruleCounter;
-    private Pawn enPassantable;
+    private Pawn enPassantable, whitePromotionable, blackPromotionable;
     private ArrayList<String> fens = new ArrayList<>();
     private ArrayList<Piece> whitePieces = new ArrayList<>();
     private ArrayList<Piece> blackPieces = new ArrayList<>();
@@ -25,6 +25,7 @@ public class Chessboard {
     private Sound playSound;
     private int sizeOfBoard;
     ArrayList<Observer> observers = new ArrayList<>();
+    private boolean[] playsAI = new boolean[2];
 
     public boolean debug = false;
 
@@ -49,8 +50,14 @@ public class Chessboard {
     }
 
     public void createBoard(int size){
+        createBoard(size, false, false);
+    }
+
+    public void createBoard(int size, boolean whiteAI, boolean blackAI){
         this.sizeOfBoard = size;
         state = Gamestate.PLAYING;
+        playsAI[0] = whiteAI;
+        playsAI[1] = blackAI;
         fields = new Field[size][size];
         for (int i = 0; i < size; i++)
         {
@@ -316,9 +323,21 @@ public class Chessboard {
         f.setPiece(p); //Move Piece to new Field
 
         //Promotion
-        if(p instanceof Pawn){
-            ((Pawn)p).promoteIfPossible();
+
+        whitePromotionable = null;
+        blackPromotionable = null;
+        if(p instanceof Pawn) {
+            // Falls ein Mensch spielt
+            //if ((p.getColor() == Color.WHITE && !playsAI[0]) || ( p.getColor() == Color.BLACK && !playsAI[1])){
+                ((Pawn)p).promoteIfPossible();
+            /*} else {
+                if (p.getColor().equals(Color.WHITE) && p.getField().getLine() == 0)
+                    whitePromotionable = (Pawn) p;
+                else if ()
+                    blackPromotionable = (Pawn) p;
+            }*/
         }
+
 
 
         King king = (colorToMove.equals(Color.WHITE)) ? b_king : w_king;
@@ -721,4 +740,11 @@ public class Chessboard {
         return new boolean[]{whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort};
     }
 
+    public boolean[] getPlaysAI() {
+        return playsAI;
+    }
+
+    public void setPlaysAI(boolean[] playsAI) {
+        this.playsAI = playsAI;
+    }
 }

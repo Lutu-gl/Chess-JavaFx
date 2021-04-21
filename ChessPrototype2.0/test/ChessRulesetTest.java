@@ -60,7 +60,12 @@ public class ChessRulesetTest {
         doTest("r3k2r/p6p/8/8/8/8/P6P/R3K2R w KQkq - 0 1", 8, new int[]{1, 16, 242, 4494, 79781, 1625831});
     }
 
-    public void doTest(String fen, int boardSize, int[] possibilities) {
+    @Test
+    public void promotionInDepth() {
+        doTest("k7/7P/8/8/8/8/8/K7 w - - 0 1", 8, new int[]{1,7});
+    }
+
+    private void doTest(String fen, int boardSize, int[] possibilities) {
         Chessboard.getInstance().reset();
         chessboard = Chessboard.getInstance();
         chessboard.createBoard(boardSize);
