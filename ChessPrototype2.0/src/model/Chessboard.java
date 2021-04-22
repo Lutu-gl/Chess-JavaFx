@@ -143,8 +143,14 @@ public class Chessboard {
         return w_king;
     }
 
-    public boolean handleTurn(Turn t){
+    private Turn t;
+    public void changeTForPromotion(Field f) {
+        t.setPromotionTurn(f);
+    }
 
+    public boolean handleTurn(Turn currentT){
+
+        t = currentT;
         // TODO: Farbe von Check ändern, ist momentan nur Rot
         if (!debug)
             Controller.getInstance().fieldToFieldLabel((colorToMove.equals(Color.WHITE)?w_king:b_king).getField()).unmarkAsCheck();
@@ -419,6 +425,14 @@ public class Chessboard {
             addPiece(t.getEatenPiece());
             removePieceFromEaten(t.getEatenPiece());
             t.setEatenPiece(null);
+        }
+
+        if (t.isPromotionTurn()) {
+            //System.out.println("Halloooooooooooo");
+            //ArrayList<Piece> pieces = colorToMove.equals(Color.WHITE)?whitePieces:blackPieces;
+            removePiece(t.getTargetField().getPiece());
+            addPiece(t.getMovingPiece());
+            whitePieces.forEach(System.out::println);
         }
 
         // Set castling permissions back

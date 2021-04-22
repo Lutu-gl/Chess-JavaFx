@@ -99,6 +99,8 @@ public class Pawn extends Piece{
                     case 2 -> p = new Bishop(color, colorString + " Bishop", field);
                     case 3 -> p = new Knight(color, colorString + " Knight", field);
                 }
+
+                chessboard.changeTForPromotion(field);
                 promotionPieces = (promotionPieces + 1) % 4;
             }else {
                 p = Controller.getInstance().promotionDialog(this);

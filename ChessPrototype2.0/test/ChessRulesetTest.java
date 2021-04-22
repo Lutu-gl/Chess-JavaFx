@@ -1,11 +1,9 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import model.*;
-import model.pieces.King;
 import model.pieces.Piece;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -16,6 +14,7 @@ public class ChessRulesetTest {
     int moveGenerationTest(int depth) {
 
         //System.out.println(depth);
+        //chessboard.getWhitePieces().forEach(System.out::println);
         //chessboard.printBoard();
 
         // break condition
@@ -65,8 +64,7 @@ public class ChessRulesetTest {
 
     @Test
     public void promotionInDepth() {
-        doTest("k7/7P/8/8/8/8/8/K7 w - - 0 1", 8, new int[]{1,7});
-        //doTest("k6n/7P/8/8/8/8/8/K7 w - - 0 1", 8, new int[]{1,3});
+        doTest("k7/7P/8/8/8/8/8/K7 w - - 0 1", 8, new int[]{1, 7, 19, 212, 1099});
     }
 
     private void doTest(String fen, int boardSize, int[] possibilities) {

@@ -10,11 +10,12 @@ public class Turn {
     private Piece movingPiece;
     private Piece eatenPiece;
     private Color colorToMove;
-    private boolean isCastleTurn, isEnpassantTurn;
+    private boolean isCastleTurn, isEnpassantTurn, isPromotionTurn;
     private Gamestate gamestate;
     private boolean[] castlePermissions;
     private int castleSide, turnNumber, ruleCounter, turnsPlayed;
     private Pawn enpassantable;
+    private Piece promotionPiece;
 
     public Turn(FieldLabel sourceField, FieldLabel targetField) {
         this(Chessboard.getInstance().getFields()[sourceField.getLine()][sourceField.getColumn()],
@@ -152,5 +153,18 @@ public class Turn {
     public void setCastlePermissions(boolean[] castlePermissions) {
         // deep copy the castling permissions
         this.castlePermissions = new boolean[] {castlePermissions[0],castlePermissions[1],castlePermissions[2],castlePermissions[3]};
+    }
+
+    public boolean isPromotionTurn() {
+        return isPromotionTurn;
+    }
+
+    public void setPromotionTurn(Field f) {
+        isPromotionTurn = true;
+        promotionPiece = f.getPiece();
+    }
+
+    public Piece getPromotionPiece() {
+        return promotionPiece;
     }
 }
