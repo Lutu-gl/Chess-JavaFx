@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/ChessPrototype2.0/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/ChessPrototype2.0/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ChessPrototype2.0/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/ChessPrototype2.0/testResources" type="java-test-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

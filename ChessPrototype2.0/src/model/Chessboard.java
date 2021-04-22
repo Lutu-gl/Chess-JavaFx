@@ -432,7 +432,6 @@ public class Chessboard {
             //ArrayList<Piece> pieces = colorToMove.equals(Color.WHITE)?whitePieces:blackPieces;
             removePiece(t.getTargetField().getPiece());
             addPiece(t.getMovingPiece());
-            whitePieces.forEach(System.out::println);
         }
 
         // Set castling permissions back

@@ -49,7 +49,15 @@ public class ChessRulesetTest {
                     moves.add(turn);
             }
         }
+        printChessLanguage(moves);
         return moves;
+    }
+
+    private void printChessLanguage(ArrayList<Turn> moves) {
+        String[] letters = new String[]{"a", "b", "c", "d", "e", "f", "g", "h"};
+        for (Turn move : moves) {
+            System.out.println(letters[move.getSourceField().getColumn()]+Math.abs(move.getSourceField().getLine()-8) + " - " + letters[move.getTargetField().getColumn()]+Math.abs(move.getTargetField().getLine()-8));
+        }
     }
 
     @Test
@@ -65,6 +73,13 @@ public class ChessRulesetTest {
     @Test
     public void promotionInDepth() {
         doTest("k7/7P/8/8/8/8/8/K7 w - - 0 1", 8, new int[]{1, 7, 19, 212, 1099});
+    }
+
+    @Test
+    public void complicatedPositionInDepth() {
+        doTest("rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8", 8, new int[]{1, 44, 1486, 62379, 2103487, 89941194});
+        //doTest("rnbq1k1r/pp1Pbppp/2p4B/8/2B5/8/PPP1NnPP/RN1QK2R b KQ - 1 8", 8, new int[]{1, 31});
+
     }
 
     private void doTest(String fen, int boardSize, int[] possibilities) {
