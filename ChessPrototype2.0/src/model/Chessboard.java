@@ -91,8 +91,10 @@ public class Chessboard {
             System.out.println("-------------------");
         }*/
 
+
         for (int i = 0; i < fields.length; i++) {
             for (int x = 0; x < fields[i].length; x++) {
+
                 if (fields[i][x].hasPiece())
                     System.out.print(fields[i][x].getPiece().getShortName());
                 else
@@ -101,7 +103,11 @@ public class Chessboard {
             System.out.println();
         }
         System.out.println("\n-------------------\n");
+
+
     }
+
+
 
     public void addPiece(Piece p){
         if(p.getColor() == Color.BLACK)

@@ -8,6 +8,7 @@ import model.Chessboard;
 public class Main extends Application {
 
     @Override
+
     public void start(Stage primaryStage) throws Exception{
 
         int size = 8;
@@ -36,7 +37,7 @@ public class Main extends Application {
         //fen = "k7/8/8/1Pp5/8/8/8/K7 w - c6 0 1";
         //fen = "k7/8/8/1Pp5/8/8/8/K7 w - c6 0 1";
         //fen = "k7/7P/8/8/8/8/8/K7 w - - 0 1";
-        fen = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
         board.addFen(fen);
         board.setBoardByFen(fen);

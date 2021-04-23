@@ -77,8 +77,10 @@ public class Pawn extends Piece{
         Field[][] fields = Chessboard.getInstance().getFields();
         if(fieldExists(column, line) && fields[line][column].hasPiece() && fields[line][column].getPiece().getColor() != this.color) {
             availableMoves.add(fields[line][column]);
-            for (int i = 0; i < 3; i++) {
-                availableMoves.add(fields[line][column]);
+            if (line  == 0 || line == Chessboard.getInstance().getFields().length) {
+                for (int i = 0; i < 3; i++) {
+                    availableMoves.add(fields[line][column]);
+                }
             }
         }
 
