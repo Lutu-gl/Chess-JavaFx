@@ -2,7 +2,6 @@ package model;
 
 import model.pieces.Pawn;
 import model.pieces.Piece;
-import view.FieldLabel;
 
 public class Turn {
     private Field sourceField;
@@ -17,10 +16,6 @@ public class Turn {
     private Pawn enpassantable;
     private Piece promotionPiece;
 
-    public Turn(FieldLabel sourceField, FieldLabel targetField) {
-        this(Chessboard.getInstance().getFields()[sourceField.getLine()][sourceField.getColumn()],
-             Chessboard.getInstance().getFields()[targetField.getLine()][targetField.getColumn()]);
-    }
     public Turn(Field sourceField, Field targetField) {
         this.sourceField = sourceField;
         this.targetField = targetField;
@@ -32,7 +27,6 @@ public class Turn {
         if (targetField.hasPiece())
             eatenPiece = targetField.getPiece();
     }
-
 
 
     public Field getSourceField() {

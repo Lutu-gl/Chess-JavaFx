@@ -21,7 +21,9 @@ public class DragDroppedHandler implements EventHandler<DragEvent> {
         Turn turn = null;
         for (int j = 0; j < highlighted.size(); j++) {
             if (highlighted.get(j).getLine() == controller.getTarget().getLine() && highlighted.get(j).getColumn() == controller.getTarget().getColumn()) {
-                turn = new Turn(controller.getSource(), controller.getTarget());
+
+                turn = new Turn(Chessboard.getInstance().getFields()[controller.getSource().getLine()][controller.getSource().getColumn()], Chessboard.getInstance().getFields()[controller.getTarget().getLine()][controller.getTarget().getColumn()]);
+
                 break;
             }
         }

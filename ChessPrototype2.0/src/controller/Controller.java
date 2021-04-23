@@ -62,7 +62,7 @@ public class Controller implements EventHandler<MouseEvent>{
             target = clickedFieldLabel;
             for (int i = 0; i < highlighted.size(); i++) {
                 if (highlighted.get(i).getLine() == target.getLine() && highlighted.get(i).getColumn() == target.getColumn()) {
-                    Turn turn = new Turn(source, target);
+                    Turn turn = new Turn(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()], Chessboard.getInstance().getFields()[target.getLine()][target.getColumn()]);
                     unSelectLabel();
                     source = null;
 
