@@ -62,14 +62,14 @@ public class ChessRulesetTest {
 
     @Test
     public void chessInDepth()  {
-        //doTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8, new int[]{1, 20, 400, 8902, 197281,4865609});
-        doTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8, new int[]{1, 20, 400, 8902, 197281,});
+        doTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8, new int[]{1, 20, 400, 8902, 197281,4865609});
+        //doTest("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8, new int[]{1, 20, 400, 8902, 197281,});
     }
 
     @Test
     public void castleInDepth()  {
-        //doTest("r3k2r/p6p/8/8/8/8/P6P/R3K2R w KQkq - 0 1", 8, new int[]{1, 16, 242, 4494, 79781, 1625831});
-        doTest("r3k2r/p6p/8/8/8/8/P6P/R3K2R w KQkq - 0 1", 8, new int[]{1, 16, 242, 4494, 79781});
+        doTest("r3k2r/p6p/8/8/8/8/P6P/R3K2R w KQkq - 0 1", 8, new int[]{1, 16, 242, 4494, 79781, 1625831});
+        //doTest("r3k2r/p6p/8/8/8/8/P6P/R3K2R w KQkq - 0 1", 8, new int[]{1, 16, 242, 4494, 79781});
     }
 
 
@@ -80,10 +80,16 @@ public class ChessRulesetTest {
 
     @Test
     public void complicatedPositionInDepth() {
-        //doTest("rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8", 8, new int[]{1, 44, 1486, 62379, 2103487, 89941194});
-        doTest("rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8", 8, new int[]{1, 44, 1486, 62379});
+        doTest("rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8", 8, new int[]{1, 44, 1486, 62379, 2103487, 89941194});
+//        doTest("rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8", 8, new int[]{1, 44, 1486, 62379});
         //doTest("rnbq1k1r/pp1Pbppp/2p4B/8/2B5/8/PPP1NnPP/RN1QK2R b KQ - 1 8", 8, new int[]{1, 31});
 
+    }
+
+    @Test
+    public void winningRookEndgameInDepth(){
+//        doTest("8/8/3k3p/8/8/3K4/8/R7 w - - 0 1", 8, new int[]{1, 22, 176, 3632, 26931, 545762, 3808523, 76439861, 523050824});
+        doTest("8/8/3k3p/8/8/3K4/8/R7 w - - 0 1", 8, new int[]{1, 22, 176, 3632, 26931, 545762, 3808523, 76439861});
     }
 
     private void doTest(String fen, int boardSize, int[] possibilities) {
