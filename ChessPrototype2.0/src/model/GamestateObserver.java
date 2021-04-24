@@ -24,5 +24,6 @@ public class GamestateObserver extends Observer{
         }else if(gamestate == Gamestate.DRAW){
             System.out.println("It is a Draw");
         }
+        chessboard.getTimer().cancel();
     }
 }

@@ -8,13 +8,12 @@ import model.Chessboard;
 public class Main extends Application {
 
     @Override
-
     public void start(Stage primaryStage) throws Exception{
 
         int size = 8;
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
-        board.createBoard(size, true, true);
+        board.createBoard(size, false, false);
         String fen = "";
 
         fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen

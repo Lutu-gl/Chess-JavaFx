@@ -7,6 +7,8 @@ import view.PlaySound;
 import view.Sound;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Chessboard {
     private Field[][] fields;
@@ -27,6 +29,12 @@ public class Chessboard {
     ArrayList<Observer> observers = new ArrayList<>();
     private boolean[] playsAI = new boolean[2];
 
+    private long whiteTime= 300_000_000_000L;  //5min
+    private long blackTime= 300_000_000_000L;
+    private long timeStopped=0L;
+    private Timer timer=new Timer();
+
+
     public boolean debug = false;
 
     // Singleton pattern
@@ -34,6 +42,33 @@ public class Chessboard {
 
 
     private Chessboard() {
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                Chessboard chessboard = Chessboard.getInstance();
+                //long whiteTime=chessboard.getWhiteTime(), blackTime = chessboard.getBlackTime(), timeStopped=chessboard.getTimeStopped();
+                if(timeStopped == 0) return;
+                long timeNow=0L;
+
+                if(colorToMove == Color.WHITE){
+                    timeNow = (whiteTime - (System.nanoTime() - timeStopped));
+                    //System.out.println(timeNow/1e9 + "  -  " + blackTime / 1e9);
+                    if(timeNow <= 0){
+                        state = Gamestate.BLACK_WINS;
+                    }
+                }else{
+                     timeNow = (blackTime - (System.nanoTime() - timeStopped));
+                    //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
+                    if(timeNow <= 0){
+                        state = Gamestate.WHITE_WINS;
+                    }
+                }
+                notifyObserver();
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 1000, 100);
+
+
         register(new GamestateObserver(this));
     }
 
@@ -155,7 +190,15 @@ public class Chessboard {
     }
 
     public boolean handleTurn(Turn currentT){
-
+        if(timeStopped != 0){
+            timeStopped = System.nanoTime() - timeStopped;
+            if(colorToMove == Color.WHITE){
+                whiteTime-=timeStopped;
+            }else{
+                blackTime-=timeStopped;
+            }
+            System.out.println(whiteTime / 1e9 + " " + blackTime/1e9);
+        }
         t = currentT;
         // TODO: Farbe von Check ändern, ist momentan nur Rot
         if (!debug)
@@ -495,8 +538,11 @@ public class Chessboard {
     public void endTurn(){
         notifyObserver();
         //System.out.println(getBoardAsFen());
-        if (!debug)
+        if (!debug){
             ChessboardView.display();
+            timeStopped = System.nanoTime();
+        }
+
     }
 
     public boolean isLegal(Field destination, Field start, Color color) {
@@ -765,5 +811,21 @@ public class Chessboard {
 
     public void setPlaysAI(boolean[] playsAI) {
         this.playsAI = playsAI;
+    }
+
+    public long getBlackTime() {
+        return blackTime;
+    }
+
+    public long getWhiteTime() {
+        return whiteTime;
+    }
+
+    public long getTimeStopped() {
+        return timeStopped;
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }
