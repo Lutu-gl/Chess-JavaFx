@@ -2,10 +2,7 @@ package controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import model.Chessboard;
-import model.Field;
-import model.Gamestate;
-import model.Turn;
+import model.*;
 import model.pieces.Pawn;
 import model.pieces.Piece;
 import view.ChessboardView;
@@ -35,7 +32,14 @@ public class Controller implements EventHandler<MouseEvent>{
     @Override
     public void handle(MouseEvent mouseEvent) {
 
-        if (!Chessboard.getInstance().getState().equals(Gamestate.PLAYING)) return;
+        Chessboard chessboard = Chessboard.getInstance();
+        // This is just testing to start the AI
+        //if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
+        //   chessboard.endTurn();
+
+        if (!chessboard.getState().equals(Gamestate.PLAYING) ||
+           (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
+           (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
 
         FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
         Field clickedField = Chessboard.getInstance().getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];

@@ -1,6 +1,8 @@
 package model;
 
 import controller.Controller;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -11,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Chessboard {
+
     private Field[][] fields;
     private ArrayList<Turn> turns = new ArrayList<>();
     private int turn, ply;
@@ -54,13 +57,13 @@ public class Chessboard {
                     timeNow = (whiteTime - (System.nanoTime() - timeStopped));
                     //System.out.println(timeNow/1e9 + "  -  " + blackTime / 1e9);
                     if(timeNow <= 0){
-                        state = Gamestate.BLACK_WINS;
+                        //state = Gamestate.BLACK_WINS;
                     }
                 }else{
                      timeNow = (blackTime - (System.nanoTime() - timeStopped));
                     //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
                     if(timeNow <= 0){
-                        state = Gamestate.WHITE_WINS;
+                        //state = Gamestate.WHITE_WINS;
                     }
                 }
                 notifyObserver();
@@ -407,6 +410,10 @@ public class Chessboard {
         }
         // Check if it is stalemate
         else {
+            if (whitePieces.size() + blackPieces.size() <= 2) {
+                state = Gamestate.DRAW;
+            }
+
             ArrayList<Piece> pieces = colorToMove.equals(Color.WHITE) ? blackPieces : whitePieces;
             boolean stalemate = true;
             for (Piece piece : pieces) {
@@ -477,8 +484,6 @@ public class Chessboard {
         }
 
         if (t.isPromotionTurn()) {
-            //System.out.println("Halloooooooooooo");
-            //ArrayList<Piece> pieces = colorToMove.equals(Color.WHITE)?whitePieces:blackPieces;
             removePiece(t.getTargetField().getPiece());
             addPiece(t.getMovingPiece());
         }
@@ -541,6 +546,37 @@ public class Chessboard {
         if (!debug){
             ChessboardView.display();
             timeStopped = System.nanoTime();
+        }
+
+        // Check if bot plays
+        int index = colorToMove.equals(Color.WHITE)?0:1;
+        if (playsAI[index] && state.equals(Gamestate.PLAYING)) {
+            /*Thread t = new Thread(() -> {
+                Thread moveCalculator = new Thread(new AI());
+                long timeLeft = colorToMove.equals(Color.WHITE) ? whiteTime : blackTime;
+                moveCalculator.start();
+                try {
+                    moveCalculator.join((int) ((timeLeft/1e6) * 0.015 ));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (moveCalculator.isAlive()) moveCalculator.interrupt();
+
+            });
+            t.start();*/
+            /*Platform.runLater(() -> {
+                Thread moveCalculator = new Thread(new AI());
+                long timeLeft = colorToMove.equals(Color.WHITE) ? whiteTime : blackTime;
+                //moveCalculator.start();
+                Platform.runLater(new AI());
+                try {
+                    moveCalculator.join((int) ((timeLeft/1e6) * 0.015 ));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (moveCalculator.isAlive()) moveCalculator.interrupt();
+            });*/
+            Platform.runLater(new AI());
         }
 
     }

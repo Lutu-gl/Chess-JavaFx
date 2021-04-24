@@ -22,7 +22,9 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent mouseEvent) {
         Chessboard chessboard = Chessboard.getInstance();
-        if (!chessboard.getState().equals(Gamestate.PLAYING)) return;
+        if (!chessboard.getState().equals(Gamestate.PLAYING) ||
+           (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
+           (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
 
         FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
         Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
