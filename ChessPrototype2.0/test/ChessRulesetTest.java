@@ -87,6 +87,11 @@ public class ChessRulesetTest {
     }
 
     @Test
+    public void midgamePositionInDepth() {
+        doTest("r2qr1k1/ppp1bppp/2p2n2/4p3/4P1b1/1PN2N2/PBPP1PPP/R2Q1RK1 w - - 3 9", 8, new int[]{1, 28, 1067, 31624, 1234565, 38005217});
+    }
+
+    @Test
     public void winningRookEndgameInDepth(){
 //        doTest("8/8/3k3p/8/8/3K4/8/R7 w - - 0 1", 8, new int[]{1, 22, 176, 3632, 26931, 545762, 3808523, 76439861, 523050824});
         doTest("8/8/3k3p/8/8/3K4/8/R7 w - - 0 1", 8, new int[]{1, 22, 176, 3632, 26931, 545762, 3808523, 76439861});

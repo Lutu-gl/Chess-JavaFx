@@ -2,15 +2,15 @@ package model;
 
 import controller.Controller;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
 import view.Sound;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class Chessboard {
 
@@ -551,32 +551,39 @@ public class Chessboard {
         // Check if bot plays
         int index = colorToMove.equals(Color.WHITE)?0:1;
         if (playsAI[index] && state.equals(Gamestate.PLAYING)) {
-            /*Thread t = new Thread(() -> {
-                Thread moveCalculator = new Thread(new AI());
-                long timeLeft = colorToMove.equals(Color.WHITE) ? whiteTime : blackTime;
-                moveCalculator.start();
-                try {
-                    moveCalculator.join((int) ((timeLeft/1e6) * 0.015 ));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            Service<Turn> service = new Service<>() {
+                @Override
+                protected Task<Turn> createTask() {
+                    return new Task<>() {
+                        @Override
+                        protected Turn call() throws Exception {
+                            ExecutorService executor = Executors.newSingleThreadExecutor();
+                            long availableTime = colorToMove.equals(Color.WHITE)?whiteTime:blackTime;
+                            Future<Turn> bestMove = executor.submit(new AI());
+                            /*
+                                Here we let the algorithm work and check in small time periods, if it is already finished
+                                After the calculated time above we interrupt the Callable and we get the best move calculated so far
+                             */
+                            for (int i = 0; i < 10; i++) {
+                                if (bestMove.isDone()) break;
+                                Thread.sleep((long)(((availableTime/1e6)*0.05)/10));
+                            }
+                            executor.shutdownNow();
+                            return bestMove.get();
+                        }
+                    };
                 }
-                if (moveCalculator.isAlive()) moveCalculator.interrupt();
-
+            };
+            service.setOnRunning(e -> {
+                System.out.println("Halou?");
             });
-            t.start();*/
-            /*Platform.runLater(() -> {
-                Thread moveCalculator = new Thread(new AI());
-                long timeLeft = colorToMove.equals(Color.WHITE) ? whiteTime : blackTime;
-                //moveCalculator.start();
-                Platform.runLater(new AI());
-                try {
-                    moveCalculator.join((int) ((timeLeft/1e6) * 0.015 ));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (moveCalculator.isAlive()) moveCalculator.interrupt();
-            });*/
-            Platform.runLater(new AI());
+            service.setOnSucceeded(e -> {
+                handleTurn(service.getValue());
+                e.consume();
+            });
+            service.start();
+
+            //Platform.runLater(new AI());
         }
 
     }
