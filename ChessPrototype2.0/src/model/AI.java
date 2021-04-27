@@ -1,6 +1,7 @@
 package model;
 
 import javafx.collections.transformation.SortedList;
+import model.pieces.King;
 import model.pieces.Piece;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.concurrent.*;
 public class AI implements Callable<Turn> {
 
     private static Chessboard chessboard = Chessboard.getInstance();
+    private static int iteration = 0;
 
     @Override
     public Turn call() throws Exception {
@@ -21,7 +23,7 @@ public class AI implements Callable<Turn> {
         double bestEval = -100000;
         for (Turn move : moves) {
             chessboard.handleTurn(move);
-            double eval = -search(3, -10000,10000);
+            double eval = -search(1, -10000,10000);
             if (eval > bestEval) {
                 bestEval = eval;
                 bestMove = move;
@@ -30,18 +32,24 @@ public class AI implements Callable<Turn> {
         }
         chessboard.debug = false;
         chessboard.withTime = true;
+        System.out.println(iteration);
         return bestMove;
     }
 
     private static double search(int depth, double alpha, double beta) {
+        iteration++;
         if (depth == 0) {
             return evaluate();
         }
 
         ArrayList<Turn> moves = generateMoves();
+        if (moves.size() == 0) {
+            chessboard.printBoard();
+            return 0;
+        }
+
         for (Turn move : moves) {
             chessboard.handleTurn(move);
-            //chessboard.printBoard();
             double eval = -search(depth-1, -beta, -alpha);
             chessboard.undoTurn(move);
             if (eval > beta)

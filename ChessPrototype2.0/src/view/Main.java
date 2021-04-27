@@ -40,6 +40,8 @@ public class Main extends Application {
         //fen = "r2qr1k1/ppp1bppp/2p2n2/4p3/4P1b1/1PN2N2/PBPP1PPP/R2Q1RK1 w - - 3 9";
         //fen = "8/k3q3/5P2/8/8/8/K7/8 w - - 0 1";
         //fen = "4r1k1/1q4p1/3Q4/p4P2/4b2P/PPp5/2P5/1K1R2R1 b - - 0 31";
+        //fen = "2k5/8/8/3Q4/3K4/8/8/8 w - - 0 1";
+        fen = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
 
         board.addFen(fen);
         board.setBoardByFen(fen);

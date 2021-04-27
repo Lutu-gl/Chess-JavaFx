@@ -25,7 +25,7 @@ public class Chessboard {
     private ArrayList<Piece> blackPieces = new ArrayList<>();
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
     private Gamestate state;
-    private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort;
+    private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort, endGame = true;
     private King b_king, w_king;
     private Sound playSound;
     private int sizeOfBoard;
@@ -171,7 +171,13 @@ public class Chessboard {
     }
 
     //Wenn jemand a besserer Nume für des einfollt
+    private int queensEaten = 0;
     public void addPieceToEaten(Piece p){
+        if (!debug && p instanceof Queen) {
+            queensEaten++;
+            if (queensEaten >= 2)
+                endGame = true;
+        }
         eatenPieces.add(p);
     }
 
@@ -564,9 +570,9 @@ public class Chessboard {
                                 Here we let the algorithm work and check in small time periods, if it is already finished
                                 After the calculated time above we interrupt the Callable and we get the best move calculated so far
                              */
-                            for (int i = 0; i < 100; i++) {
+                            for (int i = 0; i < 1000; i++) {
                                 if (bestMove.isDone()) break;
-                                Thread.sleep((long)(((availableTime)*0.05)/100));
+                                Thread.sleep((long)(((availableTime)*0.05)/1000));
                             }
                             executor.shutdownNow();
                             return bestMove.get();
@@ -585,7 +591,6 @@ public class Chessboard {
 
             //Platform.runLater(new AI());
         }
-
     }
 
     public boolean isLegal(Field destination, Field start, Color color) {
@@ -668,7 +673,10 @@ public class Chessboard {
                         case 'N' -> p = new Knight(Color.WHITE, "White Knight", field);
                         case 'B' -> p = new Bishop(Color.WHITE, "White Bishop", field);
                         case 'R' -> p = new Rook(Color.WHITE, "White Rook", field);
-                        case 'Q' -> p = new Queen(Color.WHITE, "White Queen", field);
+                        case 'Q' -> {
+                            p = new Queen(Color.WHITE, "White Queen", field);
+                            endGame = false;
+                        }
                         case 'K' -> {
                             p = new King(Color.WHITE, "White King", field);
                             w_king = (King) p;
@@ -870,5 +878,9 @@ public class Chessboard {
 
     public Timer getTimer() {
         return timer;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
     }
 }

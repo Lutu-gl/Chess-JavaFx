@@ -104,6 +104,26 @@ public class PositionTables {
             {-30,-40,-40,-50,-50,-40,-40,-30},
             {-30,-40,-40,-50,-50,-40,-40,-30}
     };
+    private static int[][] kingMapEndWhite = new int[][] {
+            {-50,-40,-30,-20,-20,-30,-40,-50},
+            {-30,-20,-10,  0,  0,-10,-20,-30},
+            {-30,-10, 20, 30, 30, 20,-10,-30},
+            {-30,-10, 30, 40, 40, 30,-10,-30},
+            {-30,-10, 30, 40, 40, 30,-10,-30},
+            {-30,-10, 20, 30, 30, 20,-10,-30},
+            {-30,-30,  0,  0,  0,  0,-30,-30},
+            {-50,-30,-30,-30,-30,-30,-30,-50}
+    };
+    private static int[][] kingMapEndBlack = new int[][] {
+            {-50,-30,-30,-30,-30,-30,-30,-50},
+            {-30,-30,  0,  0,  0,  0,-30,-30},
+            {-30,-10, 20, 30, 30, 20,-10,-30},
+            {-30,-10, 30, 40, 40, 30,-10,-30},
+            {-30,-10, 30, 40, 40, 30,-10,-30},
+            {-30,-10, 20, 30, 30, 20,-10,-30},
+            {-30,-20,-10,  0,  0,-10,-20,-30},
+            {-50,-40,-30,-20,-20,-30,-40,-50}
+    };
 
 
     public static double getValue(Piece p) {
@@ -123,6 +143,8 @@ public class PositionTables {
             map = p.getColor().equals(Color.WHITE)?bishopMapWhite:bishopMapBlack;
         else if (p instanceof Rook)
             map = p.getColor().equals(Color.WHITE)?rookMapWhite:rookMapBlack;
+        else if (Chessboard.getInstance().isEndGame())
+            map = p.getColor().equals(Color.WHITE)?kingMapEndWhite:kingMapEndBlack;
         else
             map = p.getColor().equals(Color.WHITE)?kingMapMidWhite:kingMapMidBlack;
         return map;
