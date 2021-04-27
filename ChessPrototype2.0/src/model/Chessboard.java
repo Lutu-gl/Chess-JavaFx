@@ -32,11 +32,11 @@ public class Chessboard {
     ArrayList<Observer> observers = new ArrayList<>();
     private boolean[] playsAI = new boolean[2];
 
-    private long whiteTime= 20_000_000_000L;  //5min
-    private long blackTime= 20_000_000_000L;
+    private long whiteTime= 20_000L;  //5min
+    private long blackTime= 20_000L;
     private long timeStopped=0L;
     private Timer timer=new Timer();
-
+    private boolean withTime=true;
 
     public boolean debug = false;
 
@@ -49,27 +49,28 @@ public class Chessboard {
             @Override
             public void run() {
                 Chessboard chessboard = Chessboard.getInstance();
+                //System.out.println("yetzt");
                 //long whiteTime=chessboard.getWhiteTime(), blackTime = chessboard.getBlackTime(), timeStopped=chessboard.getTimeStopped();
                 if(timeStopped == 0) return;
                 long timeNow=0L;
 
                 if(colorToMove == Color.WHITE){
-                    timeNow = (whiteTime - (System.nanoTime() - timeStopped));
+                    timeNow = (whiteTime - (System.currentTimeMillis() - timeStopped));
                     //System.out.println(timeNow/1e9 + "  -  " + blackTime / 1e9);
                     if(timeNow <= 0){
-                        //state = Gamestate.BLACK_WINS;
+                        state = Gamestate.BLACK_WINS;
                     }
                 }else{
-                     timeNow = (blackTime - (System.nanoTime() - timeStopped));
+                     timeNow = (blackTime - (System.currentTimeMillis() - timeStopped));
                     //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
                     if(timeNow <= 0){
-                        //state = Gamestate.WHITE_WINS;
+                        state = Gamestate.WHITE_WINS;
                     }
                 }
                 notifyObserver();
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 1000, 100);
+        timer.scheduleAtFixedRate(timerTask, 0, 100);
 
 
         register(new GamestateObserver(this));
@@ -193,14 +194,13 @@ public class Chessboard {
     }
 
     public boolean handleTurn(Turn currentT){
-        if(timeStopped != 0){
-            timeStopped = System.nanoTime() - timeStopped;
+        if(timeStopped != 0 && withTime){
             if(colorToMove == Color.WHITE){
-                whiteTime-=timeStopped;
+                whiteTime-=System.currentTimeMillis() - timeStopped;;
             }else{
-                blackTime-=timeStopped;
+                blackTime-=System.currentTimeMillis() - timeStopped;;
             }
-            System.out.println(whiteTime / 1e9 + " " + blackTime/1e9);
+            System.out.println(whiteTime / 1e3 + " " + blackTime/1e3);
         }
         t = currentT;
         // TODO: Farbe von Check ändern, ist momentan nur Rot
@@ -545,7 +545,7 @@ public class Chessboard {
         //System.out.println(getBoardAsFen());
         if (!debug){
             ChessboardView.display();
-            timeStopped = System.nanoTime();
+            if(withTime) timeStopped = System.currentTimeMillis();
         }
 
         // Check if bot plays
@@ -566,7 +566,7 @@ public class Chessboard {
                              */
                             for (int i = 0; i < 20; i++) {
                                 if (bestMove.isDone()) break;
-                                Thread.sleep((long)(((availableTime/1e6)*0.05)/20));
+                                Thread.sleep((long)(((availableTime)*0.05)/20));
                             }
                             executor.shutdownNow();
                             return bestMove.get();

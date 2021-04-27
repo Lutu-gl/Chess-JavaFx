@@ -1,6 +1,10 @@
 package model;
 
 import model.pieces.Piece;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class TestKlasse {
@@ -50,7 +54,7 @@ public class TestKlasse {
 
     public static void main(String[] args) {
         chessboard = Chessboard.getInstance();
-        chessboard.createBoard(8, true, true);
+        chessboard.createBoard(8, false, false);
         chessboard.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         chessboard.debug = true;
 
@@ -59,9 +63,21 @@ public class TestKlasse {
 
         System.out.println();
         for (int i = 0; ; i++) {
+            long mv = moveGenerationTest(i);
             System.out.println("gesuchte Tiefe " + i);
-            System.out.println(moveGenerationTest(i));
+            System.out.println(mv);
             System.out.println("---------------------");
+
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter("log.txt", true));
+                writer.append(' ');
+                writer.append("gesuchte Tiefe " + i + "\n");
+                writer.append(Long.toString(mv) + "\n\n\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
         }
     }
 }
