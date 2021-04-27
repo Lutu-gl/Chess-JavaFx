@@ -32,8 +32,8 @@ public class Chessboard {
     ArrayList<Observer> observers = new ArrayList<>();
     private boolean[] playsAI = new boolean[2];
 
-    private long whiteTime= 300_000_000_000L;  //5min
-    private long blackTime= 300_000_000_000L;
+    private long whiteTime= 20_000_000_000L;  //5min
+    private long blackTime= 20_000_000_000L;
     private long timeStopped=0L;
     private Timer timer=new Timer();
 
@@ -564,9 +564,9 @@ public class Chessboard {
                                 Here we let the algorithm work and check in small time periods, if it is already finished
                                 After the calculated time above we interrupt the Callable and we get the best move calculated so far
                              */
-                            for (int i = 0; i < 10; i++) {
+                            for (int i = 0; i < 20; i++) {
                                 if (bestMove.isDone()) break;
-                                Thread.sleep((long)(((availableTime/1e6)*0.05)/10));
+                                Thread.sleep((long)(((availableTime/1e6)*0.05)/20));
                             }
                             executor.shutdownNow();
                             return bestMove.get();
@@ -575,7 +575,7 @@ public class Chessboard {
                 }
             };
             service.setOnRunning(e -> {
-                System.out.println("Halou?");
+                System.out.println("Berechnung begonnen!");
             });
             service.setOnSucceeded(e -> {
                 handleTurn(service.getValue());

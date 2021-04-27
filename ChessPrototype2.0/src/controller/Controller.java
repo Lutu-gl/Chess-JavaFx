@@ -34,8 +34,8 @@ public class Controller implements EventHandler<MouseEvent>{
 
         Chessboard chessboard = Chessboard.getInstance();
         // This is just testing to start the AI
-        //if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
-        //   chessboard.endTurn();
+        if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
+           chessboard.endTurn();
 
         if (!chessboard.getState().equals(Gamestate.PLAYING) ||
            (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||

@@ -27,10 +27,11 @@ public class AI implements Callable<Turn> {
             }
         }
 
-        if (Math.round(Math.random()) == 1) {
-            bestTurn = moves.get((int) (Math.random() * moves.size()));
-            return bestTurn;
-        }
+        //int r = (int) (Math.round(Math.random()));
+        //if (r == 1 || r == 0) {
+        //    bestTurn = moves.get((int) (Math.random() * moves.size()));
+        //    return bestTurn;
+        //}
 
         try {
             while (!Thread.currentThread().isInterrupted())
