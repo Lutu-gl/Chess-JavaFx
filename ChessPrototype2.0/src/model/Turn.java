@@ -15,6 +15,7 @@ public class Turn {
     private int castleSide, turnNumber, ruleCounter, turnsPlayed;
     private Pawn enpassantable;
     private Piece promotionPiece;
+    private int moveScoreGuess = 0;
 
     public Turn(Field sourceField, Field targetField) {
         this.sourceField = sourceField;
@@ -160,5 +161,13 @@ public class Turn {
 
     public Piece getPromotionPiece() {
         return promotionPiece;
+    }
+
+    public int getMoveScoreGuess() {
+        return moveScoreGuess;
+    }
+
+    public void setMoveScoreGuess(int moveScoreGuess) {
+        this.moveScoreGuess = moveScoreGuess;
     }
 }

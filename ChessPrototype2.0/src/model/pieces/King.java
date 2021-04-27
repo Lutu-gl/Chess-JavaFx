@@ -13,7 +13,7 @@ public class King extends Piece{
         super(color, name, field, value, shortName);
     }
     public King(Color color, String name, Field field) {
-        super(color, name, field, Integer.MAX_VALUE, color == Color.BLACK ? 'k' : 'K');
+        super(color, name, field, 300, color == Color.BLACK ? 'k' : 'K');
     }
     private Chessboard chessboard = Chessboard.getInstance();
     private ArrayList<Field> availableMoves;
