@@ -36,7 +36,7 @@ public class Chessboard {
     private long blackTime= 20_000L;
     private long timeStopped=0L;
     private Timer timer=new Timer();
-    private boolean withTime=true;
+    public boolean withTime=true;
 
     public boolean debug = false;
 
@@ -550,7 +550,7 @@ public class Chessboard {
 
         // Check if bot plays
         int index = colorToMove.equals(Color.WHITE)?0:1;
-        if (playsAI[index] && state.equals(Gamestate.PLAYING)) {
+        if (playsAI[index] && state.equals(Gamestate.PLAYING) && !debug) {
             Service<Turn> service = new Service<>() {
                 @Override
                 protected Task<Turn> createTask() {

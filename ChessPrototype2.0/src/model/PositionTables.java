@@ -1,11 +1,10 @@
 package model;
 
-import model.pieces.Pawn;
-import model.pieces.Piece;
+import model.pieces.*;
 
 public class PositionTables {
 
-    private static double[][] pawnMapWhite = new double[][]{
+    private static int[][] pawnMapWhite = new int[][]{
             {100,  100,  100,  100,  100,  100,  100,  100},
             {50, 50, 50, 50, 50, 50, 50, 50},
             {10, 10, 20, 30, 30, 20, 10, 10},
@@ -15,7 +14,7 @@ public class PositionTables {
             {5, 10, 10,-20,-20, 10, 10,  5},
             {0,  0,  0,  0,  0,  0,  0,  0}
     };
-    private static double[][] pawnMapBlack = new double[][]{
+    private static int[][] pawnMapBlack = new int[][]{
             {0,  0,  0,  0,  0,  0,  0,  0},
             {5, 10, 10,-20,-20, 10, 10,  5},
             {5, -5,-10,  0,  0,-10, -5,  5},
@@ -25,7 +24,7 @@ public class PositionTables {
             {50, 50, 50, 50, 50, 50, 50, 50},
             {100,  100,  100,  100,  100,  100,  100,  100},
     };
-    private static double[][] knightMap = new double[][]{
+    private static int[][] knightMap = new int[][]{
             {-50,-40,-30,-30,-30,-30,-40,-50},
             {-40,-20,  0,  0,  0,  0,-20,-40},
             {-30,  0, 10, 15, 15, 10,  0,-30},
@@ -35,7 +34,7 @@ public class PositionTables {
             {-40,-20,  0,  5,  5,  0,-20,-40},
             {-50,-40,-30,-30,-30,-30,-40,-50},
     };
-    private static double[][] bishopMapWhite = new double[][] {
+    private static int[][] bishopMapWhite = new int[][] {
             {-20,-10,-10,-10,-10,-10,-10,-20},
             {-10,  0,  0,  0,  0,  0,  0,-10},
             {-10,  0,  5, 10, 10,  5,  0,-10},
@@ -45,7 +44,7 @@ public class PositionTables {
             {-10,  5,  0,  0,  0,  0,  5,-10},
             {-20,-10,-10,-10,-10,-10,-10,-20},
     };
-    private static double[][] bishopMapBlack = new double[][] {
+    private static int[][] bishopMapBlack = new int[][] {
             {-20,-10,-10,-10,-10,-10,-10,-20},
             {-10,  5,  0,  0,  0,  0,  5,-10},
             {-10, 10, 10, 10, 10, 10, 10,-10},
@@ -55,7 +54,7 @@ public class PositionTables {
             {-10,  0,  0,  0,  0,  0,  0,-10},
             {-20,-10,-10,-10,-10,-10,-10,-20},
     };
-    private static double[][] rookMapWhite = new double[][] {
+    private static int[][] rookMapWhite = new int[][] {
             {-20,-10,-10, -5, -5,-10,-10,-20},
             {-10,  0,  0,  0,  0,  0,  0,-10},
             {-10,  0,  5,  5,  5,  5,  0,-10},
@@ -65,7 +64,7 @@ public class PositionTables {
             {-10,  0,  5,  0,  0,  0,  0,-10},
             {-20,-10,-10, -5, -5,-10,-10,-20}
     };
-    private static double[][] rookMapBlack = new double[][] {
+    private static int[][] rookMapBlack = new int[][] {
             {-20,-10,-10, -5, -5,-10,-10,-20},
             {-10,  0,  5,  0,  0,  0,  0,-10},
             {-10,  5,  5,  5,  5,  5,  0,-10},
@@ -75,7 +74,7 @@ public class PositionTables {
             {-10,  0,  0,  0,  0,  0,  0,-10},
             {-20,-10,-10, -5, -5,-10,-10,-20},
     };
-    private static double[][] queenMap = new double[][] {
+    private static int[][] queenMap = new int[][] {
             {-20,-10,-10, -5, -5,-10,-10,-20},
             {-10,  0,  0,  0,  0,  0,  0,-10},
             {-10,  0,  5,  5,  5,  5,  0,-10},
@@ -85,14 +84,48 @@ public class PositionTables {
             {-10,  0,  5,  0,  0,  0,  0,-10},
             {-20,-10,-10, -5, -5,-10,-10,-20}
     };
+    private static int[][] kingMapMidWhite = new int[][] {
+            {-30,-40,-40,-50,-50,-40,-40,-30},
+            {-30,-40,-40,-50,-50,-40,-40,-30},
+            {-30,-40,-40,-50,-50,-40,-40,-30},
+            {-30,-40,-40,-50,-50,-40,-40,-30},
+            {-20,-30,-30,-40,-40,-30,-30,-20},
+            {-10,-20,-20,-20,-20,-20,-20,-10},
+            {20, 20,  0,  0,  0,  0, 20, 20},
+            {20, 30, 10,  0,  0, 10, 30, 20}
+    };
+    private static int[][] kingMapMidBlack = new int[][] {
+            {20, 30, 10,  0,  0, 10, 30, 20},
+            {20, 20,  0,  0,  0,  0, 20, 20},
+            {-10,-20,-20,-20,-20,-20,-20,-10},
+            {-20,-30,-30,-40,-40,-30,-30,-20},
+            {-30,-40,-40,-50,-50,-40,-40,-30},
+            {-30,-40,-40,-50,-50,-40,-40,-30},
+            {-30,-40,-40,-50,-50,-40,-40,-30},
+            {-30,-40,-40,-50,-50,-40,-40,-30}
+    };
 
 
-    public static double getValue(Field destinationField, Piece movingPiece) {
-        double map[][] = null;
-        if (movingPiece instanceof Pawn){
-
-        }
-        return 0.0;
+    public static double getValue(Piece p) {
+        double v =  getMapForPiece(p)[p.getField().getLine()][p.getField().getColumn()];
+        return v/100;
+    }
+    
+    private static int[][] getMapForPiece(Piece p) {
+        int[][] map = null;
+        if (p instanceof Pawn)
+            map = p.getColor().equals(Color.WHITE)?pawnMapWhite:pawnMapBlack;
+        else if (p instanceof Queen)
+            map = queenMap;
+        else if (p instanceof Knight)
+            map = knightMap;
+        else if (p instanceof Bishop)
+            map = p.getColor().equals(Color.WHITE)?bishopMapWhite:bishopMapBlack;
+        else if (p instanceof Rook)
+            map = p.getColor().equals(Color.WHITE)?rookMapWhite:rookMapBlack;
+        else
+            map = p.getColor().equals(Color.WHITE)?kingMapMidWhite:kingMapMidBlack;
+        return map;
     }
 
 }
