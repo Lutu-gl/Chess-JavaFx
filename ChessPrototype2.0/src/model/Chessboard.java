@@ -32,8 +32,8 @@ public class Chessboard {
     ArrayList<Observer> observers = new ArrayList<>();
     private boolean[] playsAI = new boolean[2];
 
-    private long whiteTime= 180000;  //5min
-    private long blackTime= 180000;
+    private long whiteTime= 1800000;  //5min
+    private long blackTime= 90000;
     private long timeStopped=0L;
     private Timer timer=new Timer();
     public boolean withTime=true;
