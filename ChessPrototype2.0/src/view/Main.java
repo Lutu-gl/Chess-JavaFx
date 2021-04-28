@@ -13,7 +13,7 @@ public class Main extends Application {
         int size = 8;
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
-        board.createBoard(size, false, true);
+        board.createBoard(size, true, true);
         String fen = "";
 
         fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
@@ -41,7 +41,7 @@ public class Main extends Application {
         //fen = "8/k3q3/5P2/8/8/8/K7/8 w - - 0 1";
         //fen = "4r1k1/1q4p1/3Q4/p4P2/4b2P/PPp5/2P5/1K1R2R1 b - - 0 31";
         //fen = "2k5/8/8/3Q4/3K4/8/8/8 w - - 0 1";
-        fen = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
+        //fen = "8/6K1/1p1B1RB1/8/2Q5/2n1kP1N/3b4/4n3 w - - 0 1";
 
         board.addFen(fen);
         board.setBoardByFen(fen);

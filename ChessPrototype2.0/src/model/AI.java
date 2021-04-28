@@ -19,34 +19,61 @@ public class AI implements Callable<Turn> {
         chessboard.debug = true;
         chessboard.withTime = false;
         ArrayList<Turn> moves = generateMoves();
-        Turn bestMove = null;
+        Turn bestMoveOverall = moves.get(0);
         double bestEval = -100000;
-        for (Turn move : moves) {
-            chessboard.handleTurn(move);
-            double eval = -search(1, -10000,10000);
-            if (eval > bestEval) {
-                bestEval = eval;
-                bestMove = move;
+        int depth = 0;
+        while (!Thread.currentThread().isInterrupted()) {
+            System.out.println("Suche auf Tiefe "+ (depth+1));
+            Turn bestMove = moves.get(0);
+            for (Turn move : moves) {
+                chessboard.handleTurn(move);
+                double eval = -search(depth, -10000, 10000);
+                if (eval > bestEval) {
+                    bestEval = eval;
+                    bestMove = move;
+                }
+                chessboard.undoTurn(move);
+                if (eval > 250) {
+                    chessboard.debug = false;
+                    chessboard.withTime = true;
+                    return bestMove;
+                }
+                if (Thread.currentThread().isInterrupted()) {
+                    System.out.println("DIOCAN");
+                    chessboard.debug = false;
+                    chessboard.withTime = true;
+                    System.out.println("1: "+bestMove);
+                    System.out.println("Interrupted :"+Thread.currentThread().isInterrupted());
+                    return bestMoveOverall;
+                }
             }
-            chessboard.undoTurn(move);
+            bestMoveOverall = bestMove;
+
+            depth++;
         }
         chessboard.debug = false;
         chessboard.withTime = true;
         System.out.println(iteration);
-        return bestMove;
+        System.out.println("2: "+bestMoveOverall);
+        return bestMoveOverall;
     }
 
     private static double search(int depth, double alpha, double beta) {
         iteration++;
+
+        if (Thread.currentThread().isInterrupted()) {
+            return -1e6;
+        }
+
         if (depth == 0) {
             return evaluate();
         }
 
         ArrayList<Turn> moves = generateMoves();
-        if (moves.size() == 0) {
+        /*if (moves.size() == 0) {
             chessboard.printBoard();
             return 0;
-        }
+        }*/
 
         for (Turn move : moves) {
             chessboard.handleTurn(move);
