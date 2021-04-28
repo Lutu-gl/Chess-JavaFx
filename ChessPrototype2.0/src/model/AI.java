@@ -1,12 +1,8 @@
 package model;
 
-import javafx.collections.transformation.SortedList;
-import model.pieces.King;
 import model.pieces.Piece;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.*;
 
 public class AI implements Callable<Turn> {
@@ -19,12 +15,13 @@ public class AI implements Callable<Turn> {
         chessboard.debug = true;
         chessboard.withTime = false;
         ArrayList<Turn> moves = generateMoves();
-        Turn bestMoveOverall = moves.get(0);
-        double bestEval = -100000;
+        Turn bestMoveOverall = null;
+
         int depth = 0;
         while (!Thread.currentThread().isInterrupted()) {
             System.out.println("Suche auf Tiefe "+ (depth+1));
-            Turn bestMove = moves.get(0);
+            double bestEval = -100000;
+            Turn bestMove = null;
             for (Turn move : moves) {
                 chessboard.handleTurn(move);
                 double eval = -search(depth, -10000, 10000);
@@ -38,7 +35,7 @@ public class AI implements Callable<Turn> {
                     chessboard.withTime = true;
                     return bestMove;
                 }
-                if (Thread.currentThread().isInterrupted()) {
+                if (Thread.currentThread().isInterrupted() && depth > 2) {
                     System.out.println("DIOCAN");
                     chessboard.debug = false;
                     chessboard.withTime = true;
