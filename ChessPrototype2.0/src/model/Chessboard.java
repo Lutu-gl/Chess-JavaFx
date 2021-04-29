@@ -32,8 +32,11 @@ public class Chessboard {
     ArrayList<Observer> observers = new ArrayList<>();
     private boolean[] playsAI = new boolean[2];
 
-    private long whiteTime= 1800000;  //5min
+    private long whiteTime= 90000;  //5min
     private long blackTime= 90000;
+    private long whiteInkrement = 0;
+    private long blackInkrement = 0;
+
     private long timeStopped=0L;
     private Timer timer=new Timer();
     public boolean withTime=true;
@@ -61,7 +64,7 @@ public class Chessboard {
                         state = Gamestate.BLACK_WINS;
                     }
                 }else{
-                     timeNow = (blackTime - (System.currentTimeMillis() - timeStopped));
+                    timeNow = (blackTime - (System.currentTimeMillis() - timeStopped));
                     //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
                     if(timeNow <= 0){
                         state = Gamestate.WHITE_WINS;
@@ -93,6 +96,15 @@ public class Chessboard {
     }
 
     public void createBoard(int size, boolean whiteAI, boolean blackAI){
+        createBoard(size, false, false, 300, 300, 0, 0);
+    }
+
+    public void createBoard(int size, boolean whiteAI, boolean blackAI, long whiteTime, long blackTime, long whiteInkrement, long blackInkrement){
+        this.whiteTime = (long) (whiteTime*1e3);
+        this.blackTime = (long) (blackTime*1e3);
+        this.whiteInkrement = (long) (whiteInkrement*1e3);
+        this.blackInkrement = (long) (blackInkrement*1e3);
+
         this.sizeOfBoard = size;
         state = Gamestate.PLAYING;
         playsAI[0] = whiteAI;
@@ -200,11 +212,14 @@ public class Chessboard {
     }
 
     public boolean handleTurn(Turn currentT){
+        //System.out.println(whiteInkrement);
         if(timeStopped != 0 && withTime){
             if(colorToMove == Color.WHITE){
-                whiteTime-=System.currentTimeMillis() - timeStopped;;
+                whiteTime-=System.currentTimeMillis() - timeStopped;
+                whiteTime += whiteInkrement;
             }else{
-                blackTime-=System.currentTimeMillis() - timeStopped;;
+                blackTime-=System.currentTimeMillis() - timeStopped;
+                blackTime += blackInkrement;
             }
             System.out.println(whiteTime / 1e3 + " " + blackTime/1e3);
         }
@@ -393,7 +408,7 @@ public class Chessboard {
         if(p instanceof Pawn) {
             // Falls ein Mensch spielt
             //if ((p.getColor() == Color.WHITE && !playsAI[0]) || ( p.getColor() == Color.BLACK && !playsAI[1])){
-                ((Pawn)p).promoteIfPossible();
+            ((Pawn)p).promoteIfPossible();
             /*} else {
                 if (p.getColor().equals(Color.WHITE) && p.getField().getLine() == 0)
                     whitePromotionable = (Pawn) p;
