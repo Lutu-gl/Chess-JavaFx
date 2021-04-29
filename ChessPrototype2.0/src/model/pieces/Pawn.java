@@ -96,7 +96,8 @@ public class Pawn extends Piece{
 
         if(this.getField().getLine() == chessboard.getFields()[0].length-1 || this.getField().getLine() == 0){
             Piece p = null;
-            if((color == Color.WHITE && chessboard.getPlaysAI()[0]) || (color == Color.BLACK && chessboard.getPlaysAI()[1])){
+            //if((color == Color.WHITE && chessboard.getPlaysAI()[0]) || (color == Color.BLACK && chessboard.getPlaysAI()[1])){
+            if (chessboard.debug || (color == Color.WHITE && chessboard.getPlaysAI()[0]) || (color == Color.BLACK && chessboard.getPlaysAI()[1])) {
                 String colorString = color.toString().charAt(0) + color.toString().substring(1).toLowerCase();
                 switch (promotionPieces){
                     case 0 -> p = new Queen(color, colorString + " Queen", field);

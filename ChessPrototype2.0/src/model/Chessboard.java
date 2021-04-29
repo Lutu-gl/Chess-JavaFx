@@ -31,12 +31,10 @@ public class Chessboard {
     private int sizeOfBoard;
     ArrayList<Observer> observers = new ArrayList<>();
     private boolean[] playsAI = new boolean[2];
-
     private long whiteTime= 90000;  //5min
     private long blackTime= 90000;
     private long whiteInkrement = 0;
     private long blackInkrement = 0;
-
     private long timeStopped=0L;
     private Timer timer=new Timer();
     public boolean withTime=true;

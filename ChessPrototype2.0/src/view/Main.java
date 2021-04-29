@@ -45,8 +45,10 @@ public class Main extends Application {
         //fen = "8/8/8/4k3/1R6/2R5/1K6/8 w - - 0 1";
         //fen = "4Q1k1/pp3r2/2rP3p/4B1N1/2q3P1/P7/5RP1/5RK1 b - - 0 1";
         //fen = "8/3P4/1k6/3K4/8/8/8/8 w - - 0 1"; // PROMOTION TESTTT
-        //fen = "r5rk/5p1p/5R2/4B3/8/8/7P/7K w - - 0 1";
-        //fen = "2bqkbn1/2pppp2/np2N3/r3P1p1/p2N2B1/5Q2/PPPPKPP1/RNB2r2 w KQkq - 0 1";
+        //fen = "8/8/8/8/6K1/8/4p1k1/8 w - - 0 1"; // PROMOTION TESTTT
+        //fen = "k7/4ppp1/8/4PPP1/8/8/8/K7 w - - 0 1";
+        //fen = "8/3R1r2/7P/1k6/8/3K4/8/8 w - - 0 1";
+
 
         board.addFen(fen);
         board.setBoardByFen(fen);

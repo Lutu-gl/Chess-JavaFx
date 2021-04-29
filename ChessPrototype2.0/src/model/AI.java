@@ -119,14 +119,22 @@ public class AI implements Callable<Turn> {
                 if (chessboard.isLegal(turn.getTargetField(), turn.getSourceField(), turn.getColorToMove())){
                     if (move.hasPiece())
                         turn.setMoveScoreGuess((int) (10 * move.getPiece().getValue() - piece.getValue()));
-                    if (turn.isPromotionTurn())
+                    else if (turn.isPromotionTurn())
                         turn.setMoveScoreGuess(9);
+                    else if (isAttackedByPawn(turn))
+                        turn.setMoveScoreGuess(-10);
                     else if (!move.hasPiece())
                         turn.setMoveScoreGuess(-5);
+
                     moves.add(turn);
                 }
             }
         }
+
+        /*System.out.println("\n\n");
+        moves.forEach(move -> System.out.println(move.getMoveScoreGuess() + " " + move.getTargetField()));
+        System.out.println("\n\n");
+        */
 
         // Order the moves
         moves.sort(new Comparator<Turn>() {
@@ -135,7 +143,46 @@ public class AI implements Callable<Turn> {
                 return Integer.compare(o2.getMoveScoreGuess(), o1.getMoveScoreGuess());
             }
         });
+
+        /*System.out.println("\n\n");
+        moves.forEach(System.out::println);
+        System.out.println("\n\n");
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
         return moves;
+    }
+
+    private static boolean isAttackedByPawn(Turn t) {
+        int size = chessboard.getFields().length;
+        int line = t.getTargetField().getLine(), column = t.getTargetField().getColumn();
+        Field f = null;
+        if (t.getColorToMove().equals(Color.WHITE)) {
+            if (line-1 >= 0 && column-1 >= 0) {
+                f = chessboard.getFields()[line - 1][column - 1];
+                if (f != null && f.hasPiece() && f.getPiece().getShortName() == 'p')
+                    return true;
+            }
+            if (line-1 >= 0 && column+1 < size){
+                f = chessboard.getFields()[line-1][column+1];
+                return f != null && f.hasPiece() && f.getPiece().getShortName() == 'p';
+            }
+        } else {
+            if (line+1 < size && column-1 >= 0) {
+                f = chessboard.getFields()[line + 1][column - 1];
+                if (f != null && f.hasPiece() && f.getPiece().getShortName() == 'P')
+                    return true;
+            }
+            if (line+1 < size && column+1 < size) {
+                f = chessboard.getFields()[line+1][column+1];
+                return f != null && f.hasPiece() && f.getPiece().getShortName() == 'P';
+            }
+        }
+        return false;
     }
 
     private static ArrayList<Turn> generateCaptureMoves() {
