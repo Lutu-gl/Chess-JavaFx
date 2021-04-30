@@ -3,6 +3,7 @@ package model;
 import model.pieces.*;
 
 public class PositionTables {
+    private final static Chessboard chessboard = Chessboard.getInstance();
 
     private static int[][] pawnMapWhite = new int[][]{
             {100,  100,  100,  100,  100,  100,  100,  100},
@@ -14,7 +15,6 @@ public class PositionTables {
             {5, 10, 10,-35,-35, 10, 10,  5},
             {0,  0,  0,  0,  0,  0,  0,  0}
     };
-
     private static int[][] pawnMapWhiteEndgame = new int[][]{
             {100,  100,  100,  100,  100,  100,  100,  100},
             {50, 50, 50, 50, 50, 50, 50, 50},
@@ -25,8 +25,6 @@ public class PositionTables {
             {-2, -2, -2,-20,-20, -2, -2,  -2},
             {0,  0,  0,  0,  0,  0,  0,  0}
     };
-
-
     private static int[][] pawnMapBlack = new int[][]{
             {0,  0,  0,  0,  0,  0,  0,  0},
             {5, 10, 10,-35,-35, 10, 10,  5},
@@ -37,7 +35,6 @@ public class PositionTables {
             {50, 50, 50, 50, 50, 50, 50, 50},
             {100,  100,  100,  100,  100,  100,  100,  100},
     };
-
     private static int[][] pawnMapBlackEndgame = new int[][]{
             {0,  0,  0,  0,  0,  0,  0,  0},
             {-2, -2, -2,-20,-20, -2, -2,  -2},
@@ -48,8 +45,6 @@ public class PositionTables {
             {50, 50, 50, 50, 50, 50, 50, 50},
             {100,  100,  100,  100,  100,  100,  100,  100},
     };
-
-
     private static int[][] knightMap = new int[][]{
             {-50,-40,-30,-30,-30,-30,-40,-50},
             {-40,-20,  0,  0,  0,  0,-20,-40},
@@ -60,46 +55,167 @@ public class PositionTables {
             {-40,-20,  0,  5,  5,  0,-20,-40},
             {-50,-40,-30,-30,-30,-30,-40,-50},
     };
-    private static int[][] bishopMapWhite = new int[][] {
+
+    private static int[][] knightMapOpening = new int[][]{
+            {-50,-40,-30,-30,-30,-30,-40,-50},
+            {-40,-20,  0,  0,  0,  0,-20,-40},
+            {-30,  0, 17, 15, 15, 17,  0,-30},
+            {-30,  5, 15, 15, 15, 15,  5,-30},
+            {-30,  0, 15, 15, 15, 15,  0,-30},
+            {-30,  5, 17, 15, 15, 17,  5,-30},
+            {-40,-20,  0,  5,  5,  0,-20,-40},
+            {-50,-40,-30,-30,-30,-30,-40,-50},
+    };
+    private static int[][] knightMapMidgame = new int[][]{
+            {-50,-40,-30,-30,-30,-30,-40,-50},
+            {-40,-20,  0,  0,  0,  0,-20,-40},
+            {-30,  0, 15, 15, 15, 15,  0,-30},
+            {-30,  5, 15, 20, 20, 15,  5,-30},
+            {-30,  0, 15, 20, 20, 15,  0,-30},
+            {-30,  5, 15, 15, 15, 15,  5,-30},
+            {-40,-20,  0,  5,  5,  0,-20,-40},
+            {-50,-40,-30,-30,-30,-30,-40,-50},
+    };
+    private static int[][] knightMapEndgame = new int[][]{
+            {-50,-40,-30,-30,-30,-30,-40,-50},
+            {-40,-20,  0,  0,  0,  0,-20,-40},
+            {-30,  0, 15, 15, 15, 15,  0,-30},
+            {-30,  5, 15, 20, 20, 15,  5,-30},
+            {-30,  0, 15, 20, 20, 15,  0,-30},
+            {-30,  5, 15, 15, 15, 15,  5,-30},
+            {-40,-20,  0,  5,  5,  0,-20,-40},
+            {-50,-40,-30,-30,-30,-30,-40,-50},
+    };
+
+
+    private static int[][] bishopMapWhiteOpening = new int[][] {
             {-20,-10,-10,-10,-10,-10,-10,-20},
             {-10,  0,  0,  0,  0,  0,  0,-10},
-            {-10,  0,  5, 10, 10,  5,  0,-10},
-            {-10,  5,  5, 10, 10,  5,  5,-10},
-            {-10,  0, 10, 10, 10, 10,  0,-10},
-            {-10, 10, 10, 10, 10, 10, 10,-10},
-            {-10,  9,  0,  0,  0,  0,  9,-10},
-            {-20,-10,-10,-10,-10,-10,-10,-20},
+            {-10,  0,  5, 0, 0,  5,  0, -10},
+            {-10,  7,  5, 6, 6,  5,  7, -10},
+            {  6,  0, 10, 10, 10, 10,  0, 6},
+            {-10, 6, 0, 5, 5, 0, 6,-10},
+            {  6,  12,  8,  12,  12,  8,  12,6},
+            {-20,-30,-10,-10,-10,-30,-10,-20},
     };
-    private static int[][] bishopMapBlack = new int[][] {
-            {-20,-10,-10,-10,-10,-10,-10,-20},
-            {-10,  9,  0,  0,  0,  0,  9,-10},
-            {-10, 10, 10, 10, 10, 10, 10,-10},
-            {-10,  0, 10, 10, 10, 10,  0,-10},
-            {-10,  5,  5, 10, 10,  5,  5,-10},
-            {-10,  0,  5, 10, 10,  5,  0,-10},
+    private static int[][] bishopMapWhiteMidgame = new int[][] {
+            {-20,-10,-10,-10,-10,-10, -10, -20},
+            {-10,  0,  0,  0,  0,  0,  0, -10},
+            {-10,  0,  5,  0,  0,  5,  0, -10},
+            {-10,  7,  5,  6,  6,  5,  7, -10},
+            {  6,  0, 10, 10, 10, 10,  0,  6},
+            {-10,  6,  0,  0,  0,  0,  6, -10},
+            {  6,  12, 8, 12, 12,  8, 12,  6},
+            {-20,-20,-20,-20,-20,-20,-20, -20},
+    };
+    private static int[][] bishopMapWhiteEndgame = new int[][] {
+            {0,  0,   0,  0, 0,  0,   0, 0},
+            {0,  3,   0,  3, 3,  0,   3, 0},
+            {0,  0,  10, 10, 10, 10,  0, 0},
+            {0,  3,  10, 15, 15, 10,  3, 0},
+            {0,  3,  10, 15, 15, 10,  3, 0},
+            {0,  0,  10, 10, 10, 10,  0, 0},
+            {0,  3,   0,  3,  3,  0,  3, 0},
+            {0,   0,  0,  0,  0,  0,  0, 0},
+    };
+
+
+    private static int[][] bishopMapBlackOpening = new int[][] {
+            {-20,-30,-10,-10,-10,-30,-10,-20},
+            {  6,  12,  8,  12,  12,  8,  12,6},
+            {-10, 6, 0, 5, 5, 0, 6,-10},
+            {  6,  0, 10, 10, 10, 10,  0, 6},
+            {-10,  7,  5, 6, 6,  5,  7, -10},
+            {-10,  0,  5, 0, 0,  5,  0, -10},
             {-10,  0,  0,  0,  0,  0,  0,-10},
             {-20,-10,-10,-10,-10,-10,-10,-20},
     };
-    private static int[][] rookMapWhite = new int[][] {
+    private static int[][] bishopMapBlackMidgame = new int[][] {
+            {-20,-20,-20,-20,-20,-20,-20, -20},
+            {  6,  12, 8, 12, 12,  8, 12,  6},
+            {-10,  6,  0,  0,  0,  0,  6, -10},
+            {  6,  0, 10, 10, 10, 10,  0,  6},
+            {-10,  7,  5,  6,  6,  5,  7, -10},
+            {-10,  0,  5,  0,  0,  5,  0, -10},
+            {-10,  0,  0,  0,  0,  0,  0, -10},
+            {-20,-10,-10,-10,-10,-10, -10, -20},
+    };
+    private static int[][] bishopMapBlackEndgame = new int[][] {
+            {0,   0,  0,  0,  0,  0,  0, 0},
+            {0,  3,   0,  3,  3,  0,  3, 0},
+            {0,  0,  10, 10, 10, 10,  0, 0},
+            {0,  3,  10, 15, 15, 10,  3, 0},
+            {0,  3,  10, 15, 15, 10,  3, 0},
+            {0,  0,  10, 10, 10, 10,  0, 0},
+            {0,  3,   0,  3, 3,  0,   3, 0},
+            {0,  0,   0,  0, 0,  0,   0, 0},
+    };
+
+
+    private static int[][] rookMapWhiteOpening = new int[][] {
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15, -15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {0,  0,  0,  10,  10,  10,  0, 0},
+    };
+    private static int[][] rookMapWhiteMidgame = new int[][] {
             {-20,-10,-10, -5, -5,-10,-10,-20},
             {-10,  0,  0,  0,  0,  0,  0,-10},
-            {-10,  0,  5,  5,  5,  5,  0,-10},
-            {-5,  0,  5,  5,  5,  5,  0, -5},
-            {0,  0,  5,  5,  5,  5,  0, -5},
-            {-10,  5,  5,  5,  5,  5,  0,-10},
+            {-10,  0,  3,  3,  3,  3,  0,-10},
+            {-5,  0,  3,  3,  3,  3,  0, -5},
+            {0,  0,  3,  3,  3,  3,  0, -5},
+            {-10,  3,  3,  3,  3,  3,  0,-10},
             {-10,  0,  5,  0,  0,  0,  0,-10},
-            {-20,-15, 0,  5,  5, 0, -15,-20}
+            {5, 5, 5,  5,  5, 5, 5,  5}
     };
-    private static int[][] rookMapBlack = new int[][] {
-            {-20,-15, 0,  5,  5, 0, -15,-20},
+    private static int[][] rookMapWhiteEndgame = new int[][] {
+            {0,  0,  0,  0,  0,  0,  0, 0},
+            {0,  0,  0,  0,  0,  0,  0, 0},
+            {0,  0,  3,  3,  3,  3,  0, 0},
+            {0,  0,  3,  3,  3,  3,  0, 0},
+            {0,  0,  3,  3,  3,  3,  0, 0},
+            {0,  0,  3,  3,  3,  3,  0, 0},
+            {0,  0,  0,  0,  0,  0,  0, 0},
+            {0,  0,  0,  0,  0,  0,  0, 0},
+    };
+
+
+    private static int[][] rookMapBlackOpening = new int[][] {
+            {0,  0,  0,  10,  10,  10,  0, 0},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15,-15},
+            {-15,  -15,  -15,  -15,  -15,  -15,  -15, -15},
+
+    };
+    private static int[][] rookMapBlackMidgame = new int[][] {
+            {5, 5, 5,  5,  5, 5, 5,  5},
             {-10,  0,  5,  0,  0,  0,  0,-10},
-            {-10,  5,  5,  5,  5,  5,  0,-10},
-            {0,  0,  5,  5,  5,  5,  0, -5},
-            {-5,  0,  5,  5,  5,  5,  0, -5},
-            {-10,  0,  5,  5,  5,  5,  0,-10},
+            {-10,  3,  3,  3,  3,  3,  0,-10},
+            {0,  0,  3,  3,  3,  3,  0, -5},
+            {-5,  0,  3,  3,  3,  3,  0, -5},
+            {-10,  0,  3,  3,  3,  3,  0,-10},
             {-10,  0,  0,  0,  0,  0,  0,-10},
-            {-20,-10,-10, -5, -5,-10,-10,-20}
+            {-20,-10,-10, -5, -5,-10,-10,-20},
     };
+    private static int[][] rookMapBlackEndgame = new int[][] {
+            {0,  0,  0,  0,  0,  0,  0, 0},
+            {0,  0,  0,  0,  0,  0,  0, 0},
+            {0,  0,  3,  3,  3,  3,  0, 0},
+            {0,  0,  3,  3,  3,  3,  0, 0},
+            {0,  0,  3,  3,  3,  3,  0, 0},
+            {0,  0,  3,  3,  3,  3,  0, 0},
+            {0,  0,  0,  0,  0,  0,  0, 0},
+            {0,  0,  0,  0,  0,  0,  0, 0},
+    };
+
     private static int[][] queenMap = new int[][] {
             {-20,-10,-10, -5, -5,-10,-10,-20},
             {-10,  0,  0,  0,  0,  0,  0,-10},
@@ -154,13 +270,13 @@ public class PositionTables {
 
     public static double getValue(Piece p) {
         double v =  getMapForPiece(p)[p.getField().getLine()][p.getField().getColumn()];
-        return v/100;
+        return v/200;
     }
     
     private static int[][] getMapForPiece(Piece p) {
         int[][] map = null;
         if (p instanceof Pawn)
-            if(Chessboard.getInstance().isEndGame())
+            if(chessboard.isEndGame())
                 map = p.getColor().equals(Color.WHITE)?pawnMapWhiteEndgame:pawnMapBlackEndgame;
             else
                 map = p.getColor().equals(Color.WHITE)?pawnMapWhite:pawnMapBlack;
@@ -169,10 +285,10 @@ public class PositionTables {
         else if (p instanceof Knight)
             map = knightMap;
         else if (p instanceof Bishop)
-            map = p.getColor().equals(Color.WHITE)?bishopMapWhite:bishopMapBlack;
+            map = p.getColor().equals(Color.WHITE)?bishopMapWhiteMidgame:bishopMapBlackMidgame;
         else if (p instanceof Rook)
-            map = p.getColor().equals(Color.WHITE)?rookMapWhite:rookMapBlack;
-        else if (Chessboard.getInstance().isEndGame())
+            map = p.getColor().equals(Color.WHITE)?rookMapWhiteMidgame:rookMapBlackMidgame;
+        else if (chessboard.isEndGame())
             map = p.getColor().equals(Color.WHITE)?kingMapEndWhite:kingMapEndBlack;
         else
             map = p.getColor().equals(Color.WHITE)?kingMapMidWhite:kingMapMidBlack;
