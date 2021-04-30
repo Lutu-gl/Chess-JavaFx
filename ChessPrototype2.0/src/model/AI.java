@@ -70,8 +70,11 @@ public class AI implements Callable<Turn> {
         ArrayList<Turn> moves = generateMoves();    //Die moves für jedes piece holen
         if (moves.size() == 0) {    //Wenn es keine Moves gibt
             King k = chessboard.getColorToMove().equals(Color.WHITE)? chessboard.getW_king() : chessboard.getB_king();
-            if (k.isInCheck())  //Wenn er Schach ist, dann ist Schachmatt.
+            if (k.isInCheck()){
+                //Wenn er Schach ist, dann ist Schachmatt.
                 return -500;
+            }
+
             //chessboard.printBoard();
             return 0;       //Sonst ist Stalemate
         }
@@ -195,7 +198,24 @@ public class AI implements Callable<Turn> {
 
 
     private static double evaluate() {              //Die Endposition evaluieren
+
+        //System.out.println(Chessboard.getInstance().getBoardAsFen());
+        /*
+        King k = chessboard.getColorToMove().equals(Color.WHITE)? chessboard.getW_king() : chessboard.getB_king();
+        if(k.getMoves().size() == 0){
+            if (k.isInCheck()){
+                //Wenn er Schach ist, dann ist Schachmatt.
+                //System.out.println(Chessboard.getInstance().getBoardAsFen());
+                return -500;
+            }else{
+                return 0;       //Sonst ist Stalemate
+            }
+        }
+
+         */
+        //chessboard.printBoard();
         ArrayList<Piece> myPieces, enemyPieces;
+
         if (chessboard.getColorToMove().equals(Color.WHITE)) {
             myPieces = chessboard.getWhitePieces();
             enemyPieces = chessboard.getBlackPieces();
