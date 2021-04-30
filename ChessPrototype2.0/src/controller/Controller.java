@@ -1,6 +1,8 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import model.*;
 import model.pieces.Pawn;
@@ -135,6 +137,15 @@ public class Controller implements EventHandler<MouseEvent>{
         if(checkLabel==null) return;
         checkLabel.unmarkAsCheck();
         checkLabel = null;
+    }
+
+    public void updateTime(double time, Color c){
+        //System.out.println("Time "+ time);
+        switch(c){
+            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(1)).setText(Double.toString(time)));
+            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(0)).setText(Double.toString(time))); //+1 damit die angezeigte Zeit wieder mit dr eigneltichen Zeit zusammen stimmt ungefähr
+        }
+
     }
 
     public void setSource(FieldLabel source) {

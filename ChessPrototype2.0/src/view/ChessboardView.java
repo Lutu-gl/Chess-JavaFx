@@ -1,22 +1,28 @@
 package view;
 
 import controller.*;
-import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import model.Chessboard;
-import model.Color;
-import model.pieces.Piece;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class ChessboardView {
     private static ArrayList<ArrayList<FieldLabel>> board;
     private static Scene mainScene;
+    private static VBox timerVBox;
     public static Scene init( int l, int w) {
+        BorderPane bp = new BorderPane();
         GridPane gridPane = new GridPane();
         board = new ArrayList<>();
 
@@ -49,12 +55,32 @@ public class ChessboardView {
             letter.getStyleClass().add("letter");
             gridPane.add(letter, i, l+1);
         }
+        //Button turnBack = new Button("Turn back!");
+        //turnBack.setOnAction(new TurnBackHandler());
+        //gridPane.add(turnBack, w+2, 0);
 
-        Button turnBack = new Button("Turn back!");
-        turnBack.setOnAction(new TurnBackHandler());
-        gridPane.add(turnBack, w+2, 0);
+        bp.setCenter(gridPane);
 
-        mainScene = new Scene(gridPane, w*100+100, l*100+50);
+        Label t1Label = new Label(), t2Label = new Label();
+        t1Label.setText(Long.toString(Chessboard.getInstance().getWhiteTime()/1000));
+        t2Label.setText(Long.toString(Chessboard.getInstance().getBlackTime()/1000));
+
+        t1Label.setTextAlignment(TextAlignment.CENTER);
+        t1Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
+        t1Label.setFont(new Font("Arial", 30));
+
+        t2Label.setTextAlignment(TextAlignment.CENTER);
+        t2Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
+        t2Label.setFont(new Font("Arial", 30));
+
+
+        VBox vBox = new VBox(t1Label, t2Label);
+        timerVBox = vBox;
+        vBox.setSpacing(400);
+        t1Label.setMinSize(200, 200);
+        t2Label.setMinSize(200, 200);
+        bp.setRight(vBox);
+        mainScene = new Scene(bp, w*100+300, l*100+50);
         return mainScene;
     }
 
@@ -106,5 +132,9 @@ public class ChessboardView {
 
     public static Scene getMainScene() {
         return mainScene;
+    }
+
+    public static VBox getTimerVBox() {
+        return timerVBox;
     }
 }
