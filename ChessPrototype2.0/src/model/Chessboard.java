@@ -39,6 +39,7 @@ public class Chessboard {
     private Timer timer=new Timer();
     public boolean withTime=true;
 
+    public boolean AIThinking=false;
     public boolean debug = false;
 
     // Singleton pattern
@@ -570,6 +571,7 @@ public class Chessboard {
         // Check if bot plays
         int index = colorToMove.equals(Color.WHITE)?0:1;
         if (playsAI[index] && state.equals(Gamestate.PLAYING) && !debug) {
+            AIThinking=true;
             Service<Turn> service = new Service<>() {
                 @Override
                 protected Task<Turn> createTask() {
@@ -600,10 +602,9 @@ public class Chessboard {
             service.setOnSucceeded(e -> {
                 handleTurn(service.getValue());
                 e.consume();
+                AIThinking=false;
             });
             service.start();
-
-            //Platform.runLater(new AI());
         }
     }
 

@@ -34,6 +34,12 @@ public class Controller implements EventHandler<MouseEvent>{
 
         Chessboard chessboard = Chessboard.getInstance();
         // This is just testing to start the AI
+
+        System.out.println(chessboard.AIThinking);
+        if(chessboard.AIThinking){
+            return;
+        }
+
         if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
            chessboard.endTurn();
 
