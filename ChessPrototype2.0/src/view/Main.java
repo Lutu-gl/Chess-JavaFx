@@ -13,7 +13,7 @@ public class Main extends Application {
         int size = 8;
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
-        board.createBoard(size, false, true, 30, 30, 1, 1); //In Sekunden!
+        board.createBoard(size, true, true, 30, 30, 1, 1); //In Sekunden!
         String fen = "";
 
         fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
@@ -44,8 +44,15 @@ public class Main extends Application {
         //fen = "8/6K1/1p1B1RB1/8/2Q5/2n1kP1N/3b4/4n3 w - - 0 1";
         //fen = "8/8/8/4k3/1R6/2R5/1K6/8 w - - 0 1";
         //fen = "4Q1k1/pp3r2/2rP3p/4B1N1/2q3P1/P7/5RP1/5RK1 b - - 0 1";
-        //fen = "8/3P4/1k6/3K4/8/8/8/8 w - - 0 1"; // PROMOTION TESTTT
-        //fen = "8/8/8/8/6K1/8/4p1k1/8 w - - 0 1"; // PROMOTION TESTTT
+//        fen = "8/3P4/1k6/3K4/8/8/8/8 w - - 0 1"; // PROMOTION TESTTT
+//        fen = "8/8/8/8/6K1/8/4p1k1/8 w - - 0 1"; // PROMOTION TESTTT
+//        fen = "6bb/5Prk/6bb/8/8/K7/8/8 w - - 0 1"; //really cool and realistic promotion fen to knight
+//        fen = "8/k1P5/3Q4/8/8/6K1/8/8 w - - 0 1";   //fen when promoto to queen is falsee
+//        fen = "1k6/3Q1P2/8/8/8/6K1/8/8 w - - 0 1"; //fen promoto queen or rook
+//        fen = "8/5P1k/5K2/8/8/8/8/8 w - - 0 1"; //fen promoto Rook not queen is false
+//        fen = "6bb/6rk/4N1bb/8/8/K7/8/8 w - - 0 1"; //fen checkmate in one
+
+
         //fen = "k7/4ppp1/8/4PPP1/8/8/8/K7 w - - 0 1";
         //fen = "8/3R1r2/7P/1k6/8/3K4/8/8 w - - 0 1";
 

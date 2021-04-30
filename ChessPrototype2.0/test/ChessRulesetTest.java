@@ -100,7 +100,7 @@ public class ChessRulesetTest {
     private void doTest(String fen, int boardSize, int[] possibilities) {
         Chessboard.getInstance().reset();
         chessboard = Chessboard.getInstance();
-        chessboard.createBoard(boardSize, true, true);
+        chessboard.createBoard(boardSize, false, false);
         chessboard.setBoardByFen(fen);
         chessboard.debug = true;
 

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.Chessboard;
 import model.Color;
 import model.Field;
+import model.Turn;
 import view.Main;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class Pawn extends Piece{
     }
     private ArrayList<Field> availableMoves;
     private static int promotionPieces;
+    public int promoteTo;
 
     @Override
     public ArrayList<Field> getMoves() {
@@ -91,7 +93,7 @@ public class Pawn extends Piece{
         if(line>=fields.length || line<0 || column>=fields[0].length || column<0) return false;
         return fields[line][column].isExists();
     }
-    public void promoteIfPossible(){
+    public void promoteIfPossible(Turn t){
         Chessboard chessboard = Chessboard.getInstance();
 
         if(this.getField().getLine() == chessboard.getFields()[0].length-1 || this.getField().getLine() == 0){
@@ -99,14 +101,22 @@ public class Pawn extends Piece{
             //if((color == Color.WHITE && chessboard.getPlaysAI()[0]) || (color == Color.BLACK && chessboard.getPlaysAI()[1])){
             if (chessboard.debug || (color == Color.WHITE && chessboard.getPlaysAI()[0]) || (color == Color.BLACK && chessboard.getPlaysAI()[1])) {
                 String colorString = color.toString().charAt(0) + color.toString().substring(1).toLowerCase();
-                switch (promotionPieces){
-                    case 0 -> p = new Queen(color, colorString + " Queen", field);
-                    case 1 -> p = new Rook(color, colorString + " Rook", field);
-                    case 2 -> p = new Bishop(color, colorString + " Bishop", field);
-                    case 3 -> p = new Knight(color, colorString + " Knight", field);
+
+                int promoTo = t.getPromoteTo();
+
+                if(promoTo >= 0 && promoTo < 4){
+                    promotionPieces=promoTo;
                 }
 
-                chessboard.changeTForPromotion(field);
+                switch (promotionPieces){
+                    case 0 -> p = new Queen(color, colorString + " Queen", field);
+                    case 1 -> p = new Knight(color, colorString + " Knight", field);
+                    case 2 -> p = new Rook(color, colorString + " Rook", field);
+                    case 3 -> p = new Bishop(color, colorString + " Bishop", field);
+                }
+
+                t.setPromotionTurn(field);
+                t.setPromoteTo(promotionPieces);
                 promotionPieces = (promotionPieces + 1) % 4;
             }else {
                 p = Controller.getInstance().promotionDialog(this);

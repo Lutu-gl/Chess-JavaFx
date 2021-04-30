@@ -1,7 +1,6 @@
 package model;
 
 import controller.Controller;
-import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
@@ -212,9 +211,6 @@ public class Chessboard {
     }
 
     private Turn t;
-    public void changeTForPromotion(Field f) {
-        t.setPromotionTurn(f);
-    }
 
     public boolean handleTurn(Turn currentT){
         //System.out.println(whiteInkrement);
@@ -413,7 +409,7 @@ public class Chessboard {
         if(p instanceof Pawn) {
             // Falls ein Mensch spielt
             //if ((p.getColor() == Color.WHITE && !playsAI[0]) || ( p.getColor() == Color.BLACK && !playsAI[1])){
-            ((Pawn)p).promoteIfPossible();
+            ((Pawn)p).promoteIfPossible(t);
             /*} else {
                 if (p.getColor().equals(Color.WHITE) && p.getField().getLine() == 0)
                     whitePromotionable = (Pawn) p;
