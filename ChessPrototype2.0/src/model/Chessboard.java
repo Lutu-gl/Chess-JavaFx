@@ -4,6 +4,7 @@ import controller.Controller;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.control.Label;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -58,14 +59,18 @@ public class Chessboard {
 
                 if(colorToMove == Color.WHITE){
                     timeNow = (whiteTime - (System.currentTimeMillis() - timeStopped));
+                    Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                     //System.out.println(timeNow/1e9 + "  -  " + blackTime / 1e9);
                     if(timeNow <= 0){
+                        Controller.getInstance().updateTime(0, Color.WHITE);
                         state = Gamestate.BLACK_WINS;
                     }
                 }else{
                     timeNow = (blackTime - (System.currentTimeMillis() - timeStopped));
                     //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
+                    Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                     if(timeNow <= 0){
+                        Controller.getInstance().updateTime(0, Color.BLACK);
                         state = Gamestate.WHITE_WINS;
                     }
                 }
@@ -160,6 +165,7 @@ public class Chessboard {
 
 
     public void addPiece(Piece p){
+        if(p==null) return;
         if(p.getColor() == Color.BLACK)
             blackPieces.add(p);
         else
