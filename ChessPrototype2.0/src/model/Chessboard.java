@@ -3,7 +3,6 @@ package model;
 import controller.Controller;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.scene.control.Label;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -38,7 +37,8 @@ public class Chessboard {
     private long timeStopped=0L;
     private Timer timer=new Timer();
     public boolean withTime=true;
-    private Color currentAIColor=null; //brauchts weil wenn die A.I spielt noar weart in HandleTurn ollm ColorToMove geändert und ba dr Zeit zählts sem folsch oer.
+    private Color currentAIMovingColor =null;
+    private long turnTimeAdder=0L;
     public boolean AIThinking=false;
     public boolean debug = false;
 
@@ -47,39 +47,6 @@ public class Chessboard {
 
 
     private Chessboard() {
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Chessboard chessboard = Chessboard.getInstance();
-                //System.out.println("yetzt");
-                //long whiteTime=chessboard.getWhiteTime(), blackTime = chessboard.getBlackTime(), timeStopped=chessboard.getTimeStopped();
-                if(timeStopped == 0) return;
-                long timeNow=0L;
-
-                //damits ban richitgen Spieler lai die Zeit ochen zählt
-                if(colorToMove == Color.WHITE && !AIThinking || chessboard.getCurrentAIColor() == Color.WHITE){
-                    timeNow = (whiteTime - (System.currentTimeMillis() - timeStopped));
-                    Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
-                    //System.out.println(timeNow/1e9 + "  -  " + blackTime / 1e9);
-                    if(timeNow <= 0){
-                        Controller.getInstance().updateTime(0, Color.WHITE);
-                        state = Gamestate.BLACK_WINS;
-                    }
-                }
-                else {
-                    timeNow = (blackTime - (System.currentTimeMillis() - timeStopped));
-                    //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
-                    Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
-                    if(timeNow <= 0){
-                        Controller.getInstance().updateTime(0, Color.BLACK);
-                        state = Gamestate.WHITE_WINS;
-                    }
-                }
-                notifyObserver();
-            }
-        };
-        timer.scheduleAtFixedRate(timerTask, 0, 1);
-
 
         register(new GamestateObserver(this));
     }
@@ -122,6 +89,98 @@ public class Chessboard {
                 fields[i][j] = new Field(j, i);
             }
         }
+        if(whiteAI && blackAI){
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Chessboard ch = Chessboard.getInstance();
+                    if(timeStopped == 0) return;
+                    long timeNow=0L;
+
+                    if(currentAIMovingColor == Color.WHITE){
+                        timeNow = (ch.whiteTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
+                        Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
+                        if(timeNow <= 0){
+                            Controller.getInstance().updateTime(0, Color.WHITE);
+                            state = Gamestate.BLACK_WINS;
+                        }
+                    }
+                    else{
+                        timeNow = (ch.blackTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
+                        //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
+                        Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
+                        if(timeNow <= 0){
+                            Controller.getInstance().updateTime(0, Color.BLACK);
+                            state = Gamestate.WHITE_WINS;
+                        }
+                    }
+                    notifyObserver();
+                }
+            };
+            timer.scheduleAtFixedRate(timerTask, 0, 1);
+        }
+        else if(!whiteAI && !blackAI){
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Chessboard ch = Chessboard.getInstance();
+                    if(timeStopped == 0) return;
+                    long timeNow=0L;
+
+                    if(colorToMove == Color.WHITE){
+                        timeNow = (ch.whiteTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
+                        Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
+                        if(timeNow <= 0){
+                            Controller.getInstance().updateTime(0, Color.WHITE);
+                            state = Gamestate.BLACK_WINS;
+                        }
+                    }
+                    else{
+                        timeNow = (ch.blackTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
+                        //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
+                        Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
+                        if(timeNow <= 0){
+                            Controller.getInstance().updateTime(0, Color.BLACK);
+                            state = Gamestate.WHITE_WINS;
+                        }
+                    }
+                    notifyObserver();
+                }
+            };
+            timer.scheduleAtFixedRate(timerTask, 0, 1);
+        }
+        else
+        {
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Chessboard ch = Chessboard.getInstance();
+                    if(timeStopped == 0) return;
+                    long timeNow=0L;
+                    if(!ch.AIThinking){
+                        timeNow = (ch.whiteTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
+                        Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
+                        if(timeNow <= 0){
+                            Controller.getInstance().updateTime(0, Color.WHITE);
+                            state = Gamestate.BLACK_WINS;
+                        }
+                    }
+                    else{
+                        timeNow = (ch.blackTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
+                        //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
+                        Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
+                        if(timeNow <= 0){
+                            Controller.getInstance().updateTime(0, Color.BLACK);
+                            state = Gamestate.WHITE_WINS;
+                        }
+                    }
+                    notifyObserver();
+                }
+            };
+            timer.scheduleAtFixedRate(timerTask, 0, 1);
+        }
+
+
     }
 
 
@@ -220,10 +279,13 @@ public class Chessboard {
             if(colorToMove == Color.WHITE){
                 whiteTime-=System.currentTimeMillis() - timeStopped;
                 whiteTime += whiteInkrement;
+                //Controller.getInstance().updateTime(whiteTime/1000.00, Color.WHITE);
             }else{
                 blackTime-=System.currentTimeMillis() - timeStopped;
                 blackTime += blackInkrement;
+                //Controller.getInstance().updateTime(blackTime/1000.00, Color.BLACK);
             }
+            turnTimeAdder = System.currentTimeMillis() - timeStopped;
             System.out.println(whiteTime / 1e3 + " " + blackTime/1e3);
         }
         t = currentT;
@@ -571,6 +633,7 @@ public class Chessboard {
             ChessboardView.display();
             if(withTime) timeStopped = System.currentTimeMillis();
         }
+        turnTimeAdder = 0;
 
         // Check if bot plays
         int index = colorToMove.equals(Color.WHITE)?0:1;
@@ -798,12 +861,12 @@ public class Chessboard {
 
     }
 
-    public Color getCurrentAIColor() {
-        return currentAIColor;
+    public Color getCurrentAIMovingColor() {
+        return currentAIMovingColor;
     }
 
-    public void setCurrentAIColor(Color currentAIColor) {
-        this.currentAIColor = currentAIColor;
+    public void setCurrentAIMovingColor(Color currentAIMovingColor) {
+        this.currentAIMovingColor = currentAIMovingColor;
     }
 
     public void notifyObserver(){

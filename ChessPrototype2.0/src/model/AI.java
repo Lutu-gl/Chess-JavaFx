@@ -4,7 +4,6 @@ import model.pieces.King;
 import model.pieces.Piece;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.concurrent.*;
 
 public class AI implements Callable<Turn> {
@@ -18,7 +17,7 @@ public class AI implements Callable<Turn> {
         chessboard.debug = true;
         chessboard.withTime = false;
         System.out.println(chessboard.getColorToMove());
-        chessboard.setCurrentAIColor(Chessboard.getInstance().getColorToMove());
+        chessboard.setCurrentAIMovingColor(Chessboard.getInstance().getColorToMove());
         ArrayList<Turn> moves = generateMoves();
         Turn bestMoveOverall = null, bestMove = null;
 
