@@ -17,6 +17,8 @@ public class AI implements Callable<Turn> {
     public Turn call() throws Exception {
         chessboard.debug = true;
         chessboard.withTime = false;
+        System.out.println(chessboard.getColorToMove());
+        chessboard.setCurrentAIColor(Chessboard.getInstance().getColorToMove());
         ArrayList<Turn> moves = generateMoves();
         Turn bestMoveOverall = null, bestMove = null;
 

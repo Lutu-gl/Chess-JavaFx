@@ -142,8 +142,8 @@ public class Controller implements EventHandler<MouseEvent>{
     public void updateTime(double time, Color c){
         //System.out.println("Time "+ time);
         switch(c){
-            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(1)).setText(Double.toString(time)));
-            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(0)).setText(Double.toString(time))); //+1 damit die angezeigte Zeit wieder mit dr eigneltichen Zeit zusammen stimmt ungefähr
+            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(0)).setText(Double.toString(time)));
+            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(1)).setText(Double.toString(time))); //+1 damit die angezeigte Zeit wieder mit dr eigneltichen Zeit zusammen stimmt ungefähr
         }
 
     }

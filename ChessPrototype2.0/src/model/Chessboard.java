@@ -38,7 +38,7 @@ public class Chessboard {
     private long timeStopped=0L;
     private Timer timer=new Timer();
     public boolean withTime=true;
-
+    private Color currentAIColor=null; //brauchts weil wenn die A.I spielt noar weart in HandleTurn ollm ColorToMove geändert und ba dr Zeit zählts sem folsch oer.
     public boolean AIThinking=false;
     public boolean debug = false;
 
@@ -56,7 +56,8 @@ public class Chessboard {
                 if(timeStopped == 0) return;
                 long timeNow=0L;
 
-                if(colorToMove == Color.WHITE){
+                //damits ban richitgen Spieler lai die Zeit ochen zählt
+                if((colorToMove == Color.WHITE && !chessboard.getPlaysAI()[0]) || chessboard.getCurrentAIColor() == Color.WHITE){
                     timeNow = (whiteTime - (System.currentTimeMillis() - timeStopped));
                     Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                     //System.out.println(timeNow/1e9 + "  -  " + blackTime / 1e9);
@@ -64,7 +65,8 @@ public class Chessboard {
                         Controller.getInstance().updateTime(0, Color.WHITE);
                         state = Gamestate.BLACK_WINS;
                     }
-                }else{
+                }
+                else if((colorToMove == Color.BLACK && !chessboard.getPlaysAI()[1]) || chessboard.getCurrentAIColor() == Color.BLACK){
                     timeNow = (blackTime - (System.currentTimeMillis() - timeStopped));
                     //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
                     Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
@@ -76,7 +78,7 @@ public class Chessboard {
                 notifyObserver();
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 100);
+        timer.scheduleAtFixedRate(timerTask, 0, 1);
 
 
         register(new GamestateObserver(this));
@@ -794,6 +796,14 @@ public class Chessboard {
 
         return String.join(" ", groups);
 
+    }
+
+    public Color getCurrentAIColor() {
+        return currentAIColor;
+    }
+
+    public void setCurrentAIColor(Color currentAIColor) {
+        this.currentAIColor = currentAIColor;
     }
 
     public void notifyObserver(){

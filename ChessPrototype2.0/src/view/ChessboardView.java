@@ -62,8 +62,8 @@ public class ChessboardView {
         bp.setCenter(gridPane);
 
         Label t1Label = new Label(), t2Label = new Label();
-        t1Label.setText(Long.toString(Chessboard.getInstance().getWhiteTime()/1000));
-        t2Label.setText(Long.toString(Chessboard.getInstance().getBlackTime()/1000));
+        t2Label.setText(Long.toString(Chessboard.getInstance().getWhiteTime()/1000));
+        t1Label.setText(Long.toString(Chessboard.getInstance().getBlackTime()/1000));
 
         t1Label.setTextAlignment(TextAlignment.CENTER);
         t1Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
