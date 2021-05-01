@@ -37,7 +37,6 @@ public class Controller implements EventHandler<MouseEvent>{
         Chessboard chessboard = Chessboard.getInstance();
         // This is just testing to start the AI
 
-        System.out.println(chessboard.AIThinking);
         if(chessboard.AIThinking){
             return;
         }

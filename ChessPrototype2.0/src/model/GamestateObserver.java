@@ -25,6 +25,6 @@ public class GamestateObserver extends Observer{
             System.out.println("It is a Draw");
         }
         chessboard.getTimer().cancel();
-        System.out.println(Chessboard.getInstance().getBoardAsFen());
+        //System.out.println(Chessboard.getInstance().getBoardAsFen());
     }
 }
