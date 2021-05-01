@@ -57,7 +57,7 @@ public class Chessboard {
                 long timeNow=0L;
 
                 //damits ban richitgen Spieler lai die Zeit ochen zählt
-                if((colorToMove == Color.WHITE && !chessboard.getPlaysAI()[0]) || chessboard.getCurrentAIColor() == Color.WHITE){
+                if(colorToMove == Color.WHITE && !AIThinking || chessboard.getCurrentAIColor() == Color.WHITE){
                     timeNow = (whiteTime - (System.currentTimeMillis() - timeStopped));
                     Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                     //System.out.println(timeNow/1e9 + "  -  " + blackTime / 1e9);
@@ -66,7 +66,7 @@ public class Chessboard {
                         state = Gamestate.BLACK_WINS;
                     }
                 }
-                else if((colorToMove == Color.BLACK && !chessboard.getPlaysAI()[1]) || chessboard.getCurrentAIColor() == Color.BLACK){
+                else {
                     timeNow = (blackTime - (System.currentTimeMillis() - timeStopped));
                     //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
                     Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
