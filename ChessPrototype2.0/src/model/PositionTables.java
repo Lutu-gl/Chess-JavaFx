@@ -75,10 +75,10 @@ public class PositionTables {
     private static int[][] knightMapOpening = new int[][]{
             {-50,-40,-30,-30,-30,-30,-40,-50},
             {-40,-20,  0,  0,  0,  0,-20,-40},
-            {-30,  0, 17, 15, 15, 17,  0,-30},
-            {-30,  5, 15, 15, 15, 15,  5,-30},
-            {-30,  0, 15, 15, 15, 15,  0,-30},
-            {-30,  5, 17, 15, 15, 17,  5,-30},
+            {-30,  0, 17, 10, 10, 17,  0,-30},
+            {-30,  5, 10, 10, 10, 10,  5,-30},
+            {-30,  0, 10, 10, 10, 10,  0,-30},
+            {-30,  5, 17, 10, 10, 17,  5,-30},
             {-40,-20,  0,  5,  5,  0,-20,-40},
             {-50,-40,-30,-30,-30,-30,-40,-50},
     };
@@ -332,26 +332,54 @@ public class PositionTables {
         double v =  getMapForPiece(p)[p.getField().getLine()][p.getField().getColumn()];
         return v/200;
     }
-    
+
+
     private static int[][] getMapForPiece(Piece p) {
         int[][] map = null;
-        if (p instanceof Pawn)
-            if(chessboard.isEndGame())
-                map = p.getColor().equals(Color.WHITE)?pawnMapWhiteEndgame:pawnMapBlackEndgame;
+
+        if(chessboard.getGamephase().equals(Gamephase.OPENING)){
+            if (p instanceof Pawn)
+                map = p.getColor().equals(Color.WHITE)?pawnMapWhiteOpening:pawnMapBlackOpening;
+            else if (p instanceof Queen)
+                map = queenMapOpening;
+            else if (p instanceof Knight)
+                map = knightMapOpening;
+            else if (p instanceof Bishop)
+                map = p.getColor().equals(Color.WHITE)?bishopMapWhiteOpening:bishopMapBlackOpening;
+            else if (p instanceof Rook)
+                map = p.getColor().equals(Color.WHITE)?rookMapWhiteOpening:rookMapBlackOpening;
             else
+                map = p.getColor().equals(Color.WHITE)?kingMapWhiteOpening:kingMapBlackOpening;
+        }else if(chessboard.getGamephase().equals(Gamephase.MIDGAME)){
+            if (p instanceof Pawn)
                 map = p.getColor().equals(Color.WHITE)?pawnMapWhiteMidgame:pawnMapBlackMidgame;
-        else if (p instanceof Queen)
-            map = queenMapMidgame;
-        else if (p instanceof Knight)
-            map = knightMapMidgame;
-        else if (p instanceof Bishop)
-            map = p.getColor().equals(Color.WHITE)?bishopMapWhiteMidgame:bishopMapBlackMidgame;
-        else if (p instanceof Rook)
-            map = p.getColor().equals(Color.WHITE)?rookMapWhiteMidgame:rookMapBlackMidgame;
-        else if (chessboard.isEndGame())
-            map = p.getColor().equals(Color.WHITE)?kingMapWhiteEndgame:kingMapBlackEndgame;
-        else
-            map = p.getColor().equals(Color.WHITE)?kingMapWhiteOpening:kingMapBlackOpening;
+            else if (p instanceof Queen)
+                map = queenMapMidgame;
+            else if (p instanceof Knight)
+                map = knightMapMidgame;
+            else if (p instanceof Bishop)
+                map = p.getColor().equals(Color.WHITE)?bishopMapWhiteMidgame:bishopMapBlackMidgame;
+            else if (p instanceof Rook)
+                map = p.getColor().equals(Color.WHITE)?rookMapWhiteMidgame:rookMapBlackMidgame;
+            else
+                map = p.getColor().equals(Color.WHITE)?kingMapWhiteMidgame:kingMapBlackMidgame;
+            return map;
+        }else{
+            if (p instanceof Pawn)
+                map = p.getColor().equals(Color.WHITE)?pawnMapWhiteEndgame:pawnMapBlackEndgame;
+            else if (p instanceof Queen)
+                map = queenMapEndgame;
+            else if (p instanceof Knight)
+                map = knightMapEndgame;
+            else if (p instanceof Bishop)
+                map = p.getColor().equals(Color.WHITE)?bishopMapWhiteEndgame:bishopMapBlackEndgame;
+            else if (p instanceof Rook)
+                map = p.getColor().equals(Color.WHITE)?rookMapWhiteEndgame:rookMapBlackEndgame;
+            else
+                map = p.getColor().equals(Color.WHITE)?kingMapWhiteEndgame:kingMapBlackEndgame;
+            return map;
+        }
+
         return map;
     }
 }

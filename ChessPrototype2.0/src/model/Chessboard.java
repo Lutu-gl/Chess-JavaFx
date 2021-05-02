@@ -23,8 +23,9 @@ public class Chessboard {
     private ArrayList<Piece> whitePieces = new ArrayList<>();
     private ArrayList<Piece> blackPieces = new ArrayList<>();
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
-    private Gamestate state;
-    private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort, endGame = true;
+    private Gamestate gamestate;
+    private Gamephase gamephase;
+    private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort;
     private King b_king, w_king;
     private Sound playSound;
     private int sizeOfBoard;
@@ -47,8 +48,8 @@ public class Chessboard {
 
 
     private Chessboard() {
-
         register(new GamestateObserver(this));
+        register(new GamephaseObserver(this));
     }
 
     public static Chessboard getInstance() {
@@ -78,7 +79,7 @@ public class Chessboard {
         this.blackInkrement = (long) (blackInkrement*1e3);
 
         this.sizeOfBoard = size;
-        state = Gamestate.PLAYING;
+        gamestate = Gamestate.PLAYING;
         playsAI[0] = whiteAI;
         playsAI[1] = blackAI;
         fields = new Field[size][size];
@@ -102,7 +103,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            state = Gamestate.BLACK_WINS;
+                            gamestate = Gamestate.BLACK_WINS;
                         }
                     }
                     else{
@@ -111,10 +112,10 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            state = Gamestate.WHITE_WINS;
+                            gamestate = Gamestate.WHITE_WINS;
                         }
                     }
-                    notifyObserver();
+                    observers.get(0).update();      //I dont like this!
                 }
             };
             timer.scheduleAtFixedRate(timerTask, 0, 1);
@@ -132,7 +133,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            state = Gamestate.BLACK_WINS;
+                            gamestate = Gamestate.BLACK_WINS;
                         }
                     }
                     else{
@@ -141,10 +142,10 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            state = Gamestate.WHITE_WINS;
+                            gamestate = Gamestate.WHITE_WINS;
                         }
                     }
-                    notifyObserver();
+                    observers.get(0).update();      //I dont like this!
                 }
             };
             timer.scheduleAtFixedRate(timerTask, 0, 1);
@@ -162,7 +163,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            state = Gamestate.BLACK_WINS;
+                            gamestate = Gamestate.BLACK_WINS;
                         }
                     }
                     else{
@@ -171,10 +172,10 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            state = Gamestate.WHITE_WINS;
+                            gamestate = Gamestate.WHITE_WINS;
                         }
                     }
-                    notifyObserver();
+                    observers.get(0).update();  //I dont like this!
                 }
             };
             timer.scheduleAtFixedRate(timerTask, 0, 1);
@@ -250,11 +251,6 @@ public class Chessboard {
     //Wenn jemand a besserer Nume für des einfollt
     private int queensEaten = 0;
     public void addPieceToEaten(Piece p){
-        if (!debug && p instanceof Queen) {
-            queensEaten++;
-            if (queensEaten >= 2)
-                endGame = true;
-        }
         eatenPieces.add(p);
     }
 
@@ -296,7 +292,7 @@ public class Chessboard {
         Piece p = t.getMovingPiece();
         Field f = t.getTargetField();
         boolean s = true;
-        t.setGamestate(state);
+        t.setGamestate(gamestate);
         t.setRuleCounter(ruleCounter);
         t.setEnpassantable(enPassantable);
         t.setTurnsPlayed(turn);
@@ -418,7 +414,7 @@ public class Chessboard {
         if(t.getMovingPiece() instanceof Pawn || t.getEatenPiece() != null){
             ruleCounter = 0;
         }else if(ruleCounter >= 100){
-            state = Gamestate.DRAW;
+            gamestate = Gamestate.DRAW;
         }
 
         //handeln der moves
@@ -437,7 +433,7 @@ public class Chessboard {
             }
         }
         if(threefoldCounter >= 3){
-            state = Gamestate.PLAYER_CAN_CLAIM_DRAW;
+            gamestate = Gamestate.PLAYER_CAN_CLAIM_DRAW;
         }
 
         // Den Zug hinzufügen
@@ -490,14 +486,14 @@ public class Chessboard {
                 Controller.getInstance().fieldToFieldLabel(king.getField()).markAsCheck();
             if (checkIfMate(colorToMove)){
                 playSound = Sound.MATE;
-                state = colorToMove.equals(Color.WHITE) ? Gamestate.WHITE_WINS : Gamestate.BLACK_WINS;
+                gamestate = colorToMove.equals(Color.WHITE) ? Gamestate.WHITE_WINS : Gamestate.BLACK_WINS;
             } else
                 playSound = Sound.CHECK;
         }
         // Check if it is stalemate
         else {
             if (whitePieces.size() + blackPieces.size() <= 2) {
-                state = Gamestate.DRAW;
+                gamestate = Gamestate.DRAW;
             }
 
             ArrayList<Piece> pieces = colorToMove.equals(Color.WHITE) ? blackPieces : whitePieces;
@@ -515,7 +511,7 @@ public class Chessboard {
             }
             if (stalemate) {
                 playSound = Sound.STALEMATE;
-                state = Gamestate.STALEMATE;
+                gamestate = Gamestate.STALEMATE;
             }
         }
 
@@ -609,7 +605,7 @@ public class Chessboard {
         }
 
         // Set back the gamestate
-        state = t.getGamestate();
+        gamestate = t.getGamestate();
 
         // Ganzzüge zurücksetzen
         turn = t.getTurnsPlayed();
@@ -627,6 +623,7 @@ public class Chessboard {
     }
     //Am ende von jedem Zug
     public void endTurn(){
+        //System.out.println("Im endTurn drinnen!");
         notifyObserver();
         //System.out.println(getBoardAsFen());
         if (!debug){
@@ -637,7 +634,7 @@ public class Chessboard {
 
         // Check if bot plays
         int index = colorToMove.equals(Color.WHITE)?0:1;
-        if (playsAI[index] && state.equals(Gamestate.PLAYING) && !debug) {
+        if (playsAI[index] && gamestate.equals(Gamestate.PLAYING) && !debug) {
             AIThinking=true;
             Service<Turn> service = new Service<>() {
                 @Override
@@ -757,7 +754,6 @@ public class Chessboard {
                         case 'R' -> p = new Rook(Color.WHITE, "White Rook", field);
                         case 'Q' -> {
                             p = new Queen(Color.WHITE, "White Queen", field);
-                            endGame = false;
                         }
                         case 'K' -> {
                             p = new King(Color.WHITE, "White King", field);
@@ -918,12 +914,12 @@ public class Chessboard {
         return eatenPieces;
     }
 
-    public Gamestate getState() {
-        return state;
+    public Gamestate getGamestate() {
+        return gamestate;
     }
 
-    public void setState(Gamestate state) {
-        this.state = state;
+    public void setGamestate(Gamestate gamestate) {
+        this.gamestate = gamestate;
     }
 
     public Pawn getEnPassantable() {
@@ -970,7 +966,11 @@ public class Chessboard {
         return timer;
     }
 
-    public boolean isEndGame() {
-        return endGame;
+    public Gamephase getGamephase() {
+        return gamephase;
+    }
+
+    public void setGamephase(Gamephase gamephase) {
+        this.gamephase = gamephase;
     }
 }

@@ -9,7 +9,7 @@ public class GamestateObserver extends Observer{
 
     @Override
     public void update() {
-        Gamestate gamestate = chessboard.getState();
+        Gamestate gamestate = chessboard.getGamestate();
 
         if(gamestate == Gamestate.PLAYING || Chessboard.getInstance().debug) {
             return;

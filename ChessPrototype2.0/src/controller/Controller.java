@@ -1,8 +1,6 @@
 package controller;
 
 import javafx.application.Platform;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -46,7 +44,7 @@ public class Controller implements EventHandler<MouseEvent>{
         if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
            chessboard.endTurn();
 
-        if (!chessboard.getState().equals(Gamestate.PLAYING) ||
+        if (!chessboard.getGamestate().equals(Gamestate.PLAYING) ||
            (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
            (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
 

@@ -1,10 +1,7 @@
 package controller;
 
 import javafx.event.EventHandler;
-import javafx.scene.ImageCursor;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -13,7 +10,6 @@ import model.Chessboard;
 import model.Color;
 import model.Field;
 import model.Gamestate;
-import view.ChessboardView;
 import view.FieldLabel;
 import view.Main;
 
@@ -22,7 +18,7 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent mouseEvent) {
         Chessboard chessboard = Chessboard.getInstance();
-        if (!chessboard.getState().equals(Gamestate.PLAYING) ||
+        if (!chessboard.getGamestate().equals(Gamestate.PLAYING) ||
            (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
            (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
 
