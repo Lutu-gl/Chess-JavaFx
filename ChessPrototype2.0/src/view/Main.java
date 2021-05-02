@@ -1,6 +1,7 @@
 package view;
 
 import javafx.application.Application;
+import javafx.scene.control.TableRow;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Chessboard;
@@ -13,7 +14,7 @@ public class Main extends Application {
         int size = 8;
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
-        board.createBoard(size, true, true, 300, 300, 1, 1); //In Sekunden!
+        board.createBoard(size, true, true, 20, 20, 5, 5); //In Sekunden!
         String fen = "";
 
         fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
@@ -55,7 +56,8 @@ public class Main extends Application {
 
         //fen = "k7/4ppp1/8/4PPP1/8/8/8/K7 w - - 0 1";
         //fen = "8/3R1r2/7P/1k6/8/3K4/8/8 w - - 0 1";
-
+        //fen = "8/8/4k3/6p1/4nR2/8/6K1/8 b - - 0 58";
+        //fen = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"; //check castle pgn
 
         board.addFen(fen);
         board.setBoardByFen(fen);

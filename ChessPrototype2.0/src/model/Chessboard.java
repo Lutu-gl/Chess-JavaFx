@@ -425,7 +425,9 @@ public class Chessboard {
         //handlern der 3 fold repetition
         int threefoldCounter=0;
         addFen(getBoardAsFen());
-
+        if(!debug){
+            Controller.getInstance().addMoveToDisplay(turnToPGN(t));
+        }
         String fen = fens.get(fens.size()-1);
         for(String fe : fens){
             if(fen.equals(fe)){
@@ -812,6 +814,52 @@ public class Chessboard {
         // set turns played
         turn = Integer.parseInt(groups[5]);
 
+    }
+    public String turnToPGN(Turn t){
+        StringBuilder s = new StringBuilder();
+
+        King k = colorToMove == Color.BLACK ? b_king : w_king;
+        if(t.getColorToMove() == Color.WHITE)
+            s.append((turn)+". ");
+
+        switch(Character.toLowerCase(t.getMovingPiece().getShortName())){
+            case 'p': if(t.getEatenPiece() != null) s.append(t.getSourceField().getName().charAt(0));break;
+            case 'n': s.append('N'); break;
+            case 'b': s.append('B'); break;
+            case 'k':
+                if(t.isCastleTurn()){
+                    if(t.getTargetField().getColumn() >=6){
+                        return s.append("0-0 ").toString();
+                    }
+                    else{
+                        return s.append("0-0-0 ").toString();
+                    }
+                }
+                else
+                s.append('K');
+            break;
+            case 'r': s.append("R"); break;
+            case 'q': s.append('Q'); break;
+        }
+
+        if(t.getEatenPiece() != null)
+            s.append('x');
+
+        s.append(t.getTargetField().getName());
+        if(t.isPromotionTurn()){
+            switch (Pawn.getPromotionPieces())
+            {
+                case 0 -> s.append("=Q");
+                case 1 -> s.append("=N");
+                case 2 -> s.append("=R");
+                case 3 -> s.append("=B");
+            }
+
+        }
+        if(k.isInCheck())
+            s.append('+');
+        s.append(" ");
+        return s.toString();
     }
     public String getBoardAsFen(){
         String[] groups = new String[]{"", "", "", "", "", ""};

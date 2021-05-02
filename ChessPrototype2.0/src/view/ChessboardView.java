@@ -1,9 +1,10 @@
 package view;
 
 import controller.*;
+import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -11,6 +12,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.Chessboard;
 
@@ -21,6 +24,7 @@ public class ChessboardView {
     private static ArrayList<ArrayList<FieldLabel>> board;
     private static Scene mainScene;
     private static VBox timerVBox;
+    private static VBox movesVBox;
     public static Scene init( int l, int w) {
         BorderPane bp = new BorderPane();
         GridPane gridPane = new GridPane();
@@ -73,13 +77,31 @@ public class ChessboardView {
         t2Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
         t2Label.setFont(new Font("Arial", 30));
 
+        ScrollPane scPane = new ScrollPane();
+        scPane.setMinSize(250,250);
+        scPane.setMaxSize(250, 250);
 
-        VBox vBox = new VBox(t1Label, t2Label);
-        timerVBox = vBox;
-        vBox.setSpacing(400);
+        VBox movesVBox = new VBox();
+        TextArea tf = new TextArea();
+        tf.setEditable(false);
+        tf.getStyleClass().add("movesTextArea");
+        tf.setPrefSize(500, 500);
+        tf.setLayoutX(0);
+        tf.setLayoutY(0);
+        movesVBox.getChildren().add(tf);
+        movesVBox.setSpacing(10);
+
+        scPane.setContent(movesVBox);
+
+        VBox timerVBox = new VBox(t1Label, scPane,t2Label);
+
+        timerVBox.setSpacing(100);
         t1Label.setMinSize(200, 200);
         t2Label.setMinSize(200, 200);
-        bp.setRight(vBox);
+        bp.setRight(timerVBox);
+
+        ChessboardView.timerVBox = timerVBox;
+        ChessboardView.movesVBox = movesVBox;
         mainScene = new Scene(bp, w*100+300, l*100+50);
         return mainScene;
     }
@@ -136,5 +158,9 @@ public class ChessboardView {
 
     public static VBox getTimerVBox() {
         return timerVBox;
+    }
+
+    public static VBox getMovesVBox() {
+        return movesVBox;
     }
 }

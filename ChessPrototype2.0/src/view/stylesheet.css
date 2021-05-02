@@ -40,3 +40,9 @@
 .checkLabel{
     -fx-background-color: red;
 }
+.movesTextArea{
+    -fx-background-color: black; /*des geat aus irgend an grund nt */
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 20
+}

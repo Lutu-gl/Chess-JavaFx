@@ -75,16 +75,6 @@ public class Turn {
         this.castleSide = side;
     }
 
-    @Override
-    public String toString() {
-        return "Turn{" +
-                "sourceField=" + sourceField +
-                ", targetField=" + targetField +
-                ", movingPiece=" + movingPiece +
-                ", eatenPiece=" + eatenPiece +
-                '}';
-    }
-
     public Color getColorToMove() {
         return colorToMove;
     }
@@ -137,6 +127,9 @@ public class Turn {
         return isEnpassantTurn;
     }
 
+    public void setPromotionTurn(boolean promotionTurn) {
+        isPromotionTurn = promotionTurn;
+    }
 
     public int getTurnsPlayed() {
         return turnsPlayed;
@@ -178,5 +171,19 @@ public class Turn {
 
     public void setPromoteTo(int promoteTo) {
         this.promoteTo = promoteTo;
+    }
+
+    @Override
+    public String toString() {
+        return "Turn{" +
+                "sourceField=" + sourceField +
+                ", targetField=" + targetField +
+                ", movingPiece=" + movingPiece +
+                ", eatenPiece=" + eatenPiece +
+                ", colorToMove=" + colorToMove +
+                ", isCastleTurn=" + isCastleTurn +
+                ", isPromotionTurn=" + isPromotionTurn +
+                ", promotionPiece=" + promotionPiece +
+                '}';
     }
 }

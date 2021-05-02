@@ -30,6 +30,7 @@ public class Pawn extends Piece{
     }
     private ArrayList<Field> availableMoves;
     private static int promotionPieces;
+
     public int promoteTo;
 
     @Override
@@ -98,10 +99,11 @@ public class Pawn extends Piece{
 
         if(this.getField().getLine() == chessboard.getFields()[0].length-1 || this.getField().getLine() == 0){
             Piece p = null;
+            t.setPromotionTurn(true);
+
             //if((color == Color.WHITE && chessboard.getPlaysAI()[0]) || (color == Color.BLACK && chessboard.getPlaysAI()[1])){
             if (chessboard.debug || (color == Color.WHITE && chessboard.getPlaysAI()[0]) || (color == Color.BLACK && chessboard.getPlaysAI()[1])) {
                 String colorString = color.toString().charAt(0) + color.toString().substring(1).toLowerCase();
-
                 int promoTo = t.getPromoteTo();
 
                 if(promoTo >= 0 && promoTo < 4){
@@ -126,5 +128,9 @@ public class Pawn extends Piece{
             p.setField(this.getField());
             p.getField().setPiece(p);
         }
+    }
+
+    public static int getPromotionPieces() {
+        return promotionPieces;
     }
 }

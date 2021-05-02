@@ -3,7 +3,11 @@ package controller;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import model.*;
 import model.pieces.Pawn;
 import model.pieces.Piece;
@@ -141,10 +145,23 @@ public class Controller implements EventHandler<MouseEvent>{
     public void updateTime(double time, Color c){
         //System.out.println("Time "+ time + c);
         switch(c){
-            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(0)).setText(Double.toString(time)));
-            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(1)).setText(Double.toString(time)));
+            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(0)).setText(Double.toString(time))); // 0 == black Label 1 == scrollPane 2 == white Label
+            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(2)).setText(Double.toString(time)));
         }
 
+    }
+
+    public void addMoveToDisplay(String s){
+        VBox vb = ChessboardView.getMovesVBox();
+        TextArea t = (TextArea) vb.getChildren().get(0);
+        if(Chessboard.getInstance().getColorToMove() == Color.WHITE){
+            t.appendText(s + "\n");
+        }
+        else
+            t.appendText(s);
+            //Platform.runLater(() -> (TextField)(ChessboardView.getMovesVBox().getChildren().get(ChessboardView.getMovesVBox().getChildren().size()-1)));
+
+        //Platform.runLater(() -> ChessboardView.getMovesVBox().getChildren().add(new Text(s)));
     }
 
     public void setSource(FieldLabel source) {
