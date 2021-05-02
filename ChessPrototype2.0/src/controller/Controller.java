@@ -33,7 +33,7 @@ public class Controller implements EventHandler<MouseEvent>{
 
     @Override
     public void handle(MouseEvent mouseEvent) {
-
+        System.out.println("Gamephase: " + Chessboard.getInstance().getGamephase());
         Chessboard chessboard = Chessboard.getInstance();
         // This is just testing to start the AI
 

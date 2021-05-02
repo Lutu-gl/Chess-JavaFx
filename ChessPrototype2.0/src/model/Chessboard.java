@@ -24,7 +24,7 @@ public class Chessboard {
     private ArrayList<Piece> blackPieces = new ArrayList<>();
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
     private Gamestate gamestate;
-    private Gamephase gamephase;
+    private Gamephase gamephase = Gamephase.MIDGAME;
     private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort;
     private King b_king, w_king;
     private Sound playSound;

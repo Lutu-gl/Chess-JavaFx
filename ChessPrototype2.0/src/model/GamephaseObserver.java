@@ -35,7 +35,6 @@ public class GamephaseObserver extends Observer{
         }else{
             chessboard.setGamephase(Gamephase.ENDGAME);
         }
-        System.out.println("Gamephase: " + chessboard.getGamephase());
 
     }
 }
