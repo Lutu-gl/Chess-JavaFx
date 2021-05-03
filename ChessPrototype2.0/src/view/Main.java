@@ -14,7 +14,7 @@ public class Main extends Application {
         int size = 8;
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
-        board.createBoard(size, true, true, 20, 20, 5, 5); //In Sekunden!
+        board.createBoard(size, false, true, 30, 1000000000, 0, 0); //In Sekunden!
         String fen = "";
 
         fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
@@ -52,6 +52,8 @@ public class Main extends Application {
 //        fen = "1k6/3Q1P2/8/8/8/6K1/8/8 w - - 0 1"; //fen promoto queen or rook
 //        fen = "8/5P1k/5K2/8/8/8/8/8 w - - 0 1"; //fen promoto Rook not queen is false
 //        fen = "6bb/6rk/4N1bb/8/8/K7/8/8 w - - 0 1"; //fen checkmate in one
+//        fen = "rnbqkb1r/pppppppp/5n2/8/8/4Q3/PPPPPPPP/RNB1KBNR w KQkq - 0 1"; //fen checkmate in one
+//        fen = "rnbqk1nr/ppppb1pp/4p3/5p2/3PP3/2P5/PP3PPP/RNBQKBNR w KQkq - 0 1"; //fen checkmate in one
 
 
         //fen = "k7/4ppp1/8/4PPP1/8/8/8/K7 w - - 0 1";
