@@ -16,10 +16,12 @@ public class AI implements Callable<Turn> {
     public Turn call() throws Exception {
         chessboard.debug = true;
         chessboard.withTime = false;
-        System.out.println(chessboard.getColorToMove());
+        //System.out.println(chessboard.getColorToMove());
         chessboard.setCurrentAIMovingColor(Chessboard.getInstance().getColorToMove());
         ArrayList<Turn> moves = generateMoves();
         Turn bestMoveOverall = null, bestMove = null;
+
+        System.out.println("Ai denkt die Position hat die evalutaion: " + evaluate());
 
         int depth = 0;
         while (!Thread.currentThread().isInterrupted()) {
