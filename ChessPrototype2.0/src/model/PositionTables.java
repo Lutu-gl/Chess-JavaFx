@@ -2,8 +2,14 @@ package model;
 
 import model.pieces.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Map.entry;
+
 public class PositionTables {
     private final static Chessboard chessboard = Chessboard.getInstance();
+    private static Field[][] f = chessboard.getFields();
 
     private static int[][] pawnMapWhiteOpening = new int[][]{
             {100,  100,  100,  100,  100,  100,  100,  100},
@@ -327,6 +333,8 @@ public class PositionTables {
             {-50,-40,-30,-20,-20,-30,-40,-50},
     };
 
+    //HashMap<String, Turn> openingBook = Map.ofEntries(
+    //);
 
     public static double getValue(Piece p) {
         double v =  getMapForPiece(p)[p.getField().getLine()][p.getField().getColumn()];
