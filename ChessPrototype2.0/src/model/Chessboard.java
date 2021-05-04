@@ -890,6 +890,9 @@ public class Chessboard {
         groups[1] = colorToMove.equals(Color.WHITE) ? "w" : "b";
 
         groups[2] = (whiteCastlePermissionLong ? "K" : "") + (whiteCastlePermissionShort ? "Q" : "") + (blackCastlePermissionLong ? "k" : "") + (blackCastlePermissionShort ? "q" : "");
+        if(!whiteCastlePermissionLong && !whiteCastlePermissionShort && !blackCastlePermissionLong && !blackCastlePermissionShort){
+            groups[2] = "-";
+        }
 
         if(enPassantable == null){
             groups[3] = "-";
