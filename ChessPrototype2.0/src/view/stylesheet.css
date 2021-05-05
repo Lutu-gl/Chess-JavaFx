@@ -46,3 +46,11 @@
     -fx-font-weight: bold;
     -fx-font-size: 20
 }
+
+.lastPlayedFieldWhite{
+    -fx-background-color: #cdd26a;
+}
+
+.lastPlayedFieldBlack{
+    -fx-background-color: #aaa23a;
+}

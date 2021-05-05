@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.control.Control;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -627,8 +628,10 @@ public class Chessboard {
     public void endTurn(){
         //System.out.println("Im endTurn drinnen!");
         notifyObserver();
+
         //System.out.println(getBoardAsFen());
         if (!debug){
+            Controller.getInstance().markLastPlayedMove();
             ChessboardView.display();
             if(withTime) timeStopped = System.currentTimeMillis();
         }
