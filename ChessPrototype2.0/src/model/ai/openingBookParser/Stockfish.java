@@ -1,11 +1,9 @@
 package model.ai.openingBookParser;
 
 import model.Chessboard;
+import model.Turn;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -20,8 +18,7 @@ public class Stockfish {
     private BufferedReader processReader;
     private OutputStreamWriter processWriter;
 
-    private static final String PATH = "D:\\VPNSchule\\info\\test\\stockfish_13_win_x64_bmi2\\stockfish_13_win_x64_bmi2.exe";
-
+    private static final String PATH = "C:\\Users\\Schat\\Desktop\\Schule\\Info\\stockfish_13_win_x64_bmi2\\stockfish_13_win_x64_bmi2\\stockfish_13_win_x64_bmi2.exe";
     /**
      * Starts Stockfish engine as a process and initializes is
      * @return True on success. False otherwise
@@ -168,8 +165,10 @@ public class Stockfish {
 
     private static Stockfish client;
     private static Chessboard chessboard;
+    private static File f;
+    private static FileWriter writer;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         client = new Stockfish();
         //String FEN = "8/6pk/8/1R5p/3K3P/8/6r1/8 b - - 0 42";
         //String FEN = "rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R w KQ - 7 11";
@@ -188,27 +187,58 @@ public class Stockfish {
         chessboard.createBoard(8, true, true, Integer.MAX_VALUE, Integer.MAX_VALUE, 0,0);
         chessboard.setBoardByFen(FEN);
 
-        recursiveSearch();
+        f = new File("openingBook.txt");
+        if (!f.exists())
+            f.createNewFile();
+        writer = new FileWriter(f);
+        recursiveSearch(3);
+        writer.close();
     }
 
-    private static void recursiveSearch() throws InterruptedException {
+    private static void recursiveSearch(int depth) throws InterruptedException {
+        if (depth == 0)
+            return;
         client.sendCommand("position fen "+chessboard.getBoardAsFen());
-        client.sendCommand("go depth 100");
-        Thread.sleep(10000);
-        client.sendCommand("stop");
-        System.out.println(client.getOutput(10).split("bestmove ")[1].split(" ")[0]);
-        /*ArrayList<String> threeBestMoves = new ArrayList<>();
-        for (int i = 5000; i > 2000; i -= 500) {
-            String move = client.getBestMove(chessboard.getBoardAsFen(), i);
+        ArrayList<String> threeBestMoves = new ArrayList<>();
+        for (int i = 5000; i >= 500; i -= 500) {
+            //String move = client.getBestMove(chessboard.getBoardAsFen(), i);
+            client.sendCommand("go depth 100");
+            Thread.sleep(i);
+            client.sendCommand("stop");
+            String move;
+            try {
+                move = client.getOutput(20).split("bestmove ")[1].split(" ")[0];
+            }
+            catch (Exception e) {
+                continue;
+            }
             if (!threeBestMoves.contains(move)) {
                 threeBestMoves.add(move);
-                if (threeBestMoves.size() >= 3)
+                if (threeBestMoves.size() >= 5)
                     break;
             }
-            break;
         }
-        System.out.println(threeBestMoves);
 
-         */
+        System.out.println(threeBestMoves);
+        try {
+            String fen = chessboard.getBoardAsFen();
+            writer.append(fen.substring(0, fen.indexOf(" ")+2)+";"+threeBestMoves.get(0)+"\n");
+            System.out.println("Wrote move to file!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (String currentMove : threeBestMoves) {
+            Turn turn = convertNotation(currentMove);
+            chessboard.handleTurn(convertNotation(currentMove));
+            recursiveSearch(depth-1);
+            chessboard.undoTurn(turn);
+        }
+
+    }
+    private static Turn convertNotation(String s) {
+        int column1 = s.charAt(0)-97, line1 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(1)))-8);
+        int column2 = s.charAt(2)-97, line2 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(3)))-8);
+        return new Turn(chessboard.getFields()[line1][column1], chessboard.getFields()[line2][column2]);
     }
 }
