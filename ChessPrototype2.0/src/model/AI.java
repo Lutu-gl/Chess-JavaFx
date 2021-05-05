@@ -4,6 +4,7 @@ import model.pieces.King;
 import model.pieces.Piece;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.*;
 
 public class AI implements Callable<Turn> {
@@ -22,6 +23,15 @@ public class AI implements Callable<Turn> {
         Turn bestMoveOverall = null, bestMove = null;
 
         System.out.println("Ai denkt die Position hat die evalutaion: " + evaluate());
+        HashMap<String, String> openingBook = chessboard.getOpeningBook();
+        String fen = chessboard.getBoardAsFen();
+        fen = fen.substring(0, fen.indexOf(" ")+2);
+        if (openingBook.containsKey(fen)) {
+            System.out.println(openingBook.get(fen));
+            chessboard.debug = false;
+            chessboard.withTime = true;
+            return convertNotation(openingBook.get(fen));
+        }
 
         int depth = 0;
         while (!Thread.currentThread().isInterrupted()) {
@@ -239,4 +249,11 @@ public class AI implements Callable<Turn> {
         return value-enemyValue;    //final value zurückgeben
     }
 
+    private Turn convertNotation(String s) {
+        int column1 = s.charAt(0)-97, line1 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(1)))-8);
+        int column2 = s.charAt(2)-97, line2 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(3)))-8);
+
+        //System.out.println(line1 + " " + column2);
+        return new Turn(chessboard.getFields()[line1][column1], chessboard.getFields()[line2][column2]);
+    }
 }

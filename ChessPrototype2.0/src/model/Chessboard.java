@@ -9,6 +9,8 @@ import view.ChessboardView;
 import view.PlaySound;
 import view.Sound;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -41,6 +43,7 @@ public class Chessboard {
     public boolean withTime=true;
     private Color currentAIMovingColor =null;
     private long turnTimeAdder=0L;
+    private HashMap<String, String> openingBook;
     public boolean AIThinking=false;
     public boolean debug = false;
 
@@ -83,6 +86,20 @@ public class Chessboard {
         gamestate = Gamestate.PLAYING;
         playsAI[0] = whiteAI;
         playsAI[1] = blackAI;
+        if (playsAI[0] || playsAI[1]) {
+            openingBook = new HashMap<>();
+            File myObj = new File("openingBook.txt");
+            Scanner myReader = null;
+            try {
+                myReader = new Scanner(myObj);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            while (myReader.hasNextLine()) {
+                String[] data = myReader.nextLine().split(";");
+                openingBook.put(data[0], data[1]);
+            }
+        }
         fields = new Field[size][size];
         for (int i = 0; i < size; i++)
         {
@@ -1026,5 +1043,9 @@ public class Chessboard {
 
     public void setGamephase(Gamephase gamephase) {
         this.gamephase = gamephase;
+    }
+
+    public HashMap<String, String> getOpeningBook() {
+        return openingBook;
     }
 }

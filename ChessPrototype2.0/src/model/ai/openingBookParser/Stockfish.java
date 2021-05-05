@@ -173,10 +173,12 @@ public class Stockfish {
         //String FEN = "8/6pk/8/1R5p/3K3P/8/6r1/8 b - - 0 42";
         //String FEN = "rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R w KQ - 7 11";
         String FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        //String FEN = "1k5r/pP3ppp/3p2b1/1BN1n3/1Q2P3/P1B5/KP3P1P/7q w - - 1 0";
 
         // initialize and connect to engine
         if (client.startEngine()) {
             System.out.println("Engine has started..");
+            client.sendCommand("setoption name multipv value 10");
             client.getOutput(10);
         } else {
             System.out.println("Oops! Something went wrong..");
@@ -190,45 +192,34 @@ public class Stockfish {
         f = new File("openingBook.txt");
         if (!f.exists())
             f.createNewFile();
-        writer = new FileWriter(f);
-        recursiveSearch(3);
-        writer.close();
+
+        recursiveSearch(10);
+        System.exit(0);
     }
 
-    private static void recursiveSearch(int depth) throws InterruptedException {
+    private static void recursiveSearch(int depth) {
         if (depth == 0)
             return;
+        ArrayList<String> bestMoves = new ArrayList<>();
         client.sendCommand("position fen "+chessboard.getBoardAsFen());
-        ArrayList<String> threeBestMoves = new ArrayList<>();
-        for (int i = 5000; i >= 500; i -= 500) {
-            //String move = client.getBestMove(chessboard.getBoardAsFen(), i);
-            client.sendCommand("go depth 100");
-            Thread.sleep(i);
-            client.sendCommand("stop");
-            String move;
-            try {
-                move = client.getOutput(20).split("bestmove ")[1].split(" ")[0];
-            }
-            catch (Exception e) {
-                continue;
-            }
-            if (!threeBestMoves.contains(move)) {
-                threeBestMoves.add(move);
-                if (threeBestMoves.size() >= 5)
-                    break;
-            }
+        client.sendCommand("go depth 300");
+        String[] lines = client.getOutput(200).split("\n");
+        client.sendCommand("stop");
+        for (int i = lines.length-10; i < lines.length; i++) {
+            bestMoves.add(lines[i].substring(lines[i].indexOf(" pv ")+4, lines[i].indexOf(" pv ")+8));
         }
-
-        System.out.println(threeBestMoves);
+        System.out.println(bestMoves);
         try {
             String fen = chessboard.getBoardAsFen();
-            writer.append(fen.substring(0, fen.indexOf(" ")+2)+";"+threeBestMoves.get(0)+"\n");
+            writer = new FileWriter(f, true);
+            writer.append(fen.substring(0, fen.indexOf(" ")+2)+";"+bestMoves.get(0)+"\n");
+            writer.close();
             System.out.println("Wrote move to file!");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        for (String currentMove : threeBestMoves) {
+        for (String currentMove : bestMoves) {
             Turn turn = convertNotation(currentMove);
             chessboard.handleTurn(convertNotation(currentMove));
             recursiveSearch(depth-1);
