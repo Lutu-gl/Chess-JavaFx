@@ -88,16 +88,18 @@ public class Chessboard {
         playsAI[1] = blackAI;
         if (playsAI[0] || playsAI[1]) {
             openingBook = new HashMap<>();
-            File myObj = new File("openingBook.txt");
-            Scanner myReader = null;
-            try {
-                myReader = new Scanner(myObj);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            while (myReader.hasNextLine()) {
-                String[] data = myReader.nextLine().split(";");
-                openingBook.put(data[0], data[1]);
+            File myObj = new File("openingBook.csv");
+            if (myObj.exists()) {
+                Scanner myReader = null;
+                try {
+                    myReader = new Scanner(myObj);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                while (myReader.hasNextLine()) {
+                    String[] data = myReader.nextLine().split(";");
+                    openingBook.put(data[0], data[1]);
+                }
             }
         }
         fields = new Field[size][size];

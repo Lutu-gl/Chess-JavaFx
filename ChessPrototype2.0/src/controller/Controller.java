@@ -115,6 +115,9 @@ public class Controller implements EventHandler<MouseEvent>{
     }
 
     public void markLastPlayedMove(){
+        if (Chessboard.getInstance().getTurns().size() == 0)
+            return;
+
         if(lastLabelSource != null) lastLabelSource.getStyleClass().remove("lastPlayedFieldWhite");
         if(lastLabelSource != null) lastLabelSource.getStyleClass().remove("lastPlayedFieldBlack");
         if(lastLabelTarget != null) lastLabelTarget.getStyleClass().remove("lastPlayedFieldWhite");
