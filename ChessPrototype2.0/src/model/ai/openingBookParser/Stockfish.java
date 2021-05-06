@@ -18,7 +18,7 @@ public class Stockfish {
     private BufferedReader processReader;
     private OutputStreamWriter processWriter;
 
-    private static final String PATH = "C:\\Users\\Schat\\Desktop\\Schule\\Info\\stockfish_13_win_x64_bmi2\\stockfish_13_win_x64_bmi2\\stockfish_13_win_x64_bmi2.exe";
+    private static final String PATH = "D:\\VPNSchule\\info\\test\\stockfish_13_win_x64_bmi2\\stockfish_13_win_x64_bmi2.exe";
     /**
      * Starts Stockfish engine as a process and initializes is
      * @return True on success. False otherwise
@@ -163,73 +163,67 @@ public class Stockfish {
         return evalScore/100;
     }
 
-    private static Stockfish client;
-    private static Chessboard chessboard;
-    private static File f;
-    private static FileWriter writer;
-
     public static void main(String[] args) throws InterruptedException, IOException {
-        client = new Stockfish();
-        //String FEN = "8/6pk/8/1R5p/3K3P/8/6r1/8 b - - 0 42";
-        //String FEN = "rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R w KQ - 7 11";
-        String FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        //String FEN = "1k5r/pP3ppp/3p2b1/1BN1n3/1Q2P3/P1B5/KP3P1P/7q w - - 1 0";
 
-        // initialize and connect to engine
-        if (client.startEngine()) {
-            System.out.println("Engine has started..");
-            client.sendCommand("setoption name multipv value 10");
-            client.getOutput(10);
-        } else {
-            System.out.println("Oops! Something went wrong..");
-        }
-        chessboard = Chessboard.getInstance();
+        Chessboard chessboard = Chessboard.getInstance();
         chessboard.debug = true;
         chessboard.withTime = false;
-        chessboard.createBoard(8, true, true, Integer.MAX_VALUE, Integer.MAX_VALUE, 0,0);
-        chessboard.setBoardByFen(FEN);
+        chessboard.createBoard(8, true, true, Integer.MAX_VALUE, Integer.MAX_VALUE, 0, 0);
+        String fen = args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4] + " " + args[5];
+        chessboard.setBoardByFen(fen);
+        Thread t = new Thread(new StockfishHelper(chessboard, new Stockfish(), args[6]));
+        t.start();
 
-        f = new File("openingBook.txt");
-        if (!f.exists())
-            f.createNewFile();
+        // Start thread for classic chess 1.e4
+        /*Runnable classicChess = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "e2e4.csv");
+        Thread thread1 = new Thread(classicChess);
 
-        recursiveSearch(10);
-        System.exit(0);
-    }
+        // Start thread for queen pawn 1.d4
+        Runnable queenPawn = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "d2d4.csv");
+        Thread thread2 = new Thread(queenPawn);
 
-    private static void recursiveSearch(int depth) {
-        if (depth == 0)
-            return;
-        ArrayList<String> bestMoves = new ArrayList<>();
-        client.sendCommand("position fen "+chessboard.getBoardAsFen());
-        client.sendCommand("go depth 300");
-        String[] lines = client.getOutput(200).split("\n");
-        client.sendCommand("stop");
-        for (int i = lines.length-10; i < lines.length; i++) {
-            bestMoves.add(lines[i].substring(lines[i].indexOf(" pv ")+4, lines[i].indexOf(" pv ")+8));
-        }
-        System.out.println(bestMoves);
-        try {
-            String fen = chessboard.getBoardAsFen();
-            writer = new FileWriter(f, true);
-            writer.append(fen.substring(0, fen.indexOf(" ")+2)+";"+bestMoves.get(0)+"\n");
-            writer.close();
-            System.out.println("Wrote move to file!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Start thread for kingKnight opening 1.nf3
+        Runnable knightKing = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1"), new Stockfish(), "g1f3.csv");
+        Thread thread3 = new Thread(knightKing);
 
-        for (String currentMove : bestMoves) {
-            Turn turn = convertNotation(currentMove);
-            chessboard.handleTurn(convertNotation(currentMove));
-            recursiveSearch(depth-1);
-            chessboard.undoTurn(turn);
-        }
+        // Start thread for english opening 1.c4
+        Runnable englishOpening = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/2P5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "c2c4.csv");
+        Thread thread4 = new Thread(englishOpening);
 
-    }
-    private static Turn convertNotation(String s) {
-        int column1 = s.charAt(0)-97, line1 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(1)))-8);
-        int column2 = s.charAt(2)-97, line2 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(3)))-8);
-        return new Turn(chessboard.getFields()[line1][column1], chessboard.getFields()[line2][column2]);
+        // Start thread for Van't Kruijs 1.e3
+        Runnable kruijs = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "e2e3.csv");
+        Thread thread5 = new Thread(kruijs);
+
+        // Start thread for King's Fianchetto 1.g3
+        Runnable fianchetto = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/6P1/PPPPPP1P/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "g2g3.csv");
+        Thread thread6 = new Thread(fianchetto);
+
+        // Start thread for Saragossa Opening 1.c3
+        Runnable saragossa = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/2P5/PP1PPPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "c2c3.csv");
+        Thread thread7 = new Thread(saragossa);
+
+        // Start thread for Anderssen's Opening 1.a3
+        Runnable anderssen = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "a2a3.csv");
+        Thread thread8 = new Thread(anderssen);
+
+        // Start thread for queenKnight Opening 1.nc3
+        Runnable queenKnight = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR b KQkq - 1 1"), new Stockfish(), "b1c3.csv");
+        Thread thread9 = new Thread(queenKnight);
+
+        // Start thread for Larsen's Opening 1.b3
+        Runnable larsen = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "b2b3.csv");
+        Thread thread10 = new Thread(larsen);
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+        thread5.start();
+        thread6.start();
+        thread7.start();
+        thread8.start();
+        thread9.start();
+        thread10.start();
+        */
     }
 }
