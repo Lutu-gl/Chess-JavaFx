@@ -30,7 +30,6 @@ public class Controller implements EventHandler<MouseEvent>{
     private FieldLabel lastLabelSource;
     private FieldLabel lastLabelTarget;
 
-
     private Controller(){
 
     }
