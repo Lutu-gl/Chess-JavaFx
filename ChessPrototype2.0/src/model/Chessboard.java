@@ -645,6 +645,7 @@ public class Chessboard {
     }
     //Am ende von jedem Zug
     public void endTurn(){
+        Controller controller = Controller.getInstance();
         //System.out.println("Im endTurn drinnen!");
         notifyObserver();
 
@@ -653,13 +654,17 @@ public class Chessboard {
             Controller.getInstance().markLastPlayedMove();
             ChessboardView.display();
             if(withTime) timeStopped = System.currentTimeMillis();
+            if(playsAI[1] && colorToMove==Color.WHITE) AIThinking=false;
+            if(playsAI[0] && colorToMove==Color.BLACK) AIThinking=false;
+            if(playsAI[1] && colorToMove==Color.BLACK) AIThinking=true;
+            if(playsAI[0] && colorToMove==Color.WHITE) AIThinking=true;
         }
         turnTimeAdder = 0;
 
         // Check if bot plays
         int index = colorToMove.equals(Color.WHITE)?0:1;
         if (playsAI[index] && gamestate.equals(Gamestate.PLAYING) && !debug) {
-            AIThinking=true;
+            //AIThinking=true;
             Service<Turn> service = new Service<>() {
                 @Override
                 protected Task<Turn> createTask() {
@@ -690,10 +695,11 @@ public class Chessboard {
             service.setOnSucceeded(e -> {
                 handleTurn(service.getValue());
                 e.consume();
-                AIThinking=false;
             });
             service.start();
         }
+
+        if(!debug) controller.handlePremove();
     }
 
     public boolean isLegal(Field destination, Field start, Color color) {

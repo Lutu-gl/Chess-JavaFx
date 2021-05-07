@@ -29,8 +29,9 @@ public class Controller implements EventHandler<MouseEvent>{
 
     private FieldLabel sourcePreMove = null;
     private FieldLabel targetPreMove = null;
+    private boolean isPremove = false;
 
-
+    Chessboard chessboard = Chessboard.getInstance();
     private Controller(){
 
     }
@@ -40,20 +41,23 @@ public class Controller implements EventHandler<MouseEvent>{
         return instance;
     }
 
-
     @Override
     public void handle(MouseEvent mouseEvent) {
-        //System.out.println("Gamephase: " + Chessboard.getInstance().getGamephase());
-        Chessboard chessboard = Chessboard.getInstance();
+        //System.out.println("Gamephase: " + chessboard.getGamephase());
         // This is just testing to start the AI
+        if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
+            chessboard.endTurn();
         System.out.println(chessboard.AIThinking);
         //if(chessboard.AIThinking) return;
         System.out.println("sourcePreMove = " + sourcePreMove + "   targetPreMove = " + targetPreMove);
         if(chessboard.AIThinking){
             System.out.println("Premove machen");
             FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
-             if(sourcePreMove == null){
+            Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
+
+            if(sourcePreMove == null){
                 //Schauen ob Piece oben ist.
+                 if(clickedFieldLabel.getGraphic() == null) return;
                  sourcePreMove = clickedFieldLabel;
                  clickedFieldLabel.selectPremoveSource();
             } else {
@@ -70,6 +74,7 @@ public class Controller implements EventHandler<MouseEvent>{
                  }
 
                  targetPreMove.selectPremoveTarget();
+                 isPremove = true;
             }
             
             return;
@@ -77,33 +82,29 @@ public class Controller implements EventHandler<MouseEvent>{
             if(sourcePreMove != null || targetPreMove != null){
                 unSelectLabel();
             }
-
         }
-
-        if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
-           chessboard.endTurn();
 
         if (!chessboard.getGamestate().equals(Gamestate.PLAYING) ||
            (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
            (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
 
         FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
-        Field clickedField = Chessboard.getInstance().getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
+        Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
         if(source == null)
         {
-            if (!clickedField.hasPiece() || !clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) return;
+            if (!clickedField.hasPiece() || !clickedField.getPiece().getColor().equals(chessboard.getColorToMove())) return;
             source = clickedFieldLabel;
             selectLabel(source);
-            markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()], source);
+            markAvailableMoves(chessboard.getFields()[source.getLine()][source.getColumn()], source);
         }
         else {
-            if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) {
+            if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(chessboard.getColorToMove())) {
                 source.unselect();
                 unmarkAvailableMoves();
                 if (clickedFieldLabel != source) {
                     source = clickedFieldLabel;
                     selectLabel(source);
-                    markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()], source);
+                    markAvailableMoves(chessboard.getFields()[source.getLine()][source.getColumn()], source);
                 } else { //Wenns das selbe Piece ist, dann wird source auf null gesetzt!
                     source = null;
                 }
@@ -112,25 +113,58 @@ public class Controller implements EventHandler<MouseEvent>{
             target = clickedFieldLabel;
             for (int i = 0; i < highlighted.size(); i++) {
                 if (highlighted.get(i).getLine() == target.getLine() && highlighted.get(i).getColumn() == target.getColumn()) {
-                    Turn turn = new Turn(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()], Chessboard.getInstance().getFields()[target.getLine()][target.getColumn()]);
+                    Turn turn = new Turn(chessboard.getFields()[source.getLine()][source.getColumn()], chessboard.getFields()[target.getLine()][target.getColumn()]);
                     unSelectLabel();
 
 
                     source = null;
 
                     unmarkAvailableMoves();
-                    Chessboard.getInstance().handleTurn(turn);
+                    chessboard.handleTurn(turn);
                     break;
                 }
             }
         }
+    }
+    public void handlePremove(){    //wird von endTurn aufgerufen wenn es einen Premove gibt!
+        System.out.println("jettz handle: " + sourcePreMove + "   " + targetPreMove);
+
+
+        //if(!isPremove) return;
+        if(sourcePreMove == null || targetPreMove== null){
+            unSelectLabelPremove();
+            return;
+        }
+        Field clickedFieldSource = chessboard.getFields()[sourcePreMove.getLine()][sourcePreMove.getColumn()];
+        Field clickedFieldTarget = chessboard.getFields()[targetPreMove.getLine()][targetPreMove.getColumn()];
+
+        if (!clickedFieldSource.hasPiece() || !clickedFieldSource.getPiece().getColor().equals(chessboard.getColorToMove())){
+            unSelectLabelPremove();
+            return;
+        }
+        if(clickedFieldTarget.hasPiece() && clickedFieldTarget.getPiece().getColor() == chessboard.getColorToMove()){
+            unSelectLabelPremove();
+            return;
+        }
+
+        if(!chessboard.isLegal(clickedFieldTarget, clickedFieldSource, chessboard.getColorToMove())){
+            unSelectLabelPremove();
+            return;
+        }
+        for(Field f : clickedFieldSource.getPiece().getMoves()){
+            if(f == clickedFieldTarget){
+                Turn turn = new Turn(chessboard.getFields()[sourcePreMove.getLine()][sourcePreMove.getColumn()], chessboard.getFields()[targetPreMove.getLine()][targetPreMove.getColumn()]);
+                chessboard.handleTurn(turn);
+            }
+        }
+        unSelectLabelPremove();
     }
 
     public void markAvailableMoves(Field f, FieldLabel source) {
         for (Field d : f.getPiece().getMoves())
         {
 
-            if (!Chessboard.getInstance().isLegal(d, Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()], Chessboard.getInstance().getColorToMove())) continue;
+            if (!chessboard.isLegal(d, chessboard.getFields()[source.getLine()][source.getColumn()], chessboard.getColorToMove())) continue;
 
 
             if(!d.hasPiece()){
@@ -144,7 +178,7 @@ public class Controller implements EventHandler<MouseEvent>{
     }
 
     public void markLastPlayedMove(){
-        if (Chessboard.getInstance().getTurns().size() == 0)
+        if (chessboard.getTurns().size() == 0)
             return;
 
         if(lastLabelSource != null) lastLabelSource.getStyleClass().remove("lastPlayedFieldWhite");
@@ -152,7 +186,7 @@ public class Controller implements EventHandler<MouseEvent>{
         if(lastLabelTarget != null) lastLabelTarget.getStyleClass().remove("lastPlayedFieldWhite");
         if(lastLabelTarget != null) lastLabelTarget.getStyleClass().remove("lastPlayedFieldBlack");
 
-        Chessboard chessboard = Chessboard.getInstance();
+
         ArrayList<Turn> turns = chessboard.getTurns();
         Turn lastTurn = turns.get(turns.size()-1);
 
@@ -193,10 +227,10 @@ public class Controller implements EventHandler<MouseEvent>{
     }
     public void unSelectLabelPremove() {
         if (sourcePreMove == null) return;
-        if (targetPreMove == null) return;
         sourcePreMove.unselect();
-        targetPreMove.unselect();
         sourcePreMove = null;
+        if (targetPreMove == null) return;
+        targetPreMove.unselect();
         targetPreMove = null;
     }
 
@@ -232,7 +266,7 @@ public class Controller implements EventHandler<MouseEvent>{
     public void addMoveToDisplay(String s){
         VBox vb = ChessboardView.getMovesVBox();
         TextArea t = (TextArea) vb.getChildren().get(0);
-        if(Chessboard.getInstance().getColorToMove() == Color.WHITE){
+        if(chessboard.getColorToMove() == Color.WHITE){
             t.appendText(s + "\n");
         }
         else
@@ -264,5 +298,13 @@ public class Controller implements EventHandler<MouseEvent>{
 
     public Piece promotionDialog(Pawn pawn) {
         return new PromotionDialog(pawn).getResult();
+    }
+
+    public boolean isPremove() {
+        return isPremove;
+    }
+
+    public void setPremove(boolean premove) {
+        isPremove = premove;
     }
 }
