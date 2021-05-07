@@ -3,6 +3,9 @@ package model;
 import model.pieces.Pawn;
 import model.pieces.Piece;
 
+/**
+ * Describes a Turn by a Player/A.I
+ */
 public class Turn {
     private Field sourceField;
     private Field targetField;
@@ -18,6 +21,9 @@ public class Turn {
     private int moveScoreGuess = 0;
     private int promoteTo = 5;
 
+    /**
+     * sets sourceField, targetField, isCastleTurn, colorToMove, turnNumber, movingPiece(can be null), eatenPiece(can be null)
+     */
     public Turn(Field sourceField, Field targetField) {
         this.sourceField = sourceField;
         this.targetField = targetField;

@@ -2,6 +2,11 @@ package model;
 
 import model.pieces.Piece;
 
+/** Describes logic Field for model.Chessboard
+ * @version 4.0
+ * @since 1.0
+ */
+
 public class Field {
     private Piece piece;
     private int column, line;
@@ -32,10 +37,18 @@ public class Field {
         return piece != null;
     }
 
+    /**
+     * Returns Piece on Field
+     * @return returns null if Field is empty
+     */
     public Piece getPiece() {
         return piece;
     }
 
+    /**
+     * Sets a Piece on Field
+     * @param piece can be set to null to "remove" the Piece
+     */
     public void setPiece(Piece piece) {
         this.piece = piece;
     }

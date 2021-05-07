@@ -2,11 +2,10 @@ package model;
 
 import model.pieces.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.util.Map.entry;
-
+/**
+ * contains static PositionTables for each Piece for each GamePhase
+ * used by A.I to help it making moves
+ */
 public class PositionTables {
     private final static Chessboard chessboard = Chessboard.getInstance();
     private static Field[][] f = chessboard.getFields();

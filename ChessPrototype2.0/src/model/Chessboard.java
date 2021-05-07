@@ -14,6 +14,12 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * Chessboard used for all calculations, implements the singleton pattern
+ * @version 5.8
+ * @since 1.0
+ */
+
 public class Chessboard {
 
     private Field[][] fields;
@@ -46,6 +52,8 @@ public class Chessboard {
     private HashMap<String, String> openingBook;
     public boolean AIThinking=false;
     public boolean debug = false;
+    private int queensEaten = 0;
+
 
     // Singleton pattern
     private static Chessboard instance = null;
@@ -68,14 +76,35 @@ public class Chessboard {
             instance = null;
     }
 
+    /**
+     *  Constructor to set up a board of size * size for 2 Human players
+     * @param size Needs to be >0, recommended 8, entering very high/low values may break break the game
+     */
     public void createBoard(int size){
         createBoard(size, false, false);
     }
 
+    /**
+     * Constructor to set up a board of size * size for Human and A.I players
+     * Sets time to 5minutes and 0 Increment to 0
+     * @param size Needs to be >0, recommended 8, entering very high/low values may break break the game
+     * @param whiteAI true to let A.I play white
+     * @param blackAI true to let A.I play black
+     */
     public void createBoard(int size, boolean whiteAI, boolean blackAI){
         createBoard(size, false, false, 300, 300, 0, 0);
     }
 
+    /**
+     * Constructor to set up a board of size * size for Human and A.I players, also enables to enter custom Time and Increment for both Players
+     * @param size Needs to be >0, recommended 8, entering very high/low values may break break the game
+     * @param whiteAI true to let A.I play white
+     * @param blackAI true to let A.I play black
+     * @param whiteTime long time in seconds, should be >0
+     * @param blackTime long time in seconds, should be >0
+     * @param whiteInkrement increases timer for white by x seconds after making move
+     * @param blackInkrement increases timer for white by x seconds after making move
+     */
     public void createBoard(int size, boolean whiteAI, boolean blackAI, long whiteTime, long blackTime, long whiteInkrement, long blackInkrement){
         this.whiteTime = (long) (whiteTime*1e3);
         this.blackTime = (long) (blackTime*1e3);
@@ -244,7 +273,10 @@ public class Chessboard {
     }
 
 
-
+    /**
+     * Adds Piece p to its corresponding ArrayList
+     * @param p Piece to add
+     */
     public void addPiece(Piece p){
         if(p==null) return;
         if(p.getColor() == Color.BLACK)
@@ -253,7 +285,6 @@ public class Chessboard {
             whitePieces.add(p);
     }
 
-    //Ende (Also die Züge und ruleCounter) entfernen
     public void addFen(String fen){
         fen  = fen.substring(0, fen.lastIndexOf(' '));
         fen  = fen.substring(0, fen.lastIndexOf(' '));
@@ -261,6 +292,11 @@ public class Chessboard {
         fens.add(fen);
     }
 
+    /**
+     * Removes Piece from its Corresponding ArrayList
+     * @param p Piece to delete
+     * @return returns true if Piece has been successfully removed
+     */
     public boolean removePiece(Piece p){
         if(p.getColor() == Color.BLACK)
             return blackPieces.remove(p);
@@ -268,27 +304,48 @@ public class Chessboard {
             return whitePieces.remove(p);
     }
 
-    //Wenn jemand a besserer Nume für des einfollt
-    private int queensEaten = 0;
+    /**
+     * Adds Piece to eatenPieces ArrayList, useful to keep references around so the GarbageCollector doesnt delete them after a Piece is taken
+     * @param p Piece to add
+     */
     public void addPieceToEaten(Piece p){
+        if(p == null) return;
         eatenPieces.add(p);
     }
 
-    //Same
+    /**
+     * Removes Piece from eatenPieces ArrayList
+     * @param p Piece to remove
+     * @return returns true if Piece has been removed successfully
+     */
     public boolean removePieceFromEaten(Piece p){
         return eatenPieces.remove(p);
     }
 
+    /**
+     * Quick way to get the Black king
+     * @return can be Null if King doesnt exist
+     */
     public King getB_king() {
         return b_king;
     }
 
+    /**
+     * Quick way to get the Black king
+     * @return can be Null if King doesnt exist
+     */
     public King getW_king() {
         return w_king;
     }
 
     private Turn t;
 
+    /**
+     * Handles turn for a Player and for A.I, also gets called by A.I when calculating best Move, for this Chessboard.debug and Chessboard.withTime gets set to false
+     * inorder to not display the move on Chessboard.View.
+     * @param currentT turn to handle, cannot be null
+     * @return true if the move is played successfully
+     */
     public boolean handleTurn(Turn currentT){
         //System.out.println(whiteInkrement);
         if(timeStopped != 0 && withTime){
@@ -469,6 +526,12 @@ public class Chessboard {
         movePiece(p, f, true);
     }
 
+    /**
+     * Moves Piece to Field
+     * @param p Piece to move
+     * @param f Field to move Piece to
+     * @param s Play sound when making move
+     */
     public void movePiece(Piece p, Field f, boolean s){
 
 
@@ -543,6 +606,10 @@ public class Chessboard {
         //printBoard();
     }
 
+
+    /**
+     * sets game back to Turn t
+     */
     public void undoTurn(Turn t) {
 
         boolean breakCondition = true;
@@ -644,6 +711,11 @@ public class Chessboard {
 
     }
     //Am ende von jedem Zug
+
+    /**
+     * Indicates that a Turn has been played, if Chessboard.debug is set to true displays move on view.ChessboardView
+     * Also if a A.I is set to true, Makes A.I take a turn
+     */
     public void endTurn(){
         //System.out.println("Im endTurn drinnen!");
         notifyObserver();
@@ -696,6 +768,13 @@ public class Chessboard {
         }
     }
 
+    /**
+     * checks if move would put king in check
+     * @param destination Field which Piece wants to move to
+     * @param start Field of Piece
+     * @param color color of Piece
+     * @return true if move is legal
+     */
     public boolean isLegal(Field destination, Field start, Color color) {
 
         // Backup the possible eaten piece
@@ -739,6 +818,10 @@ public class Chessboard {
         return true;
     }
 
+    /**
+     * Sets Board by a specific fen.
+     * @param fen needs to be in correct FEN notation
+     */
     public void setBoardByFen(String fen){
         /*
             0 => positions
@@ -837,12 +920,18 @@ public class Chessboard {
         turn = Integer.parseInt(groups[5]);
 
     }
+
+    /**
+     * Converts a turn t to a PGN notation
+     * @param t turn to convert to PGN
+     * @return PGN as String
+     */
     public String turnToPGN(Turn t){
         StringBuilder s = new StringBuilder();
 
         King k = colorToMove == Color.BLACK ? b_king : w_king;
         if(t.getColorToMove() == Color.WHITE)
-            s.append((turn)+". ");
+            s.append(turn).append(". ");
 
         switch(Character.toLowerCase(t.getMovingPiece().getShortName())){
             case 'p': if(t.getEatenPiece() != null) s.append(t.getSourceField().getName().charAt(0));break;
@@ -883,6 +972,10 @@ public class Chessboard {
         s.append(" ");
         return s.toString();
     }
+
+    /**
+     * @return Returns Fen of current Board state
+     */
     public String getBoardAsFen(){
         String[] groups = new String[]{"", "", "", "", "", ""};
         // Get the position of the chessboard
@@ -1011,14 +1104,32 @@ public class Chessboard {
         colorToMove = color;
     }
 
+    /**
+     * @return boolean Array with every Castle Permission
+     * [0] = white long castle permission(Queen side)
+     * [1] = white short castle permission(King side)
+     * [2] = black long castle permission(Queen side)
+     * [3] = black short castle permission(King side)
+     */
     public boolean[] getCastlePermissions() {
         return new boolean[]{whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort};
     }
 
+    /**
+     * @return
+     * [0] = white AI
+     * [1] = black AI
+     */
     public boolean[] getPlaysAI() {
         return playsAI;
     }
 
+    /**
+     *
+     * @param playsAI
+     * [0] = white A.I
+     * [1] = black A.I
+     */
     public void setPlaysAI(boolean[] playsAI) {
         this.playsAI = playsAI;
     }

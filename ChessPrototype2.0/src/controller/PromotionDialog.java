@@ -23,15 +23,24 @@ import view.Main;
 
 //TODO: vlt schianer gestalten und dasses wenn die MainStage aussn focus geat des a aussn focus geat
 //TODO: Eventuell no es so schian rund mochen wia ba Lichess ober idk wia hel geat
+
+/**
+ * Used for Promoting a Pawn
+ */
 public class PromotionDialog extends Pane {
 
     private Piece retPiece = null;
 
+    /**
+     * constructor sets up Dialog for pawn p
+     * moves it on top of pawn
+     * @param p pawn to be Promoted
+     */
     public PromotionDialog(Pawn p)
     {
         ImageView[] imgs = new ImageView[4];
         char[] chars = {'q','r','b','n'};
-        int offsetY;
+        int offsetY; //so dialog moves up when at the bottom of the Board
         Label qLabel = new Label();
         Label rLabel = new Label();
         Label nLabel = new Label();

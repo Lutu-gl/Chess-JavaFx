@@ -2,22 +2,26 @@ package controller;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import model.*;
 import model.pieces.Pawn;
 import model.pieces.Piece;
 import view.ChessboardView;
 import view.FieldLabel;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 
+
+/**
+ * Controller to make model Classes and view Classes communicate
+ * is singleton
+ * implements EvenHandler<MouseEvent>
+ * @since 1.0
+ * @version 5.2
+ */
 public class Controller implements EventHandler<MouseEvent>{
 
     private FieldLabel source=null;
@@ -40,6 +44,10 @@ public class Controller implements EventHandler<MouseEvent>{
     }
 
 
+    /**
+     * gets called after clicking a FieldLabel on view.ChessboardView
+     * creates Turn Object to send to model
+     */
     @Override
     public void handle(MouseEvent mouseEvent) {
         System.out.println("Gamephase: " + Chessboard.getInstance().getGamephase());
@@ -96,6 +104,9 @@ public class Controller implements EventHandler<MouseEvent>{
         }
     }
 
+    /**
+     * @param f marks/outlines every move for Piece on Field f, adds field to ArrayList highlighted
+     */
     public void markAvailableMoves(Field f) {
         for (Field d : f.getPiece().getMoves())
         {
@@ -141,6 +152,9 @@ public class Controller implements EventHandler<MouseEvent>{
         }
     }
 
+    /**
+     * Removes every outline/mark for each FieldLabel in ArrayList highlighted, clears it afterwards
+     */
     public void unmarkAvailableMoves() {
         if (highlighted == null) return;
         highlighted.forEach(fieldLabel -> {
@@ -152,40 +166,69 @@ public class Controller implements EventHandler<MouseEvent>{
         highlighted.clear();
     }
 
+    /**
+     * @param f tells view.ChessboardView which field to mark as selected, sets selectedLabel to f
+     */
     public void selectLabel(FieldLabel f) {
         f.select();
         selectedLabel = f;
     }
 
+    /**
+     * tells view.ChessboardView to unmark selectedLabel as selected, sets selectedLabel to null
+     */
     public void unSelectLabel() {
         if (selectedLabel == null) return;
         selectedLabel.unselect();
         selectedLabel = null;
     }
 
+    /**
+     * converts model.Field to its corresponding view.FieldLabel
+     * @param f Field to convert
+     * @return can return null if there is no matching FieldLabel
+     */
     public FieldLabel fieldToFieldLabel(Field f){
         return ChessboardView.getBoard().get(f.getLine()).get(f.getColumn());
     }
 
+    /**
+     * @param f tells view.ChessboardView which FieldLabel to mark, sets checkLabel to f
+     */
     public void markCheck(FieldLabel f){
         checkLabel = f;
         f.markAsCheck();
     }
+
+    /**
+     * tells view.ChessboardView to unmark checkLabel, sets checkLabel to null
+     */
     public void unmarkCheck(){
         if(checkLabel==null) return;
         checkLabel.unmarkAsCheck();
         checkLabel = null;
     }
 
+    /**
+     * Updates the time on view.ChessboardView for color c
+     * @param time sets the Time to this value using Platform.runLater()
+     * @param c color of Player to set the time for
+     */
     public void updateTime(double time, Color c){
         //System.out.println("Time "+ time + c);
         switch(c){
-            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(0)).setText(Double.toString(time))); // 0 == black Label 1 == scrollPane 2 == white Label
+            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(0)).setText(Double.toString(time))); // [0] == black Label [1] == scrollPane [2] == white Label
             case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(2)).setText(Double.toString(time)));
         }
 
     }
 
+    /**
+     * Used for writing into the Textarea next to the Chessboard.
+     * should be used to write the move that has just been played in PGN notation into the TextArea
+     * makes a newLine in TextArea after a full turn
+     * @param s String to write into TextArea
+     */
     public void addMoveToDisplay(String s){
         VBox vb = ChessboardView.getMovesVBox();
         TextArea t = (TextArea) vb.getChildren().get(0);
@@ -219,6 +262,12 @@ public class Controller implements EventHandler<MouseEvent>{
         return target;
     }
 
+    /**
+     * Displays Dialog for promoting Pawn to a different Piece
+     * only works for Human players
+     * @param pawn pawn to be Promoted
+     * @return Piece player selected for the Pawn to be Promoted to
+     */
     public Piece promotionDialog(Pawn pawn) {
         return new PromotionDialog(pawn).getResult();
     }

@@ -5,6 +5,9 @@ import model.Field;
 
 import java.util.ArrayList;
 
+/**
+ * Abstract class every Piece needs to inherit of
+ */
 public abstract class Piece {
     protected Color color;
     protected int value;
@@ -12,6 +15,29 @@ public abstract class Piece {
     protected Field field;
     protected char shortName;
 
+    /**
+     * Default Constructor implemented for each Piece
+     * @param color color of Piece
+     * @param name name of Piece("Black Queen, White Knight")
+     * @param field Field Piece is on
+     * @param value value of Piece
+     *              Recommended for default Pieces
+     *              Queen = 9
+     *              Rook = 5
+     *              Knight = Bishop = 3
+     *              Pawn = 1
+     *              King = 300
+     * @param shortName single Char for Piece
+     *                  lowercase = Black
+     *                  uppercase = White
+     *
+     *                  'n' or 'N' = Knight
+     *                  'k' or 'K' = King
+     *                  'q' or 'Q' = Queen
+     *                  'r' or 'R' = Rook
+     *                  'b' or 'B'= Bishop
+     *                  'p' or 'P'= Pawn
+     */
     public Piece(Color color, String name, Field field, int value, char shortName) {
         this.color = color;
         this.name = name;
@@ -20,6 +46,11 @@ public abstract class Piece {
         this.shortName = shortName;
     }
 
+    /**
+     * every Piece needs to Implement this method to indicate which moves it can make
+     * does not need to consider putting own King in check when calculating valid moves
+     * @return ArrayList of Fields
+     */
     public abstract ArrayList<Field> getMoves();
 
     public Color getColor() {

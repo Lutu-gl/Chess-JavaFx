@@ -1,30 +1,43 @@
 package view;
 
-import controller.*;
-import javafx.geometry.Bounds;
-import javafx.geometry.Pos;
+import controller.Controller;
+import controller.DragDetectedHandler;
+import controller.DragDroppedHandler;
+import controller.DragOverHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.Chessboard;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * Chessboard for Displaying the Board in a Graphical way
+ * @since 1.0
+ * @version 4.6
+ */
 public class ChessboardView {
+
     private static ArrayList<ArrayList<FieldLabel>> board;
     private static Scene mainScene;
     private static VBox timerVBox;
     private static VBox movesVBox;
+
+    /**
+     * Sets up Board and static Attributes
+     * @param l lenght of board
+     * @param w width of board
+     * @param color Style of Board
+     * @return created Scene with FieldLabels etc.
+     */
     public static Scene init( int l, int w, FieldBackground color) {
         BorderPane bp = new BorderPane();
         GridPane gridPane = new GridPane();
@@ -90,11 +103,11 @@ public class ChessboardView {
         tf.setLayoutY(0);
         movesVBox.getChildren().add(tf);
         movesVBox.setSpacing(10);
-
+        //scPane.vvalueProperty().bind(movesVBox.heightProperty());
         scPane.setContent(movesVBox);
 
         VBox timerVBox = new VBox(t1Label, scPane,t2Label);
-
+        scPane.setFitToWidth(true);
         timerVBox.setSpacing(100);
         t1Label.setMinSize(200, 200);
         t2Label.setMinSize(200, 200);
@@ -106,6 +119,10 @@ public class ChessboardView {
         return mainScene;
     }
 
+    /**
+     * sets view.ChessboardView to specific fen
+     * @param fen needs to be formatted correctly as FEN notation
+     */
     public static void setFEN(String fen) {
         String[] lines = fen.substring(0, fen.indexOf(" ")).split("/");
 
@@ -137,13 +154,18 @@ public class ChessboardView {
         }
     }
 
+    /**
+     * sets view.ChessboardView to model.Chessboard by its fen
+     */
     public static void display() {
         //System.out.println(Chessboard.getInstance().getBoardAsFen());
         deleteImages();
         setFEN(Chessboard.getInstance().getBoardAsFen());
     }
 
-
+    /**
+     * removes Pieces on view.ChessboardView, does not affect model.Chessboard
+     */
     private static void deleteImages(){
         board.forEach(line -> line.forEach(element -> element.setGraphic(null)));
     }
