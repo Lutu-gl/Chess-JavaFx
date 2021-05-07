@@ -31,7 +31,7 @@ public class StockfishHelper implements Runnable{
             System.out.println("Oops! Something went wrong..");
             return;
         }
-        recursiveSearch(20);
+        recursiveSearch(5);
     }
 
     private void recursiveSearch(int depth) {
@@ -40,7 +40,7 @@ public class StockfishHelper implements Runnable{
         ArrayList<String> bestMoves = new ArrayList<>();
         client.sendCommand("position fen "+chessboard.getBoardAsFen());
         client.sendCommand("go depth 300");
-        String[] lines = client.getOutput(200).split("\n");
+        String[] lines = client.getOutput(400).split("\n");
         client.sendCommand("stop");
         for (int i = lines.length-10; i < lines.length; i++) {
             bestMoves.add(lines[i].substring(lines[i].indexOf(" pv ")+4, lines[i].indexOf(" pv ")+8));

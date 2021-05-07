@@ -25,7 +25,7 @@ public class ChessboardView {
     private static Scene mainScene;
     private static VBox timerVBox;
     private static VBox movesVBox;
-    public static Scene init( int l, int w) {
+    public static Scene init( int l, int w, FieldBackground color) {
         BorderPane bp = new BorderPane();
         GridPane gridPane = new GridPane();
         board = new ArrayList<>();
@@ -34,7 +34,7 @@ public class ChessboardView {
             ArrayList<FieldLabel> buffer = new ArrayList<>();
             for (int x = 0; x < w; x++) {
                 FieldLabel lbl = new FieldLabel(i, x);
-                lbl.getStyleClass().add((i+x)%2==0 ? "whiteField" : "blackField");
+                lbl.getStyleClass().add((i+x)%2==0 ? color.getS1() : color.getS2());
                 lbl.setOnMouseClicked(Controller.getInstance());
 
                 // Set handler for drag and drop

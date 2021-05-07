@@ -173,57 +173,5 @@ public class Stockfish {
         chessboard.setBoardByFen(fen);
         Thread t = new Thread(new StockfishHelper(chessboard, new Stockfish(), args[6]));
         t.start();
-
-        // Start thread for classic chess 1.e4
-        /*Runnable classicChess = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "e2e4.csv");
-        Thread thread1 = new Thread(classicChess);
-
-        // Start thread for queen pawn 1.d4
-        Runnable queenPawn = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "d2d4.csv");
-        Thread thread2 = new Thread(queenPawn);
-
-        // Start thread for kingKnight opening 1.nf3
-        Runnable knightKing = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1"), new Stockfish(), "g1f3.csv");
-        Thread thread3 = new Thread(knightKing);
-
-        // Start thread for english opening 1.c4
-        Runnable englishOpening = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/2P5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "c2c4.csv");
-        Thread thread4 = new Thread(englishOpening);
-
-        // Start thread for Van't Kruijs 1.e3
-        Runnable kruijs = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "e2e3.csv");
-        Thread thread5 = new Thread(kruijs);
-
-        // Start thread for King's Fianchetto 1.g3
-        Runnable fianchetto = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/6P1/PPPPPP1P/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "g2g3.csv");
-        Thread thread6 = new Thread(fianchetto);
-
-        // Start thread for Saragossa Opening 1.c3
-        Runnable saragossa = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/2P5/PP1PPPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "c2c3.csv");
-        Thread thread7 = new Thread(saragossa);
-
-        // Start thread for Anderssen's Opening 1.a3
-        Runnable anderssen = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "a2a3.csv");
-        Thread thread8 = new Thread(anderssen);
-
-        // Start thread for queenKnight Opening 1.nc3
-        Runnable queenKnight = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR b KQkq - 1 1"), new Stockfish(), "b1c3.csv");
-        Thread thread9 = new Thread(queenKnight);
-
-        // Start thread for Larsen's Opening 1.b3
-        Runnable larsen = new StockfishHelper(chessboardHelper("rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR b KQkq - 0 1"), new Stockfish(), "b2b3.csv");
-        Thread thread10 = new Thread(larsen);
-
-        thread1.start();
-        thread2.start();
-        thread3.start();
-        thread4.start();
-        thread5.start();
-        thread6.start();
-        thread7.start();
-        thread8.start();
-        thread9.start();
-        thread10.start();
-        */
     }
 }

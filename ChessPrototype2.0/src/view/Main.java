@@ -72,7 +72,7 @@ public class Main extends Application {
         // Set Title of window
         primaryStage.setTitle("Chess!");
         // Set graphic view of the chess board. Normally it is 8x8
-        primaryStage.setScene(ChessboardView.init(size, size));
+        primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.STANDARD));
         // Set the figures with the FEN Code
         ChessboardView.display();
         // Set the stylesheet
