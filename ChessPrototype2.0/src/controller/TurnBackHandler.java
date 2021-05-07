@@ -12,6 +12,11 @@ public class TurnBackHandler implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent actionEvent) {
         Chessboard chessboard = Chessboard.getInstance();
+
+        if(chessboard.AIThinking){
+            return;
+        }
+
         ArrayList<Turn> turns = chessboard.getTurns();
         chessboard.undoTurn(turns.get(turns.size()-1));
     }
