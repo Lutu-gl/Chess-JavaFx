@@ -61,9 +61,20 @@ public class FieldLabel extends Label {
         isSelected = true;
         this.getStyleClass().add("selectedField");
     }
+    public void selectPremoveSource() {
+        isSelected = true;
+        this.getStyleClass().add("selectedFieldPremoveSource");
+    }
+    public void selectPremoveTarget() {
+        isSelected = true;
+        this.getStyleClass().add("selectedFieldPremoveTarget");
+    }
+
     public void unselect() {
         isSelected = false;
         this.getStyleClass().remove("selectedField");
+        this.getStyleClass().remove("selectedFieldPremoveSource");
+        this.getStyleClass().remove("selectedFieldPremoveTarget");
     }
     public void markAsCheck(){
         isCheckLabel = true;

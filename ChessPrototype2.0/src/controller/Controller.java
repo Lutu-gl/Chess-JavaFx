@@ -2,20 +2,16 @@ package controller;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import model.*;
 import model.pieces.Pawn;
 import model.pieces.Piece;
 import view.ChessboardView;
 import view.FieldLabel;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 
 public class Controller implements EventHandler<MouseEvent>{
@@ -30,6 +26,11 @@ public class Controller implements EventHandler<MouseEvent>{
     private FieldLabel lastLabelSource;
     private FieldLabel lastLabelTarget;
 
+
+    private FieldLabel sourcePreMove = null;
+    private FieldLabel targetPreMove = null;
+
+
     private Controller(){
 
     }
@@ -42,12 +43,41 @@ public class Controller implements EventHandler<MouseEvent>{
 
     @Override
     public void handle(MouseEvent mouseEvent) {
-        System.out.println("Gamephase: " + Chessboard.getInstance().getGamephase());
+        //System.out.println("Gamephase: " + Chessboard.getInstance().getGamephase());
         Chessboard chessboard = Chessboard.getInstance();
         // This is just testing to start the AI
-
+        System.out.println(chessboard.AIThinking);
+        //if(chessboard.AIThinking) return;
+        System.out.println("sourcePreMove = " + sourcePreMove + "   targetPreMove = " + targetPreMove);
         if(chessboard.AIThinking){
+            System.out.println("Premove machen");
+            FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
+             if(sourcePreMove == null){
+                //Schauen ob Piece oben ist.
+                 sourcePreMove = clickedFieldLabel;
+                 clickedFieldLabel.selectPremoveSource();
+            } else {
+                 if(targetPreMove != null){
+                     System.out.println("jetzt unselect");
+                     unSelectLabelPremove();
+                     return;
+                 }
+                 targetPreMove = clickedFieldLabel;
+
+                 if(targetPreMove == sourcePreMove){
+                     unSelectLabelPremove();
+                     return;
+                 }
+
+                 targetPreMove.selectPremoveTarget();
+            }
+            
             return;
+        }else{
+            if(sourcePreMove != null || targetPreMove != null){
+                unSelectLabel();
+            }
+
         }
 
         if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
@@ -64,7 +94,7 @@ public class Controller implements EventHandler<MouseEvent>{
             if (!clickedField.hasPiece() || !clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) return;
             source = clickedFieldLabel;
             selectLabel(source);
-            markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()]);
+            markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()], source);
         }
         else {
             if (clickedField.hasPiece() && clickedField.getPiece().getColor().equals(Chessboard.getInstance().getColorToMove())) {
@@ -73,7 +103,7 @@ public class Controller implements EventHandler<MouseEvent>{
                 if (clickedFieldLabel != source) {
                     source = clickedFieldLabel;
                     selectLabel(source);
-                    markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()]);
+                    markAvailableMoves(Chessboard.getInstance().getFields()[source.getLine()][source.getColumn()], source);
                 } else { //Wenns das selbe Piece ist, dann wird source auf null gesetzt!
                     source = null;
                 }
@@ -96,7 +126,7 @@ public class Controller implements EventHandler<MouseEvent>{
         }
     }
 
-    public void markAvailableMoves(Field f) {
+    public void markAvailableMoves(Field f, FieldLabel source) {
         for (Field d : f.getPiece().getMoves())
         {
 
@@ -155,6 +185,19 @@ public class Controller implements EventHandler<MouseEvent>{
     public void selectLabel(FieldLabel f) {
         f.select();
         selectedLabel = f;
+    }
+
+    public void selectLabelPremove(FieldLabel f) {
+        f.select();
+        selectedLabel = f;
+    }
+    public void unSelectLabelPremove() {
+        if (sourcePreMove == null) return;
+        if (targetPreMove == null) return;
+        sourcePreMove.unselect();
+        targetPreMove.unselect();
+        sourcePreMove = null;
+        targetPreMove = null;
     }
 
     public void unSelectLabel() {

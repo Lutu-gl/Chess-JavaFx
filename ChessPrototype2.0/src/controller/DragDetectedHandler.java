@@ -38,7 +38,7 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
             // Select the dragged field and mark available moves for it
             Controller.getInstance().setSource(clickedFieldLabel);
             Controller.getInstance().selectLabel(clickedFieldLabel);
-            Controller.getInstance().markAvailableMoves(clickedField);
+            Controller.getInstance().markAvailableMoves(clickedField, clickedFieldLabel);
 
             // Create a Dragboard
             Dragboard db = ((FieldLabel) mouseEvent.getSource()).startDragAndDrop(TransferMode.ANY);
