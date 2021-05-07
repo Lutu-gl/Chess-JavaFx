@@ -1,12 +1,49 @@
-.whiteField {
+.creamwhiteField {
     -fx-background-color: #f0d9b5;
-    -fx-min-height: 100px;
-    -fx-min-width: 100px;
-    -fx-alignment: center;
 }
 
-.blackField {
+.whiteField {
+    -fx-background-color: white;
+}
+
+.lightbrownField {
     -fx-background-color: #b58863;
+}
+
+.brownField {
+    -fx-background-color: #663624;
+}
+
+.lightblueField {
+    -fx-background-color: lightblue;
+}
+
+.pinkField {
+    -fx-background-color: pink;
+}
+
+.greenField {
+    -fx-background-color: green;
+}
+
+.lightgreyField {
+    -fx-background-color: lightgrey;
+}
+
+.beigeField {
+    -fx-background-color: #bf945b;
+}
+
+.lightmetallicField {
+    -fx-background-color: #d8d8d8;
+}
+
+.darkmetallicField {
+    -fx-background-color: #787878;
+}
+
+
+.field {
     -fx-min-height: 100px;
     -fx-min-width: 100px;
     -fx-alignment: center;

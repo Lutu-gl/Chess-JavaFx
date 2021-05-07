@@ -47,6 +47,7 @@ public class ChessboardView {
             ArrayList<FieldLabel> buffer = new ArrayList<>();
             for (int x = 0; x < w; x++) {
                 FieldLabel lbl = new FieldLabel(i, x);
+                lbl.getStyleClass().add("field");
                 lbl.getStyleClass().add((i+x)%2==0 ? color.getS1() : color.getS2());
                 lbl.setOnMouseClicked(Controller.getInstance());
 

@@ -1,11 +1,13 @@
 package view;
 
 public enum FieldBackground {
-    STANDARD(new String[]{"whiteField", "blackField"}),
+    STANDARD(new String[]{"creamwhiteField", "lightbrownField"}),
     SKY(new String[]{"whiteField", "lightblueField"}),
     CHEWING_GUM(new String[]{"whiteField", "pinkField"}),
     EIGHT_BIT(new String[]{"whiteField", "greenField"}),
-    TRANSPARENT(new String[]{"whiteField", "greyField"});
+    TRANSPARENT(new String[]{"whiteField", "lightgreyField"}),
+    LUMBERJACK(new String[]{"beigeField", "brownField"}),
+    METALLIC(new String[]{"lightmetallicField", "darkmetallicField"});
 
     private String s1, s2;
     FieldBackground(String[] array) {
