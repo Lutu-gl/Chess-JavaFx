@@ -49,11 +49,8 @@ public class Controller implements EventHandler<MouseEvent>{
             chessboard.endTurn();
         System.out.println(chessboard.AIThinking);
         //if(chessboard.AIThinking) return;
-        System.out.println("sourcePreMove = " + sourcePreMove + "   targetPreMove = " + targetPreMove);
         if(chessboard.AIThinking){
-            System.out.println("Premove machen");
             FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
-            Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
 
             if(sourcePreMove == null){
                 //Schauen ob Piece oben ist.
@@ -62,7 +59,6 @@ public class Controller implements EventHandler<MouseEvent>{
                  clickedFieldLabel.selectPremoveSource();
             } else {
                  if(targetPreMove != null){
-                     System.out.println("jetzt unselect");
                      unSelectLabelPremove();
                      return;
                  }
@@ -127,8 +123,6 @@ public class Controller implements EventHandler<MouseEvent>{
         }
     }
     public void handlePremove(){    //wird von endTurn aufgerufen wenn es einen Premove gibt!
-        System.out.println("jettz handle: " + sourcePreMove + "   " + targetPreMove);
-
 
         //if(!isPremove) return;
         if(sourcePreMove == null || targetPreMove== null){
@@ -306,5 +300,20 @@ public class Controller implements EventHandler<MouseEvent>{
 
     public void setPremove(boolean premove) {
         isPremove = premove;
+    }
+    public FieldLabel getSourcePreMove() {
+        return sourcePreMove;
+    }
+
+    public void setSourcePreMove(FieldLabel sourcePreMove) {
+        this.sourcePreMove = sourcePreMove;
+    }
+
+    public FieldLabel getTargetPreMove() {
+        return targetPreMove;
+    }
+
+    public void setTargetPreMove(FieldLabel targetPreMove) {
+        this.targetPreMove = targetPreMove;
     }
 }
