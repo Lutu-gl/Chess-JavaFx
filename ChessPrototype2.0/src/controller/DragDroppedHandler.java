@@ -9,11 +9,31 @@ import view.FieldLabel;
 import java.util.ArrayList;
 
 public class DragDroppedHandler implements EventHandler<DragEvent> {
+
     @Override
     public void handle(DragEvent dragEvent) {
         Controller controller = Controller.getInstance();
         FieldLabel targetLabel = (FieldLabel) dragEvent.getGestureTarget();
         Chessboard chessboard = Chessboard.getInstance();
+
+
+        FieldLabel sourcePreMove = controller.getSourcePreMove();
+        FieldLabel targetPreMove = controller.getTargetPreMove();
+        if(chessboard.AIThinking){
+            System.out.println("Jetzt drag dropped");
+            if(targetPreMove == null) {
+                controller.setTargetPreMove(targetLabel);
+                if(controller.getSourcePreMove() == controller.getTargetPreMove()){
+                    controller.unSelectLabelPremove();
+                    return;
+                }
+                targetLabel.selectPremoveTarget();
+                controller.setPremove(true);
+            }
+
+            return;
+        }
+
 
         controller.setTarget(targetLabel);
 
