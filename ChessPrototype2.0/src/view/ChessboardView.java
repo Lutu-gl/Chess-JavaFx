@@ -30,6 +30,7 @@ public class ChessboardView {
     private static Scene mainScene;
     private static VBox timerVBox;
     private static VBox movesVBox;
+    private static PieceDesign design;
 
     /**
      * Sets up Board and static Attributes
@@ -38,10 +39,11 @@ public class ChessboardView {
      * @param color Style of Board
      * @return created Scene with FieldLabels etc.
      */
-    public static Scene init( int l, int w, FieldBackground color) {
+    public static Scene init( int l, int w, FieldBackground color, PieceDesign design) {
         BorderPane bp = new BorderPane();
         GridPane gridPane = new GridPane();
         board = new ArrayList<>();
+        ChessboardView.design = design;
 
         for (int i = 0; i < l; i++) {
             ArrayList<FieldLabel> buffer = new ArrayList<>();
@@ -141,10 +143,10 @@ public class ChessboardView {
                 }
                 ImageView image = null;
                 if (ascii >= 65 && ascii <= 90) {
-                    image = new ImageView(new Image(Main.class.getResourceAsStream("/W_"+lines[i].charAt(x)+".png")));
+                    image = new ImageView(new Image(Main.class.getResourceAsStream("/"+ChessboardView.design.getDesign()+"W_"+lines[i].charAt(x)+".png")));
                 }
                 else {
-                    image = new ImageView(new Image(Main.class.getResourceAsStream("/B_"+lines[i].charAt(x)+".png")));
+                    image = new ImageView(new Image(Main.class.getResourceAsStream("/"+ChessboardView.design.getDesign()+"B_"+lines[i].charAt(x)+".png")));
                 }
                 image.setFitHeight(100);
                 image.setFitWidth(100);

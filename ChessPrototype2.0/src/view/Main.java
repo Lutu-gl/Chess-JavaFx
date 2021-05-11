@@ -14,7 +14,7 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
 
-        board.createBoard(size, false, true, 120, 120, 0, 0); //In Sekunden!
+        board.createBoard(size, false, false, 120, 120, 0, 0); //In Sekunden!
 
         String fen = "";
 
@@ -71,7 +71,7 @@ public class Main extends Application {
         // Set Title of window
         primaryStage.setTitle("Chess!");
         // Set graphic view of the chess board. Normally it is 8x8
-        primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.LUMBERJACK));
+        primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.BOOK));
         // Set the figures with the FEN Code
         ChessboardView.display();
         // Set the stylesheet
