@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -25,19 +26,20 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
         if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
             chessboard.endTurn();
 
-        if(chessboard.AIThinking){
+        if(chessboard.AIThinking) {
             FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
             Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
 
-            if(sourcePreMove == null) {
-                if(clickedFieldLabel.getGraphic() == null) return;
-                controller.setSourcePreMove(clickedFieldLabel);
-                clickedFieldLabel.selectPremoveSource();
-            }
+            controller.unSelectLabelPremove();
+
+            if(clickedFieldLabel.getGraphic() == null) return;
+            controller.setSourcePreMove(clickedFieldLabel);
+            clickedFieldLabel.selectPremoveSource();
             Dragboard db = ((FieldLabel) mouseEvent.getSource()).startDragAndDrop(TransferMode.ANY);
 
             // Set the drag view to the image of the piece dragged
-            Image image = new Image(Main.class.getResourceAsStream("/"+(chessboard.getCurrentAIMovingColor().equals(Color.BLACK)?"W":"B")+"_"+clickedField.getPiece().getShortName()+".png"));
+
+            Image image = ((ImageView)clickedFieldLabel.getGraphic()).getImage();
             db.setDragView(image, image.getHeight()/2, image.getHeight()/2);
 
             /* Put a string on a dragboard */

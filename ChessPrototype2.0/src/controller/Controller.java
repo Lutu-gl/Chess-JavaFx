@@ -52,6 +52,10 @@ public class Controller implements EventHandler<MouseEvent>{
         if(chessboard.AIThinking){
             FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
 
+            if(sourcePreMove != null && targetPreMove != null){
+                unSelectLabelPremove();
+            }
+
             if(sourcePreMove == null){
                 //Schauen ob Piece oben ist.
                  if(clickedFieldLabel.getGraphic() == null) return;
