@@ -71,23 +71,23 @@ public class Controller implements EventHandler<MouseEvent>{
 
             if(sourcePreMove == null){
                 //Schauen ob Piece oben ist.
-                 if(clickedFieldLabel.getGraphic() == null) return;
-                 sourcePreMove = clickedFieldLabel;
-                 clickedFieldLabel.selectPremoveSource();
+                if(clickedFieldLabel.getGraphic() == null) return;
+                sourcePreMove = clickedFieldLabel;
+                clickedFieldLabel.selectPremoveSource();
             } else {
-                 if(targetPreMove != null){
-                     unSelectLabelPremove();
-                     return;
-                 }
-                 targetPreMove = clickedFieldLabel;
+                if(targetPreMove != null){
+                    unSelectLabelPremove();
+                    return;
+                }
+                targetPreMove = clickedFieldLabel;
 
-                 if(targetPreMove == sourcePreMove){
-                     unSelectLabelPremove();
-                     return;
-                 }
+                if(targetPreMove == sourcePreMove){
+                    unSelectLabelPremove();
+                    return;
+                }
 
-                 targetPreMove.selectPremoveTarget();
-                 isPremove = true;
+                targetPreMove.selectPremoveTarget();
+                isPremove = true;
             }
 
             return;
@@ -98,8 +98,8 @@ public class Controller implements EventHandler<MouseEvent>{
         }
 
         if (!chessboard.getGamestate().equals(Gamestate.PLAYING) ||
-           (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
-           (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
+                (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
+                (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
 
         FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
         Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
@@ -149,10 +149,6 @@ public class Controller implements EventHandler<MouseEvent>{
         Field clickedFieldSource = chessboard.getFields()[sourcePreMove.getLine()][sourcePreMove.getColumn()];
         Field clickedFieldTarget = chessboard.getFields()[targetPreMove.getLine()][targetPreMove.getColumn()];
 
-    /**
-     * @param f marks/outlines every move for Piece on Field f, adds field to ArrayList highlighted
-     */
-    public void markAvailableMoves(Field f) {
         if (!clickedFieldSource.hasPiece() || !clickedFieldSource.getPiece().getColor().equals(chessboard.getColorToMove())){
             unSelectLabelPremove();
             return;
