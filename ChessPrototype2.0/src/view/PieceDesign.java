@@ -2,7 +2,8 @@ package view;
 
 public enum PieceDesign {
     STANDARD(""),
-    BOOK("book_");
+    BOOK("book_"),
+    SPACE("space_");
 
     private String design;
 
