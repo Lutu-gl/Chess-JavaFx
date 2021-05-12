@@ -58,10 +58,10 @@ public class Controller implements EventHandler<MouseEvent>{
     public void handle(MouseEvent mouseEvent) {
         //System.out.println("Gamephase: " + chessboard.getGamephase());
         // This is just testing to start the AI
-        if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
+        if (chessboard.getPlaysAI()[0]&&chessboard.getTurns().size() == 0)
             chessboard.endTurn();
-        System.out.println(chessboard.AIThinking);
-        //if(chessboard.AIThinking) return;
+
+
         if(chessboard.AIThinking){
             FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
 

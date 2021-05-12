@@ -171,7 +171,8 @@ public class Stockfish {
         chessboard.createBoard(8, true, true, Integer.MAX_VALUE, Integer.MAX_VALUE, 0, 0);
         String fen = args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4] + " " + args[5];
         chessboard.setBoardByFen(fen);
-        Thread t = new Thread(new StockfishHelper(chessboard, new Stockfish(), args[6]));
-        t.start();
+        StockfishHelper stockfishHelper = new StockfishHelper(chessboard, new Stockfish(), args[6]);
+        stockfishHelper.run();
+        System.exit(0);
     }
 }
