@@ -44,8 +44,8 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
             SnapshotParameters parameters = new SnapshotParameters();
             parameters.setFill(Color.TRANSPARENT);
             ImageView imageView= new ImageView(image);
-            imageView.setFitHeight(200);
-            imageView.setFitWidth(200);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
             db.setDragView(imageView.snapshot(parameters, null), imageView.getFitHeight()/2, imageView.getFitHeight()/2);
 
             /* Put a string on a dragboard */
@@ -84,8 +84,8 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
             SnapshotParameters parameters = new SnapshotParameters();
             parameters.setFill(Color.TRANSPARENT);
             ImageView imageView= new ImageView(image);
-            imageView.setFitHeight(200);
-            imageView.setFitWidth(200);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
             db.setDragView(imageView.snapshot(parameters, null), imageView.getFitHeight()/2, imageView.getFitHeight()/2);
 
             // Put a string on a dragboard
