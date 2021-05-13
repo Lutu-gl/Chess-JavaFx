@@ -1,6 +1,7 @@
 package view;
 
 
+import controller.Controller;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -87,9 +88,11 @@ public class FieldLabel extends Label {
     public void selectPremoveSource() {
         isSelected = true;
         this.getStyleClass().add("selectedFieldPremoveSource");
+        //this.getStyleClass().add("selectedField");
     }
     public void selectPremoveTarget() {
         isSelected = true;
+        Controller.getInstance().getSourcePreMove().selectPremoveSource();
         this.getStyleClass().add("selectedFieldPremoveTarget");
     }
 

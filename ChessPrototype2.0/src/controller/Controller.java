@@ -1,21 +1,18 @@
+
 package controller;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import model.*;
 import model.pieces.Pawn;
 import model.pieces.Piece;
 import view.ChessboardView;
 import view.FieldLabel;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 
 
@@ -70,6 +67,10 @@ public class Controller implements EventHandler<MouseEvent>{
             FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
 
             if(sourcePreMove != null && targetPreMove != null){
+                if(targetPreMove == clickedFieldLabel){
+                    unSelectLabelPremove();
+                    return;
+                }
                 unSelectLabelPremove();
             }
 
@@ -77,7 +78,7 @@ public class Controller implements EventHandler<MouseEvent>{
                 //Schauen ob Piece oben ist.
                 if(clickedFieldLabel.getGraphic() == null) return;
                 sourcePreMove = clickedFieldLabel;
-                clickedFieldLabel.selectPremoveSource();
+                clickedFieldLabel.select();
             } else {
                 if(targetPreMove != null){
                     unSelectLabelPremove();
@@ -153,10 +154,6 @@ public class Controller implements EventHandler<MouseEvent>{
         Field clickedFieldSource = chessboard.getFields()[sourcePreMove.getLine()][sourcePreMove.getColumn()];
         Field clickedFieldTarget = chessboard.getFields()[targetPreMove.getLine()][targetPreMove.getColumn()];
 
-    /**
-     * @param f marks/outlines every move for Piece on Field f, adds field to ArrayList highlighted
-     */
-    public void markAvailableMoves(Field f) {
         if (!clickedFieldSource.hasPiece() || !clickedFieldSource.getPiece().getColor().equals(chessboard.getColorToMove())){
             unSelectLabelPremove();
             return;
@@ -318,7 +315,7 @@ public class Controller implements EventHandler<MouseEvent>{
         }
         else
             t.appendText(s);
-            //Platform.runLater(() -> (TextField)(ChessboardView.getMovesVBox().getChildren().get(ChessboardView.getMovesVBox().getChildren().size()-1)));
+        //Platform.runLater(() -> (TextField)(ChessboardView.getMovesVBox().getChildren().get(ChessboardView.getMovesVBox().getChildren().size()-1)));
 
         //Platform.runLater(() -> ChessboardView.getMovesVBox().getChildren().add(new Text(s)));
     }

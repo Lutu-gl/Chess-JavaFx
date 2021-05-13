@@ -49,9 +49,6 @@
     -fx-alignment: center;
 }
 
-.selectedField {
-    -fx-background-color: #829769;
-}
 
 .index {
     -fx-alignment: center;
@@ -98,4 +95,7 @@
 
 .selectedFieldPremoveTarget{
     -fx-background-color: #484848;
+}
+.selectedField {
+    -fx-background-color: #829769;
 }
