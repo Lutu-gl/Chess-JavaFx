@@ -3,7 +3,6 @@ package model;
 import controller.Controller;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.scene.control.Control;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -925,13 +924,98 @@ public class Chessboard {
         // set turns played
         turn = Integer.parseInt(groups[5]);
 
+    }// -1 == false, 1 == true but not on same line/column, 2 == true and on same line, 3 == true and on same column
+    private int turnToPGNHelper(Piece p, Field source, Field target){
+        Piece k=null;
+        switch (Character.toLowerCase(p.getShortName())){
+            case 'p':
+            case 'k':
+                return -1;
+            case 'n': k = new Knight(p.getColor()==Color.WHITE?Color.BLACK:Color.WHITE, "TestKnight created for PGN", target); break;
+            case 'b': k = new Bishop(p.getColor()==Color.WHITE?Color.BLACK:Color.WHITE, "TestBishop created for PGN", target); break;
+            case 'r': k = new Rook(p.getColor()==Color.WHITE?Color.BLACK:Color.WHITE, "TestRook created for PGN", target); break;
+            case 'q': k = new Queen(p.getColor()==Color.WHITE?Color.BLACK:Color.WHITE, "TestQueen created for PGN", target); break;
+            }
+        if (k == null)
+        {
+            System.err.println("possible error in turnToPGNHelper");
+            return -1;
+        }
+        for (Field f :k.getMoves()) {
+            if(f.hasPiece()&&f.getPiece().getShortName() == p.getShortName())
+            {
+                System.out.println(f + " " + source);
+                if(f.getLine() == source.getLine())
+                    return 2;
+                else if(f.getColumn() == source.getColumn())
+                    return 3;
+                else
+                    return 1;
+            }
+        }
+
+        return -1;
     }
 
     /**
-     * Converts a turn t to a PGN notation
+     * Converts a Turn to a PGN notation
      * @param t turn to convert to PGN
-     * @return PGN as String
+     * @return PGN Notation as String
      */
+    public String turnToPGN(Turn t){
+        StringBuilder s = new StringBuilder();
+
+        King k = colorToMove == Color.BLACK ? b_king : w_king;
+        if(t.getColorToMove() == Color.WHITE)
+            s.append((turn)+". ");
+
+        switch(Character.toLowerCase(t.getMovingPiece().getShortName())){
+            case 'p': if(t.getEatenPiece() != null) s.append(t.getSourceField().getName().charAt(0));break;
+            case 'n': s.append('N');break;
+            case 'b': s.append('B');break;
+            case 'k':
+                if(t.isCastleTurn()){
+                    if(t.getTargetField().getColumn() >=6){
+                        return s.append("0-0 ").toString();
+                    }
+                    else{
+                        return s.append("0-0-0 ").toString();
+                    }
+                }
+                else
+                    s.append('K');
+                break;
+            case 'r': s.append("R"); break;
+            case 'q': s.append('Q'); break;
+        }
+
+        //System.out.println(t.getTargetField().getName());
+        //System.out.println("return: " + turnToPGNHelper(t.getMovingPiece(), t.getSourceField(), t.getTargetField()));
+        switch (turnToPGNHelper(t.getMovingPiece(), t.getSourceField(), t.getTargetField())) {
+            case 3 -> s.append(t.getSourceField().getName().charAt(1));
+            case 1,2 -> s.append(t.getSourceField().getName().charAt(0));
+        }
+
+        if(t.getEatenPiece() != null)
+            s.append('x');
+
+        s.append(t.getTargetField().getName());
+        if(t.isPromotionTurn()){
+            switch (Pawn.getPromotionPieces())
+            {
+                case 0 -> s.append("=Q");
+                case 1 -> s.append("=N");
+                case 2 -> s.append("=R");
+                case 3 -> s.append("=B");
+            }
+
+        }
+        if(k.isInCheck())
+            s.append('+');
+        s.append(" ");
+        return s.toString();
+    }
+/*
     public String turnToPGN(Turn t){
         StringBuilder s = new StringBuilder();
 
@@ -979,6 +1063,8 @@ public class Chessboard {
         return s.toString();
     }
 
+
+ */
     /**
      * @return Returns Fen of current Board state
      */

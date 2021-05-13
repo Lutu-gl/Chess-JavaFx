@@ -14,7 +14,7 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
 
-        board.createBoard(size, false, true, 120, 12000, 0, 0); //In Sekunden!
+        board.createBoard(size, true, true, 30, 30, 0, 0); //In Sekunden!
 
         String fen = "";
 
@@ -60,6 +60,13 @@ public class Main extends Application {
         //fen = "8/8/4k3/6p1/4nR2/8/6K1/8 b - - 0 58";
         //fen = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"; //check castle pgn
 
+
+        //fen = "k7/4P3/p1p1P3/ppp1P3/pP6/1P2P3/8/4K3 w - - 0 1";
+        //fen = "r5k1/1R4bp/8/B2R2P1/8/8/4rP2/6K1 b - - 0 39";
+
+        //fen = "4k3/8/8/1N3N2/8/8/P2K4/8 w - - 0 1"; //correct
+        //fen = "4k3/4N3/8/5b2/8/4N3/8/4K3 w - - 0 1"; // correct
+        //fen = "4k3/8/N7/8/4N3/8/8/4K3 w - - 0 1"; //check knight pgn correct
         board.addFen(fen);
         board.setBoardByFen(fen);
         //board.setBoardByFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
@@ -71,7 +78,7 @@ public class Main extends Application {
         // Set Title of window
         primaryStage.setTitle("Chess!");
         // Set graphic view of the chess board. Normally it is 8x8
-        primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.SKY, PieceDesign.SPACE, false));
+        primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, false));
         // Set the figures with the FEN Code
         ChessboardView.display();
         // Set the stylesheet
