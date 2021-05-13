@@ -27,6 +27,8 @@ public class DragDroppedHandler implements EventHandler<DragEvent> {
                     controller.unSelectLabelPremove();
                     return;
                 }
+                //sourcePreMove.unselect();
+                sourcePreMove.selectPremoveSource();
                 targetLabel.selectPremoveTarget();
                 controller.setPremove(true);
             }

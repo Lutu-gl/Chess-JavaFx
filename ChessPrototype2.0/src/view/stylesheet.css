@@ -88,6 +88,9 @@
 .lastPlayedFieldBlack{
     -fx-background-color: #aaa23a;
 }
+.selectedField {
+    -fx-background-color: #829769;
+}
 
 .selectedFieldPremoveSource{
     -fx-background-color: #9f9e9e;
@@ -95,7 +98,4 @@
 
 .selectedFieldPremoveTarget{
     -fx-background-color: #484848;
-}
-.selectedField {
-    -fx-background-color: #829769;
 }

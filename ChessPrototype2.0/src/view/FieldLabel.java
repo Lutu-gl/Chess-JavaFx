@@ -92,7 +92,6 @@ public class FieldLabel extends Label {
     }
     public void selectPremoveTarget() {
         isSelected = true;
-        Controller.getInstance().getSourcePreMove().selectPremoveSource();
         this.getStyleClass().add("selectedFieldPremoveTarget");
     }
 

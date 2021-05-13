@@ -33,9 +33,10 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
 
             controller.unSelectLabelPremove();
 
+
             if(clickedFieldLabel.getGraphic() == null) return;
             controller.setSourcePreMove(clickedFieldLabel);
-            clickedFieldLabel.selectPremoveSource();
+            clickedFieldLabel.select();
             Dragboard db = ((FieldLabel) mouseEvent.getSource()).startDragAndDrop(TransferMode.ANY);
 
             // Set the drag view to the image of the piece dragged

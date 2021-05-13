@@ -92,6 +92,7 @@ public class Controller implements EventHandler<MouseEvent>{
                 }
 
                 targetPreMove.selectPremoveTarget();
+                sourcePreMove.selectPremoveSource();
                 isPremove = true;
             }
 
