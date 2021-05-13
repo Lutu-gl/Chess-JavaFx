@@ -3,10 +3,16 @@ package view;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,8 +21,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import model.Chessboard;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class Controller{
@@ -25,7 +33,7 @@ public class Controller{
     public ImageView myImageView;
     public CheckBox checkBox1, checkBox2, checkBox3;
     public TextField time1, time2;
-
+    public ChoiceBox<String> dropdown1, dropdown2;
 
     Image myImage2 = new Image(getClass().getResourceAsStream("Ebene6.jpg"));
     Image myImage = new Image(getClass().getResourceAsStream("Ebene7.jpg"));
@@ -33,15 +41,16 @@ public class Controller{
     //Media media =new Media(VUrl);
     //MediaPlayer mediaPlayer= new MediaPlayer(media);
 
-   // public void initialize() {
-    //    mv.setMediaPlayer(mediaPlayer);
-    //    mediaPlayer.play();
-   // }
+    private ObservableList<String> dropdownList1 = FXCollections.observableArrayList("Weiß", "Schwarz", "Zufall");
+    private ObservableList<String> dropdownList2 = FXCollections.observableArrayList("Local", "Host", "Join");
 
+    public void initialize() {
+        dropdown1.setItems(dropdownList1);
+        dropdown2.setItems(dropdownList2);
+        dropdown1.getSelectionModel().select("Weiß");
+        dropdown2.getSelectionModel().select("Local");
+    }
 
-
-
-    private boolean ai = true;
 
     public void displayImage(ActionEvent e){
         CheckBox clickedBox = (CheckBox) e.getSource();
@@ -102,16 +111,61 @@ public class Controller{
             System.out.println("Keine Zeit eingegeben!");
             return;
         }
-
+        int intTime1, intTime2;
         try {
-            int intTime1 = Integer.parseInt(time1.getText());
-            int intTime2 = Integer.parseInt(time2.getText());
+            intTime1 = Integer.parseInt(time1.getText());
+            intTime2 = Integer.parseInt(time2.getText());
         } catch(NumberFormatException e) {
             System.out.println("String statt Zahl eingegeben!");
             return;
         }
 
         System.out.println("Los geats!!!");
-        Main.main(new String[]{});
+        int size = 8;
+        // Set the size and the FEN of the logic chessboard
+        Chessboard board = Chessboard.getInstance();
+
+        // Check which gamemode has to start
+        boolean whiteAi = true, blackAi = true;
+        if (checkBox1.isSelected()) {
+            System.out.println(dropdown1.getSelectionModel().getSelectedItem());
+            if (dropdown1.getSelectionModel().getSelectedItem().equals("Weiß")) whiteAi = false;
+            else if (dropdown1.getSelectionModel().getSelectedItem().equals("Schwarz")) blackAi = false;
+            else {
+                if (Math.round(Math.random()) == 1) whiteAi = false;
+                else blackAi = false;
+            }
+        } else if (checkBox2.isSelected()) {
+            if (dropdown2.getSelectionModel().getSelectedItem().equals("Local")) {
+                whiteAi = false;
+                blackAi = false;
+            } else if (dropdown2.getSelectionModel().getSelectedItem().equals("Host")) {
+                hostDialog();
+                return;
+            } else {
+                //joinDialog();
+                return;
+            }
+        }
+
+        board.createBoard(size, whiteAi, blackAi, intTime1, intTime2, 0, 0); //In Sekunden!
+
+        String fen = "";
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
+        board.addFen(fen);
+        board.setBoardByFen(fen);
+        board.printBoard();
+
+        // Display the Chessboard
+        // Set graphic view of the chess board. Normally it is 8x8
+        Scene scene = ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, !blackAi&&!checkBox2.isSelected());
+        scene.getStylesheets().add(getClass().getResource("stylesheet.css").toString());
+        MainLaxe.changeScene(scene);
+        // Set the figures with the FEN Code
+        ChessboardView.display();
+    }
+
+    private void hostDialog() {
+        MainLaxe.changeScene(MainLaxe.hostScene);
     }
 }

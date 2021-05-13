@@ -61,5 +61,7 @@
             <Font size="30.0" />
          </font>
       </Button>
+      <ChoiceBox fx:id="dropdown1" layoutX="307.0" layoutY="602.0" prefHeight="15.0" prefWidth="75.0" rotate="30.0" />
+      <ChoiceBox fx:id="dropdown2" layoutX="300.0" layoutY="665.0" prefHeight="16.0" prefWidth="75.0" rotate="30.0" />
    </children>
 </AnchorPane>
