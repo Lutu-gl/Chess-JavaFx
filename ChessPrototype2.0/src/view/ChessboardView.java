@@ -30,7 +30,7 @@ public class ChessboardView {
     private static Scene mainScene;
     private static VBox timerVBox;
     private static VBox movesVBox;
-
+    private static PieceDesign design;
     /**
      * Sets up Board and static Attributes
      * @param l lenght of board
@@ -38,11 +38,11 @@ public class ChessboardView {
      * @param color Style of Board
      * @return created Scene with FieldLabels etc.
      */
-    public static Scene init( int l, int w, FieldBackground color) {
+    public static Scene init( int l, int w, FieldBackground color, PieceDesign design, boolean invertBoard) {
         BorderPane bp = new BorderPane();
         GridPane gridPane = new GridPane();
         board = new ArrayList<>();
-
+        ChessboardView.design = design;
         for (int i = 0; i < l; i++) {
             ArrayList<FieldLabel> buffer = new ArrayList<>();
             for (int x = 0; x < w; x++) {
@@ -56,6 +56,9 @@ public class ChessboardView {
                 lbl.setOnDragOver(new DragOverHandler());
                 lbl.setOnDragDropped(new DragDroppedHandler());
 
+                // if board should be inverted
+                if (invertBoard)
+                    lbl.setRotate(180);
                 buffer.add(lbl);
                 gridPane.add(lbl, x, i);
             }
@@ -64,6 +67,9 @@ public class ChessboardView {
             // Add the numbers on the right side of the board
             FieldLabel number = new FieldLabel(""+(l-i));
             number.getStyleClass().add("index");
+            // if board should be inverted
+            if (invertBoard)
+                number.setRotate(180);
             gridPane.add(number, w+1, i);
         }
 
@@ -71,11 +77,18 @@ public class ChessboardView {
         for (int i = 0; i < w; i++) {
             FieldLabel letter = new FieldLabel(""+((char) (i+65)));
             letter.getStyleClass().add("letter");
+            // if board should be inverted
+            if (invertBoard)
+                letter.setRotate(180);
             gridPane.add(letter, i, l+1);
         }
         //Button turnBack = new Button("Turn back!");
         //turnBack.setOnAction(new TurnBackHandler());
         //gridPane.add(turnBack, w+2, 0);
+
+        // if board should be inverted
+        if (invertBoard)
+            gridPane.setRotate(180);
 
         bp.setCenter(gridPane);
 
@@ -116,6 +129,8 @@ public class ChessboardView {
 
         ChessboardView.timerVBox = timerVBox;
         ChessboardView.movesVBox = movesVBox;
+
+
         mainScene = new Scene(bp, w*100+300, l*100+50);
         return mainScene;
     }
@@ -141,10 +156,10 @@ public class ChessboardView {
                 }
                 ImageView image = null;
                 if (ascii >= 65 && ascii <= 90) {
-                    image = new ImageView(new Image(Main.class.getResourceAsStream("/W_"+lines[i].charAt(x)+".png")));
+                    image = new ImageView(new Image(Main.class.getResourceAsStream("/"+ChessboardView.design.getDesign()+"W_"+lines[i].charAt(x)+".png")));
                 }
                 else {
-                    image = new ImageView(new Image(Main.class.getResourceAsStream("/B_"+lines[i].charAt(x)+".png")));
+                    image = new ImageView(new Image(Main.class.getResourceAsStream("/"+ChessboardView.design.getDesign()+"B_"+lines[i].charAt(x)+".png")));
                 }
                 image.setFitHeight(100);
                 image.setFitWidth(100);

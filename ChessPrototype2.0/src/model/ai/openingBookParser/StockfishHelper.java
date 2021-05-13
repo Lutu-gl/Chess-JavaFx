@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class StockfishHelper implements Runnable{
+public class StockfishHelper{
 
     private Chessboard chessboard;
     private Stockfish client;
@@ -20,18 +20,16 @@ public class StockfishHelper implements Runnable{
         f = new File(filename);
     }
 
-
-    @Override
     public void run() {
         if (client.startEngine()) {
             System.out.println("Engine has started..");
-            client.sendCommand("setoption name multipv value 10");
+            client.sendCommand("setoption name multipv value 1");
             client.getOutput(10);
         } else {
             System.out.println("Oops! Something went wrong..");
             return;
         }
-        recursiveSearch(5);
+        recursiveSearch(2);
     }
 
     private void recursiveSearch(int depth) {
@@ -42,7 +40,7 @@ public class StockfishHelper implements Runnable{
         client.sendCommand("go depth 300");
         String[] lines = client.getOutput(400).split("\n");
         client.sendCommand("stop");
-        for (int i = lines.length-10; i < lines.length; i++) {
+        for (int i = lines.length-1; i < lines.length; i++) {
             bestMoves.add(lines[i].substring(lines[i].indexOf(" pv ")+4, lines[i].indexOf(" pv ")+8));
         }
         System.out.println(bestMoves);

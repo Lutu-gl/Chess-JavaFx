@@ -62,32 +62,36 @@ public class Controller implements EventHandler<MouseEvent>{
     public void handle(MouseEvent mouseEvent) {
         //System.out.println("Gamephase: " + chessboard.getGamephase());
         // This is just testing to start the AI
-        if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1])
+        if (chessboard.getPlaysAI()[0]&&chessboard.getTurns().size() == 0)
             chessboard.endTurn();
-        System.out.println(chessboard.AIThinking);
-        //if(chessboard.AIThinking) return;
+
+
         if(chessboard.AIThinking){
             FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
 
+            if(sourcePreMove != null && targetPreMove != null){
+                unSelectLabelPremove();
+            }
+
             if(sourcePreMove == null){
                 //Schauen ob Piece oben ist.
-                 if(clickedFieldLabel.getGraphic() == null) return;
-                 sourcePreMove = clickedFieldLabel;
-                 clickedFieldLabel.selectPremoveSource();
+                if(clickedFieldLabel.getGraphic() == null) return;
+                sourcePreMove = clickedFieldLabel;
+                clickedFieldLabel.selectPremoveSource();
             } else {
-                 if(targetPreMove != null){
-                     unSelectLabelPremove();
-                     return;
-                 }
-                 targetPreMove = clickedFieldLabel;
+                if(targetPreMove != null){
+                    unSelectLabelPremove();
+                    return;
+                }
+                targetPreMove = clickedFieldLabel;
 
-                 if(targetPreMove == sourcePreMove){
-                     unSelectLabelPremove();
-                     return;
-                 }
+                if(targetPreMove == sourcePreMove){
+                    unSelectLabelPremove();
+                    return;
+                }
 
-                 targetPreMove.selectPremoveTarget();
-                 isPremove = true;
+                targetPreMove.selectPremoveTarget();
+                isPremove = true;
             }
 
             return;
@@ -98,8 +102,8 @@ public class Controller implements EventHandler<MouseEvent>{
         }
 
         if (!chessboard.getGamestate().equals(Gamestate.PLAYING) ||
-           (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
-           (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
+                (chessboard.getColorToMove().equals(Color.WHITE) && chessboard.getPlaysAI()[0]) ||
+                (chessboard.getColorToMove().equals(Color.BLACK) && chessboard.getPlaysAI()[1])) return;
 
         FieldLabel clickedFieldLabel = (FieldLabel) mouseEvent.getSource();
         Field clickedField = chessboard.getFields()[clickedFieldLabel.getLine()][clickedFieldLabel.getColumn()];
@@ -280,10 +284,6 @@ public class Controller implements EventHandler<MouseEvent>{
         checkLabel = f;
         f.markAsCheck();
     }
-
-    /**
-     * tells view.ChessboardView to unmark checkLabel, sets checkLabel to null
-     */
     public void unmarkCheck(){
         if(checkLabel==null) return;
         checkLabel.unmarkAsCheck();
