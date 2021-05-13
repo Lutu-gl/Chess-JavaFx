@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
+   <padding>
+      <Insets right="10.0" />
+   </padding>
+   <children>
+      <ImageView fx:id="myImageView" fitHeight="800.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Ebene6.jpg" />
+         </image></ImageView>
+      <CheckBox fx:id="checkBox1" layoutX="74.0" layoutY="514.0" mnemonicParsing="false" onAction="#displayImage" prefHeight="42.0" prefWidth="247.0" rotate="30.0" text="Spieler gegen Computer" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="20.0" />
+         </font></CheckBox>
+      <CheckBox fx:id="checkBox2" layoutX="70.0" layoutY="587.0" mnemonicParsing="false" onAction="#displayImage" prefHeight="36.0" prefWidth="277.0" rotate="30.0" text="Spieler gegen Spieler" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="checkBox3" layoutX="69.0" layoutY="654.0" mnemonicParsing="false" onAction="#displayImage" rotate="30.0" text="Computer gegen Computer" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </CheckBox>
+      <Label layoutX="85.0" layoutY="675.0" rotate="30.0" text="Zeit" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="time1" layoutX="135.0" layoutY="706.0" prefHeight="25.0" prefWidth="45.0" rotate="30.0" />
+      <TextField fx:id="time2" layoutX="194.0" layoutY="738.0" prefHeight="25.0" prefWidth="45.0" rotate="30.0" />
+      <Label layoutX="155.0" layoutY="681.0" rotate="30.0" text="S1" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="215.0" layoutY="713.0" rotate="30.0" text="S2" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="454.0" layoutY="565.0" rotate="330.0" text="Figurendesign" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="463.0" layoutY="629.0" rotate="330.0" text="Felddesign" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="477.0" layoutY="686.0" mnemonicParsing="false" onAction="#startGame" rotate="330.0" text="Starten" textFill="#90149e">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
