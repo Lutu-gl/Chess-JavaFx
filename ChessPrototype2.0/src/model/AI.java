@@ -2,6 +2,7 @@ package model;
 
 import model.pieces.King;
 import model.pieces.Piece;
+import view.FieldLabel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -269,6 +270,38 @@ public class AI implements Callable<Turn> {
         return space;
     }
 
+    private static double evaluateKingSavety(){
+        double myKingEval;
+        double enemyKingEval;
+
+
+
+        return 0;
+    }
+
+    private static ArrayList<Piece> getPiecesNearKing(double length, King k){
+        ArrayList<Piece> pieces = new ArrayList<>();
+        Field kingField = k.getField();
+        int kingColumn = kingField.getColumn();
+        int kingLine = kingField.getLine();
+
+        Field[][] fields = chessboard.getFields();
+
+        for (int i = 0; i < length*2; i++) {
+            for (int j = 0; j < length*2; j++) {
+                Field field;
+                if((i-length < 0) || (i-length) > chessboard.getSizeOfBoard() || j-length < 0 || j-length > chessboard.getSizeOfBoard()) continue;
+                field = fields[(int) (i-length)][(int) (j-length)];
+
+                if(field.hasPiece()){
+                    pieces.add(field.getPiece());
+                }
+            }
+        }
+
+
+        return pieces;
+    }
 
     private Turn convertNotation(String s) {
         int column1 = s.charAt(0)-97, line1 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(1)))-8);

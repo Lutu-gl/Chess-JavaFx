@@ -1253,4 +1253,12 @@ public class Chessboard {
     public HashMap<String, String> getOpeningBook() {
         return openingBook;
     }
+
+    public int getSizeOfBoard() {
+        return sizeOfBoard;
+    }
+
+    public void setSizeOfBoard(int sizeOfBoard) {
+        this.sizeOfBoard = sizeOfBoard;
+    }
 }
