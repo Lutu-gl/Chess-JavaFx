@@ -229,6 +229,11 @@ public class AI implements Callable<Turn> {
         //chessboard.printBoard();
         ArrayList<Piece> myPieces, enemyPieces;
 
+        double mySpace = 0;
+        double enemySpace = 0;
+
+
+
         if (chessboard.getColorToMove().equals(Color.WHITE)) {
             myPieces = chessboard.getWhitePieces();
             enemyPieces = chessboard.getBlackPieces();
@@ -240,14 +245,30 @@ public class AI implements Callable<Turn> {
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
             value += p.getValue();
             value += PositionTables.getValue(p);
+
+            mySpace += evaluateSpace(p);
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
+
+            enemySpace += evaluateSpace(p);
         }
-        return value-enemyValue;    //final value zurückgeben
+        double space = (mySpace - enemySpace)*0.2;
+
+        return value-enemyValue + space;    //final value zurückgeben
     }
+
+    private static double evaluateSpace(Piece p){
+        int column = p.getField().getColumn();
+        int line = p.getField().getLine();
+
+        double space = column;
+
+        return space;
+    }
+
 
     private Turn convertNotation(String s) {
         int column1 = s.charAt(0)-97, line1 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(1)))-8);
