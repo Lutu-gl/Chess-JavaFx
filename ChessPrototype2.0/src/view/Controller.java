@@ -141,28 +141,23 @@ public class Controller{
                 blackAi = false;
             } else if (dropdown2.getSelectionModel().getSelectedItem().equals("Host")) {
                 hostDialog();
-                return;
             } else {
                 //joinDialog();
                 return;
             }
         }
 
-        board.createBoard(size, whiteAi, blackAi, intTime1, intTime2, 0, 0); //In Sekunden!
-
-        String fen = "";
-        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
-        board.addFen(fen);
-        board.setBoardByFen(fen);
-        board.printBoard();
-
-        // Display the Chessboard
-        // Set graphic view of the chess board. Normally it is 8x8
-        Scene scene = ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, !blackAi&&!checkBox2.isSelected());
-        scene.getStylesheets().add(getClass().getResource("stylesheet.css").toString());
-        MainLaxe.changeScene(scene);
-        // Set the figures with the FEN Code
-        ChessboardView.display();
+        //MainLaxe.saveParametersForGame(size, whiteAi, blackAi, intTime1, intTime2, 0, 0);
+        MainLaxe.size = size;
+        MainLaxe.whiteAi = whiteAi;
+        MainLaxe.blackAi = blackAi;
+        MainLaxe.timeWhite = intTime1;
+        MainLaxe.timeBlack = intTime2;
+        MainLaxe.inkrementWhite = 0;
+        MainLaxe.inkrementBlack = 0;
+        MainLaxe.invertBoard = !blackAi&&!checkBox2.isSelected();
+        if (!checkBox2.isSelected() || (checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Local")))
+            MainLaxe.startGame();
     }
 
     private void hostDialog() {

@@ -33,7 +33,7 @@ public class Chessboard {
     private ArrayList<Piece> eatenPieces = new ArrayList<>();
     private Gamestate gamestate;
     private Gamephase gamephase = Gamephase.MIDGAME;
-    private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort;
+    private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort, playerConnected;
     private King b_king, w_king;
     private Sound playSound;
     private int sizeOfBoard;
@@ -52,7 +52,6 @@ public class Chessboard {
     public boolean AIThinking=false;
     public boolean debug = false;
     private int queensEaten = 0;
-
 
     // Singleton pattern
     private static Chessboard instance = null;
@@ -91,7 +90,7 @@ public class Chessboard {
      * @param blackAI true to let A.I play black
      */
     public void createBoard(int size, boolean whiteAI, boolean blackAI){
-        createBoard(size, false, false, 300, 300, 0, 0);
+        createBoard(size, whiteAI, blackAI, 300, 300, 0, 0);
     }
 
     /**
@@ -1260,5 +1259,13 @@ public class Chessboard {
 
     public void setSizeOfBoard(int sizeOfBoard) {
         this.sizeOfBoard = sizeOfBoard;
+    }
+
+    public boolean isPlayerConnected() {
+        return playerConnected;
+    }
+
+    public void setPlayerConnected(boolean playerConnected) {
+        this.playerConnected = playerConnected;
     }
 }
