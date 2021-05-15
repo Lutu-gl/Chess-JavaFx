@@ -8,11 +8,11 @@
 <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1422.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HostController">
    <children>
       <ImageView fx:id="backgroundImage" fitHeight="800" fitWidth="1422.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="text" layoutX="223.0" layoutY="313.0" text="You are hosting on:">
+      <Label fx:id="text" layoutX="224.0" layoutY="283.0" text="You are hosting on:">
          <font>
             <Font name="System Bold" size="44.0" />
          </font></Label>
-      <Button fx:id="imageView1" layoutX="232.0" layoutY="431.0" mnemonicParsing="false" onMouseEntered="#mouseEnteredHandler" onMouseExited="#mouseExitedHandler" style="-fx-background-color: #829769;" />
+      <Button fx:id="imageView1" layoutX="232.0" layoutY="431.0" mnemonicParsing="false" onMouseEntered="#mouseEnteredHandler" onMouseExited="#mouseExitedHandler" />
       <Button fx:id="imageView2" layoutX="312.0" layoutY="431.0" mnemonicParsing="false" onMouseEntered="#mouseEnteredHandler" onMouseExited="#mouseExitedHandler" style="-fx-background-color: white;" />
       <Button fx:id="imageView3" layoutX="392.0" layoutY="431.0" mnemonicParsing="false" onMouseEntered="#mouseEnteredHandler" onMouseExited="#mouseExitedHandler" style="-fx-background-color: white;" />
    </children>
