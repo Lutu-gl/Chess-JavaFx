@@ -8,7 +8,7 @@
 <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1422.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HostController">
    <children>
       <ImageView fx:id="backgroundImage" fitHeight="800" fitWidth="1422.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="text" layoutX="224.0" layoutY="283.0" text="You are hosting on:">
+      <Label fx:id="text" layoutX="224.0" layoutY="283.0" style="-fx-background-color: white;" text="You are hosting on:">
          <font>
             <Font name="System Bold" size="44.0" />
          </font></Label>

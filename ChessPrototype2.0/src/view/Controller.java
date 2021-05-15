@@ -142,7 +142,7 @@ public class Controller{
             } else if (dropdown2.getSelectionModel().getSelectedItem().equals("Host")) {
                 hostDialog();
             } else {
-                //joinDialog();
+                joinDialog();
                 return;
             }
         }
@@ -162,5 +162,9 @@ public class Controller{
 
     private void hostDialog() {
         MainLaxe.changeScene(MainLaxe.hostScene);
+    }
+
+    private void joinDialog() {
+        MainLaxe.changeScene(MainLaxe.joinScene);
     }
 }

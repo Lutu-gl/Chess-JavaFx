@@ -16,7 +16,7 @@ public class MainLaxe extends Application {
 
     public static Stage stage;
 
-    public static Scene hostScene;
+    public static Scene hostScene, joinScene;
 
     public static int size, timeWhite, timeBlack, inkrementWhite, inkrementBlack;
     public static boolean whiteAi, blackAi, invertBoard;
@@ -49,13 +49,14 @@ public class MainLaxe extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        String fxmlResource = "menu.fxml";
-        Parent panel, panel2;
+        Parent panel, panel2, panel3;
         //panel = FXMLLoader.load(getClass().getResource(fxmlResource));
-        panel = FXMLLoader.load(getClass().getResource(fxmlResource));
+        panel = FXMLLoader.load(getClass().getResource("menu.fxml"));
         panel2 = FXMLLoader.load(getClass().getResource("host.fxml"));
+        panel3 = FXMLLoader.load(getClass().getResource("join.fxml"));
         Scene scene = new Scene(panel);
         hostScene = new Scene(panel2);
+        joinScene = new Scene(panel3);
         stage = new Stage();
         stage.setTitle("Chess!");
         stage.setScene(scene);

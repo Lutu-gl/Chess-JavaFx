@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1422.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.JoinController">
+   <children>
+       <ImageView fx:id="backgroundImage" fitHeight="800" fitWidth="1422.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="text" layoutX="64.0" layoutY="68.0" style="-fx-background-color: white;" text="Connect to IP:">
+         <font>
+            <Font name="System Bold" size="44.0" />
+         </font></Label>
+      <TextField fx:id="ipField" layoutX="64.0" layoutY="146.0" prefHeight="46.0" prefWidth="291.0" style="-fx-alignment: center;">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </TextField>
+      <Button fx:id="connectButton" layoutX="64.0" layoutY="263.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="291.0" text="Connect">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

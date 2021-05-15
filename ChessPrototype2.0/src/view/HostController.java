@@ -39,7 +39,6 @@ public class HostController {
         double width = (image.getWidth()*800)/image.getHeight()-1;
         pane.setPrefWidth(width);
         text.setLayoutX(width/3);
-        text.setStyle("-fx-background-color: white");
         imageView1.setGraphic(new ImageView(new Image(Main.class.getResourceAsStream("/book_W_K.png"))));
         imageView2.setGraphic(new ImageView(new Image(Main.class.getResourceAsStream("/book_B_k.png"))));
         imageView3.setGraphic(new ImageView(new Image(Main.class.getResourceAsStream("/book_W_B_K.png"))));
