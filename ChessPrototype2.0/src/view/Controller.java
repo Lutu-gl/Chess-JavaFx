@@ -143,7 +143,6 @@ public class Controller{
                 hostDialog();
             } else {
                 joinDialog();
-                return;
             }
         }
 

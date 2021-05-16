@@ -24,6 +24,15 @@ public class MainLaxe extends Application {
 
     public static void startGame() {
         Chessboard board = Chessboard.getInstance();
+
+        System.out.println("Size: "+size);
+        System.out.println("White ai: "+whiteAi);
+        System.out.println("Black ai: "+blackAi);
+        System.out.println("timeWhite: "+timeWhite);
+        System.out.println("timeBlack:"+timeBlack);
+        System.out.println("ikWhite: "+inkrementWhite);
+        System.out.println("inkBlack: "+inkrementBlack);
+
         board.createBoard(size, whiteAi, blackAi, timeWhite, timeBlack, inkrementWhite, inkrementBlack); //In Sekunden!
 
         String fen = "";

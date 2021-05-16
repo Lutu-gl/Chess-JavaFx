@@ -43,10 +43,21 @@ public class JoinController {
                 errorLabel.setText("Unable to reach host!\nPlease try again ...");
             }
             try {
-                System.out.println(Server.getInputStream().readUTF());
-                System.out.println(Server.getInputStream().readUTF());
-                System.out.println(Server.getInputStream().readUTF());
-                System.out.println(Server.getInputStream().readUTF());
+                if (Server.getInputStream().readUTF().equals("white")) {
+                    MainLaxe.whiteAi = true;
+                    MainLaxe.blackAi = false;
+                    MainLaxe.invertBoard = true;
+                } else {
+                    MainLaxe.whiteAi = false;
+                    MainLaxe.blackAi = true;
+                    MainLaxe.invertBoard = false;
+                }
+                MainLaxe.timeWhite = Integer.parseInt(Server.getInputStream().readUTF());
+                MainLaxe.timeBlack = Integer.parseInt(Server.getInputStream().readUTF());
+                MainLaxe.inkrementWhite = Integer.parseInt(Server.getInputStream().readUTF());
+                MainLaxe.inkrementBlack = Integer.parseInt(Server.getInputStream().readUTF());
+
+                MainLaxe.startGame();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
                 System.out.println("Es gab Probleme beim Lesen des Servers!");

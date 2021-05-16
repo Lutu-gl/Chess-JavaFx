@@ -65,6 +65,8 @@ public class Server extends Thread{
             outputStream = new DataOutputStream(server.getOutputStream());
             inputStream = new DataInputStream(server.getInputStream());
 
+            Chessboard.getInstance().setPlayerConnected(true);
+
             //out.writeUTF("Hello from " + server.getLocalSocketAddress());
 
             //System.out.println("Server says " + in.readUTF());

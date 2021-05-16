@@ -10,6 +10,7 @@ import view.Sound;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -345,6 +346,16 @@ public class Chessboard {
      * @return true if the move is played successfully
      */
     public boolean handleTurn(Turn currentT){
+
+        if (playerConnected && !playsAI[colorToMove.equals(Color.WHITE)?0:1] && !debug) {
+            try {
+                Server.getOutputStream().writeUTF(generateNotation(t));
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Fehler beim Senden an den Server!");
+            }
+        }
+
         //System.out.println(whiteInkrement);
         if(timeStopped != 0 && withTime){
             if(colorToMove == Color.WHITE){
@@ -731,9 +742,27 @@ public class Chessboard {
         }
         turnTimeAdder = 0;
 
+        // Check if player from other network plays
+        if (playerConnected && playsAI[colorToMove.equals(Color.WHITE)?0:1] && gamestate.equals(Gamestate.PLAYING) && !debug) {
+            Service<Turn> service = new Service<Turn>() {
+                @Override
+                protected Task<Turn> createTask() {
+                    return new Task<Turn>() {
+                        @Override
+                        protected Turn call() throws Exception {
+                            return convertNotation(Server.getInputStream().readUTF());
+                        }
+                    };
+                }
+            };
+            service.setOnSucceeded(e -> {
+                handleTurn(service.getValue());
+                e.consume();
+            });
+            service.start();
+        }
         // Check if bot plays
-        int index = colorToMove.equals(Color.WHITE)?0:1;
-        if (playsAI[index] && gamestate.equals(Gamestate.PLAYING) && !debug) {
+        else if (playsAI[colorToMove.equals(Color.WHITE)?0:1] && gamestate.equals(Gamestate.PLAYING) && !debug) {
             //AIThinking=true;
             Service<Turn> service = new Service<>() {
                 @Override
@@ -770,6 +799,27 @@ public class Chessboard {
         }
 
         if(!debug) controller.handlePremove();
+    }
+
+    /**
+     * Converts chess notation into a Turn object
+     * @param s chess notation example e2e4
+     * @return Turn object
+     */
+    public Turn convertNotation(String s) {
+        int column1 = s.charAt(0)-97, line1 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(1)))-8);
+        int column2 = s.charAt(2)-97, line2 = Math.abs(Integer.parseInt(String.valueOf(s.charAt(3)))-8);
+        return new Turn(fields[line1][column1], fields[line2][column2]);
+    }
+
+    /**
+     * Converts a Turn object into chess notation
+     * @param t Turn object
+     * @return chess notation example e2e4
+     */
+    public String generateNotation(Turn t) {
+        return ""+(t.getSourceField().getColumn()+97) + (Math.abs(t.getSourceField().getLine()-sizeOfBoard)) +
+                (t.getTargetField().getColumn()+97) + (Math.abs(t.getSourceField().getLine()-sizeOfBoard));
     }
 
     /**
