@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import model.Chessboard;
 import model.Server;
 
+import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -106,6 +107,16 @@ public class HostController {
                         MainLaxe.invertBoard = true;
                         MainLaxe.whiteAi = true;
                         MainLaxe.blackAi = false;
+                    }
+                    try {
+                        Server.getOutputStream().writeUTF(color==0?"white":"black");
+                        Server.getOutputStream().writeUTF(""+MainLaxe.timeWhite);
+                        Server.getOutputStream().writeUTF(""+MainLaxe.timeBlack);
+                        Server.getOutputStream().writeUTF(""+MainLaxe.inkrementWhite);
+                        Server.getOutputStream().writeUTF(""+MainLaxe.inkrementBlack);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        System.out.println("Es gab Probleme beim schicken an den Server!");
                     }
                     MainLaxe.startGame();
                     timeline.stop();

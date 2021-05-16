@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import model.Server;
 
+import java.io.IOException;
+
 
 public class JoinController {
     @FXML
@@ -40,6 +42,16 @@ public class JoinController {
                 System.out.println("Der host konnte nicht erreicht werden!");
                 errorLabel.setText("Unable to reach host!\nPlease try again ...");
             }
+            try {
+                System.out.println(Server.getInputStream().readUTF());
+                System.out.println(Server.getInputStream().readUTF());
+                System.out.println(Server.getInputStream().readUTF());
+                System.out.println(Server.getInputStream().readUTF());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                System.out.println("Es gab Probleme beim Lesen des Servers!");
+            }
+
         });
 
     }
