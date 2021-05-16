@@ -49,6 +49,8 @@ public class MainLaxe extends Application {
         MainLaxe.changeScene(scene);
         // Set the figures with the FEN Code
         ChessboardView.display();
+        if (board.isPlayerConnected() && board.getPlaysAI()[0])
+            board.endTurn();
     }
 
     public static void changeScene(Scene scene) {

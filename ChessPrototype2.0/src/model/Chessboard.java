@@ -349,7 +349,9 @@ public class Chessboard {
 
         if (playerConnected && !playsAI[colorToMove.equals(Color.WHITE)?0:1] && !debug) {
             try {
-                Server.getOutputStream().writeUTF(generateNotation(t));
+                System.out.println("Ich sende irgendwas");
+                System.out.println(generateNotation(currentT));
+                Server.getOutputStream().writeUTF(generateNotation(currentT));
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Fehler beim Senden an den Server!");
@@ -750,7 +752,10 @@ public class Chessboard {
                     return new Task<Turn>() {
                         @Override
                         protected Turn call() throws Exception {
-                            return convertNotation(Server.getInputStream().readUTF());
+                            System.out.println("IIICH WAAAARTE!");
+                            Turn s = convertNotation(Server.getInputStream().readUTF());
+                            System.out.println(s);
+                            return s;
                         }
                     };
                 }
@@ -818,8 +823,8 @@ public class Chessboard {
      * @return chess notation example e2e4
      */
     public String generateNotation(Turn t) {
-        return ""+(t.getSourceField().getColumn()+97) + (Math.abs(t.getSourceField().getLine()-sizeOfBoard)) +
-                (t.getTargetField().getColumn()+97) + (Math.abs(t.getSourceField().getLine()-sizeOfBoard));
+        return ""+((char) (t.getSourceField().getColumn()+97)) + (Math.abs(t.getSourceField().getLine()-sizeOfBoard)) +
+                ((char) (t.getTargetField().getColumn()+97)) + (Math.abs(t.getTargetField().getLine()-sizeOfBoard));
     }
 
     /**
