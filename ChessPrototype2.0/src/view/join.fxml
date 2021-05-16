@@ -22,5 +22,10 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Button>
+      <Label fx:id="errorLabel" layoutX="64.0" layoutY="358.0" style="-fx-background-color: white;">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

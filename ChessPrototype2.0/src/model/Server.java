@@ -52,7 +52,28 @@ public class Server extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static boolean startConnection(String ip) {
+        int port = 50000;
+        try {
+            System.out.println("Connecting to " + ip + " on port " + port);
+            server = new Socket(ip, port);
+
+            System.out.println("Just connected to " + server.getRemoteSocketAddress());
+
+            outputStream = new DataOutputStream(server.getOutputStream());
+            inputStream = new DataInputStream(server.getInputStream());
+
+            //out.writeUTF("Hello from " + server.getLocalSocketAddress());
+
+            //System.out.println("Server says " + in.readUTF());
+            //client.close();
+        } catch (IOException e) {
+            //e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public static Socket getServer() {

@@ -7,13 +7,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import model.Server;
 
 
 public class JoinController {
     @FXML
     public ImageView backgroundImage;
     public AnchorPane pane;
-    public Label text;
+    public Label text, errorLabel;
     public Button connectButton;
     public TextField ipField;
 
@@ -29,12 +30,16 @@ public class JoinController {
         text.setLayoutX(width/3);
         connectButton.setLayoutX(width/3);
         ipField.setLayoutX(width/3);
-
+        errorLabel.setLayoutX(width/3);
 
         connectButton.setOnAction(e -> {
             if (!ipField.getText().matches("^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\\.(?!$)|$)){4}$")) // Sick regex to check if IP is valid
                 return;
             System.out.println("Versuche zu verbinden!");
+            if (!Server.startConnection(ipField.getText())) {
+                System.out.println("Der host konnte nicht erreicht werden!");
+                errorLabel.setText("Unable to reach host!\nPlease try again ...");
+            }
         });
 
     }
