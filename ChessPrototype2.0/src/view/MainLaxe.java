@@ -32,6 +32,9 @@ public class MainLaxe extends Application {
         System.out.println("timeBlack:"+timeBlack);
         System.out.println("ikWhite: "+inkrementWhite);
         System.out.println("inkBlack: "+inkrementBlack);
+
+        // Display the Chessboard
+        // Set graphic view of the chess board. Normally it is 8x8
         Scene scene = ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, invertBoard);
 
         board.createBoard(size, whiteAi, blackAi, timeWhite, timeBlack, inkrementWhite, inkrementBlack); //In Sekunden!
@@ -41,8 +44,6 @@ public class MainLaxe extends Application {
         board.setBoardByFen(fen);
         board.printBoard();
 
-        // Display the Chessboard
-        // Set graphic view of the chess board. Normally it is 8x8
         scene.getStylesheets().add(MainLaxe.class.getResource("stylesheet.css").toString());
 
         MainLaxe.changeScene(scene);
