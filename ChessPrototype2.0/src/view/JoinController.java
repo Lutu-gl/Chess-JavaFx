@@ -45,6 +45,7 @@ public class JoinController {
             try {
                 if (Server.getInputStream().readUTF().equals("white")) {
                     MainLaxe.whiteAi = true;
+                    //controller.Controller.getInstance().flipTimers();
                     MainLaxe.blackAi = false;
                     MainLaxe.invertBoard = true;
                 } else {

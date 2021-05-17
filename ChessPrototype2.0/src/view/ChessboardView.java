@@ -1,10 +1,9 @@
 package view;
 
+import controller.*;
 import controller.Controller;
-import controller.DragDetectedHandler;
-import controller.DragDroppedHandler;
-import controller.DragOverHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -86,6 +85,9 @@ public class ChessboardView {
         //turnBack.setOnAction(new TurnBackHandler());
         //gridPane.add(turnBack, w+2, 0);
 
+        Button turnBack = new Button("Turn back!");
+        turnBack.setOnAction(new TurnBackHandler());
+
         // if board should be inverted
         if (invertBoard)
             gridPane.setRotate(180);
@@ -115,7 +117,8 @@ public class ChessboardView {
         tf.setPrefSize(500, 500);
         tf.setLayoutX(0);
         tf.setLayoutY(0);
-        movesVBox.getChildren().add(tf);
+
+        movesVBox.getChildren().addAll(turnBack, tf);
         movesVBox.setSpacing(10);
         //scPane.vvalueProperty().bind(movesVBox.heightProperty());
         scPane.setContent(movesVBox);

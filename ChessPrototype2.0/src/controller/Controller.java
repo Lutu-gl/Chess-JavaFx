@@ -14,6 +14,7 @@ import view.ChessboardView;
 import view.FieldLabel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -39,6 +40,7 @@ public class Controller implements EventHandler<MouseEvent>{
     private FieldLabel sourcePreMove = null;
     private FieldLabel targetPreMove = null;
     private boolean isPremove = false;
+    private boolean flippedTimer = false;
 
     Chessboard chessboard = Chessboard.getInstance();
     private Controller(){
@@ -134,6 +136,8 @@ public class Controller implements EventHandler<MouseEvent>{
                 if (highlighted.get(i).getLine() == target.getLine() && highlighted.get(i).getColumn() == target.getColumn()) {
                     Turn turn = new Turn(chessboard.getFields()[source.getLine()][source.getColumn()], chessboard.getFields()[target.getLine()][target.getColumn()]);
                     unSelectLabel();
+                    turn.setBlackTime(chessboard.getBlackTime());
+                    turn.setWhiteTime(chessboard.getWhiteTime());
 
 
                     source = null;
@@ -171,6 +175,8 @@ public class Controller implements EventHandler<MouseEvent>{
         for(Field f : clickedFieldSource.getPiece().getMoves()){
             if(f == clickedFieldTarget){
                 Turn turn = new Turn(chessboard.getFields()[sourcePreMove.getLine()][sourcePreMove.getColumn()], chessboard.getFields()[targetPreMove.getLine()][targetPreMove.getColumn()]);
+                turn.setWhiteTime(chessboard.getWhiteTime());
+                turn.setBlackTime(chessboard.getBlackTime());
                 chessboard.handleTurn(turn);
             }
         }
@@ -296,8 +302,8 @@ public class Controller implements EventHandler<MouseEvent>{
     public void updateTime(double time, Color c){
         //System.out.println("Time "+ time + c);
         switch(c){
-            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(0)).setText(Double.toString(time))); // [0] == black Label [1] == scrollPane [2] == white Label
-            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(2)).setText(Double.toString(time)));
+            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(!flippedTimer ? 0:2)).setText(Double.toString(time))); // [0] == black Label [1] == scrollPane [2] == white Label
+            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(!flippedTimer ? 2:0)).setText(Double.toString(time)));
         }
 
     }
@@ -308,9 +314,9 @@ public class Controller implements EventHandler<MouseEvent>{
      * makes a newLine in TextArea after a full turn
      * @param s String to write into TextArea
      */
-    public void addMoveToDisplay(String s){
+    public void addPgnToDisplay(String s){
         VBox vb = ChessboardView.getMovesVBox();
-        TextArea t = (TextArea) vb.getChildren().get(0);
+        TextArea t = (TextArea) vb.getChildren().get(1);
         if(chessboard.getColorToMove() == Color.WHITE){
             t.appendText(s + "\n");
         }
@@ -319,6 +325,28 @@ public class Controller implements EventHandler<MouseEvent>{
         //Platform.runLater(() -> (TextField)(ChessboardView.getMovesVBox().getChildren().get(ChessboardView.getMovesVBox().getChildren().size()-1)));
 
         //Platform.runLater(() -> ChessboardView.getMovesVBox().getChildren().add(new Text(s)));
+    }
+    public void removePgnFromDisplay(String... s){
+        VBox vb = ChessboardView.getMovesVBox();
+        TextArea t = (TextArea) vb.getChildren().get(1);
+        StringBuilder text = new StringBuilder(t.getText());
+        for (String e : s)
+        {
+            System.out.println(e);
+            text.replace(text.indexOf(e), text.length(), "");
+        }
+        t.setText(text.toString());
+        System.out.println("sending back: " + text.toString());
+    }
+
+    public void flipTimers(){
+        // [0] == black Label [1] == scrollPane [2] == white Label
+        flippedTimer=true;
+        Label l  = (Label) ChessboardView.getTimerVBox().getChildren().get(0);
+        Label l2 = (Label) ChessboardView.getTimerVBox().getChildren().get(2);
+        ChessboardView.getTimerVBox().getChildren().remove(ChessboardView.getTimerVBox().getChildren().get(2));
+        ChessboardView.getTimerVBox().getChildren().set(0, l2);
+        ChessboardView.getTimerVBox().getChildren().add(l);
     }
 
     public void setSource(FieldLabel source) {
@@ -372,5 +400,13 @@ public class Controller implements EventHandler<MouseEvent>{
 
     public void setTargetPreMove(FieldLabel targetPreMove) {
         this.targetPreMove = targetPreMove;
+    }
+
+    public boolean isFlippedTimer() {
+        return flippedTimer;
+    }
+
+    public void setFlippedTimer(boolean flippedTimer) {
+        this.flippedTimer = flippedTimer;
     }
 }

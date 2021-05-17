@@ -20,6 +20,7 @@ public class Turn {
     private Piece promotionPiece;
     private int moveScoreGuess = 0;
     private int promoteTo = 5;
+    private long blackTime, whiteTime;
 
     /**
      * sets sourceField, targetField, isCastleTurn, colorToMove, turnNumber, movingPiece(can be null), eatenPiece(can be null)
@@ -177,6 +178,22 @@ public class Turn {
 
     public void setPromoteTo(int promoteTo) {
         this.promoteTo = promoteTo;
+    }
+
+    public long getBlackTime() {
+        return blackTime;
+    }
+
+    public void setBlackTime(long blackTime) {
+        this.blackTime = blackTime;
+    }
+
+    public long getWhiteTime() {
+        return whiteTime;
+    }
+
+    public void setWhiteTime(long whiteTime) {
+        this.whiteTime = whiteTime;
     }
 
     @Override

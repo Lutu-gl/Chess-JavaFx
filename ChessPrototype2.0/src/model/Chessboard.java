@@ -52,6 +52,7 @@ public class Chessboard {
     private HashMap<String, String> openingBook;
     public boolean AIThinking=false;
     public boolean debug = false;
+    private boolean isAllowedToMakeMove = true;
     private int queensEaten = 0;
 
     // Singleton pattern
@@ -102,7 +103,7 @@ public class Chessboard {
      * @param whiteTime long time in seconds, should be >0
      * @param blackTime long time in seconds, should be >0
      * @param whiteInkrement increases timer for white by x seconds after making move
-     * @param blackInkrement increases timer for white by x seconds after making move
+     * @param blackInkrement increases timer for black by x seconds after making move
      */
     public void createBoard(int size, boolean whiteAI, boolean blackAI, long whiteTime, long blackTime, long whiteInkrement, long blackInkrement){
         this.whiteTime = (long) (whiteTime*1e3);
@@ -198,7 +199,7 @@ public class Chessboard {
             };
             timer.scheduleAtFixedRate(timerTask, 0, 1);
         }
-        else
+        else if(blackAI && !whiteAI)
         {
             TimerTask timerTask = new TimerTask() {
                 @Override
@@ -227,6 +228,37 @@ public class Chessboard {
                 }
             };
             timer.scheduleAtFixedRate(timerTask, 0, 1);
+        }
+        else{
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Chessboard ch = Chessboard.getInstance();
+                    if(timeStopped == 0) return;
+                    long timeNow=0L;
+                    if(!ch.AIThinking){
+                        timeNow = (ch.blackTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
+                        //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
+                        Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
+                        if(timeNow <= 0){
+                            Controller.getInstance().updateTime(0, Color.BLACK);
+                            gamestate = Gamestate.WHITE_WINS;
+                        }
+                    }
+                    else{
+                        timeNow = (ch.whiteTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
+                        Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
+                        if(timeNow <= 0){
+                            Controller.getInstance().updateTime(0, Color.WHITE);
+                            gamestate = Gamestate.BLACK_WINS;
+                        }
+                    }
+                    observers.get(0).update();  //I dont like this!
+                }
+            };
+            timer.scheduleAtFixedRate(timerTask, 0, 1);
+            controller.Controller.getInstance().flipTimers();
+
         }
 
 
@@ -514,7 +546,7 @@ public class Chessboard {
         int threefoldCounter=0;
         addFen(getBoardAsFen());
         if(!debug){
-            Controller.getInstance().addMoveToDisplay(turnToPGN(t));
+            Controller.getInstance().addPgnToDisplay(turnToPGN(t));
         }
         String fen = fens.get(fens.size()-1);
         for(String fe : fens){
@@ -718,7 +750,9 @@ public class Chessboard {
 
         // Remove the turn from played turns and display the board
         turns.remove(turns.size()-1);
-        endTurn();
+
+        if(isAllowedToMakeMove)
+            endTurn();
 
     }
     //Am ende von jedem Zug
@@ -797,7 +831,10 @@ public class Chessboard {
                 System.out.println("Berechnung begonnen!");
             });*/
             service.setOnSucceeded(e -> {
-                handleTurn(service.getValue());
+                Turn t = service.getValue();
+                t.setBlackTime(Chessboard.instance.getBlackTime());
+                t.setWhiteTime(Chessboard.instance.getWhiteTime());
+                handleTurn(t);
                 e.consume();
             });
             service.start();
@@ -1069,56 +1106,6 @@ public class Chessboard {
         s.append(" ");
         return s.toString();
     }
-/*
-    public String turnToPGN(Turn t){
-        StringBuilder s = new StringBuilder();
-
-        King k = colorToMove == Color.BLACK ? b_king : w_king;
-        if(t.getColorToMove() == Color.WHITE)
-            s.append(turn).append(". ");
-
-        switch(Character.toLowerCase(t.getMovingPiece().getShortName())){
-            case 'p': if(t.getEatenPiece() != null) s.append(t.getSourceField().getName().charAt(0));break;
-            case 'n': s.append('N'); break;
-            case 'b': s.append('B'); break;
-            case 'k':
-                if(t.isCastleTurn()){
-                    if(t.getTargetField().getColumn() >=6){
-                        return s.append("0-0 ").toString();
-                    }
-                    else{
-                        return s.append("0-0-0 ").toString();
-                    }
-                }
-                else
-                s.append('K');
-            break;
-            case 'r': s.append("R"); break;
-            case 'q': s.append('Q'); break;
-        }
-
-        if(t.getEatenPiece() != null)
-            s.append('x');
-
-        s.append(t.getTargetField().getName());
-        if(t.isPromotionTurn()){
-            switch (Pawn.getPromotionPieces())
-            {
-                case 0 -> s.append("=Q");
-                case 1 -> s.append("=N");
-                case 2 -> s.append("=R");
-                case 3 -> s.append("=B");
-            }
-
-        }
-        if(k.isInCheck())
-            s.append('+');
-        s.append(" ");
-        return s.toString();
-    }
-
-
- */
     /**
      * @return Returns Fen of current Board state
      */
@@ -1322,5 +1309,21 @@ public class Chessboard {
 
     public void setPlayerConnected(boolean playerConnected) {
         this.playerConnected = playerConnected;
+    }
+
+    public void setWhiteTime(long whiteTime) {
+        this.whiteTime = whiteTime;
+    }
+
+    public void setBlackTime(long blackTime) {
+        this.blackTime = blackTime;
+    }
+
+    public boolean isAllowedToMakeMove() {
+        return isAllowedToMakeMove;
+    }
+
+    public void setAllowedToMakeMove(boolean allowedToMakeMove) {
+        isAllowedToMakeMove = allowedToMakeMove;
     }
 }

@@ -10,10 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -41,7 +38,7 @@ public class Controller{
     //Media media =new Media(VUrl);
     //MediaPlayer mediaPlayer= new MediaPlayer(media);
 
-    private ObservableList<String> dropdownList1 = FXCollections.observableArrayList("Weiß", "Schwarz", "Zufall");
+    private ObservableList<String> dropdownList1 = FXCollections.observableArrayList("Weiß", "Schwarz", "ZFufall");
     private ObservableList<String> dropdownList2 = FXCollections.observableArrayList("Local", "Host", "Join");
 
     public void initialize() {
@@ -50,6 +47,7 @@ public class Controller{
         dropdown1.getSelectionModel().select("Weiß");
         dropdown2.getSelectionModel().select("Local");
     }
+
 
 
     public void displayImage(ActionEvent e){
