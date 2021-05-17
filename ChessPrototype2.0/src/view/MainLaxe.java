@@ -43,7 +43,7 @@ public class MainLaxe extends Application {
 
         // Display the Chessboard
         // Set graphic view of the chess board. Normally it is 8x8
-        Scene scene = ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, invertBoard);
+        Scene scene = ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.SKY, invertBoard);
         scene.getStylesheets().add(MainLaxe.class.getResource("stylesheet.css").toString());
 
         MainLaxe.changeScene(scene);
