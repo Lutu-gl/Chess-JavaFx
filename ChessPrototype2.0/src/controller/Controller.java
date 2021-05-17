@@ -325,20 +325,48 @@ public class Controller implements EventHandler<MouseEvent>{
 
         //Platform.runLater(() -> ChessboardView.getMovesVBox().getChildren().add(new Text(s)));
     }
-    public void removePgnFromDisplay(int num){
+
+    /**
+     * Removes 1-2 elements from display
+     * @param num num == 1, removes last entry, num == 2 removes last 2 entries
+     */
+    public void removePgnFromDisplay(int num) {
+
+        //ATTENTION: COMPLETE TRASH CODE but it works
         VBox vb = ChessboardView.getMovesVBox();
         TextArea t = (TextArea) vb.getChildren().get(1);
-        String text = t.getText(t.getText().lastIndexOf(".")-1, t.getText().length()-1);
-        String[] strings =text.split(" ");
-
-        for (int i = num, i2=0; i != 0; i--, i2++)
-        {
-            String e = strings[strings.length-1 - i2];
-            //System.out.println("String to check " + e);
-            text = text.replace(e, "");
+        String text = "";
+        if (Chessboard.getInstance().getColorToMove() == Color.BLACK && num == 2) {
+            text = t.getText();
+            String[] strings = t.getText().split("[\n ]");
+            for (int i = strings.length - 1; i != -1; i--, num--)
+            {
+                System.out.println("num:" + num);
+                if (num == 0)
+                    break;
+                System.out.println(strings[i]);
+                text = text.replace(strings[i], "");
+            }
+            System.out.println("TEXTER:" + text);
+            text = text.substring(0, text.length() - 2);
+            t.setText(text);
         }
-        t.setText(t.getText().replace(t.getText().substring(t.getText().lastIndexOf(".")-1), text));
-
+        else {
+            text = t.getText(t.getText().lastIndexOf(".") - 1, t.getText().length() - 1);
+            System.out.println("TEXT: " + text);
+            String[] strings = text.split(" ");
+            for (int i = num, i2 = 0; i != 0; i--, i2++)
+            {
+                String e = strings[strings.length - 1 - i2];
+                System.out.println("String to check " + e);
+                text = text.replace(e, "");
+                text = text.replace("  ", "");
+            }
+            if(!text.isEmpty() && text.charAt(0) == ' ')
+                text = text.substring(1);
+            text = t.getText().replace(t.getText().substring(t.getText().lastIndexOf(".") - 1), text);
+            t.setText(text.replace("  ", ""));
+        }
     }
 
     public void flipTimers(){
