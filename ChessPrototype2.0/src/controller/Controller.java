@@ -138,8 +138,7 @@ public class Controller implements EventHandler<MouseEvent>{
                     unSelectLabel();
                     turn.setBlackTime(chessboard.getBlackTime());
                     turn.setWhiteTime(chessboard.getWhiteTime());
-
-
+                    System.out.println("setting white time");
                     source = null;
 
                     unmarkAvailableMoves();
@@ -326,17 +325,20 @@ public class Controller implements EventHandler<MouseEvent>{
 
         //Platform.runLater(() -> ChessboardView.getMovesVBox().getChildren().add(new Text(s)));
     }
-    public void removePgnFromDisplay(String... s){
+    public void removePgnFromDisplay(int num){
         VBox vb = ChessboardView.getMovesVBox();
         TextArea t = (TextArea) vb.getChildren().get(1);
-        StringBuilder text = new StringBuilder(t.getText());
-        for (String e : s)
+        String text = t.getText(t.getText().lastIndexOf(".")-1, t.getText().length()-1);
+        String[] strings =text.split(" ");
+
+        for (int i = num, i2=0; i != 0; i--, i2++)
         {
-            System.out.println(e);
-            text.replace(text.indexOf(e), text.length(), "");
+            String e = strings[strings.length-1 - i2];
+            //System.out.println("String to check " + e);
+            text = text.replace(e, "");
         }
-        t.setText(text.toString());
-        System.out.println("sending back: " + text.toString());
+        t.setText(t.getText().replace(t.getText().substring(t.getText().lastIndexOf(".")-1), text));
+
     }
 
     public void flipTimers(){

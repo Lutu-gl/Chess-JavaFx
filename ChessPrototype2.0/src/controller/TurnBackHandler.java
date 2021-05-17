@@ -25,15 +25,15 @@ public class TurnBackHandler implements EventHandler<ActionEvent> {
         if(Chessboard.getInstance().getPlaysAI()[1] || Chessboard.getInstance().getPlaysAI()[0]){
             System.out.println(turns.size());
             chessboard.setAllowedToMakeMove(false);
-            Controller.getInstance().removePgnFromDisplay(Chessboard.getInstance().turnToPGN(turns.get(turns.size()-2)), Chessboard.getInstance().turnToPGN(turns.get(turns.size()-1)));
+            Controller.getInstance().removePgnFromDisplay(2);
             chessboard.undoTurn(turns.get(turns.size()-2));
             chessboard.setAllowedToMakeMove(true);
             ChessboardView.display();
-            chessboard.printBoard();
+            //chessboard.printBoard();
         }
         else
         {
-            Controller.getInstance().removePgnFromDisplay(Chessboard.getInstance().turnToPGN(turns.get(turns.size()-1)));
+            Controller.getInstance().removePgnFromDisplay(1);
             chessboard.undoTurn(turns.get(turns.size()-1));
         }
 

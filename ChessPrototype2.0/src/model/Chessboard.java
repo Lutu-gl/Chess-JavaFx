@@ -1058,7 +1058,7 @@ public class Chessboard {
 
         King k = colorToMove == Color.BLACK ? b_king : w_king;
         if(t.getColorToMove() == Color.WHITE)
-            s.append((turn)+". ");
+            s.append((turn)+".");
 
         switch(Character.toLowerCase(t.getMovingPiece().getShortName())){
             case 'p': if(t.getEatenPiece() != null) s.append(t.getSourceField().getName().charAt(0));break;
@@ -1103,6 +1103,7 @@ public class Chessboard {
         }
         if(k.isInCheck())
             s.append('+');
+        if(t.getColorToMove() != Color.BLACK)
         s.append(" ");
         return s.toString();
     }
