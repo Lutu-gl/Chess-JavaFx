@@ -353,50 +353,6 @@ public class Controller implements EventHandler<MouseEvent>{
         t.appendText(text); //using append instead of set to trigger Listener
     }
 
-    public void removePgnFromDisplay(int num) {
-
-        if(num!=2 && num!=1){
-            System.err.println("error in RemovePGN");
-            return;
-        }
-        //ATTENTION: COMPLETE TRASH CODE but it works
-        VBox vb = ChessboardView.getMovesVBox();
-        TextArea t = (TextArea) vb.getChildren().get(1);
-        String text = "";
-        if (Chessboard.getInstance().getColorToMove() == Color.BLACK && num == 2) {
-            text = t.getText();
-            String[] strings = t.getText().split("[\n ]");
-            for (int i = strings.length - 1; i != -1; i--, num--)
-            {
-                System.out.println("num:" + num);
-                if (num == 0)
-                    break;
-                System.out.println(strings[i]);
-                text = text.replace(strings[i], "");
-            }
-            //System.out.println("TEXTER:" + text);
-            text = text.substring(0, text.length() - 2);
-            t.setText(text);
-        }
-        else {
-            text = t.getText(t.getText().lastIndexOf(".") - 1, t.getText().length() - 1);
-            //System.out.println("TEXT: " + text);
-            String[] strings = text.split(" ");
-            for (int i = num, i2 = 0; i != 0; i--, i2++)
-            {
-                String e = strings[strings.length - 1 - i2];
-                //System.out.println("String to check " + e);
-                text = text.replace(e, "");
-                text = text.replace("  ", "");
-            }
-            if(!text.isEmpty() && text.charAt(0) == ' ')
-                text = text.substring(1);
-            text = t.getText().replace(t.getText().substring(t.getText().lastIndexOf(".") - 1), text);
-            t.setText(text.replace("  ", ""));
-        }
-        t.appendText(""); //To Trigger the Listener
-    }
-
     public void flipTimers(){
         // [0] == black Label [1] == scrollPane [2] == white Label
         flippedTimer=true;
