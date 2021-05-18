@@ -324,12 +324,35 @@ public class Controller implements EventHandler<MouseEvent>{
         //Platform.runLater(() -> (TextField)(ChessboardView.getMovesVBox().getChildren().get(ChessboardView.getMovesVBox().getChildren().size()-1)));
 
         //Platform.runLater(() -> ChessboardView.getMovesVBox().getChildren().add(new Text(s)));
+        //t.setScrollTop(Double.MIN_VALUE);
+    }
+    /**
+     * Removes num entries from the Textarea
+     */
+    public void removePGNFromTextArea(int num) throws ArrayIndexOutOfBoundsException{
+        VBox vb = ChessboardView.getMovesVBox();
+        TextArea t = (TextArea) vb.getChildren().get(1);
+        String text = t.getText();
+        //System.out.println("L:"+text.length());
+        //System.out.println("TEXT BEFORE:\"" + text + "\"");
+        for (int i = text.length()-1; num+1 != 0; i--)
+        {
+            //System.out.println("i:"+i);
+            if(text.charAt(i) == '\n' || text.charAt(i) == ' ' || i == 0){
+                //System.out.println("in if with:"+i);
+                num--;
+                if(i != 0)
+                    text = text.substring(0, i+1);
+                else
+                    text = text.substring(0, i);
+
+            }
+        }
+        //System.out.println("TEXT AFTER:\""+text+"\"");
+        t.clear();
+        t.appendText(text); //using append instead of set to trigger Listener
     }
 
-    /**
-     * Removes 1-2 elements from display
-     * @param num num == 1, removes last entry, num == 2 removes last 2 entries
-     */
     public void removePgnFromDisplay(int num) {
 
         if(num!=2 && num!=1){
@@ -371,6 +394,7 @@ public class Controller implements EventHandler<MouseEvent>{
             text = t.getText().replace(t.getText().substring(t.getText().lastIndexOf(".") - 1), text);
             t.setText(text.replace("  ", ""));
         }
+        t.appendText(""); //To Trigger the Listener
     }
 
     public void flipTimers(){

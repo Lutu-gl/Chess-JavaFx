@@ -2,6 +2,9 @@ package view;
 
 import controller.*;
 import controller.Controller;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -106,25 +109,33 @@ public class ChessboardView {
         t2Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
         t2Label.setFont(new Font("Arial", 30));
 
-        ScrollPane scPane = new ScrollPane();
-        scPane.setMinSize(250,250);
-        scPane.setMaxSize(250, 250);
+        //ScrollPane scPane = new ScrollPane();
+        //scPane.setMinSize(250,250);
+        //scPane.setMaxSize(250, 250);
 
         VBox movesVBox = new VBox();
+        movesVBox.setMinSize(250, 250);
+        //movesVBox.setMaxSize(250, 250);
         TextArea tf = new TextArea();
         tf.setEditable(false);
         tf.getStyleClass().add("movesTextArea");
         tf.setPrefSize(500, 500);
         tf.setLayoutX(0);
         tf.setLayoutY(0);
-
         movesVBox.getChildren().addAll(turnBack, tf);
         movesVBox.setSpacing(10);
+        tf.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                tf.setScrollTop(Double.MIN_VALUE);
+            }
+        });
         //scPane.vvalueProperty().bind(movesVBox.heightProperty());
-        scPane.setContent(movesVBox);
+        //scPane.setContent(movesVBox);
 
-        VBox timerVBox = new VBox(t1Label, scPane,t2Label);
-        scPane.setFitToWidth(true);
+        VBox timerVBox = new VBox(t1Label, movesVBox,t2Label);
+        movesVBox.setFillWidth(true);
+        //scPane.setFitToWidth(true);
         timerVBox.setSpacing(100);
         t1Label.setMinSize(200, 200);
         t2Label.setMinSize(200, 200);
