@@ -213,23 +213,50 @@ public class AI implements Callable<Turn> {
 
 
     private static double evaluate() {              //Die Endposition evaluieren
+        //chessboard.printBoard();
+        //Nachschauen ob der fen schon öfter mehrmals vorgekommen ist, weil dann ist es ein Draw wegen threefoldrepetition
 
-        //System.out.println(Chessboard.getInstance().getBoardAsFen());
+        //Der teil hier funktioniert nicht, weil die AI zwar die Position als draw erkennt aber immer noch weiterschaut und dort ist der currentfen dann nicht mehr drinne darum spielt es den. Darum muss man da doppelt durchgehen
+        //Vielleicht kann man das irgendwie besser machen, hab aber keinen Weg bis jetzt gefundne.
         /*
-        King k = chessboard.getColorToMove().equals(Color.WHITE)? chessboard.getW_king() : chessboard.getB_king();
-        if(k.getMoves().size() == 0){
-            if (k.isInCheck()){
-                //Wenn er Schach ist, dann ist Schachmatt.
-                //System.out.println(Chessboard.getInstance().getBoardAsFen());
-                return -500;
-            }else{
-                return 0;       //Sonst ist Stalemate
+        String currentFen = chessboard.getBoardAsFen();
+        currentFen  = currentFen.substring(0, currentFen.lastIndexOf(' '));
+        currentFen  = currentFen.substring(0, currentFen.lastIndexOf(' '));
+
+        ArrayList<String> playedfens = chessboard.getFens();
+
+        int threefoldCounter=0;
+        for (String fen: playedfens) {
+            if(currentFen.equals(fen)) threefoldCounter++;
+        }
+        if(threefoldCounter >= 2){
+            System.out.println("Jetzt wurde der Counter getriggert: fen="+currentFen);
+            return 0;
+        }
+         */
+        //Nachschauen ob der fen schon öfter mehrmals vorgekommen ist, weil dann ist es ein Draw wegen threefoldrepetition
+        String currentFen = chessboard.getBoardAsFen();
+        currentFen  = currentFen.substring(0, currentFen.lastIndexOf(' '));
+        currentFen  = currentFen.substring(0, currentFen.lastIndexOf(' '));
+
+        ArrayList<String> playedfens = chessboard.getFens();
+
+        int threefoldCounter=0;
+        for (String fen: playedfens) {
+            threefoldCounter=0;
+            for (String fen2 : playedfens){
+                if(fen.equals(fen2)) threefoldCounter++;
+            }
+            if(threefoldCounter >= 3){
+                return 0;
             }
         }
 
-         */
-        //chessboard.printBoard();
+
+
         ArrayList<Piece> myPieces, enemyPieces;
+
+
 
         double mySpace = 0;
         double enemySpace = 0;
@@ -255,7 +282,7 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
-            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= p.getTimesMoved()/50;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/50;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             value += p.getValue();
             value += PositionTables.getValue(p);
 
@@ -263,7 +290,7 @@ public class AI implements Callable<Turn> {
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
-            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) enemyValue -= p.getTimesMoved()/50;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/50;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
 
