@@ -236,13 +236,9 @@ public class AI implements Callable<Turn> {
         }
          */
         //Nachschauen ob der fen schon öfter mehrmals vorgekommen ist, weil dann ist es ein Draw wegen threefoldrepetition
-        String currentFen = chessboard.getBoardAsFen();
-        currentFen  = currentFen.substring(0, currentFen.lastIndexOf(' '));
-        currentFen  = currentFen.substring(0, currentFen.lastIndexOf(' '));
-
         ArrayList<String> playedfens = chessboard.getFens();
 
-        int threefoldCounter=0;
+        int threefoldCounter;
         for (String fen: playedfens) {
             threefoldCounter=0;
             for (String fen2 : playedfens){
@@ -256,9 +252,6 @@ public class AI implements Callable<Turn> {
 
 
         ArrayList<Piece> myPieces, enemyPieces;
-
-
-
         double mySpace = 0;
         double enemySpace = 0;
         double space = 0;
@@ -286,9 +279,15 @@ public class AI implements Callable<Turn> {
             if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             if(p instanceof Queen && chessboard.getGamephase() != Gamephase.ENDGAME){
                 if(p.getTimesMoved() > 1){
-                    value -= 1;
+                    value -= 0.5;
                 }
             }
+            if(!(p instanceof Pawn)){
+                if(p.getTimesMoved() == 0){
+                    value -= 0.1;
+                }
+            }
+
             value += p.getValue();
             value += PositionTables.getValue(p);
 
@@ -302,6 +301,13 @@ public class AI implements Callable<Turn> {
                     enemyValue -= 1;
                 }
             }
+
+            if(!(p instanceof Pawn)){
+                if(p.getTimesMoved() == 0){
+                    enemyValue -= 0.1;
+                }
+            }
+
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
 

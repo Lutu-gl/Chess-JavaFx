@@ -14,7 +14,7 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
 
-        board.createBoard(size, true, true, 30, 30, 3, 3); //In Sekunden!
+        board.createBoard(size, true, false, 1000, 180, 0, 0); //In Sekunden!
 
         String fen = "";
 
@@ -55,7 +55,7 @@ public class Main extends Application {
 //        fen = "8/5P1k/5K2/8/8/8/8/8 w - - 0 1"; //fen promoto Rook not queen is false
 //        fen = "6bb/6rk/4N1bb/8/8/K7/8/8 w - - 0 1"; //fen checkmate in one
 //        fen = "rnbq1rk1/pppp1p1p/4pPp1/8/7Q/7R/PPPPP1P1/RNB1KBN1 b Qq - 0 1"; //kingsavetyEval test
-//        fen = "8/ppp5/4kBK1/3b4/4r3/8/8/8 w - - 0 1";   //Threefold repetition fen in winning position
+//        fen = "r4rk1/ppp1npp1/5n1p/3ppP2/5q2/1B1P2NP/PPPQ1PP1/R4RK1 w Qq - 0 1";   //Threefold repetition fen in winning position
 
 
         //fen = "k7/4ppp1/8/4PPP1/8/8/8/K7 w - - 0 1";
@@ -91,9 +91,6 @@ public class Main extends Application {
         // Display the window
         primaryStage.show();
 
-        if (Chessboard.getInstance().getPlaysAI()[0]&&Chessboard.getInstance().getTurns().size() == 0){
-            Chessboard.getInstance().endTurn();
-        }
     }
 
 
