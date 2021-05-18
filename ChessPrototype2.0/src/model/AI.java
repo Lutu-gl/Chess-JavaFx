@@ -282,7 +282,7 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
-            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10000;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            //if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10000;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             value += p.getValue();
             value += PositionTables.getValue(p);
 
@@ -290,7 +290,7 @@ public class AI implements Callable<Turn> {
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
-            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10000;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            //if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10000;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
 
