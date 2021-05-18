@@ -332,6 +332,10 @@ public class Controller implements EventHandler<MouseEvent>{
      */
     public void removePgnFromDisplay(int num) {
 
+        if(num!=2 && num!=1){
+            System.err.println("error in RemovePGN");
+            return;
+        }
         //ATTENTION: COMPLETE TRASH CODE but it works
         VBox vb = ChessboardView.getMovesVBox();
         TextArea t = (TextArea) vb.getChildren().get(1);
@@ -347,18 +351,18 @@ public class Controller implements EventHandler<MouseEvent>{
                 System.out.println(strings[i]);
                 text = text.replace(strings[i], "");
             }
-            System.out.println("TEXTER:" + text);
+            //System.out.println("TEXTER:" + text);
             text = text.substring(0, text.length() - 2);
             t.setText(text);
         }
         else {
             text = t.getText(t.getText().lastIndexOf(".") - 1, t.getText().length() - 1);
-            System.out.println("TEXT: " + text);
+            //System.out.println("TEXT: " + text);
             String[] strings = text.split(" ");
             for (int i = num, i2 = 0; i != 0; i--, i2++)
             {
                 String e = strings[strings.length - 1 - i2];
-                System.out.println("String to check " + e);
+                //System.out.println("String to check " + e);
                 text = text.replace(e, "");
                 text = text.replace("  ", "");
             }
