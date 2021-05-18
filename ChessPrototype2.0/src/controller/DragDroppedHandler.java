@@ -55,6 +55,8 @@ public class DragDroppedHandler implements EventHandler<DragEvent> {
         dragEvent.setDropCompleted(true);
         dragEvent.consume();
         if (turn == null) return;
+        turn.setBlackTime(chessboard.getBlackTime());
+        turn.setWhiteTime(chessboard.getWhiteTime());
         chessboard.handleTurn(turn);
     }
 }
