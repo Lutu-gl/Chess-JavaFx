@@ -337,7 +337,7 @@ public class PositionTables {
 
     public static double getValue(Piece p) {
         double v =  getMapForPiece(p)[p.getField().getLine()][p.getField().getColumn()];
-        return v/200;
+        return v/500;
     }
 
 
