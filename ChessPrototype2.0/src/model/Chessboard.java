@@ -576,7 +576,8 @@ public class Chessboard {
      * @param s Play sound when making move
      */
     public void movePiece(Piece p, Field f, boolean s){
-
+        p.setTimesMoved(p.getTimesMoved()+1);   //times moved erhöhen
+        //if(!debug) System.out.println("Jetzt wurde das piece insgesammt " + p.getTimesMoved() + " oft gemoved!");
 
         playSound = Sound.MOVE;
 
@@ -722,7 +723,7 @@ public class Chessboard {
         } else
             t.getTargetField().setPiece(null);
 
-
+        t.getMovingPiece().setTimesMoved(t.getMovingPiece().getTimesMoved() - 1);
 
         // Check if the kings must be marked or unmarked as check!
         if (!debug) {

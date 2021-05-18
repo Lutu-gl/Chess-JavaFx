@@ -14,7 +14,7 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
 
-        board.createBoard(size, false, true, 1200000, 180, 5, 5); //In Sekunden!
+        board.createBoard(size, false, true, 60, 60, 0, 0); //In Sekunden!
 
         String fen = "";
 

@@ -24,7 +24,7 @@ public class AI implements Callable<Turn> {
         ArrayList<Turn> moves = generateMoves();
         Turn bestMoveOverall = null, bestMove = null;
 
-        //System.out.println("Ai denkt die Position hat die evalutaion: " + evaluate());
+        System.out.println("Ai denkt die Position hat die evalutaion: " + evaluate());
         HashMap<String, String> openingBook = chessboard.getOpeningBook();
         String fen = chessboard.getBoardAsFen();
         fen = fen.substring(0, fen.indexOf(" ")+2);
@@ -255,6 +255,7 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
+            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= p.getTimesMoved()/50;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             value += p.getValue();
             value += PositionTables.getValue(p);
 
@@ -262,6 +263,7 @@ public class AI implements Callable<Turn> {
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
+            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) enemyValue -= p.getTimesMoved()/50;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
 
@@ -314,9 +316,9 @@ public class AI implements Callable<Turn> {
             }
         }
         kingSavety -= nrAttacker * 10;
-        kingSavety += nrDefender * 5;
+        kingSavety += nrDefender * 3;
 
-        if(nrDefendingPawns < 3) kingSavety -= 15;
+        if(nrDefendingPawns < 3) kingSavety -= 10;
 
 
 

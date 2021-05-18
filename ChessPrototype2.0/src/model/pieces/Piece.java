@@ -14,6 +14,7 @@ public abstract class Piece {
     protected String name;
     protected Field field;
     protected char shortName;
+    protected int timesMoved=0;
 
     /**
      * Default Constructor implemented for each Piece
@@ -93,12 +94,21 @@ public abstract class Piece {
         this.shortName = shortName;
     }
 
+    public int getTimesMoved() {
+        return timesMoved;
+    }
+
+    public void setTimesMoved(int timesMoved) {
+        this.timesMoved = timesMoved;
+    }
+
     @Override
     public String toString() {
         return "Piece{" +
                 "color=" + color +
                 ", value=" + value +
                 ", name='" + name + '\'' +
+                ", timesMoved='" + timesMoved + '\'' +
                 /*", field=" + field +*/
                 ", shortName=" + shortName +
                 '}';
