@@ -577,7 +577,7 @@ public class Chessboard {
      */
     public void movePiece(Piece p, Field f, boolean s){
         p.setTimesMoved(p.getTimesMoved()+1);   //times moved erhöhen
-        //if(!debug) System.out.println("Jetzt wurde das piece insgesammt " + p.getTimesMoved() + " oft gemoved!");
+        if(!debug) System.out.println("Jetzt wurde das piece insgesammt " + p.getTimesMoved() + " oft gemoved!");
 
         playSound = Sound.MOVE;
 
