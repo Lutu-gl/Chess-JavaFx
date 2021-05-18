@@ -578,6 +578,9 @@ public class Chessboard {
     public void movePiece(Piece p, Field f, boolean s){
         p.setTimesMoved(p.getTimesMoved()+1);   //times moved erhöhen
         if(!debug) System.out.println("Jetzt wurde das piece insgesammt " + p.getTimesMoved() + " oft gemoved!");
+        if(p.getTimesMoved() > 100){
+            System.out.println("Hier Fehler:" + p);
+        }
 
         playSound = Sound.MOVE;
 
@@ -687,6 +690,7 @@ public class Chessboard {
                 destination = fields[line][sizeOfBoard-1];
             }
             // move the rook
+            rook.setTimesMoved(rook.getTimesMoved()-2);
             movePiece(rook, destination, false);
         }
         // If it was an enpassant turn

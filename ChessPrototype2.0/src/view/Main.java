@@ -14,7 +14,7 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
 
-        board.createBoard(size, false, true, 100006, 180, 3, 3); //In Sekunden!
+        board.createBoard(size, true, true, 30, 30, 3, 3); //In Sekunden!
 
         String fen = "";
 
@@ -90,6 +90,10 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon.png")));
         // Display the window
         primaryStage.show();
+
+        if (Chessboard.getInstance().getPlaysAI()[0]&&Chessboard.getInstance().getTurns().size() == 0){
+            Chessboard.getInstance().endTurn();
+        }
     }
 
 

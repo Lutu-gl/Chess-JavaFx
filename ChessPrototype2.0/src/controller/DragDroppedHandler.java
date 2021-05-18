@@ -16,6 +16,10 @@ public class DragDroppedHandler implements EventHandler<DragEvent> {
         FieldLabel targetLabel = (FieldLabel) dragEvent.getGestureTarget();
         Chessboard chessboard = Chessboard.getInstance();
 
+        if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1]){
+            chessboard.endTurn();
+            return;
+        }
 
         FieldLabel sourcePreMove = controller.getSourcePreMove();
         FieldLabel targetPreMove = controller.getTargetPreMove();

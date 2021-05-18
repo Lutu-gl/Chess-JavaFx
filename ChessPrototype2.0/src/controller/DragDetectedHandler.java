@@ -24,8 +24,8 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
 
         FieldLabel sourcePreMove = controller.getSourcePreMove();
         FieldLabel targetPreMove = controller.getTargetPreMove();
+
         if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1]){
-            chessboard.endTurn();
             return;
         }
 

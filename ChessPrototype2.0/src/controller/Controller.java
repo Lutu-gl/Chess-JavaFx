@@ -60,9 +60,14 @@ public class Controller implements EventHandler<MouseEvent>{
     @Override
     public void handle(MouseEvent mouseEvent) {
         //System.out.println("Gamephase: " + chessboard.getGamephase());
+
         // This is just testing to start the AI
-        if (chessboard.getPlaysAI()[0]&&chessboard.getTurns().size() == 0)
-            chessboard.endTurn();
+//        if (chessboard.getPlaysAI()[0]&&chessboard.getTurns().size() == 0){
+//            chessboard.endTurn();
+//        }
+        if (chessboard.getPlaysAI()[0]&&chessboard.getPlaysAI()[1]){
+            return;
+        }
 
 
         if(chessboard.AIThinking){

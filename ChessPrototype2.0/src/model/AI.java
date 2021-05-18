@@ -3,6 +3,7 @@ package model;
 import model.pieces.King;
 import model.pieces.Pawn;
 import model.pieces.Piece;
+import model.pieces.Queen;
 import view.FieldLabel;
 
 import java.util.ArrayList;
@@ -282,7 +283,12 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
-            //if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10000;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p instanceof Queen && chessboard.getGamephase() != Gamephase.ENDGAME){
+                if(p.getTimesMoved() > 1){
+                    value -= 1;
+                }
+            }
             value += p.getValue();
             value += PositionTables.getValue(p);
 
@@ -290,7 +296,12 @@ public class AI implements Callable<Turn> {
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
-            //if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10000;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p instanceof Queen && chessboard.getGamephase() != Gamephase.ENDGAME){
+                if(p.getTimesMoved() > 1){
+                    enemyValue -= 1;
+                }
+            }
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
 
@@ -299,7 +310,7 @@ public class AI implements Callable<Turn> {
         evaluation = value - enemyValue;
 
 
-        space = (mySpace - enemySpace)*0.00;
+//        space = (mySpace - enemySpace)*0.00;
         evaluation += space;
 
         if(chessboard.getGamephase() != Gamephase.ENDGAME) kingSavety = (evaluateKingSavety(myKing) - evaluateKingSavety(enemyKing)) * 0.005;
