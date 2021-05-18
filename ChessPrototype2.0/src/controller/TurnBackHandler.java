@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import model.Chessboard;
 import model.Color;
+import model.Gamestate;
 import model.Turn;
 import view.ChessboardView;
 
@@ -18,14 +19,14 @@ public class TurnBackHandler implements EventHandler<ActionEvent> {
         long tB = turns.get(turns.size()-1).getBlackTime();
         long tW = turns.get(turns.size()-1).getWhiteTime();
 
-        if(chessboard.AIThinking){
+        if(chessboard.AIThinking || Chessboard.getInstance().getGamestate() != Gamestate.PLAYING){
             System.out.println("not allowed to turn back move");
             return;
         }
         if(Chessboard.getInstance().getPlaysAI()[1] || Chessboard.getInstance().getPlaysAI()[0]){
             System.out.println(turns.size());
             chessboard.setAllowedToMakeMove(false);
-            Controller.getInstance().removePgnFromDisplay(2);
+            Controller.getInstance().removePGNFromTextArea(2);
             chessboard.undoTurn(turns.get(turns.size()-2));
             chessboard.setAllowedToMakeMove(true);
             ChessboardView.display();
@@ -33,7 +34,7 @@ public class TurnBackHandler implements EventHandler<ActionEvent> {
         }
         else
         {
-            Controller.getInstance().removePgnFromDisplay(1);
+            Controller.getInstance().removePGNFromTextArea(1);
             chessboard.undoTurn(turns.get(turns.size()-1));
         }
 
