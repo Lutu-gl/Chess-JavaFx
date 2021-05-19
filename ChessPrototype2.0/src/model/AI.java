@@ -424,8 +424,7 @@ public class AI implements Callable<Turn> {
     }
 
     private static double evaluateMobility(Piece p){
-        if(p.getMoves().size() > 15) System.out.println(p.getMoves().size());
-        return (double) p.getMoves().size() / 300;
+        return (double) p.getMoves().size() / 1000;
     }
 
     private static double evaluateKingSavety(King king){
