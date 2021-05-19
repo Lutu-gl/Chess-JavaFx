@@ -290,7 +290,7 @@ public class AI implements Callable<Turn> {
                     value -= 0.1;
                 }
             }
-
+            value += evaluateMobility(p);
             value += p.getValue();
             value += PositionTables.getValue(p);
         }
@@ -307,7 +307,7 @@ public class AI implements Callable<Turn> {
                     enemyValue -= 0.1;
                 }
             }
-
+            enemyValue += evaluateMobility(p);
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
         }
@@ -354,7 +354,7 @@ public class AI implements Callable<Turn> {
                     value -= 0.2;
                 }
             }
-
+            value += evaluateMobility(p);
             value += p.getValue();
             value += PositionTables.getValue(p);
         }
@@ -371,7 +371,7 @@ public class AI implements Callable<Turn> {
                     enemyValue -= 0.2;
                 }
             }
-
+            enemyValue += evaluateMobility(p);
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
         }
@@ -399,11 +399,13 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
+            value += 2*evaluateMobility(p);
             value += p.getValue();
             value += PositionTables.getValue(p);
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
+            enemyValue += 2*evaluateMobility(p);
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
         }
@@ -421,6 +423,10 @@ public class AI implements Callable<Turn> {
         double space = column;
 
         return space;
+    }
+
+    private static double evaluateMobility(Piece p){
+        return (double) p.getMoves().size() / 200;
     }
 
     private static double evaluateKingSavety(King king){
