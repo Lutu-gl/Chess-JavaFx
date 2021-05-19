@@ -4,7 +4,6 @@ import model.pieces.King;
 import model.pieces.Pawn;
 import model.pieces.Piece;
 import model.pieces.Queen;
-import view.FieldLabel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -249,14 +248,18 @@ public class AI implements Callable<Turn> {
             }
         }
 
+        Gamephase gamephase = chessboard.getGamephase();
 
 
+        if(gamephase == Gamephase.OPENING) return evaluateOpening();
+        else if(gamephase == Gamephase.MIDGAME) return evaluateMidgame();
+        else return evaluateEndgame();
+    }
+
+    private static double evaluateOpening(){
         ArrayList<Piece> myPieces, enemyPieces;
-        double mySpace = 0;
-        double enemySpace = 0;
-        double space = 0;
-        double kingSavety = 0;
-        double evaluation=0;
+        double kingSavety;
+        double evaluation;
 
         King myKing, enemyKing;
 
@@ -276,8 +279,8 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
-            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
-            if(p instanceof Queen && chessboard.getGamephase() != Gamephase.ENDGAME){
+            if(p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p instanceof Queen){
                 if(p.getTimesMoved() > 1){
                     value -= 0.5;
                 }
@@ -290,18 +293,15 @@ public class AI implements Callable<Turn> {
 
             value += p.getValue();
             value += PositionTables.getValue(p);
-
-            mySpace += evaluateSpace(p);
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
-            if(chessboard.getGamephase() != Gamephase.ENDGAME && p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
-            if(p instanceof Queen && chessboard.getGamephase() != Gamephase.ENDGAME){
+            if(p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p instanceof Queen){
                 if(p.getTimesMoved() > 1){
-                    enemyValue -= 1;
+                    enemyValue -= 0.5;
                 }
             }
-
             if(!(p instanceof Pawn)){
                 if(p.getTimesMoved() == 0){
                     enemyValue -= 0.1;
@@ -310,23 +310,109 @@ public class AI implements Callable<Turn> {
 
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
-
-            enemySpace += evaluateSpace(p);
         }
         evaluation = value - enemyValue;
 
+        kingSavety = (evaluateKingSavety(myKing) - evaluateKingSavety(enemyKing)) * 0.005;
 
-//        space = (mySpace - enemySpace)*0.00;
-        evaluation += space;
-
-        if(chessboard.getGamephase() != Gamephase.ENDGAME) kingSavety = (evaluateKingSavety(myKing) - evaluateKingSavety(enemyKing)) * 0.005;
-        //System.out.println(kingSavety);
         evaluation += kingSavety;
-
-
 
         return evaluation;    //final value zurückgeben
     }
+
+    private static double evaluateMidgame(){
+        ArrayList<Piece> myPieces, enemyPieces;
+        double kingSavety;
+        double evaluation;
+
+        King myKing, enemyKing;
+
+        if (chessboard.getColorToMove().equals(Color.WHITE)) {
+            myPieces = chessboard.getWhitePieces();
+            enemyPieces = chessboard.getBlackPieces();
+            myKing = chessboard.getW_king();
+            enemyKing = chessboard.getB_king();
+        } else {
+            myPieces = chessboard.getBlackPieces();
+            enemyPieces = chessboard.getWhitePieces();
+            myKing = chessboard.getB_king();
+            enemyKing = chessboard.getW_king();
+        }
+
+
+
+        double value = 0;
+        for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
+            if(p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p instanceof Queen){
+                if(p.getTimesMoved() > 1){
+                    value -= 0.5;
+                }
+            }
+            if(!(p instanceof Pawn)){
+                if(p.getTimesMoved() == 0){
+                    value -= 0.2;
+                }
+            }
+
+            value += p.getValue();
+            value += PositionTables.getValue(p);
+        }
+        double enemyValue = 0;           //EnemyValue berechnen
+        for (Piece p : enemyPieces) {
+            if(p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p instanceof Queen){
+                if(p.getTimesMoved() > 1){
+                    enemyValue -= 0.5;
+                }
+            }
+            if(!(p instanceof Pawn)){
+                if(p.getTimesMoved() == 0){
+                    enemyValue -= 0.2;
+                }
+            }
+
+            enemyValue += p.getValue();
+            enemyValue += PositionTables.getValue(p);
+        }
+        evaluation = value - enemyValue;
+
+        kingSavety = (evaluateKingSavety(myKing) - evaluateKingSavety(enemyKing)) * 0.005;
+
+        evaluation += kingSavety;
+
+        return evaluation;    //final value zurückgeben
+    }
+
+    private static double evaluateEndgame(){
+        ArrayList<Piece> myPieces, enemyPieces;
+        double evaluation;
+
+        if (chessboard.getColorToMove().equals(Color.WHITE)) {
+            myPieces = chessboard.getWhitePieces();
+            enemyPieces = chessboard.getBlackPieces();
+        } else {
+            myPieces = chessboard.getBlackPieces();
+            enemyPieces = chessboard.getWhitePieces();
+        }
+
+
+        double value = 0;
+        for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
+            value += p.getValue();
+            value += PositionTables.getValue(p);
+        }
+        double enemyValue = 0;           //EnemyValue berechnen
+        for (Piece p : enemyPieces) {
+            enemyValue += p.getValue();
+            enemyValue += PositionTables.getValue(p);
+        }
+        evaluation = value - enemyValue;
+
+        return evaluation;    //final value zurückgeben
+    }
+
+
 
     private static double evaluateSpace(Piece p){
         int column = p.getField().getColumn();
@@ -339,13 +425,7 @@ public class AI implements Callable<Turn> {
 
     private static double evaluateKingSavety(King king){
         double kingSavety=0;
-        Field kingField = king.getField();
-        Field[][] fields = chessboard.getFields();
-        int kingRow = kingField.getLine();
-        int kingColumn = kingField.getColumn();
-
-        //row = 7   -   column = 2
-        ArrayList<Piece> piecesNearKing = getPiecesNearKing(2, king);
+        ArrayList<Piece> piecesNearKing = getPiecesNearKing(king);
 
         double nrDefender=0;
         double nrAttacker=0;
@@ -364,12 +444,10 @@ public class AI implements Callable<Turn> {
 
         if(nrDefendingPawns < 3) kingSavety -= 10;
 
-
-
         return kingSavety;
     }
 
-    private static ArrayList<Piece> getPiecesNearKing(double length, King k){
+    private static ArrayList<Piece> getPiecesNearKing(King k){
         ArrayList<Piece> pieces = new ArrayList<>();
         Field kingField = k.getField();
         int kingColumn = kingField.getColumn();
@@ -377,20 +455,19 @@ public class AI implements Callable<Turn> {
 
         Field[][] fields = chessboard.getFields();
 
-        for (int i = kingLine; i < length * 2 + kingLine + 1; i++) {
-            for (int j = kingColumn; j < length * 2 + kingColumn + 1; j++) {
-                Field field = null;
-                if ((i - length < 0) || (i - length) >= chessboard.getSizeOfBoard() || j - length < 0 || j - length >= chessboard.getSizeOfBoard()) continue;
-                try{
-                    field = fields[(int) (i - length)][(int) (j - length)];
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
 
+        for (int i = kingLine-1; i < 4 + kingLine + 3; i++) {
+            for (int j = kingColumn; j < 4 + kingColumn + 1; j++) {
+                Field field;
+                if (i - 2 < 0 || i - 2 >= chessboard.getSizeOfBoard() || j - 2 < 0 || j - 2 >= chessboard.getSizeOfBoard()) continue;
+
+                field = fields[i -  2][j - 2];
 
                 if (field.hasPiece()) {
                     pieces.add(field.getPiece());
+                    System.out.println(field.getPiece());
                 }
+
             }
         }
 
