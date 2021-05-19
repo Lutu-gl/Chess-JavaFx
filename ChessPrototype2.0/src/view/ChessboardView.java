@@ -183,7 +183,6 @@ public class ChessboardView {
             }
         }
     }
-
     /**
      * sets view.ChessboardView to model.Chessboard by its fen
      */

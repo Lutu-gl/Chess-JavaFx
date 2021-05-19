@@ -9,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Chessboard;
 
+/**
+ * Class for displaying the main menu and handling and handling the scene changes
+ */
 public class MainLaxe extends Application {
     public static void main(String[] args) {
         launch(args);
@@ -21,7 +24,9 @@ public class MainLaxe extends Application {
     public static int size, timeWhite, timeBlack, inkrementWhite, inkrementBlack;
     public static boolean whiteAi, blackAi, invertBoard;
 
-
+    /**
+     * Starts the game with the set parameters and displays the board
+     */
     public static void startGame() {
         Chessboard board = Chessboard.getInstance();
 
@@ -53,11 +58,20 @@ public class MainLaxe extends Application {
             board.endTurn();
     }
 
+    /**
+     * Changes the primary Scene
+     * @param scene
+     */
     public static void changeScene(Scene scene) {
         stage.setScene(scene);
         stage.show();
     }
 
+    /**
+     * Start method to load the FXML files and display the main menu
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent panel, panel2, panel3;

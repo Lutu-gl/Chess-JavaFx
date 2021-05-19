@@ -1,16 +1,12 @@
 package model.ai.openingBookParser;
 
 import model.Chessboard;
-import model.Turn;
 
 import java.io.*;
-import java.util.ArrayList;
 
 /**
- * A simple and efficient client to run Stockfish from Java
- *
- * @author Rahul A R
- *
+ * A simple and efficient client to run C++ Stockfish from Java
+ * @author Rahul A R | Bug fixes, updated to newer Stockfish version and implemented for our purposes by Lukas Schatzer
  */
 public class Stockfish {
 
@@ -38,7 +34,7 @@ public class Stockfish {
 
     /**
      * Takes in any valid UCI command and executes it
-     *
+     * All valid UCI commands can be found on Stockfish Github repo
      * @param command
      */
     public void sendCommand(String command) {
@@ -163,6 +159,13 @@ public class Stockfish {
         return evalScore/100;
     }
 
+    /**
+     * Starts creating the opening book with StockfishHelper Class
+     * Creates a virtual chessboard for calculations
+     * @param args
+     * @throws InterruptedException
+     * @throws IOException
+     */
     public static void main(String[] args) throws InterruptedException, IOException {
 
         Chessboard chessboard = Chessboard.getInstance();
