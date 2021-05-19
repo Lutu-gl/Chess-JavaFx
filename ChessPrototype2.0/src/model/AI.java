@@ -279,15 +279,15 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
-            if(p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/100;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             if(p instanceof Queen){
                 if(p.getTimesMoved() > 1){
-                    value -= 0.5;
+                    value -= 0.1;
                 }
             }
             if(!(p instanceof Pawn)){
                 if(p.getTimesMoved() == 0){
-                    value -= 0.1;
+                    value -= 0.001;
                 }
             }
             value += evaluateMobility(p);
@@ -296,15 +296,15 @@ public class AI implements Callable<Turn> {
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
-            if(p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/100;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             if(p instanceof Queen){
                 if(p.getTimesMoved() > 1){
-                    enemyValue -= 0.5;
+                    enemyValue -= 0.1;
                 }
             }
             if(!(p instanceof Pawn)){
                 if(p.getTimesMoved() == 0){
-                    enemyValue -= 0.1;
+                    enemyValue -= 0.001;
                 }
             }
             enemyValue += evaluateMobility(p);
@@ -343,15 +343,15 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
-            if(p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p.getTimesMoved() > 2) value -= (double) p.getTimesMoved()/100;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             if(p instanceof Queen){
                 if(p.getTimesMoved() > 1){
-                    value -= 0.5;
+                    value -= 0.05;
                 }
             }
             if(!(p instanceof Pawn)){
                 if(p.getTimesMoved() == 0){
-                    value -= 0.2;
+                    value -= 0.01;
                 }
             }
             value += evaluateMobility(p);
@@ -360,15 +360,15 @@ public class AI implements Callable<Turn> {
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
-            if(p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/10;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
+            if(p.getTimesMoved() > 2) enemyValue -= (double) p.getTimesMoved()/100;  //Wenn es nicht endgame ist dann berechne mit ein wie oft die Pieces gemoved wurden.
             if(p instanceof Queen){
                 if(p.getTimesMoved() > 1){
-                    enemyValue -= 0.5;
+                    enemyValue -= 0.05;
                 }
             }
             if(!(p instanceof Pawn)){
                 if(p.getTimesMoved() == 0){
-                    enemyValue -= 0.2;
+                    enemyValue -= 0.01;
                 }
             }
             enemyValue += evaluateMobility(p);
@@ -399,13 +399,13 @@ public class AI implements Callable<Turn> {
 
         double value = 0;
         for (Piece p : myPieces) {      //Jedes Piece durchgehen und Value adden
-            value += 2*evaluateMobility(p);
+            value += 3*evaluateMobility(p);
             value += p.getValue();
             value += PositionTables.getValue(p);
         }
         double enemyValue = 0;           //EnemyValue berechnen
         for (Piece p : enemyPieces) {
-            enemyValue += 2*evaluateMobility(p);
+            enemyValue += 3*evaluateMobility(p);
             enemyValue += p.getValue();
             enemyValue += PositionTables.getValue(p);
         }
@@ -413,8 +413,6 @@ public class AI implements Callable<Turn> {
 
         return evaluation;    //final value zurückgeben
     }
-
-
 
     private static double evaluateSpace(Piece p){
         int column = p.getField().getColumn();
@@ -426,7 +424,8 @@ public class AI implements Callable<Turn> {
     }
 
     private static double evaluateMobility(Piece p){
-        return (double) p.getMoves().size() / 200;
+        if(p.getMoves().size() > 15) System.out.println(p.getMoves().size());
+        return (double) p.getMoves().size() / 300;
     }
 
     private static double evaluateKingSavety(King king){
@@ -471,7 +470,6 @@ public class AI implements Callable<Turn> {
 
                 if (field.hasPiece()) {
                     pieces.add(field.getPiece());
-                    System.out.println(field.getPiece());
                 }
 
             }

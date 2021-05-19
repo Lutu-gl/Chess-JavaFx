@@ -14,7 +14,7 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
 
-        board.createBoard(size, false, true, 1000, 180, 0, 0); //In Sekunden!
+        board.createBoard(size, false, true, 1000, 180, 3, 3); //In Sekunden!
 
         String fen = "";
 
@@ -56,7 +56,7 @@ public class Main extends Application {
 //        fen = "6bb/6rk/4N1bb/8/8/K7/8/8 w - - 0 1"; //fen checkmate in one
 //        fen = "rnbq1rk1/pppp1p1p/4pPp1/8/7Q/7R/PPPPP1P1/RNB1KBN1 b Qq - 0 1"; //kingsavetyEval test
 //        fen = "r4rk1/ppp1npp1/5n1p/3ppP2/5q2/1B1P2NP/PPPQ1PP1/R4RK1 w Qq - 0 1";   //Threefold repetition fen in winning position
-
+//        fen = "3r2k1/3p1ppp/3p4/P6P/5r2/1Pp1RP2/2K2P2/4R3 w - - 0 1";       //Backrank mate for ai to find / or block
 
         //fen = "k7/4ppp1/8/4PPP1/8/8/8/K7 w - - 0 1";
         //fen = "8/3R1r2/7P/1k6/8/3K4/8/8 w - - 0 1";

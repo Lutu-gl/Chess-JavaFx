@@ -28,9 +28,9 @@ public class GamephaseObserver extends Observer{
         }
 
         //IMPORTANT!!!
-        if(value >= 74){
+        if(value >= 70){
             chessboard.setGamephase(Gamephase.OPENING);
-        }else if(value > 16){
+        }else if(value > 31){
             chessboard.setGamephase(Gamephase.MIDGAME);
         }else{
             chessboard.setGamephase(Gamephase.ENDGAME);
