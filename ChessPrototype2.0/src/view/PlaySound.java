@@ -5,7 +5,14 @@ import model.Chessboard;
 import javax.sound.sampled.*;
 import java.io.IOException;
 
+/**
+ * Class to play sounds.
+ */
 public class PlaySound {
+    /**
+     * Starts a thread which plays a sound
+     * @param sound constant of Sound enum
+     */
     public static void play(Sound sound) {
         if (Chessboard.getInstance().debug) return;
         AudioInputStream audioIn = null;

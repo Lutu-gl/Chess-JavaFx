@@ -11,7 +11,9 @@ import model.Server;
 
 import java.io.IOException;
 
-
+/**
+ * Controller only for join menu
+ */
 public class JoinController {
     @FXML
     public ImageView backgroundImage;
@@ -20,6 +22,11 @@ public class JoinController {
     public Button connectButton;
     public TextField ipField;
 
+    /**
+     * Initialize method, which sets a random background picture and places the buttons, labels and the TextField on the correct spot.
+     * The entered IP address is checked with a regular expression and the connection to the host is getting established.
+     * Possible errors are displayed.
+     */
     public void initialize() {
         int pic = (int) (Math.floor(Math.random()*5)) + 1;
         System.out.println(pic);

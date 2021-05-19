@@ -1,5 +1,8 @@
 package view;
 
+/**
+ * Enum to provide some constants for the design of the pieces
+ */
 public enum PieceDesign {
     STANDARD(""),
     BOOK("book_"),
@@ -15,6 +18,10 @@ public enum PieceDesign {
         this.design = design;
     }
 
+    /**
+     * Get design of pieces
+     * @return
+     */
     public String getDesign() {
         return this.design;
     }

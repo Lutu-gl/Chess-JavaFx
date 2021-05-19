@@ -22,6 +22,10 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+/**
+ * Controller only for the host menu.
+ * It lets the player choose the playing color and hosts the game on the local IPv4 address and port 50000
+ */
 public class HostController {
     @FXML
     public Label text;
@@ -29,6 +33,11 @@ public class HostController {
     public Button imageView1, imageView2, imageView3;
     public AnchorPane pane;
 
+    /**
+     * Initialize method, which sets a random background picture and places the buttons and labels on the correct spot.
+     * A web socket gets created and Google DNS (8.8.8.8) is getting pinged to find out the local IP address.
+     * Only one (image)button can be selected at the same moment.
+     */
     @FXML
     public void initialize() {
         int pic = (int) (Math.floor(Math.random()*5)) + 1;
@@ -79,18 +88,35 @@ public class HostController {
         });
     }
 
+    /**
+     * Changes the background color of a button if you hover over it to highlight it, except when it is already selected.
+     * @param e onHover MouseEvent
+     */
     public void mouseEnteredHandler(MouseEvent e) {
         Button clickedButton = (Button) e.getSource();
         if (!clickedButton.getStyle().contains("#829769"))
             clickedButton.setStyle("-fx-background-color: #e1e1e1");
     }
 
+    /**
+     * Changes the background color of a button if you stop hovering over it to unhighlight it, except when it is already selected.
+     * @param e
+     */
     public void mouseExitedHandler(MouseEvent e) {
         Button clickedButton = (Button) e.getSource();
         if (!clickedButton.getStyle().contains("#829769"))
             clickedButton.setStyle("-fx-background-color: white");
     }
+
     private Timeline timeline;
+
+    /**
+     * Starts hosting the game on local IPv4 address and port 5000.
+     * A Timeline thread is started for observing if a player has connected.
+     * Frequency of observation is one second.
+     * After a player connected, it sets game parameters for example time and color and sends it to the connected player
+     * @param color
+     */
     private void startHosting(int color) {
         Server.startHosting();
         // Observer
