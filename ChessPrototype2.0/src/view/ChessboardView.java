@@ -1,14 +1,12 @@
 package view;
 
-import controller.*;
 import controller.Controller;
+import controller.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -98,8 +96,9 @@ public class ChessboardView {
         bp.setCenter(gridPane);
 
         Label t1Label = new Label(), t2Label = new Label();
-        t2Label.setText(Long.toString(Chessboard.getInstance().getWhiteTime()/1000));
-        t1Label.setText(Long.toString(Chessboard.getInstance().getBlackTime()/1000));
+        //System.out.println(MainLaxe.timeWhite);
+        t2Label.setText(Long.toString(MainLaxe.timeWhite));
+        t1Label.setText(Long.toString(MainLaxe.timeBlack));
 
         t1Label.setTextAlignment(TextAlignment.CENTER);
         t1Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
