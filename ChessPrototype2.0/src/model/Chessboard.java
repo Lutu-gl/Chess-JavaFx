@@ -155,7 +155,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS_ON_TIME;
                             else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
@@ -165,7 +165,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS_ON_TIME;
                             else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
@@ -187,7 +187,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS_ON_TIME;
                             else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
@@ -196,7 +196,7 @@ public class Chessboard {
                         //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
-                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS_ON_TIME;
                             else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
@@ -218,7 +218,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS_ON_TIME;
                             else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
@@ -228,7 +228,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS_ON_TIME;
                             else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
@@ -250,7 +250,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS_ON_TIME;
                             else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }else{
@@ -258,7 +258,7 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS_ON_TIME;
                             else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
@@ -1184,27 +1184,58 @@ public class Chessboard {
 
         int knights = 0;
         int bishops = 0;
+        ArrayList<Piece> bishopList = new ArrayList<>();
         for(Piece p : pieces){
             if(p instanceof King) continue;
             if(p instanceof Pawn) return true;
             if(p instanceof Rook) return true;
             if(p instanceof Queen) return true;
-            if(p instanceof Bishop) knights++;
-            if(p instanceof Knight) bishops++;
+            if(p instanceof Bishop){
+                bishopList.add(p);
+                bishops++;
+            }
+            if(p instanceof Knight) knights++;
         }
         if(knights > 0 && bishops > 0) return true;
         if(bishops > 2 || knights > 2) return true;
 
         ArrayList<Piece> enemyPieces = (Color.WHITE == color) ? getBlackPieces() : getWhitePieces();
 
-        int enemyMaterial=0;
+        int enemyBishops=0;
+        int enemyKnights=0;
+        int enemyOtherPieces=0;
+        ArrayList<Piece> enemyBishopsList = new ArrayList<>();
         for(Piece p : enemyPieces){
             if(p instanceof King) continue;
-            enemyMaterial += p.getValue();
+            if(p instanceof Bishop){
+                enemyBishops++;
+                enemyBishopsList.add(p);
+                continue;
+            }
+            if(p instanceof Knight){
+                enemyKnights++;
+                continue;
+            }
+            enemyOtherPieces++;
         }
 
-        if(bishops > 0 && enemyMaterial > 0) return true;
-        if(knights > 0 && enemyMaterial > 0) return true;
+        if(bishops > 0 && enemyOtherPieces > 0) return true;
+        if(knights > 0 && enemyOtherPieces > 0) return true;
+
+        if(knights > 0 && enemyBishops > 0) return true;
+        if(knights > 0 && enemyKnights > 0) return true;
+        if(bishops > 0 && enemyKnights > 0) return true;
+        if(bishops > 0 && enemyBishops > 0){
+            for (int i = 0; i < enemyBishops; i++) {
+                Piece enemyBishop = enemyBishopsList.get(i);
+                for (int j = 0; j < bishops; j++) {
+                    Piece myBishop = bishopList.get(j);
+                    if((myBishop.getField().getColumn() + myBishop.getField().getLine() % 2 != (enemyBishop.getField().getColumn() + enemyBishop.getField().getLine()) % 2)){
+                        return true;
+                    }
+                }
+            }
+        }
 
         return false;
     }
