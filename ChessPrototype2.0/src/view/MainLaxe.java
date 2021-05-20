@@ -25,6 +25,8 @@ public class MainLaxe extends Application {
 
     public static int size, timeWhite, timeBlack, inkrementWhite, inkrementBlack;
     public static boolean whiteAi, blackAi, invertBoard;
+    public static PieceDesign pieceDesign;
+    public static FieldBackground fieldDesign;
 
     /**
      * Starts the game with the set parameters and displays the board
@@ -39,10 +41,12 @@ public class MainLaxe extends Application {
         System.out.println("timeBlack:"+timeBlack);
         System.out.println("ikWhite: "+inkrementWhite);
         System.out.println("inkBlack: "+inkrementBlack);
+        System.out.println("PieceDesign: "+pieceDesign);
+        System.out.println("FieldDesign: "+fieldDesign);
 
         // Display the Chessboard
         // Set graphic view of the chess board. Normally it is 8x8
-        Scene scene = ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, invertBoard);
+        Scene scene = ChessboardView.init(size, size, fieldDesign, pieceDesign, invertBoard);
 
         board.createBoard(size, whiteAi, blackAi, timeWhite, timeBlack, inkrementWhite, inkrementBlack); //In Sekunden!
         String fen = "";

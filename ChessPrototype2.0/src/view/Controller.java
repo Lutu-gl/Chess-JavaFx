@@ -10,7 +10,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import model.Chessboard;
 
 
@@ -26,6 +26,9 @@ public class Controller{
     public TextField time1, time2, inkrementWhite, inkrementBlack;
     public ChoiceBox<String> dropdown1, dropdown2;
 
+    public static PieceDesign pieceDesign = PieceDesign.STANDARD;
+    public static FieldBackground fieldDesign = FieldBackground.STANDARD;
+
     Image myImage2 = new Image(getClass().getResourceAsStream("Ebene6.png"));
     Image myImage = new Image(getClass().getResourceAsStream("Ebene7.png"));
 
@@ -40,7 +43,7 @@ public class Controller{
         dropdown2.setItems(dropdownList2);
         dropdown1.getSelectionModel().select("Weiß");
         dropdown2.getSelectionModel().select("Local");
-        pieceDesignImageView.setImage(new Image(Main.class.getResourceAsStream("/Neo_W_K.png")));
+        pieceDesignImageView.setImage(new Image(Main.class.getResourceAsStream("/W_K.png")));
     }
 
 
@@ -137,6 +140,8 @@ public class Controller{
         MainLaxe.inkrementWhite = intInkrement1;
         MainLaxe.inkrementBlack = intInkrement2;
         MainLaxe.invertBoard = !blackAi&&!checkBox2.isSelected();
+        MainLaxe.pieceDesign = Controller.pieceDesign;
+        MainLaxe.fieldDesign = Controller.fieldDesign;
         if (!checkBox2.isSelected() || (checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Local")))
             MainLaxe.startGame();
     }
@@ -148,10 +153,18 @@ public class Controller{
         ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         dialog.setHeaderText("Wähle ein Design:");
         dialog.getDialogPane().getButtonTypes().add(type);
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(this.getClass().getResource("/icon.png").toString()));
         PieceDesign[] designs = PieceDesign.values();
-        int y = 20, x = 0;
+        int y = 50, x = 0;
         for (int i = 0; i < designs.length; i++) {
             ImageView imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+designs[i].getDesign()+"W_K.png")));
+            imageView.setId(designs[i].getDesign());
+            if (designs[i].equals(Controller.pieceDesign)) {
+                System.out.println("WIESO GEAT NET?");
+                imageView.setStyle("-fx-background-color: lightgreen");
+                // TODO: Change background color
+            }
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
             imageView.setLayoutX(x);
@@ -159,6 +172,13 @@ public class Controller{
             x = (x + 120) % 360;
             if ((i+1)%3==0)
                 y += 120;
+            int finalI = i;
+            imageView.setOnMouseClicked(e -> {
+                Controller.pieceDesign = designs[finalI];
+                pieceDesignImageView.setImage(new Image("/"+designs[finalI].getDesign()+"W_K.png"));
+                dialog.close();
+            });
+
             dialog.getDialogPane().getChildren().add(imageView);
         }
         dialog.getDialogPane().setPrefHeight(600);
