@@ -158,13 +158,15 @@ public class Controller{
         PieceDesign[] designs = PieceDesign.values();
         int y = 50, x = 0;
         for (int i = 0; i < designs.length; i++) {
-            ImageView imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+designs[i].getDesign()+"W_K.png")));
-            imageView.setId(designs[i].getDesign());
+            ImageView imageView;
             if (designs[i].equals(Controller.pieceDesign)) {
-                System.out.println("WIESO GEAT NET?");
-                imageView.setStyle("-fx-background-color: lightgreen");
-                // TODO: Change background color
+                System.out.println("/"+designs[i].getDesign()+"W_K_G.png");
+                imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+designs[i].getDesign()+"W_K_G.png")));
+            } else {
+                imageView = new ImageView(new Image(Main.class.getResourceAsStream("/" + designs[i].getDesign() + "W_K.png")));
             }
+            imageView.setId(designs[i].getDesign());
+
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
             imageView.setLayoutX(x);

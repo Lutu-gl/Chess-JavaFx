@@ -3,6 +3,15 @@ package model;
 import controller.Controller;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import model.ai.Gamephase;
 import model.ai.GamephaseObserver;
 import model.ai.AI;
@@ -10,6 +19,7 @@ import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
 import view.Sound;
+import view.WinningScreen;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -786,6 +796,10 @@ public class Chessboard {
         }
 
         notifyObserver();
+
+        if (!gamestate.equals(Gamestate.PLAYING)) {
+            WinningScreen.whiteWins();
+        }
 
         //System.out.println(getBoardAsFen());
         if (!debug && turns.size() > 0){
