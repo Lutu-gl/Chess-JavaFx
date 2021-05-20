@@ -3,6 +3,9 @@ package model;
 import controller.Controller;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import model.ai.Gamephase;
+import model.ai.GamephaseObserver;
+import model.ai.AI;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -1077,7 +1080,6 @@ public class Chessboard {
         King k = colorToMove == Color.BLACK ? b_king : w_king;
         if(t.getColorToMove() == Color.WHITE)
             s.append((turn)+".");
-        //TODO: FIX DES SO WIA DR LUCA GSG HT MIT FIELD.GETPIECE
 
         switch(Character.toLowerCase(t.getMovingPiece().getShortName())){
             case 'p': if(t.getEatenPiece() != null) s.append(t.getSourceField().getName().charAt(0));break;

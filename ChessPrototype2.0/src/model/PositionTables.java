@@ -1,5 +1,6 @@
 package model;
 
+import model.ai.Gamephase;
 import model.pieces.*;
 
 /**

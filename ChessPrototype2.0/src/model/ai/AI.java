@@ -1,5 +1,7 @@
-package model;
+package model.ai;
 
+import model.*;
+import model.ai.Gamephase;
 import model.pieces.King;
 import model.pieces.Pawn;
 import model.pieces.Piece;

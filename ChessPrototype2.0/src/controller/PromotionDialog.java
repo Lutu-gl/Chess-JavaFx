@@ -21,8 +21,6 @@ import view.FieldLabel;
 import view.Main;
 
 
-//TODO: vlt schianer gestalten und dasses wenn die MainStage aussn focus geat des a aussn focus geat
-//TODO: Eventuell no es so schian rund mochen wia ba Lichess ober idk wia hel geat
 
 /**
  * Used for Promoting a Pawn

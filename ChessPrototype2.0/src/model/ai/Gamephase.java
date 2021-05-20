@@ -1,4 +1,4 @@
-package model;
+package model.ai;
 
 /**
  * enum for AI to know in which state the Game is in

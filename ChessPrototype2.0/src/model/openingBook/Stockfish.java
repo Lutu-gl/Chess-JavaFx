@@ -1,4 +1,4 @@
-package model.ai.openingBookParser;
+package model.openingBook;
 
 import model.Chessboard;
 

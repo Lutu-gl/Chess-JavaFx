@@ -1,15 +1,17 @@
-package model;
+package model.ai;
 
+import model.Chessboard;
+import model.Observer;
+import model.ai.Gamephase;
 import model.pieces.King;
 import model.pieces.Pawn;
 import model.pieces.Piece;
-import model.pieces.Queen;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GamephaseObserver extends Observer{
+public class GamephaseObserver extends Observer {
     private final Chessboard chessboard;
 
     public GamephaseObserver(Chessboard chessboard){
