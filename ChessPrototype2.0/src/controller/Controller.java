@@ -14,7 +14,6 @@ import view.ChessboardView;
 import view.FieldLabel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 /**

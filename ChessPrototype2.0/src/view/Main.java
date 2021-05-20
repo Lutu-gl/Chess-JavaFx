@@ -13,8 +13,8 @@ public class Main extends Application {
         int size = 8;
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
-
-        board.createBoard(size, false, true, 1000, 180, 3, 3); //In Sekunden!
+        primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, false));
+        board.createBoard(size, false, false, 10, 10, 3, 3); //In Sekunden!
 
         String fen = "";
 
@@ -46,7 +46,7 @@ public class Main extends Application {
         //fen = "8/6K1/1p1B1RB1/8/2Q5/2n1kP1N/3b4/4n3 w - - 0 1";
         //fen = "8/8/8/4k3/1R6/2R5/1K6/8 w - - 0 1";
         //fen = "4Q1k1/pp3r2/2rP3p/4B1N1/2q3P1/P7/5RP1/5RK1 b - - 0 1";
-//        fen = "8/3P4/1k6/3K4/8/8/8/8 w - - 0 1"; // PROMOTION TESTTT
+        fen = "4b3/4PPP1/5K2/8/8/4k3/5pp1/8 w - - 0 1"; // PROMOTION TESTTT
 //        fen = "8/8/8/8/6K1/8/4p1k1/8 w - - 0 1"; // PROMOTION TESTTT
 //        fen = "6bb/5Prk/6bb/8/8/K7/8/8 w - - 0 1"; //really cool and realistic promotion fen to knight
 //        fen = "8/8/8/8/8/k5BB/5pRK/6BB b - - 0 1"; //really cool and realistic promotion fen to knight for black
@@ -62,7 +62,7 @@ public class Main extends Application {
         //fen = "8/3R1r2/7P/1k6/8/3K4/8/8 w - - 0 1";
         //fen = "8/8/4k3/6p1/4nR2/8/6K1/8 b - - 0 58";
         //fen = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"; //check castle pgn
-        fen = "k7/8/8/4B3/8/6Np/8/2K5 w - - 0 1"; //Draw by insufficent material
+        //fen = "k7/8/8/4B3/8/6Np/8/2K5 w - - 0 1"; //Draw by insufficent material
 
         //fen = "k7/4P3/p1p1P3/ppp1P3/pP6/1P2P3/8/4K3 w - - 0 1";
         //fen = "r5k1/1R4bp/8/B2R2P1/8/8/4rP2/6K1 b - - 0 39";
@@ -81,7 +81,6 @@ public class Main extends Application {
         // Set Title of window
         primaryStage.setTitle("Chess!");
         // Set graphic view of the chess board. Normally it is 8x8
-        primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, false));
         // Set the figures with the FEN Code
         ChessboardView.display();
         // Set the stylesheet

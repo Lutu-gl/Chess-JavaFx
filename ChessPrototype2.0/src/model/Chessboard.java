@@ -1077,6 +1077,7 @@ public class Chessboard {
         King k = colorToMove == Color.BLACK ? b_king : w_king;
         if(t.getColorToMove() == Color.WHITE)
             s.append((turn)+".");
+        //TODO: FIX DES SO WIA DR LUCA GSG HT MIT FIELD.GETPIECE
 
         switch(Character.toLowerCase(t.getMovingPiece().getShortName())){
             case 'p': if(t.getEatenPiece() != null) s.append(t.getSourceField().getName().charAt(0));break;
@@ -1110,14 +1111,14 @@ public class Chessboard {
 
         s.append(t.getTargetField().getName());
         if(t.isPromotionTurn()){
-            switch (Pawn.getPromotionPieces())
+            System.out.println(t.getMovingPiece().getField().getPiece().getName());
+            switch (Character.toLowerCase(t.getMovingPiece().getField().getPiece().getShortName()))
             {
-                case 0 -> s.append("=Q");
-                case 1 -> s.append("=N");
-                case 2 -> s.append("=R");
-                case 3 -> s.append("=B");
+                case 'q' -> s.append("=Q");
+                case 'n' -> s.append("=N");
+                case 'r' -> s.append("=R");
+                case 'b' -> s.append("=B");
             }
-
         }
         if(k.isInCheck())
             s.append('+');

@@ -19,7 +19,6 @@ import view.Main;
 
 import java.util.ArrayList;
 
-//TODO: enpassant
 public class Pawn extends Piece{
     public Pawn(Color color, String name, Field field, int value, char shortName) {
         super(color, name, field, value, shortName);
