@@ -19,13 +19,13 @@ public class Controller{
     @FXML
     public ImageView myImageView;
     public CheckBox checkBox1, checkBox2, checkBox3;
-    public TextField time1, time2;
+    public TextField time1, time2, inkrementWhite, inkrementBlack;
     public ChoiceBox<String> dropdown1, dropdown2;
 
-    Image myImage2 = new Image(getClass().getResourceAsStream("Ebene6.jpg"));
-    Image myImage = new Image(getClass().getResourceAsStream("Ebene7.jpg"));
+    Image myImage2 = new Image(getClass().getResourceAsStream("Ebene6.png"));
+    Image myImage = new Image(getClass().getResourceAsStream("Ebene7.png"));
 
-    private ObservableList<String> dropdownList1 = FXCollections.observableArrayList("Weiß", "Schwarz", "ZFufall");
+    private ObservableList<String> dropdownList1 = FXCollections.observableArrayList("Weiß", "Schwarz", "Zufall");
     private ObservableList<String> dropdownList2 = FXCollections.observableArrayList("Local", "Host", "Join");
 
     /**
@@ -45,12 +45,14 @@ public class Controller{
      */
     public void displayImage(ActionEvent e){
         CheckBox clickedBox = (CheckBox) e.getSource();
-        if (clickedBox.getText().equals("Spieler gegen Computer")) {
+        //if (clickedBox.getText().equals("Spieler gegen Computer")) {
+        System.out.println(clickedBox.getId());
+        if (clickedBox.getId().equals("checkBox1")) {
             myImageView.setImage(myImage);
             checkBox2.setSelected(false);
             checkBox3.setSelected(false);
             checkBox1.setSelected(true);
-        } else if (clickedBox.getText().equals("Spieler gegen Spieler")) {
+        } else if (clickedBox.getId().equals("checkBox2")) {
             myImageView.setImage(myImage2);
             checkBox1.setSelected(false);
             checkBox3.setSelected(false);
@@ -73,7 +75,7 @@ public class Controller{
             return;
         }
         // Wenn man einem Spiel joint, muss die Zeiteingabe nicht korrekt sein
-        int intTime1 = 0, intTime2 = 0;
+        int intTime1 = 0, intTime2 = 0, intInkrement1 = 0, intInkrement2 = 0;
         if (!(checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Join"))) {
             // Falls keine Zeit eingegeben wurde
             if (time1.getText().length() <= 0 || time2.getText().length() <= 0) {
@@ -81,9 +83,15 @@ public class Controller{
                 return;
             }
 
+            if (inkrementWhite.getText().length() <= 0 || inkrementBlack.getText().length() <= 0) {
+                System.out.println("Kein Inkrement eingegeben!");
+            }
+
             try {
                 intTime1 = Integer.parseInt(time1.getText());
                 intTime2 = Integer.parseInt(time2.getText());
+                intInkrement1 = Integer.parseInt(inkrementWhite.getText());
+                intInkrement2 = Integer.parseInt(inkrementBlack.getText());
             } catch (NumberFormatException e) {
                 System.out.println("String statt Zahl eingegeben!");
                 return;
@@ -121,8 +129,8 @@ public class Controller{
         MainLaxe.blackAi = blackAi;
         MainLaxe.timeWhite = intTime1;
         MainLaxe.timeBlack = intTime2;
-        MainLaxe.inkrementWhite = 0;
-        MainLaxe.inkrementBlack = 0;
+        MainLaxe.inkrementWhite = intInkrement1;
+        MainLaxe.inkrementBlack = intInkrement2;
         MainLaxe.invertBoard = !blackAi&&!checkBox2.isSelected();
         if (!checkBox2.isSelected() || (checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Local")))
             MainLaxe.startGame();
