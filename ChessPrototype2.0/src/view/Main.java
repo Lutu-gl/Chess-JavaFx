@@ -18,7 +18,7 @@ public class Main extends Application {
 
         String fen = "";
 
-        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
+//        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
         //fen = "rnbqkbnr/2pp2p1/1p2pP2/pP6/8/2P3p1/P2P1P1P/RNBQKBNR w KQkq a6 0 8"; //en passant fen
         //fen = "1k6/ppp3PQ/8/8/p7/4K3/8/8 w - - 0 1";
         //fen = "rn2kbnr/ppp1p2p/4b3/3pqpp1/2P1P3/2NB1N1P/PP1P1PP1/R1BQK2R w KQkq - 0 7"; //Crazy fen
@@ -62,7 +62,7 @@ public class Main extends Application {
         //fen = "8/3R1r2/7P/1k6/8/3K4/8/8 w - - 0 1";
         //fen = "8/8/4k3/6p1/4nR2/8/6K1/8 b - - 0 58";
         //fen = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"; //check castle pgn
-
+        fen = "k7/8/8/4B3/8/6Np/8/2K5 w - - 0 1"; //Draw by insufficent material
 
         //fen = "k7/4P3/p1p1P3/ppp1P3/pP6/1P2P3/8/4K3 w - - 0 1";
         //fen = "r5k1/1R4bp/8/B2R2P1/8/8/4rP2/6K1 b - - 0 39";

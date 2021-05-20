@@ -152,7 +152,8 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            gamestate = Gamestate.BLACK_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS;
+                            else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
                     else{
@@ -161,7 +162,8 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            gamestate = Gamestate.WHITE_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS;
+                            else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
                     observers.get(0).update();      //I dont like this!
@@ -182,7 +184,8 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            gamestate = Gamestate.BLACK_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS;
+                            else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
                     else{
@@ -190,8 +193,8 @@ public class Chessboard {
                         //System.out.println(whiteTime/1e9 + "  -  " + timeNow/1e9);
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
-                            Controller.getInstance().updateTime(0, Color.BLACK);
-                            gamestate = Gamestate.WHITE_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS;
+                            else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
                     observers.get(0).update();      //I dont like this!
@@ -212,7 +215,8 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            gamestate = Gamestate.BLACK_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS;
+                            else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
                     else{
@@ -221,7 +225,8 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            gamestate = Gamestate.WHITE_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS;
+                            else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
                     observers.get(0).update();  //I dont like this!
@@ -242,15 +247,16 @@ public class Chessboard {
                         Controller.getInstance().updateTime((timeNow/1000.000), Color.BLACK);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.BLACK);
-                            gamestate = Gamestate.WHITE_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.WHITE)) gamestate = Gamestate.WHITE_WINS;
+                            else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
-                    }
-                    else{
+                    }else{
                         timeNow = (ch.whiteTime - (System.currentTimeMillis() - timeStopped) + turnTimeAdder);
                         Controller.getInstance().updateTime((timeNow/1000.00), Color.WHITE);
                         if(timeNow <= 0){
                             Controller.getInstance().updateTime(0, Color.WHITE);
-                            gamestate = Gamestate.BLACK_WINS;
+                            if(checkIfColorCanWinWithTheMaterial(Color.BLACK)) gamestate = Gamestate.BLACK_WINS;
+                            else gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
                         }
                     }
                     observers.get(0).update();  //I dont like this!
@@ -769,6 +775,13 @@ public class Chessboard {
     public void endTurn(){
         Controller controller = Controller.getInstance();
         //System.out.println("Im endTurn drinnen!");
+
+        if(!debug){
+            if(!checkIfColorCanWinWithTheMaterial(Color.WHITE) && !checkIfColorCanWinWithTheMaterial(Color.BLACK)){
+                gamestate = Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL;
+            }
+        }
+
         notifyObserver();
 
         //System.out.println(getBoardAsFen());
@@ -821,7 +834,7 @@ public class Chessboard {
                                 Here we let the algorithm work and check in small time periods, if it is already finished
                                 After the calculated time above we interrupt the Callable and we get the best move calculated so far
                              */
-                            System.out.println("Zeit für Zug: "+availableTime*0.05);
+                            System.out.println("Zeit für Zug: "+ availableTime*0.05);
                             for (int i = 0; i < 20; i++) {
                                 if (bestMove.isDone()) break;
                                 Thread.sleep((long)(((availableTime)*0.05)/20));
@@ -1160,6 +1173,37 @@ public class Chessboard {
 
         return String.join(" ", groups);
 
+    }
+
+
+    private boolean checkIfColorCanWinWithTheMaterial(Color color){
+        ArrayList<Piece> pieces = (Color.WHITE == color) ? getWhitePieces() : getBlackPieces();
+
+        int knights = 0;
+        int bishops = 0;
+        for(Piece p : pieces){
+            if(p instanceof King) continue;
+            if(p instanceof Pawn) return true;
+            if(p instanceof Rook) return true;
+            if(p instanceof Queen) return true;
+            if(p instanceof Bishop) knights++;
+            if(p instanceof Knight) bishops++;
+        }
+        if(knights > 0 && bishops > 0) return true;
+        if(bishops > 2 || knights > 2) return true;
+
+        ArrayList<Piece> enemyPieces = (Color.WHITE == color) ? getBlackPieces() : getWhitePieces();
+
+        int enemyMaterial=0;
+        for(Piece p : enemyPieces){
+            if(p instanceof King) continue;
+            enemyMaterial += p.getValue();
+        }
+
+        if(bishops > 0 && enemyMaterial > 0) return true;
+        if(knights > 0 && enemyMaterial > 0) return true;
+
+        return false;
     }
 
     public Color getCurrentAIMovingColor() {
