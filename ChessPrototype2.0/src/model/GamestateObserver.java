@@ -23,7 +23,15 @@ public class GamestateObserver extends Observer{
             System.out.println("A player can claim a draw if he wants");
         }else if(gamestate == Gamestate.DRAW){
             System.out.println("It is a Draw");
+        }else if(gamestate == Gamestate.WHITE_WINS_ON_TIME){
+            System.out.println("White wins on time");
+        }else if(gamestate == Gamestate.BLACK_WINS_ON_TIME){
+            System.out.println("Black wins on time");
+        }else if(gamestate == Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL){
+            System.out.println("It is a draw because of insufficient material");
         }
+
+
         chessboard.getTimer().cancel();
         //System.out.println(Chessboard.getInstance().getBoardAsFen());
     }

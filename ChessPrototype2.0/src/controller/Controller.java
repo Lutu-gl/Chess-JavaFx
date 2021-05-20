@@ -65,7 +65,7 @@ public class Controller implements EventHandler<MouseEvent>{
 //        if (chessboard.getPlaysAI()[0]&&chessboard.getTurns().size() == 0){
 //            chessboard.endTurn();
 //        }
-        System.out.println(chessboard.getGamephase());
+
         if (chessboard.getPlaysAI()[0]&&chessboard.getTurns().size() == 0)
             chessboard.endTurn();
 
