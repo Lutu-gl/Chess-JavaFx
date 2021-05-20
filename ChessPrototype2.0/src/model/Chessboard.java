@@ -788,7 +788,7 @@ public class Chessboard {
         notifyObserver();
 
         //System.out.println(getBoardAsFen());
-        if (!debug){
+        if (!debug && turns.size() > 0){
             Controller.getInstance().markLastPlayedMove();
             ChessboardView.display();
             if(withTime) timeStopped = System.currentTimeMillis();

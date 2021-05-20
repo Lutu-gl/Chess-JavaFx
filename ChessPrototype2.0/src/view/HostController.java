@@ -117,7 +117,13 @@ public class HostController {
      * After a player connected, it sets game parameters for example time and color and sends it to the connected player
      * @param color
      */
+    private static int color;
+    private boolean alreadyHosting = false;
     private void startHosting(int color) {
+
+        HostController.color = color;
+        if (alreadyHosting) return;
+        alreadyHosting = true;
         Server.startHosting();
         // Observer
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
@@ -125,7 +131,7 @@ public class HostController {
             public void handle(ActionEvent actionEvent) {
                 if (Chessboard.getInstance().isPlayerConnected()) {
                     System.out.println("Change Scene!");
-                    if (color == 0) {
+                    if (HostController.color == 0) {
                         MainLaxe.invertBoard = false;
                         MainLaxe.whiteAi = false;
                         MainLaxe.blackAi = true;
@@ -135,7 +141,7 @@ public class HostController {
                         MainLaxe.blackAi = false;
                     }
                     try {
-                        Server.getOutputStream().writeUTF(color==0?"white":"black");
+                        Server.getOutputStream().writeUTF(HostController.color==0?"white":"black");
                         Server.getOutputStream().writeUTF(""+MainLaxe.timeWhite);
                         Server.getOutputStream().writeUTF(""+MainLaxe.timeBlack);
                         Server.getOutputStream().writeUTF(""+MainLaxe.inkrementWhite);
