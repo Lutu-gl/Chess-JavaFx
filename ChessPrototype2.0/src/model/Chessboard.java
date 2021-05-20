@@ -1233,21 +1233,39 @@ public class Chessboard {
             enemyOtherPieces++;
         }
 
+
         if(bishops > 0 && enemyOtherPieces > 0) return true;
         if(knights > 0 && enemyOtherPieces > 0) return true;
 
+        if(knights > 1) return true;
         if(knights > 0 && enemyBishops > 0) return true;
         if(knights > 0 && enemyKnights > 0) return true;
         if(bishops > 0 && enemyKnights > 0) return true;
-        if(bishops > 0 && enemyBishops > 0){
+
+
+        if(bishops > 0 && enemyBishops > 0) {
             for (int i = 0; i < enemyBishops; i++) {
                 Piece enemyBishop = enemyBishopsList.get(i);
                 for (int j = 0; j < bishops; j++) {
                     Piece myBishop = bishopList.get(j);
-                    if((myBishop.getField().getColumn() + myBishop.getField().getLine() % 2 != (enemyBishop.getField().getColumn() + enemyBishop.getField().getLine()) % 2)){
+                    if(((myBishop.getField().getColumn() + myBishop.getField().getLine()) % 2 != (enemyBishop.getField().getColumn() + enemyBishop.getField().getLine()) % 2)) {
                         return true;
                     }
                 }
+            }
+        }
+
+        boolean[] colors = {false, false};
+        if(bishopList.size() > 1){
+            for (Piece p : bishopList) {
+                if((p.getField().getLine() + p.getField().getColumn()) % 2 == 1){
+                    colors[0] = true;
+                }else{
+                    colors[1] = true;
+                }
+            }
+            if(colors[0] && colors[1]){
+                return true;
             }
         }
 

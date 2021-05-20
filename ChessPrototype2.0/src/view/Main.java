@@ -18,7 +18,7 @@ public class Main extends Application {
 
         String fen = "";
 
-//        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"; //Default fen
         //fen = "rnbqkbnr/2pp2p1/1p2pP2/pP6/8/2P3p1/P2P1P1P/RNBQKBNR w KQkq a6 0 8"; //en passant fen
         //fen = "1k6/ppp3PQ/8/8/p7/4K3/8/8 w - - 0 1";
         //fen = "rn2kbnr/ppp1p2p/4b3/3pqpp1/2P1P3/2NB1N1P/PP1P1PP1/R1BQK2R w KQkq - 0 7"; //Crazy fen
@@ -46,7 +46,7 @@ public class Main extends Application {
         //fen = "8/6K1/1p1B1RB1/8/2Q5/2n1kP1N/3b4/4n3 w - - 0 1";
         //fen = "8/8/8/4k3/1R6/2R5/1K6/8 w - - 0 1";
         //fen = "4Q1k1/pp3r2/2rP3p/4B1N1/2q3P1/P7/5RP1/5RK1 b - - 0 1";
-        fen = "4b3/4PPP1/5K2/8/8/4k3/5pp1/8 w - - 0 1"; // PROMOTION TESTTT
+//        fen = "4b3/4PPP1/5K2/8/8/4k3/5pp1/8 w - - 0 1"; // PROMOTION TESTTT
 //        fen = "8/8/8/8/6K1/8/4p1k1/8 w - - 0 1"; // PROMOTION TESTTT
 //        fen = "6bb/5Prk/6bb/8/8/K7/8/8 w - - 0 1"; //really cool and realistic promotion fen to knight
 //        fen = "8/8/8/8/8/k5BB/5pRK/6BB b - - 0 1"; //really cool and realistic promotion fen to knight for black
@@ -62,7 +62,24 @@ public class Main extends Application {
         //fen = "8/3R1r2/7P/1k6/8/3K4/8/8 w - - 0 1";
         //fen = "8/8/4k3/6p1/4nR2/8/6K1/8 b - - 0 58";
         //fen = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"; //check castle pgn
-        //fen = "k7/8/8/4B3/8/6Np/8/2K5 w - - 0 1"; //Draw by insufficent material
+
+        //Insufficent material tests:
+//        fen = "k7/8/8/4B3/8/6Np/8/2K5 w - - 0 1"; //Knight Bishop vs Pawn: no Draw
+//        fen = "8/2k5/8/5N2/8/8/2K5/8 w - - 0 1";  //One Knight: Draw
+//        fen = "8/2k5/8/5B2/8/8/2K5/8 w - - 0 1";  //One Bishop: Draw
+//        fen = "8/2k5/7p/8/8/4B3/2K5/8 w - - 0 1";  //One Bishop vs Pawn: no Draw
+//        fen = "8/2k5/7p/8/8/4N3/2K5/8 w - - 0 1";  //One Knight vs Pawn: no Draw
+//        fen = "8/2k1B3/8/8/8/3B4/2K5/8 w - - 0 1";  //BishopD BishopW vs none: no Draw
+//        fen = "8/2k5/4B3/8/8/3B4/2K5/8 w - - 0 1";  //BishopW BishopW vs none: no Draw
+//        fen = "8/2k5/8/4N3/8/3N4/2K5/8 w - - 0 1";  //Knight Knight vs none: no Draw
+//        fen = "8/2k5/5n2/8/8/5N2/2K5/8 w - - 0 1"; //Knight vs Knight: no Draw
+//        fen = "8/2k5/5n2/8/8/4B3/2K5/8 w - - 0 1"; //Bishop vs Knight: no Draw
+//        fen = "8/2k5/5b2/8/8/3B4/2K5/8 w - - 0 1"; //BishopW vs BishopB: no Draw
+//        fen = "8/2k5/4b3/8/8/3B4/2K5/8 w - - 0 1"; //BishopW vs BishopW: Draw
+//        fen = "3k4/8/5b2/8/5B2/4B3/3K4/8 w - - 0 1"; //BishopB BishopB vs BishopB: Draw
+
+
+
 
         //fen = "k7/4P3/p1p1P3/ppp1P3/pP6/1P2P3/8/4K3 w - - 0 1";
         //fen = "r5k1/1R4bp/8/B2R2P1/8/8/4rP2/6K1 b - - 0 39";
