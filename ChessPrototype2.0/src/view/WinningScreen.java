@@ -20,8 +20,16 @@ public class WinningScreen {
     private static Timeline timeline;
 
     public static void whiteWins() {
+        showDialog("White wins!", "whiteWins.mp4", "W_K.png");
+    }
+
+    public static void blackWins() {
+        showDialog("Black wins!", "blackWins.mp4", "B_k.png");
+    }
+
+    private static void showDialog(String title, String video, String k) {
         Dialog<ImageView> dialog = new Dialog<>();
-        dialog.setTitle("White wins!");
+        dialog.setTitle(title);
         ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().add(type);
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
@@ -35,7 +43,7 @@ public class WinningScreen {
 
         dialog.getDialogPane().getChildren().add(mediaView);
 
-        Media media = new Media(Main.class.getResource("whiteWins.mp4").toExternalForm());
+        Media media = new Media(Main.class.getResource(video).toExternalForm());
 
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaView.setMediaPlayer(mediaPlayer);
@@ -43,7 +51,7 @@ public class WinningScreen {
         mediaPlayer.setAutoPlay(true);
 
 
-        ImageView king = new ImageView(new Image(Main.class.getResourceAsStream("/"+ MainLaxe.pieceDesign.getDesign()+"W_K.png")));
+        ImageView king = new ImageView(new Image(Main.class.getResourceAsStream("/"+ MainLaxe.pieceDesign.getDesign()+k)));
         dialog.getDialogPane().getChildren().add(king);
         king.setFitHeight(100);
         king.setFitWidth(100);
@@ -73,4 +81,5 @@ public class WinningScreen {
         dialog.show();
         //mediaPlayer.play();
     }
+
 }

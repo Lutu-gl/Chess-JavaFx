@@ -797,8 +797,10 @@ public class Chessboard {
 
         notifyObserver();
 
-        if (!gamestate.equals(Gamestate.PLAYING)) {
+        if (gamestate.equals(Gamestate.WHITE_WINS)||gamestate.equals(Gamestate.WHITE_WINS_ON_TIME)) {
             WinningScreen.whiteWins();
+        } else if (gamestate.equals(Gamestate.BLACK_WINS)||gamestate.equals(Gamestate.BLACK_WINS_ON_TIME)) {
+            WinningScreen.blackWins();
         }
 
         //System.out.println(getBoardAsFen());
