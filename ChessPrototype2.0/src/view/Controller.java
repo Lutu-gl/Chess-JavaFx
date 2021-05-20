@@ -6,9 +6,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import model.Chessboard;
+
 
 /**
  * Controller only for handling the main menu
@@ -17,7 +21,7 @@ import model.Chessboard;
  */
 public class Controller{
     @FXML
-    public ImageView myImageView;
+    public ImageView myImageView, pieceDesignImageView, fieldDesignImageView;
     public CheckBox checkBox1, checkBox2, checkBox3;
     public TextField time1, time2, inkrementWhite, inkrementBlack;
     public ChoiceBox<String> dropdown1, dropdown2;
@@ -36,6 +40,7 @@ public class Controller{
         dropdown2.setItems(dropdownList2);
         dropdown1.getSelectionModel().select("Weiß");
         dropdown2.getSelectionModel().select("Local");
+        pieceDesignImageView.setImage(new Image(Main.class.getResourceAsStream("/Neo_W_K.png")));
     }
 
 
@@ -134,6 +139,31 @@ public class Controller{
         MainLaxe.invertBoard = !blackAi&&!checkBox2.isSelected();
         if (!checkBox2.isSelected() || (checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Local")))
             MainLaxe.startGame();
+    }
+
+    public void handlePieceDesignMenu() {
+        System.out.println("Clicked!");
+        Dialog<ImageView> dialog = new Dialog<>();
+        dialog.setTitle("Designmenu");
+        ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        dialog.setHeaderText("Wähle ein Design:");
+        dialog.getDialogPane().getButtonTypes().add(type);
+        PieceDesign[] designs = PieceDesign.values();
+        int y = 20, x = 0;
+        for (int i = 0; i < designs.length; i++) {
+            ImageView imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+designs[i].getDesign()+"W_K.png")));
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+            imageView.setLayoutX(x);
+            imageView.setLayoutY(y);
+            x = (x + 120) % 360;
+            if ((i+1)%3==0)
+                y += 120;
+            dialog.getDialogPane().getChildren().add(imageView);
+        }
+        dialog.getDialogPane().setPrefHeight(600);
+        dialog.getDialogPane().setPrefWidth(360);
+        dialog.show();
     }
 
     /**

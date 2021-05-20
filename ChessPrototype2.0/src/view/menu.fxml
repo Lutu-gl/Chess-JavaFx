@@ -36,5 +36,15 @@
       <CheckBox fx:id="checkBox1" layoutX="62.0" layoutY="482.0" mnemonicParsing="false" onAction="#displayImage" prefHeight="60.0" prefWidth="240.0" rotate="30.0" />
       <CheckBox fx:id="checkBox2" layoutX="62.0" layoutY="535.0" mnemonicParsing="false" onAction="#displayImage" prefHeight="60.0" prefWidth="240.0" rotate="30.0" />
       <CheckBox fx:id="checkBox3" layoutX="62.0" layoutY="587.0" mnemonicParsing="false" onAction="#displayImage" prefHeight="60.0" prefWidth="240.0" rotate="30.0" />
+      <ImageView fx:id="pieceDesignImageView" fitHeight="60.0" fitWidth="75.0" layoutX="631.0" layoutY="456.0" onMouseClicked="#handlePieceDesignMenu" pickOnBounds="true" preserveRatio="true" rotate="330.0">
+         <image>
+            <Image url="@../../resources/Neo_W_K.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="fieldDesignImageView" fitHeight="60.0" fitWidth="75.0" layoutX="606.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" rotate="330.0">
+         <image>
+            <Image url="@../../resources/Neo_B_k.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
