@@ -872,9 +872,15 @@ public class Chessboard {
             service.setOnSucceeded(e -> {
                 System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 Turn t = service.getValue();
-                t.setBlackTime(Chessboard.instance.getBlackTime());
-                t.setWhiteTime(Chessboard.instance.getWhiteTime());
-                handleTurn(t);
+                try{
+                    t.setBlackTime(Chessboard.instance.getBlackTime());
+                    t.setWhiteTime(Chessboard.instance.getWhiteTime());
+                    handleTurn(t);
+                } catch (NullPointerException pointerException){
+                    pointerException.printStackTrace();
+                }
+
+
                 e.consume();
             });
             service.start();
@@ -1199,6 +1205,9 @@ public class Chessboard {
 
 
     private boolean checkIfColorCanWinWithTheMaterial(Color color){
+
+        return true;
+        /*
         ArrayList<Piece> pieces = (Color.WHITE == color) ? getWhitePieces() : getBlackPieces();
 
         int knights = 0;
@@ -1275,6 +1284,8 @@ public class Chessboard {
         }
 
         return false;
+
+         */
     }
 
     public Color getCurrentAIMovingColor() {
