@@ -15,18 +15,33 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * This class is displaying the winning/draw screens
+ */
 public class WinningScreen {
 
     private static Timeline timeline;
 
+    /**
+     * Displays white winning screen
+     */
     public static void whiteWins() {
         showDialog("White wins!", "whiteWins.mp4", "W_K.png");
     }
 
+    /**
+     * Displays black winning screen
+     */
     public static void blackWins() {
         showDialog("Black wins!", "blackWins.mp4", "B_k.png");
     }
 
+    /**
+     * Helper function to create a winning screen
+     * @param title Title of dialog
+     * @param video Video which is played in the background
+     * @param k Name of picture of king to use
+     */
     private static void showDialog(String title, String video, String k) {
         Dialog<ImageView> dialog = new Dialog<>();
         dialog.setTitle(title);

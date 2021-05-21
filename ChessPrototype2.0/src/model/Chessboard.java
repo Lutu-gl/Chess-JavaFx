@@ -797,9 +797,9 @@ public class Chessboard {
 
         notifyObserver();
 
-        if (gamestate.equals(Gamestate.WHITE_WINS)||gamestate.equals(Gamestate.WHITE_WINS_ON_TIME)) {
+        if (!debug && (gamestate.equals(Gamestate.WHITE_WINS)||gamestate.equals(Gamestate.WHITE_WINS_ON_TIME))) {
             WinningScreen.whiteWins();
-        } else if (gamestate.equals(Gamestate.BLACK_WINS)||gamestate.equals(Gamestate.BLACK_WINS_ON_TIME)) {
+        } else if (!debug && (gamestate.equals(Gamestate.BLACK_WINS)||gamestate.equals(Gamestate.BLACK_WINS_ON_TIME))) {
             WinningScreen.blackWins();
         }
 
@@ -840,6 +840,7 @@ public class Chessboard {
         // Check if bot plays
         else if (playsAI[colorToMove.equals(Color.WHITE)?0:1] && gamestate.equals(Gamestate.PLAYING) && !debug) {
             //AIThinking=true;
+
             Service<Turn> service = new Service<>() {
                 @Override
                 protected Task<Turn> createTask() {
@@ -859,15 +860,17 @@ public class Chessboard {
                                 Thread.sleep((long)(((availableTime)*0.05)/20));
                             }
                             executor.shutdownNow();
+
                             return bestMove.get();
                         }
                     };
                 }
             };
-            /*service.setOnRunning(e -> {
+            service.setOnRunning(e -> {
                 System.out.println("Berechnung begonnen!");
-            });*/
+            });
             service.setOnSucceeded(e -> {
+                System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 Turn t = service.getValue();
                 t.setBlackTime(Chessboard.instance.getBlackTime());
                 t.setWhiteTime(Chessboard.instance.getWhiteTime());
