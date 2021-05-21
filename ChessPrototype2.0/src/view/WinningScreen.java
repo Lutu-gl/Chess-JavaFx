@@ -14,11 +14,14 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.Chessboard;
+import model.Gamestate;
+import model.ai.Gamephase;
 
 /**
  * This class is displaying the winning/draw screens
  */
-public class WinningScreen {
+public class WinningScreen implements Runnable{
 
     private static Timeline timeline;
 
@@ -97,4 +100,14 @@ public class WinningScreen {
         //mediaPlayer.play();
     }
 
+    @Override
+    public void run() {
+        Gamestate gamestate = Chessboard.getInstance().getGamestate();
+
+        if(gamestate == Gamestate.WHITE_WINS || gamestate == Gamestate.WHITE_WINS_ON_TIME) {
+            WinningScreen.whiteWins();
+        }else if(gamestate == Gamestate.BLACK_WINS || gamestate == Gamestate.BLACK_WINS_ON_TIME){
+            WinningScreen.blackWins();
+        }//else draw Screen
+    }
 }

@@ -797,12 +797,6 @@ public class Chessboard {
 
         notifyObserver();
 
-        if (!debug && (gamestate.equals(Gamestate.WHITE_WINS)||gamestate.equals(Gamestate.WHITE_WINS_ON_TIME))) {
-            WinningScreen.whiteWins();
-        } else if (!debug && (gamestate.equals(Gamestate.BLACK_WINS)||gamestate.equals(Gamestate.BLACK_WINS_ON_TIME))) {
-            WinningScreen.blackWins();
-        }
-
         //System.out.println(getBoardAsFen());
         if (!debug && turns.size() > 0){
             Controller.getInstance().markLastPlayedMove();

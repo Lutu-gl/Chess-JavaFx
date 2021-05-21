@@ -1,11 +1,13 @@
 package model;
 
+import javafx.application.Platform;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import view.WinningScreen;
 
 public class GamestateObserver extends Observer{
     private final Chessboard chessboard;
@@ -37,7 +39,7 @@ public class GamestateObserver extends Observer{
         }else if(gamestate == Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL){
             System.out.println("It is a draw because of insufficient material");
         }
-
+        Platform.runLater(new WinningScreen());
 
         chessboard.getTimer().cancel();
         //System.out.println(Chessboard.getInstance().getBoardAsFen());
