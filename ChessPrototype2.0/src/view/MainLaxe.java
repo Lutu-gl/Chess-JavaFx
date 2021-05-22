@@ -70,6 +70,8 @@ public class MainLaxe extends Application {
      */
     public static void changeScene(Scene scene) {
         stage.setScene(scene);
+        stage.setMinHeight(950);
+        stage.setMinWidth(1200);
         stage.show();
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);

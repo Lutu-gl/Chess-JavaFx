@@ -14,6 +14,8 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
         primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, false));
+        primaryStage.setMinHeight(950);
+        primaryStage.setMinWidth(1200);
         board.createBoard(size, false, false, 100, 100, 3, 3); //In Sekunden!
 
         String fen = "";

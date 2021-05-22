@@ -44,7 +44,7 @@ public class ChessboardView {
     public static Scene init( int l, int w, FieldBackground color, PieceDesign design, boolean invertBoard) {
         BorderPane bp = new BorderPane();
         bp.getStyleClass().add("borderpane");
-        GridPane gridPane = new GridPane();
+            GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("gridPane");
         board = new ArrayList<>();
         ChessboardView.design = design;
@@ -113,16 +113,15 @@ public class ChessboardView {
         //scPane.setMaxSize(250, 250);
 
         VBox movesVBox = new VBox();
-        movesVBox.setMinSize(275, 250);
-        movesVBox.setMaxSize(275, 300);
-        movesVBox.setMinSize(250, 250);
+//        movesVBox.setMaxSize(275, 270);
+        movesVBox.setMinSize(230, 270);
         Button resignBtn = new Button("Aufgeben");
         resignBtn.setOnAction(new ConcedeHandler());
         //movesVBox.setMaxSize(250, 250);
         TextArea tf = new TextArea();
         tf.setEditable(false);
         tf.getStyleClass().add("movesTextArea");
-        tf.setPrefSize(275, 300);
+        tf.setPrefSize(200, 270);
         tf.setLayoutX(0);
         tf.setLayoutY(0);
 
@@ -146,7 +145,6 @@ public class ChessboardView {
         t2Label.setMinSize(200, 150);
         bp.setRight(timerVBox);
 
-
         HBox buttonsHBox = new HBox();
         buttonsHBox.getChildren().add(turnBack);
         buttonsHBox.getChildren().add(resignBtn);
@@ -157,13 +155,14 @@ public class ChessboardView {
         ChessboardView.timerVBox = timerVBox;
         ChessboardView.movesVBox = movesVBox;
 
-
-        mainScene = new Scene(bp, w*100+400, l*100+50);
-
-
         VBox.setMargin(movesVBox, new Insets(0,50,0,50));
         VBox.setMargin(t1Label, new Insets(50,50,0,50));
         VBox.setMargin(t2Label, new Insets(0,50,50,50));
+
+        bp.setMinHeight(850);
+        bp.setMinWidth(1200);
+
+        mainScene = new Scene(bp, w*100+400, l*100+50);
 
         return mainScene;
     }
