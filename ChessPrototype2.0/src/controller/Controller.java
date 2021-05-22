@@ -317,6 +317,7 @@ public class Controller implements EventHandler<MouseEvent>{
         }
 
     }
+
     public String secondsToFormattedString(double time){
         int hours = (int)time / 3600;
         int minutes = (int)(time % 3600) / 60;
@@ -339,7 +340,7 @@ public class Controller implements EventHandler<MouseEvent>{
      */
     public void addPgnToDisplay(String s){
         VBox vb = ChessboardView.getMovesVBox();
-        TextArea t = (TextArea) vb.getChildren().get(1);
+        TextArea t = (TextArea) vb.getChildren().get(2);
         if(chessboard.getColorToMove() == Color.WHITE){
             t.appendText(s + "\n");
         }
@@ -355,7 +356,7 @@ public class Controller implements EventHandler<MouseEvent>{
      */
     public void removePGNFromTextArea(int num) throws ArrayIndexOutOfBoundsException{
         VBox vb = ChessboardView.getMovesVBox();
-        TextArea t = (TextArea) vb.getChildren().get(1);
+        TextArea t = (TextArea) vb.getChildren().get(2);
         String text = t.getText();
         //System.out.println("L:"+text.length());
         //System.out.println("TEXT BEFORE:\"" + text + "\"");

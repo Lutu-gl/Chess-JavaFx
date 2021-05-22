@@ -10,6 +10,9 @@ import view.ChessboardView;
 
 import java.util.ArrayList;
 
+/**
+ * Handles Taking a turn back
+ */
 public class TurnBackHandler implements EventHandler<ActionEvent> {
 
     @Override

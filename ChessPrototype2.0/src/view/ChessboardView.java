@@ -108,12 +108,15 @@ public class ChessboardView {
         t2Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
         t2Label.setFont(new Font("Arial", 30));
 
+
         //ScrollPane scPane = new ScrollPane();
         //scPane.setMinSize(250,250);
         //scPane.setMaxSize(250, 250);
 
         VBox movesVBox = new VBox();
         movesVBox.setMinSize(250, 250);
+        Button concede = new Button("Aufgeben");
+        concede.setOnAction(new ConcedeHandler());
         //movesVBox.setMaxSize(250, 250);
         TextArea tf = new TextArea();
         tf.setEditable(false);
@@ -121,7 +124,8 @@ public class ChessboardView {
         tf.setPrefSize(500, 500);
         tf.setLayoutX(0);
         tf.setLayoutY(0);
-        movesVBox.getChildren().addAll(turnBack, tf);
+        movesVBox.getChildren().addAll(concede, turnBack, tf);
+        //movesVBox.getChildren().addAll(turnBack, tf);
         movesVBox.setSpacing(10);
 
         tf.textProperty().addListener(new ChangeListener<String>() {
@@ -130,10 +134,10 @@ public class ChessboardView {
                 tf.setScrollTop(Double.MIN_VALUE);
             }
         });
+
         //scPane.vvalueProperty().bind(movesVBox.heightProperty());
         //scPane.setContent(movesVBox);
-
-        VBox timerVBox = new VBox(t1Label, movesVBox,t2Label);
+        VBox timerVBox = new VBox(t1Label, movesVBox, t2Label);
         movesVBox.setFillWidth(true);
         //scPane.setFitToWidth(true);
         timerVBox.setSpacing(100);

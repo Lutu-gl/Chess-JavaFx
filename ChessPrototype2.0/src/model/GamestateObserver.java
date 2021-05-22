@@ -1,14 +1,11 @@
 package model;
 
 import javafx.application.Platform;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import view.WinningScreen;
 
+/**
+ * Observer to notify when the game is over
+ */
 public class GamestateObserver extends Observer{
     private final Chessboard chessboard;
     private Gamestate lastGamestate = Gamestate.PLAYING;

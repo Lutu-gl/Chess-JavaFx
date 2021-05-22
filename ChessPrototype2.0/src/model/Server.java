@@ -8,6 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+/**
+ * Class with multiple static Methods to handle Hosting a game
+ */
 public class Server extends Thread{
 
     private static boolean isAlreadyHosting = false;
@@ -17,7 +20,7 @@ public class Server extends Thread{
 
     private ServerSocket serverSocket;
 
-    public Server(int port) throws IOException {
+    private Server(int port) throws IOException {
         serverSocket = new ServerSocket(port);
     }
 
@@ -43,6 +46,9 @@ public class Server extends Thread{
     }
 
 
+    /**
+     * Creates a Server Thread if no other ServerThread is already running
+     */
     public static void startHosting() {
         if (isAlreadyHosting) return;
         isAlreadyHosting = true;
@@ -54,6 +60,10 @@ public class Server extends Thread{
         }
     }
 
+    /**
+     * Connects to a IP on port 50000
+     * @return true if success
+     */
     public static boolean startConnection(String ip) {
         int port = 50000;
         try {
