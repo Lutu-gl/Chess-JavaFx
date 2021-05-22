@@ -4,6 +4,8 @@ import controller.Controller;
 import controller.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -40,7 +43,9 @@ public class ChessboardView {
      */
     public static Scene init( int l, int w, FieldBackground color, PieceDesign design, boolean invertBoard) {
         BorderPane bp = new BorderPane();
+        bp.getStyleClass().add("borderpane");
         GridPane gridPane = new GridPane();
+        gridPane.getStyleClass().add("gridPane");
         board = new ArrayList<>();
         ChessboardView.design = design;
         for (int i = 0; i < l; i++) {
@@ -86,7 +91,7 @@ public class ChessboardView {
         //turnBack.setOnAction(new TurnBackHandler());
         //gridPane.add(turnBack, w+2, 0);
 
-        Button turnBack = new Button("Turn back!");
+        Button turnBack = new Button("Zugrücknahme");
         turnBack.setOnAction(new TurnBackHandler());
 
         // if board should be inverted
@@ -96,17 +101,11 @@ public class ChessboardView {
         bp.setCenter(gridPane);
 
         Label t1Label = new Label(), t2Label = new Label();
-        //System.out.println(MainLaxe.timeWhite);
         t2Label.setText(Controller.getInstance().secondsToFormattedString(MainLaxe.timeWhite));
         t1Label.setText(Controller.getInstance().secondsToFormattedString(MainLaxe.timeBlack));
 
-        t1Label.setTextAlignment(TextAlignment.CENTER);
-        t1Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
-        t1Label.setFont(new Font("Arial", 30));
-
-        t2Label.setTextAlignment(TextAlignment.CENTER);
-        t2Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
-        t2Label.setFont(new Font("Arial", 30));
+        t1Label.getStyleClass().add("timer");
+        t2Label.getStyleClass().add("timer");
 
 
         //ScrollPane scPane = new ScrollPane();
@@ -114,17 +113,19 @@ public class ChessboardView {
         //scPane.setMaxSize(250, 250);
 
         VBox movesVBox = new VBox();
+        movesVBox.setMinSize(275, 250);
+        movesVBox.setMaxSize(275, 300);
         movesVBox.setMinSize(250, 250);
-        Button concede = new Button("Aufgeben");
-        concede.setOnAction(new ConcedeHandler());
+        Button resignBtn = new Button("Aufgeben");
+        resignBtn.setOnAction(new ConcedeHandler());
         //movesVBox.setMaxSize(250, 250);
         TextArea tf = new TextArea();
         tf.setEditable(false);
         tf.getStyleClass().add("movesTextArea");
-        tf.setPrefSize(500, 500);
+        tf.setPrefSize(275, 300);
         tf.setLayoutX(0);
         tf.setLayoutY(0);
-        movesVBox.getChildren().addAll(concede, turnBack, tf);
+
         //movesVBox.getChildren().addAll(turnBack, tf);
         movesVBox.setSpacing(10);
 
@@ -140,16 +141,30 @@ public class ChessboardView {
         VBox timerVBox = new VBox(t1Label, movesVBox, t2Label);
         movesVBox.setFillWidth(true);
         //scPane.setFitToWidth(true);
-        timerVBox.setSpacing(100);
-        t1Label.setMinSize(200, 200);
-        t2Label.setMinSize(200, 200);
+        timerVBox.setSpacing(75);
+        t1Label.setMinSize(200, 150);
+        t2Label.setMinSize(200, 150);
         bp.setRight(timerVBox);
+
+
+        HBox buttonsHBox = new HBox();
+        buttonsHBox.getChildren().add(turnBack);
+        buttonsHBox.getChildren().add(resignBtn);
+        buttonsHBox.setSpacing(105);
+
+        movesVBox.getChildren().addAll(buttonsHBox, tf);
 
         ChessboardView.timerVBox = timerVBox;
         ChessboardView.movesVBox = movesVBox;
 
 
-        mainScene = new Scene(bp, w*100+300, l*100+50);
+        mainScene = new Scene(bp, w*100+400, l*100+50);
+
+
+        VBox.setMargin(movesVBox, new Insets(0,50,0,50));
+        VBox.setMargin(t1Label, new Insets(50,50,0,50));
+        VBox.setMargin(t2Label, new Insets(0,50,50,50));
+
         return mainScene;
     }
 

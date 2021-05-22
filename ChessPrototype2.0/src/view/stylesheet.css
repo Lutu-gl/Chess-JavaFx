@@ -49,19 +49,38 @@
     -fx-alignment: center;
 }
 
+.borderpane{
+    -fx-background-color: #262421;
+    -fx-text-fill: #bababa;
+}
+
+.gridpane{
+    -fx-alignment: center;
+}
+
+.timer{
+    -fx-font-size: 30px;
+    -fx-background-color: #33302c;
+    -fx-text-fill: #bababa;
+    -fx-alignment: center;
+}
 
 .index {
     -fx-alignment: center;
     -fx-font-weight: bold;
-    -fx-font-size: 30px;
+    -fx-font-size: 15px;
     -fx-min-height: 100px;
+    -fx-background-color: #262421;
+    -fx-text-fill: #bababa;
 }
 
 .letter {
     -fx-alignment: center;
     -fx-font-weight: bold;
-    -fx-font-size: 30px;
+    -fx-font-size: 15px;
     -fx-min-width: 100px;
+    -fx-background-color: #262421;
+    -fx-text-fill: #bababa;
 }
 .potentialTake{
     -fx-effect: innershadow(gaussian, red, 10, 0.5, 0, 0);
