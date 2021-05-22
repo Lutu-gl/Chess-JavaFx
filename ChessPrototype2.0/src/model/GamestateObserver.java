@@ -11,6 +11,7 @@ import view.WinningScreen;
 
 public class GamestateObserver extends Observer{
     private final Chessboard chessboard;
+    private Gamestate lastGamestate = Gamestate.PLAYING;
 
     public GamestateObserver(Chessboard chessboard){
         this.chessboard = chessboard;
@@ -20,7 +21,10 @@ public class GamestateObserver extends Observer{
     public void update() {
         Gamestate gamestate = chessboard.getGamestate();
 
+        if(gamestate == lastGamestate) return;
+
         if(gamestate == Gamestate.PLAYING || Chessboard.getInstance().debug) {
+            lastGamestate = gamestate;
             return;
         }else if(gamestate == Gamestate.BLACK_WINS) {
              System.out.println("Black wins");
@@ -39,6 +43,7 @@ public class GamestateObserver extends Observer{
         }else if(gamestate == Gamestate.DRAW_BECAUSE_INSUFFICIENT_MATERIAL){
             System.out.println("It is a draw because of insufficient material");
         }
+        lastGamestate = gamestate;
         Platform.runLater(new WinningScreen());
 
         chessboard.getTimer().cancel();
