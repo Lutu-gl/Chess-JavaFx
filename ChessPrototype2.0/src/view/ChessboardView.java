@@ -97,8 +97,8 @@ public class ChessboardView {
 
         Label t1Label = new Label(), t2Label = new Label();
         //System.out.println(MainLaxe.timeWhite);
-        t2Label.setText(Long.toString(MainLaxe.timeWhite));
-        t1Label.setText(Long.toString(MainLaxe.timeBlack));
+        t2Label.setText(Controller.getInstance().secondsToFormattedString(MainLaxe.timeWhite));
+        t1Label.setText(Controller.getInstance().secondsToFormattedString(MainLaxe.timeBlack));
 
         t1Label.setTextAlignment(TextAlignment.CENTER);
         t1Label.setStyle("-fx-background-color: #262421;-fx-text-fill: #bababa;");
@@ -123,6 +123,7 @@ public class ChessboardView {
         tf.setLayoutY(0);
         movesVBox.getChildren().addAll(turnBack, tf);
         movesVBox.setSpacing(10);
+
         tf.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {

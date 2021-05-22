@@ -13,7 +13,9 @@ import model.pieces.Piece;
 import view.ChessboardView;
 import view.FieldLabel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -307,12 +309,26 @@ public class Controller implements EventHandler<MouseEvent>{
      * @param c color of Player to set the time for
      */
     public void updateTime(double time, Color c){
-        //System.out.println("Time "+ time + c);
+        //Date date = new Date((long)(time*1000));
+        //String formattedDate = new SimpleDateFormat("HH:mm:ss.SSS").format(date);
         switch(c){
-            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(!flippedTimer ? 0:2)).setText(Double.toString(time))); // [0] == black Label [1] == scrollPane [2] == white Label
-            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(!flippedTimer ? 2:0)).setText(Double.toString(time)));
+            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(!flippedTimer ? 0:2)).setText(secondsToFormattedString(time))); // [0] == black Label [1] == scrollPane [2] == white Label //Double.toString((int)time/60) + "%.2d:" +Double.toString(time%60))
+            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(!flippedTimer ? 2:0)).setText(secondsToFormattedString(time)));
         }
 
+    }
+    public String secondsToFormattedString(double time){
+        int hours = (int)time / 3600;
+        int minutes = (int)(time % 3600) / 60;
+        String timeString;
+        if(hours != 0)
+            timeString = String.format("%02d:%02d:%02d", hours, minutes, (int)time % 60);
+        else if(minutes != 0)
+            timeString = String.format("%02d:%02d", minutes, (int)(time % 60));
+        else
+            timeString = String.format("%.3f", time % 60);
+
+        return timeString;
     }
 
     /**
