@@ -312,8 +312,8 @@ public class Controller implements EventHandler<MouseEvent>{
         //Date date = new Date((long)(time*1000));
         //String formattedDate = new SimpleDateFormat("HH:mm:ss.SSS").format(date);
         switch(c){
-            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(!flippedTimer ? 0:2)).setText(secondsToFormattedString(time))); // [0] == black Label [1] == scrollPane [2] == white Label //Double.toString((int)time/60) + "%.2d:" +Double.toString(time%60))
-            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getTimerVBox().getChildren().get(!flippedTimer ? 2:0)).setText(secondsToFormattedString(time)));
+            case BLACK -> Platform.runLater(() -> ((Label)ChessboardView.getInformationsGridpane().getChildren().get(!flippedTimer ? 0:2)).setText(secondsToFormattedString(time))); // [0] == black Label [1] == scrollPane [2] == white Label //Double.toString((int)time/60) + "%.2d:" +Double.toString(time%60))
+            case WHITE -> Platform.runLater(() -> ((Label)ChessboardView.getInformationsGridpane().getChildren().get(!flippedTimer ? 2:0)).setText(secondsToFormattedString(time)));
         }
 
     }
@@ -381,11 +381,11 @@ public class Controller implements EventHandler<MouseEvent>{
     public void flipTimers(){
         // [0] == black Label [1] == scrollPane [2] == white Label
         flippedTimer=true;
-        Label l  = (Label) ChessboardView.getTimerVBox().getChildren().get(0);
-        Label l2 = (Label) ChessboardView.getTimerVBox().getChildren().get(2);
-        ChessboardView.getTimerVBox().getChildren().remove(ChessboardView.getTimerVBox().getChildren().get(2));
-        ChessboardView.getTimerVBox().getChildren().set(0, l2);
-        ChessboardView.getTimerVBox().getChildren().add(l);
+        Label l  = (Label) ChessboardView.getInformationsGridpane().getChildren().get(0);
+        Label l2 = (Label) ChessboardView.getInformationsGridpane().getChildren().get(2);
+        ChessboardView.getInformationsGridpane().getChildren().remove(ChessboardView.getInformationsGridpane().getChildren().get(2));
+        ChessboardView.getInformationsGridpane().getChildren().set(0, l2);
+        ChessboardView.getInformationsGridpane().getChildren().add(l);
     }
 
     public void setSource(FieldLabel source) {

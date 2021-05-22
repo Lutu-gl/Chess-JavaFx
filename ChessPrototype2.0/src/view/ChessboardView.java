@@ -31,7 +31,7 @@ public class ChessboardView {
 
     private static ArrayList<ArrayList<FieldLabel>> board;
     private static Scene mainScene;
-    private static VBox timerVBox;
+    private static GridPane informationsGridpane;
     private static VBox movesVBox;
     private static PieceDesign design;
     /**
@@ -136,14 +136,18 @@ public class ChessboardView {
         });
 
         //scPane.vvalueProperty().bind(movesVBox.heightProperty());
-        //scPane.setContent(movesVBox);
-        VBox timerVBox = new VBox(t1Label, movesVBox, t2Label);
+        //scPane.setContent(movesVBox); //t1Label, movesVBox, t2Label
+        GridPane informationsGridpane = new GridPane();
+
+        informationsGridpane.add(t1Label, 0, 0);
+        informationsGridpane.add(movesVBox, 0, 1);
+        informationsGridpane.add(t2Label, 0, 2);
         movesVBox.setFillWidth(true);
         //scPane.setFitToWidth(true);
-        timerVBox.setSpacing(75);
+        informationsGridpane.setVgap(75);
         t1Label.setMinSize(200, 150);
         t2Label.setMinSize(200, 150);
-        bp.setRight(timerVBox);
+        bp.setRight(informationsGridpane);
 
         HBox buttonsHBox = new HBox();
         buttonsHBox.getChildren().add(turnBack);
@@ -152,8 +156,11 @@ public class ChessboardView {
 
         movesVBox.getChildren().addAll(buttonsHBox, tf);
 
-        ChessboardView.timerVBox = timerVBox;
+        ChessboardView.informationsGridpane = informationsGridpane;
         ChessboardView.movesVBox = movesVBox;
+
+        informationsGridpane.setPadding(new Insets(0, 50, 0, 0));
+        informationsGridpane.getStyleClass().add("gridPane");
 
         VBox.setMargin(movesVBox, new Insets(0,50,0,50));
         VBox.setMargin(t1Label, new Insets(50,50,0,50));
@@ -225,11 +232,16 @@ public class ChessboardView {
         return mainScene;
     }
 
-    public static VBox getTimerVBox() {
-        return timerVBox;
-    }
 
     public static VBox getMovesVBox() {
         return movesVBox;
+    }
+
+    public static void setInformationsGridpane(GridPane informationsGridpane) {
+        ChessboardView.informationsGridpane = informationsGridpane;
+    }
+
+    public static GridPane getInformationsGridpane() {
+        return informationsGridpane;
     }
 }
