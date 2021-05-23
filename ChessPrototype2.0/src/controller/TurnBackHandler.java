@@ -39,6 +39,8 @@ public class TurnBackHandler implements EventHandler<ActionEvent> {
         {
             Controller.getInstance().removePGNFromTextArea(1);
             chessboard.undoTurn(turns.get(turns.size()-1));
+            ChessboardView.display();
+
         }
 
 
