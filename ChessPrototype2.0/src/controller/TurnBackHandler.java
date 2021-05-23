@@ -19,8 +19,6 @@ public class TurnBackHandler implements EventHandler<ActionEvent> {
     public void handle(ActionEvent actionEvent) {
         Chessboard chessboard = Chessboard.getInstance();
         ArrayList<Turn> turns = chessboard.getTurns();
-        long tB = turns.get(turns.size()-1).getBlackTime();
-        long tW = turns.get(turns.size()-1).getWhiteTime();
 
         if(chessboard.AIThinking || Chessboard.getInstance().getGamestate() != Gamestate.PLAYING){
             System.out.println("not allowed to turn back move");
@@ -40,10 +38,15 @@ public class TurnBackHandler implements EventHandler<ActionEvent> {
             Controller.getInstance().removePGNFromTextArea(1);
             chessboard.undoTurn(turns.get(turns.size()-1));
             ChessboardView.display();
-
+            System.out.println(turns.size());
+            if(turns.size() == 0){
+                Controller.getInstance().unSelectLastPlayedMove();
+            }
         }
 
 
+        long tB = turns.get(turns.size()-1).getBlackTime();
+        long tW = turns.get(turns.size()-1).getWhiteTime();
 
         chessboard.setBlackTime(tB);
         chessboard.setWhiteTime(tW);
