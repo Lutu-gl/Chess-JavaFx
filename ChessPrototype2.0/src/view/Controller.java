@@ -44,6 +44,7 @@ public class Controller{
         dropdown1.getSelectionModel().select("Weiß");
         dropdown2.getSelectionModel().select("Local");
         pieceDesignImageView.setImage(new Image(Main.class.getResourceAsStream("/W_K.png")));
+        fieldDesignImageView.setImage(new Image(Main.class.getResourceAsStream("/STANDARD.png")));
     }
 
 
@@ -178,6 +179,48 @@ public class Controller{
             imageView.setOnMouseClicked(e -> {
                 Controller.pieceDesign = designs[finalI];
                 pieceDesignImageView.setImage(new Image("/"+designs[finalI].getDesign()+"W_K.png"));
+                dialog.close();
+            });
+
+            dialog.getDialogPane().getChildren().add(imageView);
+        }
+        dialog.getDialogPane().setPrefHeight(600);
+        dialog.getDialogPane().setPrefWidth(360);
+        dialog.show();
+    }
+
+    public void handleFieldBackgroundMenu() {
+        System.out.println("Clicked!");
+        Dialog<ImageView> dialog = new Dialog<>();
+        dialog.setTitle("FieldBackground Menu");
+        ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        dialog.setHeaderText("Wähle ein Design für den Hintergrund:");
+        dialog.getDialogPane().getButtonTypes().add(type);
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(this.getClass().getResource("/icon.png").toString()));
+        FieldBackground[] backgrounds = FieldBackground.values();
+        int y = 50, x = 0;
+        for (int i = 0; i < backgrounds.length; i++) {
+            ImageView imageView;
+            System.out.println("/"+backgrounds[i]+".png");
+            if (backgrounds[i].equals(Controller.fieldDesign)) {
+                imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+backgrounds[i]+"_G.png")));
+            } else {
+                imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+backgrounds[i]+".png")));
+            }
+            imageView.setId(""+backgrounds[i]);
+
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+            imageView.setLayoutX(x);
+            imageView.setLayoutY(y);
+            x = (x + 120) % 360;
+            if ((i+1)%3==0)
+                y += 120;
+            int finalI = i;
+            imageView.setOnMouseClicked(e -> {
+                Controller.fieldDesign = backgrounds[finalI];
+                fieldDesignImageView.setImage(new Image("/"+backgrounds[finalI]+".png"));
                 dialog.close();
             });
 

@@ -22,6 +22,9 @@ public class DragDetectedHandler implements EventHandler<MouseEvent> {
         Chessboard chessboard = Chessboard.getInstance();
         Controller controller = Controller.getInstance();
 
+        if (!chessboard.getGamestate().equals(Gamestate.PLAYING))
+            return;
+
         FieldLabel sourcePreMove = controller.getSourcePreMove();
         FieldLabel targetPreMove = controller.getTargetPreMove();
 

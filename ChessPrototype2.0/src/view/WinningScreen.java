@@ -29,14 +29,14 @@ public class WinningScreen implements Runnable{
      * Displays white winning screen
      */
     public static void whiteWins() {
-        showDialog("White wins!", "whiteWins.mp4", "W_K.png");
+        showWinningDialog("White wins!", "whiteWins.mp4", "W_K.png");
     }
 
     /**
      * Displays black winning screen
      */
     public static void blackWins() {
-        showDialog("Black wins!", "blackWins.mp4", "B_k.png");
+        showWinningDialog("Black wins!", "blackWins.mp4", "B_k.png");
     }
 
     /**
@@ -45,7 +45,7 @@ public class WinningScreen implements Runnable{
      * @param video Video which is played in the background
      * @param k Name of picture of king to use
      */
-    private static void showDialog(String title, String video, String k) {
+    private static void showWinningDialog(String title, String video, String k) {
         Dialog<ImageView> dialog = new Dialog<>();
         dialog.setTitle(title);
         ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -100,14 +100,35 @@ public class WinningScreen implements Runnable{
         //mediaPlayer.play();
     }
 
+    public static void draw() {
+        Dialog<ImageView> dialog = new Dialog<>();
+        dialog.setTitle("Draw");
+        ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(type);
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(Main.class.getResource("/icon.png").toString()));
+
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(Main.class.getResource("/draw.jpeg").toString()));
+        imageView.setFitWidth(490);
+        imageView.setFitHeight(576);
+        dialog.getDialogPane().setPrefWidth(490);
+        dialog.getDialogPane().setPrefHeight(576);
+        dialog.getDialogPane().getChildren().add(imageView);
+        dialog.show();
+    }
+
     @Override
     public void run() {
         Gamestate gamestate = Chessboard.getInstance().getGamestate();
-
-        if(gamestate == Gamestate.WHITE_WINS || gamestate == Gamestate.WHITE_WINS_ON_TIME) {
-            WinningScreen.whiteWins();
-        }else if(gamestate == Gamestate.BLACK_WINS || gamestate == Gamestate.BLACK_WINS_ON_TIME){
-            WinningScreen.blackWins();
-        }//else draw Screen
+        if (gamestate != Gamestate.PLAYING) {
+            if (gamestate == Gamestate.WHITE_WINS || gamestate == Gamestate.WHITE_WINS_ON_TIME) {
+                WinningScreen.whiteWins();
+            } else if (gamestate == Gamestate.BLACK_WINS || gamestate == Gamestate.BLACK_WINS_ON_TIME) {
+                WinningScreen.blackWins();
+            } else {
+                WinningScreen.draw();
+            }
+        }
     }
 }
