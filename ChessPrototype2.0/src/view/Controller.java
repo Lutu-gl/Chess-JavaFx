@@ -164,6 +164,8 @@ public class Controller{
         MainLaxe.fieldDesign = Controller.fieldDesign;
         if (!checkBox2.isSelected() || (checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Local")))
             MainLaxe.startGame();
+        else
+            MainLaxe.hideTurnBackButton = true;
     }
     private void displayErrorMSG(String errorMSG){
         Alert alert = new Alert(Alert.AlertType.ERROR);

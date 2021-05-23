@@ -39,9 +39,12 @@ public class ChessboardView {
      * @param l lenght of board
      * @param w width of board
      * @param color Style of Board
+     * @param design Style of pieces
+     * @param invertBoard if true board gets inverted
+     * @param hideTurnBackButton if true turnBackButton is invisible
      * @return created Scene with FieldLabels etc.
      */
-    public static Scene init( int l, int w, FieldBackground color, PieceDesign design, boolean invertBoard) {
+    public static Scene init( int l, int w, FieldBackground color, PieceDesign design, boolean invertBoard, boolean hideTurnBackButton) {
         BorderPane bp = new BorderPane();
         bp.getStyleClass().add("borderpane");
             GridPane gridPane = new GridPane();
@@ -93,6 +96,9 @@ public class ChessboardView {
 
         Button turnBack = new Button("Zugrücknahme");
         turnBack.setOnAction(new TurnBackHandler());
+
+        if (hideTurnBackButton)
+            turnBack.setVisible(true);
 
         // if board should be inverted
         if (invertBoard)
