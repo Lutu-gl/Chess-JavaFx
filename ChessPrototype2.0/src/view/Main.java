@@ -111,7 +111,9 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon.png")));
         // Display the window
         primaryStage.show();
-
+        primaryStage.setOnCloseRequest(event -> {
+            System.exit(0);
+        });
     }
 
 
