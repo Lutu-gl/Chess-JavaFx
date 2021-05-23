@@ -326,6 +326,9 @@ public class Controller implements EventHandler<MouseEvent>{
         }
     }
 
+    /**
+     * Turns Seconds into HH:MM:SS removes HH if time is less than an hour and minutes if time is less than a minute
+     */
     public String secondsToFormattedString(double time){
         int hours = (int)time / 3600;
         int minutes = (int)(time % 3600) / 60;
@@ -386,6 +389,9 @@ public class Controller implements EventHandler<MouseEvent>{
         t.appendText(text); //using append instead of set to trigger Listener
     }
 
+    /**
+     * Turns the timers around
+     */
     public void flipTimers(){
         // [0] == black Label [1] == scrollPane [2] == white Label
         flippedTimer=true;

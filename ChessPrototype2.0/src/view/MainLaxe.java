@@ -34,6 +34,7 @@ public class MainLaxe extends Application {
     public static void startGame() {
         Chessboard board = Chessboard.getInstance();
 
+
         System.out.println("Size: "+size);
         System.out.println("White ai: "+whiteAi);
         System.out.println("Black ai: "+blackAi);

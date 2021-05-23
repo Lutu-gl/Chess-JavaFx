@@ -80,32 +80,51 @@ public class Controller{
     public void startGame() {
         // Falls kein Spielmodus ausgewählt ist
         if (!checkBox1.isSelected() && !checkBox2.isSelected() && !checkBox3.isSelected()) {
-            System.out.println("Kein Spielmodus ausgewählt!");
+            displayErrorMSG("Sie müssen einen Spielmodus auswählen");
             return;
         }
         // Wenn man einem Spiel joint, muss die Zeiteingabe nicht korrekt sein
         int intTime1 = 0, intTime2 = 0, intInkrement1 = 0, intInkrement2 = 0;
         if (!(checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Join"))) {
             // Falls keine Zeit eingegeben wurde
+
             if (time1.getText().length() <= 0 || time2.getText().length() <= 0) {
-                System.out.println("Keine Zeit eingegeben!");
+                displayErrorMSG("Sie müssen eine Zeit eingeben");
                 return;
+            }else{
+                try{
+                    if(Integer.parseInt(time1.getText())<= 0 || Integer.parseInt(time2.getText())<= 0){
+                        displayErrorMSG("Zeiten müssen größer als null sein");
+                        return;
+                    }
+                    else{
+                        intTime1 = (Integer.parseInt(time1.getText()));
+                        intTime2 = (Integer.parseInt(time2.getText()));
+                    }
+                }
+                catch (Exception e){
+                    displayErrorMSG("Zeiten müssen eine Ganzzahl sein und dürfen nicht größer als "+Integer.MAX_VALUE+" sein");
+                    return;
+                }
             }
 
             if (inkrementWhite.getText().length() <= 0 || inkrementBlack.getText().length() <= 0) {
-                System.out.println("Kein Inkrement eingegeben!");
+                displayErrorMSG("Inkremente eingeben(Default = 0)");
+                return;
             }
-
             try {
-                intTime1 = Integer.parseInt(time1.getText());
-                intTime2 = Integer.parseInt(time2.getText());
                 intInkrement1 = Integer.parseInt(inkrementWhite.getText());
                 intInkrement2 = Integer.parseInt(inkrementBlack.getText());
+                if(intInkrement1< 0 || intInkrement2< 0){
+                    displayErrorMSG("Inkremente müssen größer/gleich Null sein");
+                    return;
+                }
             } catch (NumberFormatException e) {
-                System.out.println("String statt Zahl eingegeben!");
+                displayErrorMSG("Inkremente müssen eine Ganzzahl sein");
                 return;
             }
         }
+        System.out.println(time1.getText());
         System.out.println("Los geats!!!");
         int size = 8;
         // Set the size and the FEN of the logic chessboard
@@ -145,6 +164,13 @@ public class Controller{
         MainLaxe.fieldDesign = Controller.fieldDesign;
         if (!checkBox2.isSelected() || (checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Local")))
             MainLaxe.startGame();
+    }
+    private void displayErrorMSG(String errorMSG){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(errorMSG);
+        alert.setTitle("Startup Fehler");
+        alert.setHeaderText("");
+        alert.show();
     }
 
     public void handlePieceDesignMenu() {
