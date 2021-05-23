@@ -12,9 +12,8 @@ import view.PlaySound;
 import view.Sound;
 import view.WinningScreen;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -132,7 +131,15 @@ public class Chessboard {
         playsAI[1] = blackAI;
         if (playsAI[0] || playsAI[1]) {
             openingBook = new HashMap<>();
-            File myObj = new File("openingBook.csv");
+            InputStream inputStream = this.getClass().getResourceAsStream("/openingBook.csv");
+            if (inputStream != null) {
+                Scanner scanner = new Scanner(inputStream);
+                while (scanner.hasNextLine()) {
+                    String[] line = scanner.nextLine().split(";");
+                    openingBook.put(line[0], line[1]);
+                }
+            }
+            /*File myObj = new File("openingBook.csv");
             if (myObj.exists()) {
                 Scanner myReader = null;
                 try {
@@ -144,7 +151,7 @@ public class Chessboard {
                     String[] data = myReader.nextLine().split(";");
                     openingBook.put(data[0], data[1]);
                 }
-            }
+            }*/
         }
         fields = new Field[size][size];
         for (int i = 0; i < size; i++)
