@@ -98,7 +98,7 @@ public class ChessboardView {
         turnBack.setOnAction(new TurnBackHandler());
 
         if (hideTurnBackButton)
-            turnBack.setVisible(true);
+            turnBack.setVisible(false);
 
         // if board should be inverted
         if (invertBoard)
