@@ -129,7 +129,7 @@ public class Stockfish {
         String[] rows = getOutput(0).split("\n");
 
         for (int i = 1; i < 18; i++) {
-            System.out.println(rows[i]);
+            //System.out.println(rows[i]);
         }
     }
 

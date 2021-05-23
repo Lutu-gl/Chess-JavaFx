@@ -1,6 +1,5 @@
 package view;
 
-import controller.Controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -18,7 +17,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Chessboard;
 import model.Gamestate;
-import model.ai.Gamephase;
 
 /**
  * This class is displaying the winning/draw screens
@@ -71,7 +69,7 @@ public class WinningScreen implements Runnable{
         mediaPlayer.setAutoPlay(true);
 
 
-        ImageView king = new ImageView(new Image(Main.class.getResourceAsStream("/"+ MainLaxe.pieceDesign.getDesign()+k)));
+        ImageView king = new ImageView(new Image(Main.class.getResourceAsStream("/"+ MainGame.pieceDesign.getDesign()+k)));
         dialog.getDialogPane().getChildren().add(king);
         king.setFitHeight(100);
         king.setFitWidth(100);

@@ -56,7 +56,7 @@ public class ChessRulesetTest {
     private void printChessLanguage(ArrayList<Turn> moves) {
         String[] letters = new String[]{"a", "b", "c", "d", "e", "f", "g", "h"};
         for (Turn move : moves) {
-            System.out.println(letters[move.getSourceField().getColumn()]+Math.abs(move.getSourceField().getLine()-8) + " - " + letters[move.getTargetField().getColumn()]+Math.abs(move.getTargetField().getLine()-8));
+            //System.out.println(letters[move.getSourceField().getColumn()]+Math.abs(move.getSourceField().getLine()-8) + " - " + letters[move.getTargetField().getColumn()]+Math.abs(move.getTargetField().getLine()-8));
         }
     }
 

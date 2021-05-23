@@ -24,7 +24,7 @@ public class DragDroppedHandler implements EventHandler<DragEvent> {
         FieldLabel sourcePreMove = controller.getSourcePreMove();
         FieldLabel targetPreMove = controller.getTargetPreMove();
         if(chessboard.AIThinking){
-            System.out.println("Jetzt drag dropped");
+            //System.out.println("Jetzt drag dropped");
             if(targetPreMove == null) {
                 controller.setTargetPreMove(targetLabel);
                 if(controller.getSourcePreMove() == controller.getTargetPreMove()){

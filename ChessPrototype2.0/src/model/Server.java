@@ -30,7 +30,7 @@ public class Server extends Thread{
             System.out.println("Waiting for client on port " +
                     serverSocket.getLocalPort() + "...");
             server = serverSocket.accept();
-            System.out.println("Just connected to " + server.getRemoteSocketAddress());
+            //System.out.println("Just connected to " + server.getRemoteSocketAddress());
             inputStream = new DataInputStream(server.getInputStream());
             //System.out.println(in.readUTF());
             outputStream = new DataOutputStream(server.getOutputStream());
@@ -39,7 +39,7 @@ public class Server extends Thread{
             Chessboard.getInstance().setPlayerConnected(true);
 
         } catch (SocketTimeoutException s) {
-            System.out.println("Socket timed out!");
+            //System.out.println("Socket timed out!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,10 +67,10 @@ public class Server extends Thread{
     public static boolean startConnection(String ip) {
         int port = 50000;
         try {
-            System.out.println("Connecting to " + ip + " on port " + port);
+            //System.out.println("Connecting to " + ip + " on port " + port);
             server = new Socket(ip, port);
 
-            System.out.println("Just connected to " + server.getRemoteSocketAddress());
+            //System.out.println("Just connected to " + server.getRemoteSocketAddress());
 
             outputStream = new DataOutputStream(server.getOutputStream());
             inputStream = new DataInputStream(server.getInputStream());

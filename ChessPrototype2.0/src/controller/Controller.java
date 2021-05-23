@@ -148,7 +148,7 @@ public class Controller implements EventHandler<MouseEvent>{
                     unSelectLabel();
                     turn.setBlackTime(chessboard.getBlackTime());
                     turn.setWhiteTime(chessboard.getWhiteTime());
-                    System.out.println("setting white time");
+                    //System.out.println("setting white time");
                     source = null;
 
                     unmarkAvailableMoves();

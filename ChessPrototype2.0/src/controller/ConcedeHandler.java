@@ -23,7 +23,7 @@ public class ConcedeHandler implements EventHandler<ActionEvent> {
             try {
                 Server.getOutputStream().writeUTF("RESIGN");
             } catch (IOException e) {
-                System.out.println("Fehler beim Senden!");
+                //System.out.println("Fehler beim Senden!");
                 e.printStackTrace();
             }
         }

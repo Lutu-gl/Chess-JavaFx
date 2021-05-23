@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import model.Chessboard;
 import view.FieldBackground;
 import view.Main;
-import view.MainLaxe;
+import view.MainGame;
 import view.PieceDesign;
 
 
@@ -59,7 +59,7 @@ public class StartController {
     public void displayImage(ActionEvent e){
         CheckBox clickedBox = (CheckBox) e.getSource();
         //if (clickedBox.getText().equals("Spieler gegen Computer")) {
-        System.out.println(clickedBox.getId());
+        //System.out.println(clickedBox.getId());
         if (clickedBox.getId().equals("checkBox1")) {
             myImageView.setImage(myImage);
             checkBox2.setSelected(false);
@@ -128,8 +128,8 @@ public class StartController {
                 return;
             }
         }
-        System.out.println(time1.getText());
-        System.out.println("Los geats!!!");
+        //System.out.println(time1.getText());
+        //System.out.println("Los geats!!!");
         int size = 8;
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
@@ -137,7 +137,7 @@ public class StartController {
         // Check which gamemode has to start
         boolean whiteAi = true, blackAi = true;
         if (checkBox1.isSelected()) {
-            System.out.println(dropdown1.getSelectionModel().getSelectedItem());
+            //System.out.println(dropdown1.getSelectionModel().getSelectedItem());
             if (dropdown1.getSelectionModel().getSelectedItem().equals("Weiß")) whiteAi = false;
             else if (dropdown1.getSelectionModel().getSelectedItem().equals("Schwarz")) blackAi = false;
             else {
@@ -155,21 +155,21 @@ public class StartController {
             }
         }
 
-        //MainLaxe.saveParametersForGame(size, whiteAi, blackAi, intTime1, intTime2, 0, 0);
-        MainLaxe.size = size;
-        MainLaxe.whiteAi = whiteAi;
-        MainLaxe.blackAi = blackAi;
-        MainLaxe.timeWhite = intTime1;
-        MainLaxe.timeBlack = intTime2;
-        MainLaxe.inkrementWhite = intInkrement1;
-        MainLaxe.inkrementBlack = intInkrement2;
-        MainLaxe.invertBoard = !blackAi&&!checkBox2.isSelected();
-        MainLaxe.pieceDesign = StartController.pieceDesign;
-        MainLaxe.fieldDesign = StartController.fieldDesign;
+        //MainGame.saveParametersForGame(size, whiteAi, blackAi, intTime1, intTime2, 0, 0);
+        MainGame.size = size;
+        MainGame.whiteAi = whiteAi;
+        MainGame.blackAi = blackAi;
+        MainGame.timeWhite = intTime1;
+        MainGame.timeBlack = intTime2;
+        MainGame.inkrementWhite = intInkrement1;
+        MainGame.inkrementBlack = intInkrement2;
+        MainGame.invertBoard = !blackAi&&!checkBox2.isSelected();
+        MainGame.pieceDesign = StartController.pieceDesign;
+        MainGame.fieldDesign = StartController.fieldDesign;
         if (!checkBox2.isSelected() || (checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Local")))
-            MainLaxe.startGame();
+            MainGame.startGame();
         else
-            MainLaxe.hideTurnBackButton = true;
+            MainGame.hideTurnBackButton = true;
     }
     private void displayErrorMSG(String errorMSG){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -180,7 +180,7 @@ public class StartController {
     }
 
     public void handlePieceDesignMenu() {
-        System.out.println("Clicked!");
+        //System.out.println("Clicked!");
         Dialog<ImageView> dialog = new Dialog<>();
         dialog.setTitle("Designmenu");
         ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -193,7 +193,7 @@ public class StartController {
         for (int i = 0; i < designs.length; i++) {
             ImageView imageView;
             if (designs[i].equals(StartController.pieceDesign)) {
-                System.out.println("/"+designs[i].getDesign()+"W_K_G.png");
+                //System.out.println("/"+designs[i].getDesign()+"W_K_G.png");
                 imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+designs[i].getDesign()+"W_K_G.png")));
             } else {
                 imageView = new ImageView(new Image(Main.class.getResourceAsStream("/" + designs[i].getDesign() + "W_K.png")));
@@ -222,7 +222,7 @@ public class StartController {
     }
 
     public void handleFieldBackgroundMenu() {
-        System.out.println("Clicked!");
+        //System.out.println("Clicked!");
         Dialog<ImageView> dialog = new Dialog<>();
         dialog.setTitle("FieldBackground Menu");
         ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -234,7 +234,7 @@ public class StartController {
         int y = 50, x = 0;
         for (int i = 0; i < backgrounds.length; i++) {
             ImageView imageView;
-            System.out.println("/"+backgrounds[i]+".png");
+            //System.out.println("/"+backgrounds[i]+".png");
             if (backgrounds[i].equals(StartController.fieldDesign)) {
                 imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+backgrounds[i]+"_G.png")));
             } else {
@@ -267,13 +267,13 @@ public class StartController {
      * Changes to the host menu
      */
     private void hostDialog() {
-        MainLaxe.changeScene(MainLaxe.hostScene);
+        MainGame.changeScene(MainGame.hostScene);
     }
 
     /**
      * Changes to the join menu
      */
     private void joinDialog() {
-        MainLaxe.changeScene(MainLaxe.joinScene);
+        MainGame.changeScene(MainGame.joinScene);
     }
 }

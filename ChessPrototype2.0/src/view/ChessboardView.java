@@ -5,7 +5,6 @@ import controller.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,8 +15,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import model.Chessboard;
 
 import java.util.ArrayList;
@@ -107,8 +104,8 @@ public class ChessboardView {
         bp.setCenter(gridPane);
 
         Label t1Label = new Label(), t2Label = new Label();
-        t2Label.setText(Controller.getInstance().secondsToFormattedString(MainLaxe.timeWhite));
-        t1Label.setText(Controller.getInstance().secondsToFormattedString(MainLaxe.timeBlack));
+        t2Label.setText(Controller.getInstance().secondsToFormattedString(MainGame.timeWhite));
+        t1Label.setText(Controller.getInstance().secondsToFormattedString(MainGame.timeBlack));
 
         t1Label.getStyleClass().add("timer");
         t2Label.getStyleClass().add("timer");

@@ -31,11 +31,11 @@ public class StockfishHelper{
      */
     public void run() {
         if (client.startEngine()) {
-            System.out.println("Engine has started..");
+            //System.out.println("Engine has started..");
             client.sendCommand("setoption name multipv value 5");
             client.getOutput(10);
         } else {
-            System.out.println("Oops! Something went wrong..");
+            //System.out.println("Oops! Something went wrong..");
             return;
         }
         recursiveSearch(8);
@@ -57,13 +57,13 @@ public class StockfishHelper{
         for (int i = lines.length-1; i < lines.length; i++) {
             bestMoves.add(lines[i].substring(lines[i].indexOf(" pv ")+4, lines[i].indexOf(" pv ")+8));
         }
-        System.out.println(bestMoves);
+        //System.out.println(bestMoves);
         try {
             String fen = chessboard.getBoardAsFen();
             FileWriter writer = new FileWriter(f, true);
             writer.append(fen.substring(0, fen.indexOf(" ")+2)+";"+bestMoves.get(0)+"\n");
             writer.close();
-            System.out.println("Wrote move to file!");
+            //System.out.println("Wrote move to file!");
         } catch (IOException e) {
             e.printStackTrace();
         }

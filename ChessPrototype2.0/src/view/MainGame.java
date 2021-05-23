@@ -14,7 +14,7 @@ import model.Chessboard;
 /**
  * Class for displaying the main menu and handling and handling the scene changes
  */
-public class MainLaxe extends Application {
+public class MainGame extends Application {
     public static void main(String[] args) {
         launch(args);
     }
@@ -35,15 +35,15 @@ public class MainLaxe extends Application {
         Chessboard board = Chessboard.getInstance();
 
 
-        System.out.println("Size: "+size);
-        System.out.println("White ai: "+whiteAi);
-        System.out.println("Black ai: "+blackAi);
-        System.out.println("timeWhite: "+timeWhite);
-        System.out.println("timeBlack:"+timeBlack);
-        System.out.println("ikWhite: "+inkrementWhite);
-        System.out.println("inkBlack: "+inkrementBlack);
-        System.out.println("PieceDesign: "+pieceDesign);
-        System.out.println("FieldDesign: "+fieldDesign);
+        //System.out.println("Size: "+size);
+        //System.out.println("White ai: "+whiteAi);
+        //System.out.println("Black ai: "+blackAi);
+        //System.out.println("timeWhite: "+timeWhite);
+        //System.out.println("timeBlack:"+timeBlack);
+        //System.out.println("ikWhite: "+inkrementWhite);
+        //System.out.println("inkBlack: "+inkrementBlack);
+        //System.out.println("PieceDesign: "+pieceDesign);
+        //System.out.println("FieldDesign: "+fieldDesign);
 
         // Display the Chessboard
         // Set graphic view of the chess board. Normally it is 8x8
@@ -56,9 +56,9 @@ public class MainLaxe extends Application {
         board.setBoardByFen(fen);
         board.printBoard();
 
-        scene.getStylesheets().add(MainLaxe.class.getResource("stylesheet.css").toString());
+        scene.getStylesheets().add(MainGame.class.getResource("stylesheet.css").toString());
 
-        MainLaxe.changeScene(scene);
+        MainGame.changeScene(scene);
         // Set the figures with the FEN Code
         ChessboardView.display();
         if (board.isPlayerConnected() && board.getPlaysAI()[0])

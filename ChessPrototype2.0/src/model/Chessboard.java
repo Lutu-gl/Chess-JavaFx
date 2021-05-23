@@ -3,18 +3,9 @@ package model;
 import controller.Controller;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import model.ai.AI;
 import model.ai.Gamephase;
 import model.ai.GamephaseObserver;
-import model.ai.AI;
 import model.pieces.*;
 import view.ChessboardView;
 import view.PlaySound;
@@ -25,7 +16,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Chessboard used for all calculations, implements the singleton pattern
@@ -293,10 +286,12 @@ public class Chessboard {
 
     }
 
-
+    /**
+     * Prints the Board to the console
+     */
     public void printBoard(){
         if(fields == null){
-            System.out.println("No board has been created yet");
+            //System.out.println("No board has been created yet");
             return;
         }
         /*for (int i = 0; i < fields.length; i++)
@@ -410,12 +405,12 @@ public class Chessboard {
 
         if (playerConnected && !playsAI[colorToMove.equals(Color.WHITE)?0:1] && !debug) {
             try {
-                System.out.println("Ich sende irgendwas");
-                System.out.println(generateNotation(currentT));
+                //System.out.println("Ich sende irgendwas");
+                //System.out.println(generateNotation(currentT));
                 Server.getOutputStream().writeUTF(generateNotation(currentT));
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Fehler beim Senden an den Server!");
+                //System.out.println("Fehler beim Senden an den Server!");
             }
         }
 
@@ -431,7 +426,7 @@ public class Chessboard {
                 //StartController.getInstance().updateTime(blackTime/1000.00, Color.BLACK);
             }
             turnTimeAdder = System.currentTimeMillis() - timeStopped;
-            System.out.println(whiteTime / 1e3 + " " + blackTime/1e3);
+            //System.out.println(whiteTime / 1e3 + " " + blackTime/1e3);
         }
         t = currentT;
         // TODO: Farbe von Check ändern, ist momentan nur Rot
@@ -606,9 +601,9 @@ public class Chessboard {
      */
     public void movePiece(Piece p, Field f, boolean s){
         p.setTimesMoved(p.getTimesMoved()+1);   //times moved erhöhen
-        if(!debug) System.out.println("Jetzt wurde das piece insgesammt " + p.getTimesMoved() + " oft gemoved!");
+        if(!debug) //System.out.println("Jetzt wurde das piece insgesammt " + p.getTimesMoved() + " oft gemoved!");
         if(p.getTimesMoved() > 100){
-            System.out.println("Hier Fehler:" + p);
+            //System.out.println("Hier Fehler:" + p);
         }
 
         playSound = Sound.MOVE;
@@ -827,11 +822,11 @@ public class Chessboard {
                     return new Task<Turn>() {
                         @Override
                         protected Turn call() throws Exception {
-                            System.out.println("IIICH WAAAARTE!");
+                            //System.out.println("IIICH WAAAARTE!");
                             String networkInput = Server.getInputStream().readUTF();
-                            System.out.println(networkInput);
+                            //System.out.println(networkInput);
                             if (networkInput.equals("RESIGN")) {
-                                System.out.println("GEAT EINER!!!!!");
+                                //System.out.println("GEAT EINER!!!!!");
                                 gamestate = playsAI[0]?Gamestate.BLACK_WINS:Gamestate.WHITE_WINS;
                                 if (gamestate.equals(Gamestate.WHITE_WINS))
                                     WinningScreen.whiteWins();
@@ -840,7 +835,7 @@ public class Chessboard {
                                 return null;
                             }
                             Turn s = convertNotation(networkInput);
-                            System.out.println(s);
+                            //System.out.println(s);
                             return s;
                         }
                     };
@@ -869,7 +864,7 @@ public class Chessboard {
                                 Here we let the algorithm work and check in small time periods, if it is already finished
                                 After the calculated time above we interrupt the Callable and we get the best move calculated so far
                              */
-                            System.out.println("Zeit für Zug: "+ availableTime*0.05);
+                            //System.out.println("Zeit für Zug: "+ availableTime*0.05);
                             for (int i = 0; i < 20; i++) {
                                 if (bestMove.isDone()) break;
                                 Thread.sleep((long)(((availableTime)*0.05)/20));
@@ -882,10 +877,10 @@ public class Chessboard {
                 }
             };
             service.setOnRunning(e -> {
-                System.out.println("Berechnung begonnen!");
+                //System.out.println("Berechnung begonnen!");
             });
             service.setOnSucceeded(e -> {
-                System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                //System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 Turn t = service.getValue();
                 try{
                     t.setBlackTime(Chessboard.instance.getBlackTime());
@@ -1096,7 +1091,7 @@ public class Chessboard {
         for (Field f :k.getMoves()) {
             if(f.hasPiece()&&f.getPiece().getShortName() == p.getShortName())
             {
-                System.out.println(f + " " + source);
+                //System.out.println(f + " " + source);
                 if(f.getLine() == source.getLine())
                     return 2;
                 else if(f.getColumn() == source.getColumn())
@@ -1153,7 +1148,7 @@ public class Chessboard {
 
         s.append(t.getTargetField().getName());
         if(t.isPromotionTurn()){
-            System.out.println(t.getMovingPiece().getField().getPiece().getName());
+            //System.out.println(t.getMovingPiece().getField().getPiece().getName());
             switch (Character.toLowerCase(t.getMovingPiece().getField().getPiece().getShortName()))
             {
                 case 'q' -> s.append("=Q");

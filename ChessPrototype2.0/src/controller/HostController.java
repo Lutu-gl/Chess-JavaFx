@@ -16,7 +16,7 @@ import javafx.util.Duration;
 import model.Chessboard;
 import model.Server;
 import view.Main;
-import view.MainLaxe;
+import view.MainGame;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -43,7 +43,7 @@ public class HostController {
     @FXML
     public void initialize() {
         int pic = (int) (Math.floor(Math.random()*5)) + 1;
-        System.out.println(pic);
+        //System.out.println(pic);
         Image image = new Image(Main.class.getResourceAsStream("/wallpaper"+pic+".jpg"));
         backgroundImage.setImage(image);
         backgroundImage.setFitHeight(800.0);
@@ -132,30 +132,30 @@ public class HostController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (Chessboard.getInstance().isPlayerConnected()) {
-                    System.out.println("Change Scene!");
+                    //System.out.println("Change Scene!");
                     if (HostController.color == 0) {
-                        MainLaxe.invertBoard = false;
-                        MainLaxe.whiteAi = false;
-                        MainLaxe.blackAi = true;
+                        MainGame.invertBoard = false;
+                        MainGame.whiteAi = false;
+                        MainGame.blackAi = true;
                     } else {
-                        MainLaxe.invertBoard = true;
-                        MainLaxe.whiteAi = true;
-                        MainLaxe.blackAi = false;
+                        MainGame.invertBoard = true;
+                        MainGame.whiteAi = true;
+                        MainGame.blackAi = false;
                     }
                     try {
                         Server.getOutputStream().writeUTF(HostController.color==0?"white":"black");
-                        Server.getOutputStream().writeUTF(""+MainLaxe.timeWhite);
-                        Server.getOutputStream().writeUTF(""+MainLaxe.timeBlack);
-                        Server.getOutputStream().writeUTF(""+MainLaxe.inkrementWhite);
-                        Server.getOutputStream().writeUTF(""+MainLaxe.inkrementBlack);
+                        Server.getOutputStream().writeUTF(""+ MainGame.timeWhite);
+                        Server.getOutputStream().writeUTF(""+ MainGame.timeBlack);
+                        Server.getOutputStream().writeUTF(""+ MainGame.inkrementWhite);
+                        Server.getOutputStream().writeUTF(""+ MainGame.inkrementBlack);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        System.out.println("Es gab Probleme beim schicken an den Server!");
+                        //System.out.println("Es gab Probleme beim schicken an den Server!");
                     }
-                    MainLaxe.startGame();
+                    MainGame.startGame();
                     timeline.stop();
                 } else {
-                    System.out.println("Waiting for player to connect!");
+                    //System.out.println("Waiting for player to connect!");
                 }
             }
         }));

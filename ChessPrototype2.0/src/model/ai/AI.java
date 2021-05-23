@@ -26,12 +26,12 @@ public class AI implements Callable<Turn> {
         ArrayList<Turn> moves = generateMoves();
         Turn bestMoveOverall = null, bestMove = null;
 
-        System.out.println("Ai denkt die Position hat die evalutaion: " + evaluate());
+        //System.out.println("Ai denkt die Position hat die evalutaion: " + evaluate());
         HashMap<String, String> openingBook = chessboard.getOpeningBook();
         String fen = chessboard.getBoardAsFen();
         fen = fen.substring(0, fen.indexOf(" ")+2);
         if (openingBook.containsKey(fen)) {
-            System.out.println(openingBook.get(fen));
+            //System.out.println(openingBook.get(fen));
             chessboard.debug = false;
             chessboard.withTime = true;
             return convertNotation(openingBook.get(fen));
@@ -39,7 +39,7 @@ public class AI implements Callable<Turn> {
 
         int depth = 0;
         while (!Thread.currentThread().isInterrupted()) {
-            System.out.println("Suche auf Tiefe "+ (depth+1));
+            //System.out.println("Suche auf Tiefe "+ (depth+1));
             double bestEval = -10000;       //Eval auf ganz was niederes setzen
 
             iteration = 0;
@@ -69,8 +69,8 @@ public class AI implements Callable<Turn> {
 
         chessboard.debug = false;
         chessboard.withTime = true;
-        System.out.println(iteration);
-        System.out.println("2: "+bestMoveOverall);
+        //System.out.println(iteration);
+        //System.out.println("2: "+bestMoveOverall);
         return bestMoveOverall;
     }
 

@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import model.Server;
 import view.Main;
-import view.MainLaxe;
+import view.MainGame;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class JoinController {
      */
     public void initialize() {
         int pic = (int) (Math.floor(Math.random()*5)) + 1;
-        System.out.println(pic);
+        //System.out.println(pic);
         Image image = new Image(Main.class.getResourceAsStream("/wallpaper"+pic+".jpg"));
         backgroundImage.setImage(image);
         backgroundImage.setFitHeight(800.0);
@@ -46,31 +46,31 @@ public class JoinController {
         connectButton.setOnAction(e -> {
             if (!ipField.getText().matches("^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\\.(?!$)|$)){4}$")) // Sick regex to check if IP is valid
                 return;
-            System.out.println("Versuche zu verbinden!");
+            //System.out.println("Versuche zu verbinden!");
             if (!Server.startConnection(ipField.getText())) {
-                System.out.println("Der host konnte nicht erreicht werden!");
+                //System.out.println("Der host konnte nicht erreicht werden!");
                 errorLabel.setText("Unable to reach host!\nPlease try again ...");
             }
             try {
                 if (Server.getInputStream().readUTF().equals("white")) {
-                    MainLaxe.whiteAi = true;
+                    MainGame.whiteAi = true;
                     //controller.StartController.getInstance().flipTimers();
-                    MainLaxe.blackAi = false;
-                    MainLaxe.invertBoard = true;
+                    MainGame.blackAi = false;
+                    MainGame.invertBoard = true;
                 } else {
-                    MainLaxe.whiteAi = false;
-                    MainLaxe.blackAi = true;
-                    MainLaxe.invertBoard = false;
+                    MainGame.whiteAi = false;
+                    MainGame.blackAi = true;
+                    MainGame.invertBoard = false;
                 }
-                MainLaxe.timeWhite = Integer.parseInt(Server.getInputStream().readUTF());
-                MainLaxe.timeBlack = Integer.parseInt(Server.getInputStream().readUTF());
-                MainLaxe.inkrementWhite = Integer.parseInt(Server.getInputStream().readUTF());
-                MainLaxe.inkrementBlack = Integer.parseInt(Server.getInputStream().readUTF());
+                MainGame.timeWhite = Integer.parseInt(Server.getInputStream().readUTF());
+                MainGame.timeBlack = Integer.parseInt(Server.getInputStream().readUTF());
+                MainGame.inkrementWhite = Integer.parseInt(Server.getInputStream().readUTF());
+                MainGame.inkrementBlack = Integer.parseInt(Server.getInputStream().readUTF());
 
-                MainLaxe.startGame();
+                MainGame.startGame();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
-                System.out.println("Es gab Probleme beim Lesen des Servers!");
+                //System.out.println("Es gab Probleme beim Lesen des Servers!");
             }
 
         });
