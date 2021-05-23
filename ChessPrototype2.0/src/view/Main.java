@@ -14,6 +14,8 @@ public class Main extends Application {
         // Set the size and the FEN of the logic chessboard
         Chessboard board = Chessboard.getInstance();
         primaryStage.setScene(ChessboardView.init(size, size, FieldBackground.STANDARD, PieceDesign.STANDARD, false));
+        primaryStage.setMinHeight(950);
+        primaryStage.setMinWidth(1200);
         board.createBoard(size, false, false, 100, 100, 3, 3); //In Sekunden!
 
         String fen = "";
@@ -87,7 +89,7 @@ public class Main extends Application {
         //fen = "4k3/8/8/1N3N2/8/8/P2K4/8 w - - 0 1"; //correct
         //fen = "4k3/4N3/8/5b2/8/4N3/8/4K3 w - - 0 1"; // correct
         //fen = "4k3/8/N7/8/4N3/8/8/4K3 w - - 0 1"; //check knight pgn correct
-        fen = "rnbqkbnr/1ppppppp/8/8/p1B1P3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 1";
+//        fen = "rnbqkbnr/1ppppppp/8/8/p1B1P3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 1";
 
 
         board.addFen(fen);
