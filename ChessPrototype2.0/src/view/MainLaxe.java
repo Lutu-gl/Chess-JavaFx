@@ -21,10 +21,10 @@ public class MainLaxe extends Application {
 
     public static Stage stage;
 
-    public static Scene hostScene, joinScene;
+    public static Scene hostScene, joinScene, mainScene;
 
     public static int size, timeWhite, timeBlack, inkrementWhite, inkrementBlack;
-    public static boolean whiteAi, blackAi, invertBoard;
+    public static boolean whiteAi, blackAi, invertBoard, hideTurnBackButton;
     public static PieceDesign pieceDesign;
     public static FieldBackground fieldDesign;
 
@@ -47,7 +47,7 @@ public class MainLaxe extends Application {
 
         // Display the Chessboard
         // Set graphic view of the chess board. Normally it is 8x8
-        Scene scene = ChessboardView.init(size, size, fieldDesign, pieceDesign, invertBoard);
+        Scene scene = ChessboardView.init(size, size, fieldDesign, pieceDesign, invertBoard, hideTurnBackButton);
 
         board.createBoard(size, whiteAi, blackAi, timeWhite, timeBlack, inkrementWhite, inkrementBlack); //In Sekunden!
         String fen = "";
@@ -93,12 +93,12 @@ public class MainLaxe extends Application {
         panel = FXMLLoader.load(getClass().getResource("menu.fxml"));
         panel2 = FXMLLoader.load(getClass().getResource("host.fxml"));
         panel3 = FXMLLoader.load(getClass().getResource("join.fxml"));
-        Scene scene = new Scene(panel);
+        mainScene = new Scene(panel);
         hostScene = new Scene(panel2);
         joinScene = new Scene(panel3);
         stage = new Stage();
         stage.setTitle("Chess!");
-        stage.setScene(scene);
+        stage.setScene(mainScene);
         stage.getIcons().add(new Image(Main.class.getResourceAsStream("/icon.png")));
         stage.show();
     }

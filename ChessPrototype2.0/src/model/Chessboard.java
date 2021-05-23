@@ -36,29 +36,30 @@ import java.util.concurrent.*;
 public class Chessboard {
 
     private Field[][] fields;
-    private ArrayList<Turn> turns = new ArrayList<>();
+    private ArrayList<Turn> turns;
     private int turn, ply;
     private Color colorToMove;
     private int ruleCounter;
     private Pawn enPassantable, whitePromotionable, blackPromotionable;
-    private ArrayList<String> fens = new ArrayList<>();
-    private ArrayList<Piece> whitePieces = new ArrayList<>();
-    private ArrayList<Piece> blackPieces = new ArrayList<>();
-    private ArrayList<Piece> eatenPieces = new ArrayList<>();
+    private ArrayList<String> fens;
+    private ArrayList<Piece> whitePieces;
+    private ArrayList<Piece> blackPieces;
+    private ArrayList<Piece> eatenPieces;
     private Gamestate gamestate;
     private Gamephase gamephase = Gamephase.MIDGAME;
     private boolean whiteCastlePermissionLong, whiteCastlePermissionShort, blackCastlePermissionLong, blackCastlePermissionShort, playerConnected;
     private King b_king, w_king;
     private Sound playSound;
     private int sizeOfBoard;
-    ArrayList<Observer> observers = new ArrayList<>();
+    ArrayList<Observer> observers;
     private boolean[] playsAI = new boolean[2];
     private long whiteTime= 90000;  //5min
     private long blackTime= 90000;
     private long whiteInkrement = 0;
     private long blackInkrement = 0;
     private long timeStopped=0L;
-    private Timer timer=new Timer();
+    private Timer timer;
+    private TimerTask timerTask;
     public boolean withTime=true;
     private Color currentAIMovingColor =null;
     private long turnTimeAdder=0L;
@@ -73,8 +74,7 @@ public class Chessboard {
 
 
     private Chessboard() {
-        register(new GamestateObserver(this));
-        register(new GamephaseObserver(this));
+
     }
 
     public static Chessboard getInstance() {
@@ -119,6 +119,15 @@ public class Chessboard {
      * @param blackInkrement increases timer for black by x seconds after making move
      */
     public void createBoard(int size, boolean whiteAI, boolean blackAI, long whiteTime, long blackTime, long whiteInkrement, long blackInkrement){
+        whitePieces = new ArrayList<>();
+        blackPieces = new ArrayList<>();
+        fens = new ArrayList<>();
+        turns = new ArrayList<>();
+        eatenPieces = new ArrayList<>();
+        observers = new ArrayList<>();
+        register(new GamestateObserver(this));
+        register(new GamephaseObserver(this));
+
         this.whiteTime = (long) (whiteTime*1e3);
         this.blackTime = (long) (blackTime*1e3);
         this.whiteInkrement = (long) (whiteInkrement*1e3);
@@ -152,8 +161,9 @@ public class Chessboard {
                 fields[i][j] = new Field(j, i);
             }
         }
+        timer = new Timer();
         if(whiteAI && blackAI){
-            TimerTask timerTask = new TimerTask() {
+            timerTask = new TimerTask() {
                 @Override
                 public void run() {
                     Chessboard ch = Chessboard.getInstance();
@@ -185,7 +195,7 @@ public class Chessboard {
             timer.scheduleAtFixedRate(timerTask, 0, 1);
         }
         else if(!whiteAI && !blackAI){
-            TimerTask timerTask = new TimerTask() {
+            timerTask = new TimerTask() {
                 @Override
                 public void run() {
                     Chessboard ch = Chessboard.getInstance();
@@ -217,7 +227,7 @@ public class Chessboard {
         }
         else if(blackAI && !whiteAI)
         {
-            TimerTask timerTask = new TimerTask() {
+            timerTask = new TimerTask() {
                 @Override
                 public void run() {
                     Chessboard ch = Chessboard.getInstance();
@@ -248,7 +258,7 @@ public class Chessboard {
             timer.scheduleAtFixedRate(timerTask, 0, 1);
         }
         else{
-            TimerTask timerTask = new TimerTask() {
+            timerTask = new TimerTask() {
                 @Override
                 public void run() {
                     Chessboard ch = Chessboard.getInstance();
@@ -1462,5 +1472,9 @@ public class Chessboard {
 
     public void setAllowedToMakeMove(boolean allowedToMakeMove) {
         isAllowedToMakeMove = allowedToMakeMove;
+    }
+
+    public TimerTask getTimerTask() {
+        return timerTask;
     }
 }
