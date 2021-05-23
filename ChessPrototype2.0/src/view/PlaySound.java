@@ -3,6 +3,7 @@ package view;
 import model.Chessboard;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 
 /**
@@ -17,8 +18,10 @@ public class PlaySound {
         if (Chessboard.getInstance().debug) return;
         AudioInputStream audioIn = null;
         try {
-            audioIn = AudioSystem.getAudioInputStream(sound.getFile());
-        } catch (UnsupportedAudioFileException | IOException e) {
+            audioIn = AudioSystem.getAudioInputStream(new BufferedInputStream(sound.getInputStream()));
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         Clip clip = null;

@@ -1,7 +1,9 @@
 package model;
 
+import view.MainGame;
+
 public class Launcher {
     public static void main(String[] args) {
-        //TestKlasse.main(args);
+        MainGame.main(args);
     }
 }

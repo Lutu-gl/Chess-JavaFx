@@ -1,7 +1,6 @@
 package view;
 
-import java.io.File;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 
 /**
  * Enum to provide some constants for sounds
@@ -15,25 +14,21 @@ public enum Sound {
     STALEMATE("/end.wav"),
     MATE("/end.wav");
 
-    private File file;
+    private final String filename;
 
     /**
      * Opens the existing .wav file
      * @param file
      */
     Sound(String file){
-        try {
-            this.file = new File(this.getClass().getResource(file).toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        this.filename = file;
     }
 
     /**
      * Returns the audio file
      * @return
      */
-    public File getFile() {
-        return file;
+    public InputStream getInputStream() {
+        return this.getClass().getResourceAsStream(filename);
     }
 }
