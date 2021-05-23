@@ -1,7 +1,9 @@
 package view;
 
+import controller.Controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ButtonBar;
@@ -82,6 +84,8 @@ public class WinningScreen implements Runnable{
         crown.setFitHeight(100);
         crown.setLayoutX(200);
         crown.setLayoutY(100);
+
+        dialog.setOnCloseRequest(dialogEvent -> {Platform.exit(); System.exit(0);});
 
         final double[] y = {100};
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.02), new EventHandler<ActionEvent>() {
