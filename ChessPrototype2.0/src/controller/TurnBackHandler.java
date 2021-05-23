@@ -31,6 +31,7 @@ public class TurnBackHandler implements EventHandler<ActionEvent> {
             chessboard.undoTurn(turns.get(turns.size()-2));
             chessboard.setAllowedToMakeMove(true);
             ChessboardView.display();
+            Controller.getInstance().unSelectLastPlayedMove();
             //chessboard.printBoard();
         }
         else
