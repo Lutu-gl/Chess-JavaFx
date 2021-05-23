@@ -19,7 +19,7 @@ import java.util.Date;
 
 
 /**
- * Controller to make model Classes and view Classes communicate
+ * StartController to make model Classes and view Classes communicate
  * is singleton
  * implements EvenHandler<MouseEvent>
  * @since 1.0

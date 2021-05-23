@@ -1,4 +1,4 @@
-package view;
+package controller;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -15,6 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import model.Chessboard;
 import model.Server;
+import view.Main;
+import view.MainLaxe;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -23,7 +25,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 /**
- * Controller only for the host menu.
+ * StartController only for the host menu.
  * It lets the player choose the playing color and hosts the game on the local IPv4 address and port 50000
  */
 public class HostController {

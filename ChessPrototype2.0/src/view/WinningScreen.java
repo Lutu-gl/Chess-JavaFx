@@ -63,7 +63,7 @@ public class WinningScreen implements Runnable{
 
         dialog.getDialogPane().getChildren().add(mediaView);
 
-        Media media = new Media(Main.class.getResource(video).toExternalForm());
+        Media media = new Media(Main.class.getClassLoader().getResource(video).toExternalForm());
 
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaView.setMediaPlayer(mediaPlayer);

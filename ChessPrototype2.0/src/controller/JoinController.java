@@ -1,4 +1,4 @@
-package view;
+package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,11 +8,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import model.Server;
+import view.Main;
+import view.MainLaxe;
 
 import java.io.IOException;
 
 /**
- * Controller only for join menu
+ * StartController only for join menu
  */
 public class JoinController {
     @FXML
@@ -52,7 +54,7 @@ public class JoinController {
             try {
                 if (Server.getInputStream().readUTF().equals("white")) {
                     MainLaxe.whiteAi = true;
-                    //controller.Controller.getInstance().flipTimers();
+                    //controller.StartController.getInstance().flipTimers();
                     MainLaxe.blackAi = false;
                     MainLaxe.invertBoard = true;
                 } else {

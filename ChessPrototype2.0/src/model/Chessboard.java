@@ -424,11 +424,11 @@ public class Chessboard {
             if(colorToMove == Color.WHITE){
                 whiteTime-=System.currentTimeMillis() - timeStopped;
                 whiteTime += whiteInkrement;
-                //Controller.getInstance().updateTime(whiteTime/1000.00, Color.WHITE);
+                //StartController.getInstance().updateTime(whiteTime/1000.00, Color.WHITE);
             }else{
                 blackTime-=System.currentTimeMillis() - timeStopped;
                 blackTime += blackInkrement;
-                //Controller.getInstance().updateTime(blackTime/1000.00, Color.BLACK);
+                //StartController.getInstance().updateTime(blackTime/1000.00, Color.BLACK);
             }
             turnTimeAdder = System.currentTimeMillis() - timeStopped;
             System.out.println(whiteTime / 1e3 + " " + blackTime/1e3);
@@ -1221,8 +1221,6 @@ public class Chessboard {
 
     private boolean checkIfColorCanWinWithTheMaterial(Color color){
 
-        return true;
-        /*
         ArrayList<Piece> pieces = (Color.WHITE == color) ? getWhitePieces() : getBlackPieces();
 
         int knights = 0;
@@ -1300,7 +1298,6 @@ public class Chessboard {
 
         return false;
 
-         */
     }
 
     public Color getCurrentAIMovingColor() {

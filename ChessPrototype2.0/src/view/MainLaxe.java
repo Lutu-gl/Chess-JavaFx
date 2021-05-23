@@ -90,9 +90,9 @@ public class MainLaxe extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent panel, panel2, panel3;
         //panel = FXMLLoader.load(getClass().getResource(fxmlResource));
-        panel = FXMLLoader.load(getClass().getResource("menu.fxml"));
-        panel2 = FXMLLoader.load(getClass().getResource("host.fxml"));
-        panel3 = FXMLLoader.load(getClass().getResource("join.fxml"));
+        panel = FXMLLoader.load(getClass().getClassLoader().getResource("menu.fxml"));
+        panel2 = FXMLLoader.load(getClass().getClassLoader().getResource("host.fxml"));
+        panel3 = FXMLLoader.load(getClass().getClassLoader().getResource("join.fxml"));
         mainScene = new Scene(panel);
         hostScene = new Scene(panel2);
         joinScene = new Scene(panel3);

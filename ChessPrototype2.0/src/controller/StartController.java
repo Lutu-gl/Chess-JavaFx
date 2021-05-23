@@ -1,4 +1,4 @@
-package view;
+package controller;
 
 
 import javafx.collections.FXCollections;
@@ -12,14 +12,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.Chessboard;
+import view.FieldBackground;
+import view.Main;
+import view.MainLaxe;
+import view.PieceDesign;
 
 
 /**
- * Controller only for handling the main menu
+ * StartController only for handling the main menu
  * @since 1.0
  * @version 4.6
  */
-public class Controller{
+public class StartController {
     @FXML
     public ImageView myImageView, pieceDesignImageView, fieldDesignImageView;
     public CheckBox checkBox1, checkBox2, checkBox3;
@@ -29,8 +33,8 @@ public class Controller{
     public static PieceDesign pieceDesign = PieceDesign.STANDARD;
     public static FieldBackground fieldDesign = FieldBackground.STANDARD;
 
-    Image myImage2 = new Image(getClass().getResourceAsStream("Ebene6.png"));
-    Image myImage = new Image(getClass().getResourceAsStream("Ebene7.png"));
+    Image myImage2 = new Image(getClass().getResourceAsStream("/Ebene6.png"));
+    Image myImage = new Image(getClass().getResourceAsStream("/Ebene7.png"));
 
     private ObservableList<String> dropdownList1 = FXCollections.observableArrayList("Weiß", "Schwarz", "Zufall");
     private ObservableList<String> dropdownList2 = FXCollections.observableArrayList("Local", "Host", "Join");
@@ -160,8 +164,8 @@ public class Controller{
         MainLaxe.inkrementWhite = intInkrement1;
         MainLaxe.inkrementBlack = intInkrement2;
         MainLaxe.invertBoard = !blackAi&&!checkBox2.isSelected();
-        MainLaxe.pieceDesign = Controller.pieceDesign;
-        MainLaxe.fieldDesign = Controller.fieldDesign;
+        MainLaxe.pieceDesign = StartController.pieceDesign;
+        MainLaxe.fieldDesign = StartController.fieldDesign;
         if (!checkBox2.isSelected() || (checkBox2.isSelected() && dropdown2.getSelectionModel().getSelectedItem().equals("Local")))
             MainLaxe.startGame();
         else
@@ -188,7 +192,7 @@ public class Controller{
         int y = 50, x = 0;
         for (int i = 0; i < designs.length; i++) {
             ImageView imageView;
-            if (designs[i].equals(Controller.pieceDesign)) {
+            if (designs[i].equals(StartController.pieceDesign)) {
                 System.out.println("/"+designs[i].getDesign()+"W_K_G.png");
                 imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+designs[i].getDesign()+"W_K_G.png")));
             } else {
@@ -205,7 +209,7 @@ public class Controller{
                 y += 120;
             int finalI = i;
             imageView.setOnMouseClicked(e -> {
-                Controller.pieceDesign = designs[finalI];
+                StartController.pieceDesign = designs[finalI];
                 pieceDesignImageView.setImage(new Image("/"+designs[finalI].getDesign()+"W_K.png"));
                 dialog.close();
             });
@@ -231,7 +235,7 @@ public class Controller{
         for (int i = 0; i < backgrounds.length; i++) {
             ImageView imageView;
             System.out.println("/"+backgrounds[i]+".png");
-            if (backgrounds[i].equals(Controller.fieldDesign)) {
+            if (backgrounds[i].equals(StartController.fieldDesign)) {
                 imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+backgrounds[i]+"_G.png")));
             } else {
                 imageView = new ImageView(new Image(Main.class.getResourceAsStream("/"+backgrounds[i]+".png")));
@@ -247,7 +251,7 @@ public class Controller{
                 y += 120;
             int finalI = i;
             imageView.setOnMouseClicked(e -> {
-                Controller.fieldDesign = backgrounds[finalI];
+                StartController.fieldDesign = backgrounds[finalI];
                 fieldDesignImageView.setImage(new Image("/"+backgrounds[finalI]+".png"));
                 dialog.close();
             });
