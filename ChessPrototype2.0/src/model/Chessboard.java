@@ -818,7 +818,12 @@ public class Chessboard {
                         @Override
                         protected Turn call() throws Exception {
                             System.out.println("IIICH WAAAARTE!");
-                            Turn s = convertNotation(Server.getInputStream().readUTF());
+                            String networkInput = Server.getInputStream().readUTF();
+                            Turn s = convertNotation(networkInput);
+                            if (networkInput.equals("RESIGN")) {
+                                gamestate = playsAI[0]?Gamestate.BLACK_WINS:Gamestate.WHITE_WINS;
+                                return null;
+                            }
                             System.out.println(s);
                             return s;
                         }
