@@ -22,7 +22,7 @@ When selecting *player against player*, then local means playing on one PC.
 The host can select the settings such as time and color.
 
 ### Figure design and the field design:
-The figure design and field design can be selected manually. This allows you to set how the figures look and what color the fields should be.
+The figure design and field design can be selected manually. This allows you to set how the figures look and what color the fields should be.<br>
 
 <img src="https://github.com/Lutu-gl/Chess-JavaFx/assets/74654393/3922a710-c747-4a40-96fb-789d2d73602f" alt="Fielddesign" style="width: 50%;" />
 <img src="https://github.com/Lutu-gl/Chess-JavaFx/assets/74654393/d844902e-e076-435b-ab89-8fe0b8cd2ec1" alt="Piecedesing" style="width: 50%;" />
@@ -43,7 +43,7 @@ After you press 'start', the settings window closes and the game board appears. 
 There is the possiblity to make premoves (A premove in chess is when a player sets up a move that plays automatically as soon as it's their turn, independently of the opponent's move) <br>
 <img src="https://github.com/Lutu-gl/Chess-JavaFx/assets/74654393/0bc292ad-96bb-4e42-838e-5fc5fdfbb9ea" alt="Fielddesign" style="width: 50%;" />
 
-If you play against the computer with black or have 2 computers playing, you start the AI by clicking once on the chessboard.
+If you play against the computer with black or have 2 computers playing, you start the AI by clicking once on the chessboard. <br>
 <img src="https://github.com/Lutu-gl/Chess-JavaFx/assets/74654393/2e0314c1-34b2-4772-bac0-e5b83bb92d43" alt="Fielddesign" style="width: 50%;" />
 
 Various information is displayed on the right-hand side:
